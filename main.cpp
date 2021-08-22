@@ -2,7 +2,8 @@
 
 int main(int argc, char** argv)
 {
-    FilApp::Application& app = FilApp::Application::get();
-    app.run(FilApp::WindowConfig());
+    FilApp::AppConfig appConfig;
+    FilApp::Application::init(appConfig);
+    FilApp::Application::get().run(FilApp::WindowConfig());
     return 0;
 }

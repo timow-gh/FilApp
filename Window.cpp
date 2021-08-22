@@ -46,16 +46,12 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
     {
         m_width = windowConfig.width;
         m_height = windowConfig.height;
-        m_application->m_engine =
-            filament::Engine::create(windowConfig.backend);
         m_swapChain =
-            m_application->m_engine->createSwapChain(m_width, m_height);
+            m_application->getEngine()->createSwapChain(m_width, m_height);
     }
     else
     {
-        m_application->m_engine =
-            filament::Engine::create(windowConfig.backend);
-        m_backend = m_application->m_engine->getBackend();
+        m_backend = m_application->getEngine()->getBackend();
         void* nativeWindow = ::getNativeWindow(m_sdlWindow);
         void* nativeSwapChain = nativeWindow;
 
@@ -78,10 +74,11 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
         }
 #endif
 #endif
-        m_swapChain = m_application->m_engine->createSwapChain(nativeSwapChain);
+        m_swapChain =
+            m_application->getEngine()->createSwapChain(nativeSwapChain);
     }
 
-    m_renderer = m_application->m_engine->createRenderer();
+    m_renderer = m_application->getEngine()->createRenderer();
 
     calcWindowViewport();
     m_views.emplace_back(std::make_unique<View>(*m_renderer,
@@ -188,8 +185,8 @@ void Window::keyUp(SDL_Scancode scancode)
 Window::~Window()
 {
     m_views.clear();
-    m_application->m_engine->destroy(m_renderer);
-    m_application->m_engine->destroy(m_swapChain);
+    m_application->getEngine()->destroy(m_renderer);
+    m_application->getEngine()->destroy(m_swapChain);
     SDL_DestroyWindow(m_sdlWindow);
 }
 View* Window::getMainView()
@@ -236,7 +233,7 @@ void Window::resize()
 
     for (auto& resizeCallback: m_resizeCallbacks)
         if (resizeCallback)
-            resizeCallback(m_application->m_engine,
+            resizeCallback(m_application->getEngine(),
                            m_mainView->getFilamentView());
 }
 void Window::addAnimationCallback(const AnimationCallBack& animation)

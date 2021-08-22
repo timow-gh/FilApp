@@ -25,105 +25,101 @@ static constexpr uint16_t TRIANGLE_INDICES[3] = {0, 1, 2};
 
 namespace FilApp
 {
-Application::Application()
-{
-    initSDL();
-}
+std::unique_ptr<Application> Application::m_app;
 
-void Application::initSDL()
+void Application::init(const AppConfig& appConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
+    m_app = std::make_unique<Application>();
+    m_app->m_engine = filament::Engine::create(appConfig.backend);
 }
-
 Application::~Application()
 {
     SDL_Quit();
 }
-
 Application& Application::get()
 {
-    static Application app = Application();
-    return app;
+    return *m_app;
 }
-filament::Engine* Application::getEngine() const
+filament::Engine* Application::getEngine()
 {
     return m_engine;
 }
-filament::Scene* Application::getScene() const
+filament::Scene* Application::getScene()
 {
     return m_scene;
 }
 void Application::run(const WindowConfig& windowConfig)
 {
-    std::unique_ptr<Window> window(new Window(windowConfig, this));
+    std::unique_ptr<Window> window(new Window(windowConfig, &Application::get()));
 
     m_scene = m_engine->createScene();
     for (auto& view: window->getViews())
         view->getFilamentView()->setScene(m_scene);
 
-    Application::AppConfig appConfig;
+    AppData appData;
 
-    appConfig.skybox = filament::Skybox::Builder()
-                           .color({0.1, 0.125, 0.25, 1.0})
-                           .build(*m_engine);
-    m_scene->setSkybox(appConfig.skybox);
+    appData.skybox = filament::Skybox::Builder()
+                         .color({0.1, 0.125, 0.25, 1.0})
+                         .build(*m_engine);
+    m_scene->setSkybox(appData.skybox);
     window->getMainView()->getFilamentView()->setPostProcessingEnabled(false);
     static_assert(sizeof(Vertex) == 12, "Strange vertex size.");
-    appConfig.vb = filament::VertexBuffer::Builder()
-                       .vertexCount(3)
-                       .bufferCount(1)
-                       .attribute(filament::VertexAttribute::POSITION,
-                                  0,
-                                  filament::VertexBuffer::AttributeType::FLOAT2,
-                                  0,
-                                  12)
-                       .attribute(filament::VertexAttribute::COLOR,
-                                  0,
-                                  filament::VertexBuffer::AttributeType::UBYTE4,
-                                  8,
-                                  12)
-                       .normalized(filament::VertexAttribute::COLOR)
-                       .build(*m_engine);
-    appConfig.vb->setBufferAt(
+    appData.vb = filament::VertexBuffer::Builder()
+                     .vertexCount(3)
+                     .bufferCount(1)
+                     .attribute(filament::VertexAttribute::POSITION,
+                                0,
+                                filament::VertexBuffer::AttributeType::FLOAT2,
+                                0,
+                                12)
+                     .attribute(filament::VertexAttribute::COLOR,
+                                0,
+                                filament::VertexBuffer::AttributeType::UBYTE4,
+                                8,
+                                12)
+                     .normalized(filament::VertexAttribute::COLOR)
+                     .build(*m_engine);
+    appData.vb->setBufferAt(
         *m_engine,
         0,
         filament::VertexBuffer::BufferDescriptor(TRIANGLE_VERTICES,
                                                  36,
                                                  nullptr));
-    appConfig.ib = filament::IndexBuffer::Builder()
-                       .indexCount(3)
-                       .bufferType(filament::IndexBuffer::IndexType::USHORT)
-                       .build(*m_engine);
-    appConfig.ib->setBuffer(
+    appData.ib = filament::IndexBuffer::Builder()
+                     .indexCount(3)
+                     .bufferType(filament::IndexBuffer::IndexType::USHORT)
+                     .build(*m_engine);
+    appData.ib->setBuffer(
         *m_engine,
         filament::IndexBuffer::BufferDescriptor(TRIANGLE_INDICES, 6, nullptr));
-    appConfig.mat =
+    appData.mat =
         filament::Material::Builder()
             .package(RESOURCES_BAKEDCOLOR_DATA, RESOURCES_BAKEDCOLOR_SIZE)
             .build(*m_engine);
-    appConfig.renderable = utils::EntityManager::get().create();
+    appData.renderable = utils::EntityManager::get().create();
     filament::RenderableManager::Builder(1)
         .boundingBox({{-1, -1, -1}, {1, 1, 1}})
-        .material(0, appConfig.mat->getDefaultInstance())
+        .material(0, appData.mat->getDefaultInstance())
         .geometry(0,
                   filament::RenderableManager::PrimitiveType::TRIANGLES,
-                  appConfig.vb,
-                  appConfig.ib,
+                  appData.vb,
+                  appData.ib,
                   0,
                   3)
         .culling(false)
         .receiveShadows(false)
         .castShadows(false)
-        .build(*m_engine, appConfig.renderable);
-    m_scene->addEntity(appConfig.renderable);
+        .build(*m_engine, appData.renderable);
+    m_scene->addEntity(appData.renderable);
 
     window->addAnimationCallback(
-        [&appConfig](filament::Engine* engine,
-                     filament::View* filamentView,
-                     double now)
+        [&appData](filament::Engine* engine,
+                   filament::View* filamentView,
+                   double now)
         {
             auto& tcm = engine->getTransformManager();
-            tcm.setTransform(tcm.getInstance(appConfig.renderable),
+            tcm.setTransform(tcm.getInstance(appData.renderable),
                              filament::math::mat4f::rotation(
                                  now,
                                  filament::math::float3{0, 0, 1}));
@@ -205,10 +201,10 @@ void Application::run(const WindowConfig& windowConfig)
         }
     }
 
-    m_engine->destroy(appConfig.skybox);
-    m_engine->destroy(appConfig.renderable);
-    m_engine->destroy(appConfig.mat);
-    m_engine->destroy(appConfig.vb);
-    m_engine->destroy(appConfig.ib);
+    m_engine->destroy(appData.skybox);
+    m_engine->destroy(appData.renderable);
+    m_engine->destroy(appData.mat);
+    m_engine->destroy(appData.vb);
+    m_engine->destroy(appData.ib);
 }
 } // namespace FilApp

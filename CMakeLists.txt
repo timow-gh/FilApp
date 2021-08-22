@@ -35,7 +35,10 @@ add_executable(filapp
         ViewListener.h
         Window.cpp
         Window.h
-        WindowConfig.h WindowsNativeWindowHelper.cpp WindowsNativeWindowHelper.h)
+        WindowConfig.h
+        WindowsNativeWindowHelper.cpp
+        WindowsNativeWindowHelper.h
+        AppConfig.h)
 target_include_directories(filapp
         PRIVATE
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
