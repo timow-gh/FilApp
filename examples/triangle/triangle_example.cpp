@@ -1,7 +1,7 @@
-#include "Application.h"
-#include "Renderable.h"
-#include "Window.h"
 #include "generated/resources/resources.h"
+#include "FilApp/Application.h"
+#include "FilApp/Renderable.h"
+#include "FilApp/Window.h"
 #include <filament/TransformManager.h>
 
 using namespace FilApp;

@@ -9,6 +9,7 @@
 #include <filament/Material.h>
 #include <filament/VertexBuffer.h>
 #include <filament/View.h>
+#include <filapp_export.h>
 #include <memory>
 #include <utils/Entity.h>
 
@@ -20,7 +21,7 @@ using ResizeCallback = std::function<void(filament::Engine*, filament::View*)>;
 using AnimationCallBack = std::function<
     void(filament::Engine* engine, filament::View* view, double now)>;
 
-class Application
+class FILAPP_EXPORT Application
 {
   public:
     // clang-format off
@@ -28,7 +29,8 @@ class Application
     using CleanupCallback = std::function<void(filament::Engine*, filament::View*, filament::Scene*)>;
     // clang-format on
 
-    static void init(const AppConfig& appConfig, const WindowConfig& windowConfig);
+    static void init(const AppConfig& appConfig,
+                     const WindowConfig& windowConfig);
     static Application& get();
 
     Application() = default;

@@ -7,12 +7,13 @@
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
+#include <filapp_export.h>
 #include <memory>
 #include <vector>
 
 namespace FilApp
 {
-class Window
+class FILAPP_EXPORT Window
 {
     SDL_Window* m_sdlWindow = nullptr;
     Application* m_application = nullptr;
@@ -52,7 +53,8 @@ class Window
     void addAnimationCallback(const AnimationCallBack& animation);
     void addResizeCallback(const ResizeCallback& resizeCallback);
 
-    [[nodiscard]] const std::vector<AnimationCallBack>& getAnimationCallbacks() const;
+    [[nodiscard]] const std::vector<AnimationCallBack>&
+    getAnimationCallbacks() const;
     [[nodiscard]] const std::vector<ResizeCallback>& getResizeCallbacks() const;
 
     void clearAnimationsCallbacks();

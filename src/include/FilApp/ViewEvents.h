@@ -2,6 +2,7 @@
 #define FILAPP_VIEWEVENTS_H
 
 #include <SDL_scancode.h>
+#include <filapp_export.h>
 #include <math/vec2.h>
 #include <utils/compiler.h>
 
@@ -9,7 +10,7 @@ namespace FilApp
 {
 using vec2 = filament::math::vec2<ssize_t>;
 
-struct MouseDownEvent
+struct FILAPP_EXPORT MouseDownEvent
 {
     int button;
     vec2 pos;
@@ -21,7 +22,7 @@ struct MouseDownEvent
     }
 };
 
-struct MouseUpEvent
+struct FILAPP_EXPORT MouseUpEvent
 {
     vec2 pos;
     std::uint64_t timeStamp;
@@ -32,7 +33,7 @@ struct MouseUpEvent
     }
 };
 
-struct MouseMovedEvent
+struct FILAPP_EXPORT MouseMovedEvent
 {
     vec2 pos;
     std::uint64_t timeStamp;
@@ -43,7 +44,7 @@ struct MouseMovedEvent
     }
 };
 
-struct KeyDownEvent
+struct FILAPP_EXPORT KeyDownEvent
 {
     SDL_Scancode sdlScancode;
     std::uint64_t timeStamp;
@@ -54,7 +55,7 @@ struct KeyDownEvent
     }
 };
 
-struct KeyUpEvent
+struct FILAPP_EXPORT KeyUpEvent
 {
     SDL_Scancode sdlScancode;
     std::uint64_t timeStamp;
@@ -65,7 +66,7 @@ struct KeyUpEvent
     }
 };
 
-struct MouseScrollEvent
+struct FILAPP_EXPORT MouseScrollEvent
 {
     float_t x;
     std::uint64_t timeStamp;

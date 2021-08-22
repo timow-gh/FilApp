@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.19)
 
 include(FetchContent)
-FetchContent_Declare(   twCMakeUtils
-                        GIT_REPOSITORY https://github.com/timow-gh/twCMakeUtils.git
-                        GIT_TAG main)
+FetchContent_Declare(twCMakeUtils
+        GIT_REPOSITORY https://github.com/timow-gh/twCMakeUtils.git
+        GIT_TAG main)
 FetchContent_GetProperties(twCMakeUtils)
 set(lcs_twCMakeUtils "")
 string(TOLOWER "twCMakeUtils" lcs_twCMakeUtils)
@@ -20,46 +20,14 @@ project(FilApp
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(BuildResourceHelper)
 
+option(FilApp_BUILD_EXAMPLES "" ON)
+
 preamble()
 
 add_subdirectory(dependencies)
 
-build_resources()
+add_subdirectory(src)
 
-add_executable(filapp
-        main.cpp
-        Application.cpp
-        Application.h
-        View.cpp View.h
-        ViewEvents.h
-        ViewListener.h
-        Window.cpp
-        Window.h
-        WindowConfig.h
-        WindowsNativeWindowHelper.cpp
-        WindowsNativeWindowHelper.h
-        AppConfig.h Renderable.h)
-target_include_directories(filapp
-        PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-        )
-target_link_libraries(filapp
-        PRIVATE
-        filamentapp_sources
-        # filamentapp
-#        assimp
-        filament
-#        filament-iblprefilter
-        sdl2
-#        stb
-        math
-#        filamat
-        utils
-#        getopt
-#        imgui
-#        filagui
-#        image
-        camutils
-#        geometry
-        )
+if (FilApp_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif ()

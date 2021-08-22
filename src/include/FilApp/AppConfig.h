@@ -2,10 +2,11 @@
 #define FILAPP_APPCONFIG_H
 
 #include <filament/Engine.h>
+#include <filapp_export.h>
 
 namespace FilApp
 {
-struct AppConfig
+struct FILAPP_EXPORT AppConfig
 {
     filament::Engine::Backend backend = filament::Engine::Backend::DEFAULT;
 };

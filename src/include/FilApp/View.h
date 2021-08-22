@@ -12,6 +12,7 @@
 #include <filament/Skybox.h>
 #include <filament/View.h>
 #include <filament/Viewport.h>
+#include <filapp_export.h>
 #include <memory>
 #include <string>
 #include <utils/Entity.h>
@@ -19,7 +20,7 @@
 
 namespace FilApp
 {
-class View
+class FILAPP_EXPORT View
 {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;

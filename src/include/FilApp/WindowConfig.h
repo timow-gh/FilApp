@@ -3,11 +3,12 @@
 
 #include <camutils/Manipulator.h>
 #include <filament/Engine.h>
+#include <filapp_export.h>
 #include <string>
 
 namespace FilApp
 {
-struct WindowConfig
+struct FILAPP_EXPORT WindowConfig
 {
     std::string title = "MainWindow";
     bool isHeadless = false;

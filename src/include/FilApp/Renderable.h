@@ -1,19 +1,21 @@
 #ifndef FILAPP_RENDERABLE_H
 #define FILAPP_RENDERABLE_H
 
-#include <filament/RenderableManager.h>
-#include <utils/EntityManager.h>
 #include <filament/Engine.h>
+#include <filament/RenderableManager.h>
+#include <filapp_export.h>
+#include <utils/EntityManager.h>
 
 namespace FilApp
 {
-struct Vertex
+
+struct FILAPP_EXPORT Vertex
 {
     filament::math::float2 position;
     uint32_t color;
 };
 
-struct Renderable
+struct FILAPP_EXPORT Renderable
 {
     filament::Engine* engine = nullptr;
     filament::VertexBuffer* vb = nullptr;
