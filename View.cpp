@@ -1,17 +1,24 @@
 #include "View.h"
 #include "SDL_timer.h"
-#include <utils/EntityManager.h>
 
 namespace FilApp
 {
 View::View(filament::Renderer& renderer,
            const std::string& name,
            const filament::Viewport& viewport,
+           filament::math::float4 skyBoxDefaultColor,
            filament::camutils::Mode cameraMode)
     : m_engine(renderer.getEngine()), m_name(name)
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
+
+    m_scene = m_engine->createScene();
+    m_filamentView->setScene(m_scene);
+
+    m_skybox =
+        filament::Skybox::Builder().color(skyBoxDefaultColor).build(*m_engine);
+    m_scene->setSkybox(m_skybox);
 
     utils::EntityManager& entityManager = utils::EntityManager::get();
     m_cameraEntity = entityManager.create();
@@ -32,7 +39,11 @@ View::~View()
 {
     utils::EntityManager& entityManager = utils::EntityManager::get();
     entityManager.destroy(m_cameraEntity);
+    m_engine->destroyCameraComponent(m_cameraEntity);
+    m_engine->destroy(m_skybox);
     m_engine->destroy(m_filamentView);
+    clearRenderables();
+    m_engine->destroy(m_scene);
 }
 void View::setViewport(const filament::Viewport& viewport)
 {
@@ -58,6 +69,20 @@ void View::addViewListener(ViewListener* viewListener)
 void View::clearViewListener()
 {
     m_viewListener.clear();
+}
+void View::addRenderable(const Renderable& renderable)
+{
+    m_renderables.push_back(renderable);
+    m_scene->addEntity(renderable.renderableEntity);
+}
+void View::clearRenderables()
+{
+    for (auto renderable: m_renderables)
+    {
+        m_scene->remove(renderable.renderableEntity);
+        renderable.destroy();
+    }
+    m_renderables.clear();
 }
 void View::mouseDown(int button, ssize_t x, ssize_t y)
 {

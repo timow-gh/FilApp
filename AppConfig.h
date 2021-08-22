@@ -7,7 +7,7 @@ namespace FilApp
 {
 struct AppConfig
 {
-    filament::Engine::Backend backend = filament::Engine::Backend::VULKAN;
+    filament::Engine::Backend backend = filament::Engine::Backend::DEFAULT;
 };
 } // namespace FilApp
 

@@ -7,8 +7,6 @@
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>
-#include <filament/Scene.h>
-#include <filament/Skybox.h>
 #include <filament/VertexBuffer.h>
 #include <filament/View.h>
 #include <memory>
@@ -16,6 +14,8 @@
 
 namespace FilApp
 {
+class Window;
+
 using ResizeCallback = std::function<void(filament::Engine*, filament::View*)>;
 using AnimationCallBack = std::function<
     void(filament::Engine* engine, filament::View* view, double now)>;
@@ -28,16 +28,7 @@ class Application
     using CleanupCallback = std::function<void(filament::Engine*, filament::View*, filament::Scene*)>;
     // clang-format on
 
-    struct AppData
-    {
-        filament::VertexBuffer* vb = nullptr;
-        filament::IndexBuffer* ib = nullptr;
-        filament::Material* mat = nullptr;
-        filament::Skybox* skybox = nullptr;
-        utils::Entity renderable;
-    };
-
-    static void init(const AppConfig& appConfig);
+    static void init(const AppConfig& appConfig, const WindowConfig& windowConfig);
     static Application& get();
 
     Application() = default;
@@ -48,17 +39,18 @@ class Application
     ~Application();
 
     [[nodiscard]] filament::Engine* getEngine();
-    [[nodiscard]] filament::Scene* getScene();
+    [[nodiscard]] Window* getWindow();
 
-    void run(const WindowConfig& windowConfig);
+    void run();
 
   private:
     static std::unique_ptr<Application> m_app;
     filament::Engine* m_engine = nullptr;
-    filament::Scene* m_scene = nullptr;
 
-    float_t m_timeStep = 0;
+    std::unique_ptr<Window> m_window;
+
     bool m_closeApp = false;
+    double_t m_prevTimeStep = 0;
 };
 } // namespace FilApp
 

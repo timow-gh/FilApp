@@ -1,12 +1,15 @@
 #ifndef FILAPP_VIEW_H
 #define FILAPP_VIEW_H
 
+#include "Renderable.h"
 #include "ViewEvents.h"
 #include "ViewListener.h"
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
+#include <filament/Scene.h>
+#include <filament/Skybox.h>
 #include <filament/View.h>
 #include <filament/Viewport.h>
 #include <memory>
@@ -24,11 +27,16 @@ class View
   private:
     filament::Engine* m_engine = nullptr;
     filament::View* m_filamentView = nullptr;
+    filament::Scene* m_scene = nullptr;
+    filament::Skybox* m_skybox = nullptr;
     std::unique_ptr<CameraManipulator> m_cameraManipulator = nullptr;
     filament::Camera* m_camera = nullptr;
-    float_t m_mainCamFocalLength = 28.0f;
     utils::Entity m_cameraEntity;
+
     filament::Viewport m_viewport;
+
+    std::vector<Renderable> m_renderables;
+
     std::vector<ViewListener*> m_viewListener;
     std::string m_name;
 
@@ -38,6 +46,7 @@ class View
     View(filament::Renderer& renderer,
          const std::string& name,
          const filament::Viewport& viewport,
+         filament::math::float4 skyBoxDefaultColor,
          filament::camutils::Mode cameraMode);
     ~View();
 
@@ -54,6 +63,9 @@ class View
 
     void addViewListener(ViewListener* viewListener);
     void clearViewListener();
+
+    void addRenderable(const Renderable& renderable);
+    void clearRenderables();
 
     virtual void mouseDown(int button, ssize_t x, ssize_t y);
     virtual void mouseUp(ssize_t x, ssize_t y);

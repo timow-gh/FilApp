@@ -1,9 +1,108 @@
-#include <Application.h>
+#include "Application.h"
+#include "Renderable.h"
+#include "Window.h"
+#include "generated/resources/resources.h"
+#include <filament/TransformManager.h>
 
-int main(int argc, char** argv)
+using namespace FilApp;
+
+constexpr double D_PI = filament::math::d::PI;
+
+static const FilApp::Vertex TRIANGLE_VERTICES[3] = {
+    {{1, 0}, 0xffff0000u},
+    {{cos(D_PI * 2 / 3), sin(D_PI * 2 / 3)}, 0xff00ff00u},
+    {{cos(D_PI * 4 / 3), sin(D_PI * 4 / 3)}, 0xff0000ffu},
+};
+
+static constexpr uint16_t TRIANGLE_INDICES[3] = {0, 1, 2};
+
+Renderable createTriangle(filament::Engine* engine,
+                          const Vertex triangleVertices[3],
+                          const uint16_t triangleIndices[3])
 {
-    FilApp::AppConfig appConfig;
-    FilApp::Application::init(appConfig);
-    FilApp::Application::get().run(FilApp::WindowConfig());
+    Renderable renderable;
+    renderable.engine = engine;
+
+    static_assert(sizeof(Vertex) == 12, "Strange vertex size.");
+    renderable.vb =
+        filament::VertexBuffer::Builder()
+            .vertexCount(3)
+            .bufferCount(1)
+            .attribute(filament::VertexAttribute::POSITION,
+                       0,
+                       filament::VertexBuffer::AttributeType::FLOAT2,
+                       0,
+                       12)
+            .attribute(filament::VertexAttribute::COLOR,
+                       0,
+                       filament::VertexBuffer::AttributeType::UBYTE4,
+                       8,
+                       12)
+            .normalized(filament::VertexAttribute::COLOR)
+            .build(*renderable.engine);
+    renderable.vb->setBufferAt(
+        *renderable.engine,
+        0,
+        filament::VertexBuffer::BufferDescriptor(triangleVertices,
+                                                 36,
+                                                 nullptr));
+    renderable.ib = filament::IndexBuffer::Builder()
+                        .indexCount(3)
+                        .bufferType(filament::IndexBuffer::IndexType::USHORT)
+                        .build(*renderable.engine);
+    renderable.ib->setBuffer(
+        *renderable.engine,
+        filament::IndexBuffer::BufferDescriptor(triangleIndices, 6, nullptr));
+
+    renderable.mat =
+        filament::Material::Builder()
+            .package(RESOURCES_BAKEDCOLOR_DATA, RESOURCES_BAKEDCOLOR_SIZE)
+            .build(*renderable.engine);
+
+    renderable.renderableEntity = utils::EntityManager::get().create();
+    filament::RenderableManager::Builder(1)
+        .boundingBox({{-1, -1, -1}, {1, 1, 1}})
+        .material(0, renderable.mat->getDefaultInstance())
+        .geometry(0,
+                  filament::RenderableManager::PrimitiveType::TRIANGLES,
+                  renderable.vb,
+                  renderable.ib,
+                  0,
+                  3)
+        .culling(false)
+        .receiveShadows(false)
+        .castShadows(false)
+        .build(*renderable.engine, renderable.renderableEntity);
+
+    return renderable;
+}
+
+int main()
+{
+    Application::init(AppConfig(),WindowConfig());
+
+    Window* window = Application::get().getWindow();
+    auto mainView = window->getMainView();
+    mainView->getFilamentView()->setPostProcessingEnabled(false);
+
+    auto renderable = createTriangle(Application::get().getEngine(),
+                                     TRIANGLE_VERTICES,
+                                     TRIANGLE_INDICES);
+
+    mainView->addRenderable(renderable);
+
+    window->addAnimationCallback(
+        [&renderable](filament::Engine* engine,
+                      filament::View* filamentView,
+                      double deltaT)
+        {
+            auto& tcm = engine->getTransformManager();
+            tcm.setTransform(tcm.getInstance(renderable.renderableEntity),
+                             filament::math::mat4f::rotation(
+                                 deltaT,
+                                 filament::math::float3{0, 0, 1}));
+        });
+
+    Application::get().run();
     return 0;
 }

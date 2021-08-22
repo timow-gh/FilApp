@@ -1,40 +1,27 @@
 #include "Application.h"
 #include "Window.h"
-#include "generated/resources/resources.h"
 #include <SDL.h>
-#include <filament/RenderableManager.h>
-#include <filament/TransformManager.h>
-#include <utils/EntityManager.h>
+#include <memory>
 #include <utils/Panic.h>
-
-struct Vertex
-{
-    filament::math::float2 position;
-    uint32_t color;
-};
-
-constexpr double D_PI = filament::math::d::PI;
-
-static const Vertex TRIANGLE_VERTICES[3] = {
-    {{1, 0}, 0xffff0000u},
-    {{cos(D_PI * 2 / 3), sin(D_PI * 2 / 3)}, 0xff00ff00u},
-    {{cos(D_PI * 4 / 3), sin(D_PI * 4 / 3)}, 0xff0000ffu},
-};
-
-static constexpr uint16_t TRIANGLE_INDICES[3] = {0, 1, 2};
 
 namespace FilApp
 {
 std::unique_ptr<Application> Application::m_app;
 
-void Application::init(const AppConfig& appConfig)
+void Application::init(const AppConfig& appConfig,
+                       const WindowConfig& windowConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
     m_app = std::make_unique<Application>();
     m_app->m_engine = filament::Engine::create(appConfig.backend);
+    m_app->m_window =
+        std::make_unique<Window>(windowConfig, &Application::get());
 }
 Application::~Application()
 {
+    m_window.reset();
+    filament::Engine::destroy(&m_engine);
+    m_engine = nullptr;
     SDL_Quit();
 }
 Application& Application::get()
@@ -45,96 +32,25 @@ filament::Engine* Application::getEngine()
 {
     return m_engine;
 }
-filament::Scene* Application::getScene()
+Window* Application::getWindow()
 {
-    return m_scene;
+    return m_window.get();
 }
-void Application::run(const WindowConfig& windowConfig)
+void Application::run()
 {
-    std::unique_ptr<Window> window(new Window(windowConfig, &Application::get()));
-
-    m_scene = m_engine->createScene();
-    for (auto& view: window->getViews())
-        view->getFilamentView()->setScene(m_scene);
-
-    AppData appData;
-
-    appData.skybox = filament::Skybox::Builder()
-                         .color({0.1, 0.125, 0.25, 1.0})
-                         .build(*m_engine);
-    m_scene->setSkybox(appData.skybox);
-    window->getMainView()->getFilamentView()->setPostProcessingEnabled(false);
-    static_assert(sizeof(Vertex) == 12, "Strange vertex size.");
-    appData.vb = filament::VertexBuffer::Builder()
-                     .vertexCount(3)
-                     .bufferCount(1)
-                     .attribute(filament::VertexAttribute::POSITION,
-                                0,
-                                filament::VertexBuffer::AttributeType::FLOAT2,
-                                0,
-                                12)
-                     .attribute(filament::VertexAttribute::COLOR,
-                                0,
-                                filament::VertexBuffer::AttributeType::UBYTE4,
-                                8,
-                                12)
-                     .normalized(filament::VertexAttribute::COLOR)
-                     .build(*m_engine);
-    appData.vb->setBufferAt(
-        *m_engine,
-        0,
-        filament::VertexBuffer::BufferDescriptor(TRIANGLE_VERTICES,
-                                                 36,
-                                                 nullptr));
-    appData.ib = filament::IndexBuffer::Builder()
-                     .indexCount(3)
-                     .bufferType(filament::IndexBuffer::IndexType::USHORT)
-                     .build(*m_engine);
-    appData.ib->setBuffer(
-        *m_engine,
-        filament::IndexBuffer::BufferDescriptor(TRIANGLE_INDICES, 6, nullptr));
-    appData.mat =
-        filament::Material::Builder()
-            .package(RESOURCES_BAKEDCOLOR_DATA, RESOURCES_BAKEDCOLOR_SIZE)
-            .build(*m_engine);
-    appData.renderable = utils::EntityManager::get().create();
-    filament::RenderableManager::Builder(1)
-        .boundingBox({{-1, -1, -1}, {1, 1, 1}})
-        .material(0, appData.mat->getDefaultInstance())
-        .geometry(0,
-                  filament::RenderableManager::PrimitiveType::TRIANGLES,
-                  appData.vb,
-                  appData.ib,
-                  0,
-                  3)
-        .culling(false)
-        .receiveShadows(false)
-        .castShadows(false)
-        .build(*m_engine, appData.renderable);
-    m_scene->addEntity(appData.renderable);
-
-    window->addAnimationCallback(
-        [&appData](filament::Engine* engine,
-                   filament::View* filamentView,
-                   double now)
-        {
-            auto& tcm = engine->getTransformManager();
-            tcm.setTransform(tcm.getInstance(appData.renderable),
-                             filament::math::mat4f::rotation(
-                                 now,
-                                 filament::math::float3{0, 0, 1}));
-        });
-
+    m_prevTimeStep = (double_t)SDL_GetPerformanceCounter() /
+                     (double_t)SDL_GetPerformanceFrequency();
     while (!m_closeApp)
     {
         double_t now = (double_t)SDL_GetPerformanceCounter() /
-                       SDL_GetPerformanceFrequency();
+                       (double_t)SDL_GetPerformanceFrequency();
+        double_t timeStep = now - m_prevTimeStep;
 
-        for (const auto& animationCallBack: window->getAnimationCallbacks())
+        for (const auto& animationCallBack: m_window->getAnimationCallbacks())
             if (animationCallBack)
                 animationCallBack(m_engine,
-                                  window->getMainView()->getFilamentView(),
-                                  now);
+                                  m_window->getMainView()->getFilamentView(),
+                                  timeStep);
 
         constexpr Uint32 kMaxEvents = 16;
         SDL_Event events[kMaxEvents];
@@ -151,25 +67,25 @@ void Application::run(const WindowConfig& windowConfig)
             case SDL_KEYDOWN:
                 if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                     m_closeApp = true;
-                window->keyDown(event.key.keysym.scancode);
+                m_window->keyDown(event.key.keysym.scancode);
                 break;
-            case SDL_KEYUP: window->keyUp(event.key.keysym.scancode); break;
-            case SDL_MOUSEWHEEL: window->mouseWheel(event.wheel.y); break;
+            case SDL_KEYUP: m_window->keyUp(event.key.keysym.scancode); break;
+            case SDL_MOUSEWHEEL: m_window->mouseWheel(event.wheel.y); break;
             case SDL_MOUSEBUTTONDOWN:
-                window->mouseDown(event.button.button,
-                                  event.button.x,
-                                  event.button.y);
+                m_window->mouseDown(event.button.button,
+                                    event.button.x,
+                                    event.button.y);
                 break;
             case SDL_MOUSEBUTTONUP:
-                window->mouseUp(event.button.x, event.button.y);
+                m_window->mouseUp(event.button.x, event.button.y);
                 break;
             case SDL_MOUSEMOTION:
-                window->mouseMoved(event.motion.x, event.motion.y);
+                m_window->mouseMoved(event.motion.x, event.motion.y);
                 break;
             case SDL_WINDOWEVENT:
                 switch (event.window.event)
                 {
-                case SDL_WINDOWEVENT_RESIZED: window->resize(); break;
+                case SDL_WINDOWEVENT_RESIZED: m_window->resize(); break;
                 default: break;
                 }
                 break;
@@ -177,34 +93,25 @@ void Application::run(const WindowConfig& windowConfig)
             }
         }
 
-        // Calculate the time step.
-        static Uint64 frequency = SDL_GetPerformanceFrequency();
-        const float_t timeStep =
-            m_timeStep > 0 ? (float_t)((double_t)(now - m_timeStep) / frequency)
-                           : (float_t)(1.0f / 60.0f);
-        m_timeStep = now;
-
-        auto mainView = window->getMainView();
+        auto mainView = m_window->getMainView();
         if (auto mainViewManip = mainView->getCameraManipulator())
         {
-            filament::math::float3 eye, center, up;
+            filament::math::float3 eye;
+            filament::math::float3 center;
+            filament::math::float3 up;
             mainViewManip->getLookAt(&eye, &center, &up);
             mainView->getCamera()->lookAt(eye, center, up);
         }
 
-        filament::Renderer* renderer = window->getRenderer();
-        if (renderer->beginFrame(window->getSwapChain()))
+        SDL_Delay(1);
+
+        filament::Renderer* renderer = m_window->getRenderer();
+        if (renderer->beginFrame(m_window->getSwapChain()))
         {
-            for (auto const& view: window->getViews())
+            for (auto const& view: m_window->getViews())
                 renderer->render(view->getFilamentView());
             renderer->endFrame();
         }
     }
-
-    m_engine->destroy(appData.skybox);
-    m_engine->destroy(appData.renderable);
-    m_engine->destroy(appData.mat);
-    m_engine->destroy(appData.vb);
-    m_engine->destroy(appData.ib);
 }
 } // namespace FilApp

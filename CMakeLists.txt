@@ -38,7 +38,7 @@ add_executable(filapp
         WindowConfig.h
         WindowsNativeWindowHelper.cpp
         WindowsNativeWindowHelper.h
-        AppConfig.h)
+        AppConfig.h Renderable.h)
 target_include_directories(filapp
         PRIVATE
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>

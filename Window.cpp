@@ -81,10 +81,12 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
     m_renderer = m_application->getEngine()->createRenderer();
 
     calcWindowViewport();
-    m_views.emplace_back(std::make_unique<View>(*m_renderer,
-                                                "Main Window",
-                                                m_viewport,
-                                                windowConfig.cameraMode));
+    m_views.emplace_back(
+        std::make_unique<View>(*m_renderer,
+                               "Main Window",
+                               m_viewport,
+                               filament::math::float4{0.1, 0.125, 0.25, 1.0},
+                               windowConfig.cameraMode));
     m_mainView = m_views.back().get();
 }
 void Window::mouseDown(int button, ssize_t x, ssize_t y)
@@ -123,9 +125,7 @@ void Window::mouseMoved(ssize_t x, ssize_t y)
 void Window::mouseWheel(ssize_t x)
 {
     if (m_mouseEventTarget)
-    {
         m_mouseEventTarget->mouseWheel(x);
-    }
     else
     {
         for (auto const& view: m_views)
