@@ -9,6 +9,7 @@
 #include <filament/Renderer.h>
 #include <filapp_export.h>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 namespace FilApp
