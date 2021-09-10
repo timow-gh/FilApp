@@ -80,7 +80,7 @@ Renderable createTriangle(filament::Engine* engine,
 int main()
 {
     auto windowConfig = WindowConfig();
-    windowConfig.cameraMode = filament::camutils::Mode::MAP;
+    windowConfig.cameraMode = filament::camutils::Mode::ORBIT;
 
     Application::init(AppConfig(), windowConfig);
 
