@@ -2,6 +2,8 @@
 #include "FilApp/Window.h"
 #include <filament/TransformManager.h>
 
+using namespace FilApp;
+
 int main()
 {
     auto windowConfig = WindowConfig();
@@ -18,6 +20,18 @@ int main()
                                      TRIANGLE_INDICES);
 
     mainView->addRenderable(renderable);
+
+    window->addAnimationCallback(
+        [&renderable](filament::Engine* engine,
+                      filament::View* filamentView,
+                      double deltaT)
+        {
+            auto& tcm = engine->getTransformManager();
+            tcm.setTransform(tcm.getInstance(renderable.renderableEntity),
+                             filament::math::mat4f::rotation(
+                                 deltaT,
+                                 filament::math::float3{0, 1, 0}));
+        });
 
     Application::get().run();
     return 0;
