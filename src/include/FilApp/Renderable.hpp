@@ -1,6 +1,7 @@
 #ifndef FILAPP_RENDERABLE_HPP
 #define FILAPP_RENDERABLE_HPP
 
+#include "Vertex.hpp"
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>
@@ -8,16 +9,10 @@
 #include <filament/VertexBuffer.h>
 #include <filapp_export.h>
 #include <utils/EntityManager.h>
+#include <vector>
 
 namespace FilApp
 {
-
-struct FILAPP_EXPORT Vertex
-{
-    filament::math::float3 position;
-    uint32_t color;
-};
-
 struct FILAPP_EXPORT Renderable
 {
     filament::Engine* engine = nullptr;
@@ -34,6 +29,13 @@ struct FILAPP_EXPORT Renderable
         engine->destroy(ib);
     }
 };
+
+FILAPP_EXPORT Renderable
+createBakedColorRenderable(const std::vector<Vertex>& vertices,
+                           const std::vector<uint16_t>& indices,
+                           const filament::Box& aabb,
+                           filament::Engine* engine);
+
 } // namespace FilApp
 
 #endif // FILAPP_RENDERABLE_HPP

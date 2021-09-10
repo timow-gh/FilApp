@@ -6,7 +6,7 @@ set(FILAPP_SOURCES
         source/Window.cpp
         source/WindowsNativeWindowHelper.cpp
         source/WindowsNativeWindowHelper.h
-        )
+        source/Renderable.cpp)
 
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Application.hpp
@@ -17,6 +17,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/WindowConfig.hpp
         include/FilApp/AppConfig.hpp
         include/FilApp/Renderable.hpp
+        include/FilApp/Vertex.hpp
         )
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})

@@ -1,58 +1,60 @@
-#ifndef FILAPP_EXAMPLETRIANGLE_HPP
-#define FILAPP_EXAMPLETRIANGLE_HPP
-
-#include "FilApp/Application.hpp"
 #include "FilApp/Renderable.hpp"
 #include "generated/resources/resources.h"
 
-using namespace FilApp;
-
-static const Vertex TRIANGLE_VERTICES[3] = {
-    {{0, 0, 0}, 0xffff0000u},
-    {{1, 0, 0}, 0xff00ff00u},
-    {{0, 0, 2}, 0xff0000ffu},
-};
-
-static constexpr uint16_t TRIANGLE_INDICES[3] = {0, 1, 2};
-
-Renderable createTriangle(filament::Engine* engine,
-                          const Vertex triangleVertices[3],
-                          const uint16_t triangleIndices[3])
+namespace FilApp
+{
+Renderable createBakedColorRenderable(const std::vector<Vertex>& vertices,
+                            const std::vector<uint16_t>& indices,
+                            const filament::Box& aabb,
+                            filament::Engine* engine)
 {
     Renderable renderable;
     renderable.engine = engine;
 
-    static_assert(sizeof(Vertex) == 16, "Strange vertex size.");
+    constexpr std::size_t VERTEX_SIZE = sizeof(Vertex);
+    static_assert(VERTEX_SIZE == 16, "Strange vertex size.");
+
+    const std::size_t VERTEX_COUNT = vertices.size();
+    constexpr std::size_t VERTEX_POSITION_OFFSET = 0;
+    constexpr std::size_t VERTEX_COLOR_OFFSET = 12;
     renderable.vb =
         filament::VertexBuffer::Builder()
-            .vertexCount(3)
+            .vertexCount(VERTEX_COUNT)
             .bufferCount(1)
             .attribute(filament::VertexAttribute::POSITION,
                        0,
                        filament::VertexBuffer::AttributeType::FLOAT3,
-                       0,
-                       16)
+                       VERTEX_POSITION_OFFSET,
+                       VERTEX_SIZE)
             .attribute(filament::VertexAttribute::COLOR,
                        0,
                        filament::VertexBuffer::AttributeType::UBYTE4,
-                       12,
-                       16)
+                       VERTEX_COLOR_OFFSET,
+                       VERTEX_SIZE)
             .normalized(filament::VertexAttribute::COLOR)
             .build(*renderable.engine);
+
+    const std::size_t VERTICES_BUFFER_SIZE = VERTEX_COUNT * VERTEX_SIZE;
     renderable.vb->setBufferAt(
         *renderable.engine,
         0,
-        filament::VertexBuffer::BufferDescriptor(triangleVertices,
-                                                 48,
+        filament::VertexBuffer::BufferDescriptor(vertices.data(),
+                                                 VERTICES_BUFFER_SIZE,
                                                  nullptr));
+
+    const std::size_t INDICES_COUNT = indices.size();
     renderable.ib = filament::IndexBuffer::Builder()
-                        .indexCount(3)
+                        .indexCount(INDICES_COUNT)
                         .bufferType(filament::IndexBuffer::IndexType::USHORT)
                         .build(*renderable.engine);
+
+    constexpr std::size_t INDICES_SIZE = sizeof(uint16_t);
+    const std::size_t INDICES_BUFFER_SIZE = INDICES_COUNT * INDICES_SIZE;
     renderable.ib->setBuffer(
         *renderable.engine,
-        filament::IndexBuffer::BufferDescriptor(triangleIndices, 6, nullptr));
-
+        filament::IndexBuffer::BufferDescriptor(indices.data(),
+                                                INDICES_BUFFER_SIZE,
+                                                nullptr));
     renderable.mat =
         filament::Material::Builder()
             .package(RESOURCES_BAKEDCOLOR_DATA, RESOURCES_BAKEDCOLOR_SIZE)
@@ -60,15 +62,16 @@ Renderable createTriangle(filament::Engine* engine,
 
     renderable.renderableEntity = utils::EntityManager::get().create();
 
+    const std::size_t OFFSET = 0;
     filament::RenderableManager::Builder(1)
-        .boundingBox({{-10, -10, -10}, {10, 10, 10}})
+        .boundingBox(aabb)
         .material(0, renderable.mat->getDefaultInstance())
         .geometry(0,
                   filament::RenderableManager::PrimitiveType::TRIANGLES,
                   renderable.vb,
                   renderable.ib,
-                  0,
-                  3)
+                  OFFSET,
+                  INDICES_COUNT)
         .culling(false)
         .receiveShadows(false)
         .castShadows(false)
@@ -76,5 +79,4 @@ Renderable createTriangle(filament::Engine* engine,
 
     return renderable;
 }
-
-#endif // FILAPP_EXAMPLETRIANGLE_HPP
+} // namespace FilApp

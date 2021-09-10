@@ -8,38 +8,39 @@
 
 namespace FilApp
 {
-using vec2 = filament::math::vec2<ssize_t>;
 
 struct FILAPP_EXPORT MouseDownEvent
 {
     int button;
-    vec2 pos;
+    filament::math::vec2<ssize_t> pos;
     std::uint64_t timeStamp;
 
     MouseDownEvent(int button, ssize_t x, ssize_t y, uint64_t timeStamp)
-        : button(button), pos(vec2(x, y)), timeStamp(timeStamp)
+        : button(button)
+        , pos(filament::math::vec2<ssize_t>(x, y))
+        , timeStamp(timeStamp)
     {
     }
 };
 
 struct FILAPP_EXPORT MouseUpEvent
 {
-    vec2 pos;
+    filament::math::vec2<ssize_t> pos;
     std::uint64_t timeStamp;
 
     MouseUpEvent(ssize_t x, ssize_t y, uint64_t timeStamp)
-        : pos(vec2(x, y)), timeStamp(timeStamp)
+        : pos(filament::math::vec2<ssize_t>(x, y)), timeStamp(timeStamp)
     {
     }
 };
 
 struct FILAPP_EXPORT MouseMovedEvent
 {
-    vec2 pos;
+    filament::math::vec2<ssize_t> pos;
     std::uint64_t timeStamp;
 
     MouseMovedEvent(ssize_t x, ssize_t y, uint64_t timeStamp)
-        : pos(vec2(x, y)), timeStamp(timeStamp)
+        : pos(filament::math::vec2<ssize_t>(x, y)), timeStamp(timeStamp)
     {
     }
 };
