@@ -1,5 +1,5 @@
 include(FetchContent)
-set(FETCHCONTENT_SOURCE_DIR_FILAMENT "C:/Users/timo/dev/repos/filament" CACHE STRING "" FORCE)
+#set(FETCHCONTENT_SOURCE_DIR_FILAMENT "path-to-local-filament-repo" CACHE STRING "" FORCE)
 FetchContent_Declare(
         filament
         GIT_REPOSITORY https://github.com/timow-gh/filament.git

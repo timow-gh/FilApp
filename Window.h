@@ -8,6 +8,7 @@
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 namespace FilApp
@@ -52,7 +53,8 @@ class Window
     void addAnimationCallback(const AnimationCallBack& animation);
     void addResizeCallback(const ResizeCallback& resizeCallback);
 
-    [[nodiscard]] const std::vector<AnimationCallBack>& getAnimationCallbacks() const;
+    [[nodiscard]] const std::vector<AnimationCallBack>&
+    getAnimationCallbacks() const;
     [[nodiscard]] const std::vector<ResizeCallback>& getResizeCallbacks() const;
 
     void clearAnimationsCallbacks();
