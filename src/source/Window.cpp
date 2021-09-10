@@ -1,4 +1,4 @@
-#include "FilApp/Window.h"
+#include "FilApp/Window.hpp"
 #include "WindowsNativeWindowHelper.h"
 #include <SDL_syswm.h>
 #include <SDL_video.h>

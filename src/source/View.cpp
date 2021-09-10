@@ -1,4 +1,4 @@
-#include "FilApp/View.h"
+#include "FilApp/View.hpp"
 #include "SDL_timer.h"
 
 namespace FilApp

@@ -1,5 +1,5 @@
-#ifndef FILAPP_VIEWEVENTS_H
-#define FILAPP_VIEWEVENTS_H
+#ifndef FILAPP_VIEWEVENTS_HPP
+#define FILAPP_VIEWEVENTS_HPP
 
 #include <SDL_scancode.h>
 #include <filapp_export.h>
@@ -78,4 +78,4 @@ struct FILAPP_EXPORT MouseScrollEvent
 
 } // namespace FilApp
 
-#endif // FILAPP_VIEWEVENTS_H
+#endif // FILAPP_VIEWEVENTS_HPP

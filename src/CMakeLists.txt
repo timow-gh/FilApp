@@ -9,14 +9,14 @@ set(FILAPP_SOURCES
         )
 
 set(FILAPP_PUBLIC_HEADERS
-        include/FilApp/Application.h
-        include/FilApp/View.h
-        include/FilApp/ViewEvents.h
-        include/FilApp/ViewListener.h
-        include/FilApp/Window.h
-        include/FilApp/WindowConfig.h
-        include/FilApp/AppConfig.h
-        include/FilApp/Renderable.h
+        include/FilApp/Application.hpp
+        include/FilApp/View.hpp
+        include/FilApp/ViewEvents.hpp
+        include/FilApp/ViewListener.hpp
+        include/FilApp/Window.hpp
+        include/FilApp/WindowConfig.hpp
+        include/FilApp/AppConfig.hpp
+        include/FilApp/Renderable.hpp
         )
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})

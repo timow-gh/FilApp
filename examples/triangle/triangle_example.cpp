@@ -1,6 +1,5 @@
 #include "../ExampleTriangle.hpp"
-#include "FilApp/Window.h"
-#include <filament/TransformManager.h>
+#include "FilApp/Window.hpp"
 
 int main()
 {

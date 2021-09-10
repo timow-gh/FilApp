@@ -1,9 +1,9 @@
-#ifndef FILAPP_WINDOW_H
-#define FILAPP_WINDOW_H
+#ifndef FILAPP_WINDOW_HPP
+#define FILAPP_WINDOW_HPP
 
-#include "Application.h"
-#include "View.h"
-#include "WindowConfig.h"
+#include "Application.hpp"
+#include "View.hpp"
+#include "WindowConfig.hpp"
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
@@ -77,4 +77,4 @@ class FILAPP_EXPORT Window
 bool intersects(const filament::Viewport& viewport, ssize_t x, ssize_t y);
 } // namespace FilApp
 
-#endif // FILAPP_WINDOW_H
+#endif // FILAPP_WINDOW_HPP

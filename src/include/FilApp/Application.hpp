@@ -1,13 +1,10 @@
-#ifndef FILAPP_APPLICATION_H
-#define FILAPP_APPLICATION_H
+#ifndef FILAPP_APPLICATION_HPP
+#define FILAPP_APPLICATION_HPP
 
-#include "AppConfig.h"
-#include "WindowConfig.h"
+#include "AppConfig.hpp"
+#include "WindowConfig.hpp"
 #include <filament/Camera.h>
 #include <filament/Engine.h>
-#include <filament/IndexBuffer.h>
-#include <filament/Material.h>
-#include <filament/VertexBuffer.h>
 #include <filament/View.h>
 #include <filapp_export.h>
 #include <memory>
@@ -56,4 +53,4 @@ class FILAPP_EXPORT Application
 };
 } // namespace FilApp
 
-#endif // FILAPP_APPLICATION_H
+#endif // FILAPP_APPLICATION_HPP

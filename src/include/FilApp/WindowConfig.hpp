@@ -1,5 +1,5 @@
-#ifndef FILAPP_WINDOWCONFIG_H
-#define FILAPP_WINDOWCONFIG_H
+#ifndef FILAPP_WINDOWCONFIG_HPP
+#define FILAPP_WINDOWCONFIG_HPP
 
 #include <camutils/Manipulator.h>
 #include <filament/Engine.h>
@@ -19,4 +19,4 @@ struct FILAPP_EXPORT WindowConfig
 };
 } // namespace FilApp
 
-#endif // FILAPP_WINDOWCONFIG_H
+#endif // FILAPP_WINDOWCONFIG_HPP

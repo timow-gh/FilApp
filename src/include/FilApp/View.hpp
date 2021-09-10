@@ -1,9 +1,9 @@
-#ifndef FILAPP_VIEW_H
-#define FILAPP_VIEW_H
+#ifndef FILAPP_VIEW_HPP
+#define FILAPP_VIEW_HPP
 
-#include "Renderable.h"
-#include "ViewEvents.h"
-#include "ViewListener.h"
+#include "Renderable.hpp"
+#include "ViewEvents.hpp"
+#include "ViewListener.hpp"
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -84,4 +84,4 @@ class FILAPP_EXPORT View
 };
 } // namespace FilApp
 
-#endif // FILAPP_VIEW_H
+#endif // FILAPP_VIEW_HPP

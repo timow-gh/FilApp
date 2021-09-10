@@ -1,5 +1,5 @@
 #include "../ExampleTriangle.hpp"
-#include "FilApp/Window.h"
+#include "FilApp/Window.hpp"
 #include <filament/TransformManager.h>
 
 using namespace FilApp;

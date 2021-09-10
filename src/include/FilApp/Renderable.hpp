@@ -1,8 +1,11 @@
-#ifndef FILAPP_RENDERABLE_H
-#define FILAPP_RENDERABLE_H
+#ifndef FILAPP_RENDERABLE_HPP
+#define FILAPP_RENDERABLE_HPP
 
 #include <filament/Engine.h>
+#include <filament/IndexBuffer.h>
+#include <filament/Material.h>
 #include <filament/RenderableManager.h>
+#include <filament/VertexBuffer.h>
 #include <filapp_export.h>
 #include <utils/EntityManager.h>
 
@@ -33,4 +36,4 @@ struct FILAPP_EXPORT Renderable
 };
 } // namespace FilApp
 
-#endif // FILAPP_RENDERABLE_H
+#endif // FILAPP_RENDERABLE_HPP

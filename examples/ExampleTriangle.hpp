@@ -1,8 +1,8 @@
 #ifndef FILAPP_EXAMPLETRIANGLE_HPP
 #define FILAPP_EXAMPLETRIANGLE_HPP
 
-#include "FilApp/Application.h"
-#include "FilApp/Renderable.h"
+#include "FilApp/Application.hpp"
+#include "FilApp/Renderable.hpp"
 #include "generated/resources/resources.h"
 
 using namespace FilApp;

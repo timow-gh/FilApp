@@ -1,8 +1,8 @@
 
-#ifndef FILAPP_VIEWLISTENER_H
-#define FILAPP_VIEWLISTENER_H
+#ifndef FILAPP_VIEWLISTENER_HPP
+#define FILAPP_VIEWLISTENER_HPP
 
-#include "ViewEvents.h"
+#include "ViewEvents.hpp"
 #include <filapp_export.h>
 
 namespace FilApp
@@ -20,4 +20,4 @@ class FILAPP_EXPORT ViewListener
     virtual void keyUpEvent(const KeyUpEvent& keyUpEvent) = 0;
 };
 } // namespace FilApp
-#endif // FILAPP_VIEWLISTENER_H
+#endif // FILAPP_VIEWLISTENER_HPP

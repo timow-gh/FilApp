@@ -1,5 +1,5 @@
-#ifndef FILAPP_APPCONFIG_H
-#define FILAPP_APPCONFIG_H
+#ifndef FILAPP_APPCONFIG_HPP
+#define FILAPP_APPCONFIG_HPP
 
 #include <filament/Engine.h>
 #include <filapp_export.h>
@@ -12,4 +12,4 @@ struct FILAPP_EXPORT AppConfig
 };
 } // namespace FilApp
 
-#endif // FILAPP_APPCONFIG_H
+#endif // FILAPP_APPCONFIG_HPP

@@ -1,5 +1,5 @@
-#include "FilApp/Application.h"
-#include "FilApp/Window.h"
+#include "FilApp/Application.hpp"
+#include "FilApp/Window.hpp"
 #include <SDL.h>
 #include <memory>
 #include <utils/Panic.h>
