@@ -15,7 +15,7 @@ struct FILAPP_EXPORT WindowConfig
     bool isResizable = true;
     std::int32_t width = 1024;
     std::int32_t height = 640;
-    filament::camutils::Mode cameraMode = filament::camutils::Mode::FREE_FLIGHT;
+    filament::camutils::Mode cameraMode = filament::camutils::Mode::ORBIT;
 };
 } // namespace FilApp
 

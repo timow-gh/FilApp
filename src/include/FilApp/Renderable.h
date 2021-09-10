@@ -11,7 +11,7 @@ namespace FilApp
 
 struct FILAPP_EXPORT Vertex
 {
-    filament::math::float2 position;
+    filament::math::float3 position;
     uint32_t color;
 };
 

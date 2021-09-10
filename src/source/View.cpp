@@ -24,14 +24,29 @@ View::View(filament::Renderer& renderer,
     m_cameraEntity = entityManager.create();
     m_camera = m_engine->createCamera(m_cameraEntity);
     m_camera->setExposure(16.0f, 1 / 125.0f, 100.0f);
-    m_camera->lookAt({0, 0, 10}, {0, 0, 0}, {1, 0, 0});
+    m_camera->lookAt({5, 5, 5}, {0, 0, 0}, {0, 0, 1});
+    //    m_camera->lookAt({0, 0, 0}, {0, 0, -4});
+
     m_filamentView->setCamera(m_camera);
 
-    m_cameraManipulator =
-        std::unique_ptr<CameraManipulator>(CameraManipulator::Builder()
-                                               .targetPosition(0, 0, 0)
-                                               .flightMoveDamping(15.0)
-                                               .build(cameraMode));
+    // TODO Working orbit camera
+    if (cameraMode == filament::camutils::Mode::ORBIT)
+        m_cameraManipulator =
+            std::unique_ptr<CameraManipulator>(CameraManipulator::Builder()
+                                                   .orbitHomePosition(5, 5, 5)
+                                                   .targetPosition(0, 0, 0)
+                                                   .upVector(0, 1, 0)
+                                                   .build(cameraMode));
+    else if (cameraMode == filament::camutils::Mode::FREE_FLIGHT)
+        m_cameraManipulator =
+            std::unique_ptr<CameraManipulator>(CameraManipulator::Builder()
+                                                   .flightStartPosition(5, 5, 5)
+                                                   .flightMoveDamping(15.0)
+                                                   .build(cameraMode));
+    else
+        assert(false &&
+               "Camera manipulator not "
+               "implemented.");
 
     setViewport(viewport);
 }
@@ -179,7 +194,7 @@ void View::configureCameraProjection()
                             aspect * ZOOM,
                             -ZOOM,
                             ZOOM,
-                            0,
-                            1);
+                            0.1,
+                            100);
 }
 } // namespace FilApp

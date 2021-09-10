@@ -52,10 +52,10 @@ void Application::run()
                                   m_window->getMainView()->getFilamentView(),
                                   timeStep);
 
-        constexpr Uint32 kMaxEvents = 16;
-        SDL_Event events[kMaxEvents];
+        constexpr Uint32 K_MAX_EVENTS = 4;
+        SDL_Event events[K_MAX_EVENTS];
         Uint32 nevents = 0;
-        while (nevents < kMaxEvents && SDL_PollEvent(&events[nevents]) != 0)
+        while (nevents < K_MAX_EVENTS && SDL_PollEvent(&events[nevents]) != 0)
             nevents++;
 
         for (Uint32 i = 0; i < nevents; i++)
@@ -93,16 +93,19 @@ void Application::run()
             }
         }
 
+
         auto mainView = m_window->getMainView();
         if (auto mainViewManip = mainView->getCameraManipulator())
         {
             filament::math::float3 eye;
             filament::math::float3 center;
             filament::math::float3 up;
+            mainViewManip->update(timeStep);
             mainViewManip->getLookAt(&eye, &center, &up);
             mainView->getCamera()->lookAt(eye, center, up);
         }
 
+        // TODO SDL_Delay.
         SDL_Delay(1);
 
         filament::Renderer* renderer = m_window->getRenderer();
