@@ -1,4 +1,5 @@
-#include "../ExampleTriangle.hpp"
+#include "FilApp/Application.hpp"
+#include "FilApp/Vertex.hpp"
 #include "FilApp/Window.hpp"
 #include <filament/TransformManager.h>
 
@@ -15,9 +16,19 @@ int main()
     auto mainView = window->getMainView();
     mainView->getFilamentView()->setPostProcessingEnabled(false);
 
-    auto renderable = createTriangle(Application::get().getEngine(),
-                                     TRIANGLE_VERTICES,
-                                     TRIANGLE_INDICES);
+    std::vector<Vertex> vertices = {
+        {{-1, 0, 0}, 0xffff0000u},
+        {{1, 0, 0}, 0xff00ff00u},
+        {{0, 1, 0}, 0xff0000ffu},
+    };
+
+    std::vector<uint16_t> indices = {0, 1, 2};
+
+    auto renderable =
+        createBakedColorRenderable(vertices,
+                                   indices,
+                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
+                                   Application::get().getEngine());
 
     mainView->addRenderable(renderable);
 
