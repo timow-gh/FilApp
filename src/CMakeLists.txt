@@ -4,8 +4,7 @@ set(FILAPP_SOURCES
         source/Application.cpp
         source/View.cpp
         source/Window.cpp
-        source/WindowsNativeWindowHelper.cpp
-        source/WindowsNativeWindowHelper.h
+        source/NativeWindowHelper.cpp
         source/Renderable.cpp)
 
 set(FILAPP_PUBLIC_HEADERS
@@ -18,7 +17,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/AppConfig.hpp
         include/FilApp/Renderable.hpp
         include/FilApp/Vertex.hpp
-        )
+        include/FilApp/NativeWindowHelper.h)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)
@@ -38,13 +37,19 @@ set_target_properties(fil_app
         EXPORT_NAME filapp)
 target_link_libraries(fil_app
         PUBLIC
-        filamentapp_sources
         filament
+        fil_app_sources
         sdl2
         math
         utils
         camutils
         )
+
+if (MSVC)
+    target_compile_definitions(fil_app PRIVATE -DMSVC)
+else ()
+    target_compile_definitions(fil_app PRIVATE -DLINUX)
+endif ()
 
 include(GenerateExportHeader)
 generate_export_header(fil_app BASE_NAME FilApp)
@@ -61,7 +66,7 @@ generate_export_header(fil_app BASE_NAME FilApp)
 install(DIRECTORY "include/FilApp" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 install(TARGETS
         fil_app
-        filamentapp_sources
+        fil_app_sources
         filament
         sdl2
         math

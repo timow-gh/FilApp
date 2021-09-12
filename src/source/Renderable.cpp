@@ -1,12 +1,12 @@
 #include "FilApp/Renderable.hpp"
-#include "generated/resources/resources.h"
+#include "generated/resources/filapp_resources.h"
 
 namespace FilApp
 {
 Renderable createBakedColorRenderable(const std::vector<Vertex>& vertices,
-                            const std::vector<uint16_t>& indices,
-                            const filament::Box& aabb,
-                            filament::Engine* engine)
+                                      const std::vector<uint16_t>& indices,
+                                      const filament::Box& aabb,
+                                      filament::Engine* engine)
 {
     Renderable renderable;
     renderable.engine = engine;
@@ -55,10 +55,10 @@ Renderable createBakedColorRenderable(const std::vector<Vertex>& vertices,
         filament::IndexBuffer::BufferDescriptor(indices.data(),
                                                 INDICES_BUFFER_SIZE,
                                                 nullptr));
-    renderable.mat =
-        filament::Material::Builder()
-            .package(RESOURCES_BAKEDCOLOR_DATA, RESOURCES_BAKEDCOLOR_SIZE)
-            .build(*renderable.engine);
+    renderable.mat = filament::Material::Builder()
+                         .package(FILAPP_RESOURCES_BAKEDCOLOR_DATA,
+                                  FILAPP_RESOURCES_BAKEDCOLOR_SIZE)
+                         .build(*renderable.engine);
 
     renderable.renderableEntity = utils::EntityManager::get().create();
 

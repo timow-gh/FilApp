@@ -42,8 +42,6 @@ class FILAPP_EXPORT View
     std::string m_name;
 
   public:
-    using CameraManipulator = filament::camutils::Manipulator<float_t>;
-
     View(filament::Renderer& renderer,
          const std::string& name,
          const filament::Viewport& viewport,

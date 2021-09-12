@@ -13,7 +13,7 @@ struct FILAPP_EXPORT MouseDownEvent
 {
     int button;
     filament::math::vec2<ssize_t> pos;
-    std::uint64_t timeStamp;
+    uint64_t timeStamp;
 
     MouseDownEvent(int button, ssize_t x, ssize_t y, uint64_t timeStamp)
         : button(button)
@@ -26,7 +26,7 @@ struct FILAPP_EXPORT MouseDownEvent
 struct FILAPP_EXPORT MouseUpEvent
 {
     filament::math::vec2<ssize_t> pos;
-    std::uint64_t timeStamp;
+    uint64_t timeStamp;
 
     MouseUpEvent(ssize_t x, ssize_t y, uint64_t timeStamp)
         : pos(filament::math::vec2<ssize_t>(x, y)), timeStamp(timeStamp)
@@ -37,7 +37,7 @@ struct FILAPP_EXPORT MouseUpEvent
 struct FILAPP_EXPORT MouseMovedEvent
 {
     filament::math::vec2<ssize_t> pos;
-    std::uint64_t timeStamp;
+    uint64_t timeStamp;
 
     MouseMovedEvent(ssize_t x, ssize_t y, uint64_t timeStamp)
         : pos(filament::math::vec2<ssize_t>(x, y)), timeStamp(timeStamp)
@@ -48,7 +48,7 @@ struct FILAPP_EXPORT MouseMovedEvent
 struct FILAPP_EXPORT KeyDownEvent
 {
     SDL_Scancode sdlScancode;
-    std::uint64_t timeStamp;
+    uint64_t timeStamp;
 
     KeyDownEvent(SDL_Scancode sdlScancode, uint64_t timeStamp)
         : sdlScancode(sdlScancode), timeStamp(timeStamp)
@@ -59,7 +59,7 @@ struct FILAPP_EXPORT KeyDownEvent
 struct FILAPP_EXPORT KeyUpEvent
 {
     SDL_Scancode sdlScancode;
-    std::uint64_t timeStamp;
+    uint64_t timeStamp;
 
     KeyUpEvent(SDL_Scancode sdlScancode, uint64_t timeStamp)
         : sdlScancode(sdlScancode), timeStamp(timeStamp)
@@ -70,7 +70,7 @@ struct FILAPP_EXPORT KeyUpEvent
 struct FILAPP_EXPORT MouseScrollEvent
 {
     float_t x;
-    std::uint64_t timeStamp;
+    uint64_t timeStamp;
 
     MouseScrollEvent(float_t x, uint64_t timeStamp) : x(x), timeStamp(timeStamp)
     {

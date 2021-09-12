@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-#include "WindowsNativeWindowHelper.h"
+#include "FilApp/NativeWindowHelper.h"
 #include <SDL_syswm.h>
 #include <utils/Panic.h>
 
-void* getNativeWindow(SDL_Window* sdlWindow)
+#ifdef MSVC
+void* WindowsgetNativeWindow(SDL_Window* sdlWindow)
 {
     SDL_SysWMinfo wmi;
     SDL_VERSION(&wmi.version);
@@ -27,3 +28,16 @@ void* getNativeWindow(SDL_Window* sdlWindow)
     HWND win = (HWND)wmi.info.win.window;
     return (void*)win;
 }
+#endif
+
+#ifdef LINUX
+void* getNativeWindow(SDL_Window* sdlWindow)
+{
+    SDL_SysWMinfo wmi;
+    SDL_VERSION(&wmi.version);
+    ASSERT_POSTCONDITION(SDL_GetWindowWMInfo(sdlWindow, &wmi),
+                         "SDL version unsupported!");
+    Window win = (Window)wmi.info.x11.window;
+    return (void*)win;
+}
+#endif

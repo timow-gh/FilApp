@@ -1,9 +1,7 @@
 #include "FilApp/Window.hpp"
-#include "WindowsNativeWindowHelper.h"
-#include <SDL_syswm.h>
+#include "FilApp/NativeWindowHelper.h"
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
-#include <utils/Panic.h>
 
 namespace FilApp
 {
@@ -52,6 +50,7 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
     else
     {
         m_backend = m_application->getEngine()->getBackend();
+
         void* nativeWindow = ::getNativeWindow(m_sdlWindow);
         void* nativeSwapChain = nativeWindow;
 
