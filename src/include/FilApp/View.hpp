@@ -3,7 +3,6 @@
 
 #include "Renderable.hpp"
 #include "ViewEvents.hpp"
-#include "ViewListener.hpp"
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -38,7 +37,6 @@ class FILAPP_EXPORT View
 
     std::vector<Renderable> m_renderables;
 
-    std::vector<ViewListener*> m_viewListener;
     std::string m_name;
 
   public:
@@ -59,9 +57,6 @@ class FILAPP_EXPORT View
     [[nodiscard]] filament::Camera* getCamera();
     [[nodiscard]] CameraManipulator* getCameraManipulator();
     [[nodiscard]] const filament::Viewport& getViewport();
-
-    void addViewListener(ViewListener* viewListener);
-    void clearViewListener();
 
     void addRenderable(const Renderable& renderable);
     void clearRenderables();

@@ -7,8 +7,6 @@ using namespace FilApp;
 int main()
 {
     auto windowConfig = WindowConfig();
-    windowConfig.cameraMode = filament::camutils::Mode::ORBIT;
-
     Application::init(AppConfig(), windowConfig);
 
     Window* window = Application::get().getWindow();

@@ -5,19 +5,18 @@ set(FILAPP_SOURCES
         source/View.cpp
         source/Window.cpp
         source/NativeWindowHelper.cpp
-        source/Renderable.cpp)
+        source/Renderable.cpp include/FilApp/FilAppConversion.cpp)
 
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Application.hpp
         include/FilApp/View.hpp
         include/FilApp/ViewEvents.hpp
-        include/FilApp/ViewListener.hpp
         include/FilApp/Window.hpp
         include/FilApp/WindowConfig.hpp
         include/FilApp/AppConfig.hpp
         include/FilApp/Renderable.hpp
         include/FilApp/Vertex.hpp
-        include/FilApp/NativeWindowHelper.h)
+        include/FilApp/NativeWindowHelper.h include/FilApp/IController.h include/FilApp/IView.h include/FilApp/IModel.h include/FilApp/InputEvents.h include/FilApp/EvtPos.h include/FilApp/IInputListener.h include/FilApp/CameraMode.h include/FilApp/BackendMode.h include/FilApp/FilAppConversion.h)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)

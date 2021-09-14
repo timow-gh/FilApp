@@ -1,4 +1,5 @@
 #include "FilApp/Window.hpp"
+#include "FilApp/FilAppConversion.h"
 #include "FilApp/NativeWindowHelper.h"
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
@@ -85,7 +86,7 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
                                "Main Window",
                                m_viewport,
                                filament::math::float4{0.1, 0.125, 0.25, 1.0},
-                               windowConfig.cameraMode));
+                               calcCameraMode(windowConfig.cameraMode)));
     m_mainView = m_views.back().get();
 }
 void Window::mouseDown(int button, ssize_t x, ssize_t y)

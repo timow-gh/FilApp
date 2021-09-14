@@ -1,14 +1,14 @@
 #ifndef FILAPP_APPCONFIG_HPP
 #define FILAPP_APPCONFIG_HPP
 
-#include <filament/Engine.h>
+#include "FilApp/BackendMode.h"
 #include <filapp_export.h>
 
 namespace FilApp
 {
 struct FILAPP_EXPORT AppConfig
 {
-    filament::Engine::Backend backend = filament::Engine::Backend::DEFAULT;
+    BackendMode backendMode = BackendMode::VULKAN;
 };
 } // namespace FilApp
 

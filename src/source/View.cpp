@@ -77,14 +77,6 @@ void View::setCameraManipulator(View::CameraManipulator* cameraManipulator)
     m_cameraManipulator.reset();
     m_cameraManipulator = std::unique_ptr<CameraManipulator>(cameraManipulator);
 }
-void View::addViewListener(ViewListener* viewListener)
-{
-    m_viewListener.push_back(viewListener);
-}
-void View::clearViewListener()
-{
-    m_viewListener.clear();
-}
 void View::addRenderable(const Renderable& renderable)
 {
     m_renderables.push_back(renderable);
@@ -103,32 +95,21 @@ void View::mouseDown(int button, ssize_t x, ssize_t y)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabBegin(x, y, button == 3);
-    for (auto listener: m_viewListener)
-        listener->mouseDownEvent(
-            MouseDownEvent(button, x, y, SDL_GetPerformanceCounter()));
 }
 void View::mouseUp(ssize_t x, ssize_t y)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabEnd();
-    for (auto listener: m_viewListener)
-        listener->mouseUpEvent(MouseUpEvent(x, y, SDL_GetPerformanceCounter()));
 }
 void View::mouseMoved(ssize_t x, ssize_t y)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabUpdate(x, y);
-    for (auto listener: m_viewListener)
-        listener->mouseMovedEvent(
-            MouseMovedEvent(x, y, SDL_GetPerformanceCounter()));
 }
 void View::mouseWheel(ssize_t x)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->scroll(0, 0, x);
-    for (auto listener: m_viewListener)
-        listener->mouseScrollEvent(
-            MouseScrollEvent(x, SDL_GetPerformanceCounter()));
 }
 filament::View* View::getFilamentView()
 {

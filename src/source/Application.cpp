@@ -1,4 +1,5 @@
 #include "FilApp/Application.hpp"
+#include "FilApp/FilAppConversion.h"
 #include "FilApp/Window.hpp"
 #include <SDL.h>
 #include <memory>
@@ -13,7 +14,8 @@ void Application::init(const AppConfig& appConfig,
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
     m_app = std::make_unique<Application>();
-    m_app->m_engine = filament::Engine::create(appConfig.backend);
+    m_app->m_engine =
+        filament::Engine::create(calcFilamentBackend(appConfig.backendMode));
     m_app->m_window =
         std::make_unique<Window>(windowConfig, &Application::get());
 }
@@ -92,7 +94,6 @@ void Application::run()
             default: break;
             }
         }
-
 
         auto mainView = m_window->getMainView();
         if (auto mainViewManip = mainView->getCameraManipulator())
