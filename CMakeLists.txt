@@ -14,7 +14,8 @@ if (NOT ${lcs_twCMakeUtils}_POPULATED)
 endif ()
 
 project(FilApp
-        VERSION 0.1.0)
+        VERSION 0.1.0
+        LANGUAGES C CXX ASM)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(BuildResourceHelper)
