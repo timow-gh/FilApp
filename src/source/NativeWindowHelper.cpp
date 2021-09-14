@@ -19,7 +19,7 @@
 #include <utils/Panic.h>
 
 #ifdef MSVC
-void* WindowsgetNativeWindow(SDL_Window* sdlWindow)
+void* getNativeWindow(SDL_Window* sdlWindow)
 {
     SDL_SysWMinfo wmi;
     SDL_VERSION(&wmi.version);
