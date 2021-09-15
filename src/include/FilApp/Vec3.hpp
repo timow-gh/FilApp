@@ -1,0 +1,22 @@
+#ifndef FILAPP_VEC3_HPP
+#define FILAPP_VEC3_HPP
+
+#include <cmath>
+#include <filapp_export.h>
+
+namespace FilApp
+{
+struct FILAPP_EXPORT Vec3
+{
+    float_t x;
+    float_t y;
+    float_t z;
+
+    Vec3(const float_t& x, const float_t& y, const float_t& z)
+        : x(x), y(y), z(z)
+    {
+    }
+};
+} // namespace FilApp
+
+#endif // FILAPP_VEC3_HPP

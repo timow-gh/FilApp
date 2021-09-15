@@ -3,7 +3,6 @@
 
 #include "FilApp/IView.hpp"
 #include "FilAppRenderable.hpp"
-#include "ViewEvents.hpp"
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -20,6 +19,8 @@
 
 namespace FilApp
 {
+using AnimationCallBack = std::function<void(double now)>;
+
 class FilAppView
     : public IView
 {
@@ -39,6 +40,8 @@ class FilAppView
 
     std::vector<FilAppRenderable> m_renderables;
 
+    std::vector<AnimationCallBack> m_animationCallbacks;
+
     std::string m_name;
 
   public:
@@ -50,11 +53,21 @@ class FilAppView
     ~FilAppView() override;
 
     // clang-format off
-    auto addRenderable(Renderable&& renderable) -> IView::RenderableIdentifier override;
-    auto getRenderableIdentifiers() const -> std::vector<IView::RenderableIdentifier> override;
-    void removeRenderable(IView::RenderableIdentifier renderableIdentifier) override;
+    auto addRenderable(Renderable&& renderable) -> RenderableIdentifier override;
+    auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
+    void removeRenderable(RenderableIdentifier renderableIdentifier) override;
     void clearRenderables() override;
     // clang-format on
+    void setUsePostprocessing(bool usePostProcessing) override;
+
+    void addRotationAnimation(RenderableIdentifier renderableIdentifier,
+                              const Vec3& rotationAxis) override;
+
+    void animate(double deltaT) override;
+
+    Viewport getViewport() const override;
+    void resize(const Viewport& viewport) override;
+
     void mouseDown(const MouseDownEvent& mouseDownEvent) override;
     void mouseUp(const MouseUpEvent& mouseUpEvent) const override;
     void mouseMoved(const MouseMovedEvent& mouseMovedEvent) const override;
@@ -64,23 +77,10 @@ class FilAppView
 
     void setViewport(const filament::Viewport& viewport);
     void setCamera(filament::Camera* camera);
-    // Resets the unique_ptr m_cameraManipulator and creates a new one using the
-    // parameter cameraManipulator
-    void setCameraManipulator(CameraManipulator* cameraManipulator);
 
     [[nodiscard]] filament::View* getFilamentView();
     [[nodiscard]] filament::Camera* getCamera();
     [[nodiscard]] CameraManipulator* getCameraManipulator();
-    [[nodiscard]] const filament::Viewport& getViewport();
-
-    virtual void mouseDown(int button, ssize_t x, ssize_t y);
-    virtual void mouseUp(ssize_t x, ssize_t y);
-    virtual void mouseMoved(ssize_t x, ssize_t y);
-    virtual void mouseWheel(ssize_t x);
-    virtual void keyDown(SDL_Scancode scancode);
-    virtual void keyUp(SDL_Scancode scancode);
-
-    void resize(const filament::Viewport& viewport);
 
   private:
     void clearFilAppRenderables();

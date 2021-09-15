@@ -7,13 +7,11 @@ using namespace FilApp;
 
 int main()
 {
-    auto windowConfig = WindowConfig();
-    Application::init(AppConfig(), windowConfig);
+    Application::init(AppConfig(), WindowConfig());
 
     Window* window = Application::get().getWindow();
     auto mainView = window->getMainIView();
-    // TODO Push down use of filament
-    window->getMainFilAppView()->getFilamentView()->setPostProcessingEnabled(false);
+    mainView->setUsePostprocessing(false);
 
     mainView->addRenderable(Renderable(
         {

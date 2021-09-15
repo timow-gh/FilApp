@@ -3,13 +3,11 @@ build_resources()
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Application.hpp
         include/FilApp/FilAppView.hpp
-        include/FilApp/ViewEvents.hpp
         include/FilApp/Window.hpp
         include/FilApp/WindowConfig.hpp
         include/FilApp/AppConfig.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/Vertex.hpp
-        include/FilApp/NativeWindowHelper.hpp
         include/FilApp/IController.hpp
         include/FilApp/IView.hpp
         include/FilApp/IModel.hpp
@@ -18,14 +16,16 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/IInputListener.hpp
         include/FilApp/CameraMode.hpp
         include/FilApp/BackendMode.hpp
-        include/FilApp/FilAppConversion.hpp
+        source/FilAppConversion.hpp
         include/FilApp/Renderable.hpp
-        )
+        include/FilApp/Vec3.hpp
+        include/FilApp/Viewport.hpp)
 
 set(FILAPP_SOURCES
         source/Application.cpp
         source/FilAppView.cpp
         source/Window.cpp
+        source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp
         source/FilAppRenderable.cpp
         source/FilAppConversion.cpp

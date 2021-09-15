@@ -7,14 +7,14 @@
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
-#include <filapp_export.h>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
 namespace FilApp
 {
-class FILAPP_EXPORT Window
+
+class Window
 {
     SDL_Window* m_sdlWindow = nullptr;
     Application* m_application = nullptr;
@@ -24,16 +24,14 @@ class FILAPP_EXPORT Window
 
     filament::Viewport m_viewport;
     std::vector<std::unique_ptr<FilAppView>> m_views;
+
     FilAppView* m_mainView;
     FilAppView* m_mouseEventTarget = nullptr;
 
     uint32_t m_width = 0;
     uint32_t m_height = 0;
-    ssize_t m_lastX = 0;
-    ssize_t m_lastY = 0;
-
-    std::vector<AnimationCallBack> m_animationCallbacks;
-    std::vector<ResizeCallback> m_resizeCallbacks;
+    size_t m_lastX = 0;
+    size_t m_lastY = 0;
 
     std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
 
@@ -43,27 +41,21 @@ class FILAPP_EXPORT Window
     Window& operator=(Window&& window) = default;
     ~Window();
 
-    void mouseDown(int button, ssize_t x, ssize_t y);
-    void mouseUp(ssize_t x, ssize_t y);
-    void mouseMoved(ssize_t x, ssize_t y);
-    void mouseWheel(ssize_t x);
+    void mouseDown(int button, size_t x, size_t y);
+    void mouseUp(size_t x, size_t y);
+    void mouseMoved(size_t x, size_t y);
+    void mouseWheel(size_t x);
     void keyDown(SDL_Scancode scancode);
     void keyUp(SDL_Scancode scancode);
+
     void resize();
 
-    void addAnimationCallback(const AnimationCallBack& animation);
-    void addResizeCallback(const ResizeCallback& resizeCallback);
-
-    [[nodiscard]] const std::vector<AnimationCallBack>&
-    getAnimationCallbacks() const;
-    [[nodiscard]] const std::vector<ResizeCallback>& getResizeCallbacks() const;
-
-    void clearAnimationsCallbacks();
-    void clearResizeCallbacks();
+    void animate(double_t deltaT);
+    void render();
 
     [[nodiscard]] IView* getMainIView();
     [[nodiscard]] FilAppView* getMainFilAppView();
-    [[nodiscard]] std::vector<std::unique_ptr<FilAppView>>& getViews();
+    [[nodiscard]] std::vector<IView*> getViews() const;
     [[nodiscard]] filament::Renderer* getRenderer();
     [[nodiscard]] filament::SwapChain* getSwapChain();
 
@@ -71,11 +63,11 @@ class FILAPP_EXPORT Window
     [[nodiscard]] uint32_t getHeight() const;
 
   private:
-    void fixupMouseCoordinatesForHdpi(ssize_t& x, ssize_t& y) const;
+    void fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const;
     void calcWindowViewport();
 };
 
-bool intersects(const filament::Viewport& viewport, ssize_t x, ssize_t y);
+bool intersects(const Viewport& viewport, size_t x, size_t y);
 } // namespace FilApp
 
 #endif // FILAPP_WINDOW_HPP

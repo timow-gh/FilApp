@@ -6,11 +6,12 @@
 #include "FilApp/IView.hpp"
 #include "FilApp/InputEvents.hpp"
 #include <memory>
+#include <filapp_export.h>
 
 namespace FilApp
 {
 
-class IController
+class FILAPP_EXPORT IController
     : public IInputListener
 {
     ~IController() override = default;

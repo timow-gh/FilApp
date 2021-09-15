@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "FilApp/NativeWindowHelper.hpp"
+#include "NativeWindowHelper.hpp"
 #include <SDL_syswm.h>
 #include <utils/Panic.h>
 

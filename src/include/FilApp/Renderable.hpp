@@ -2,6 +2,7 @@
 #define FILAPP_RENDERABLE_HPP
 
 #include "FilApp/Vertex.hpp"
+#include <filapp_export.h>
 #include <utility>
 #include <vector>
 

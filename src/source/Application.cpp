@@ -1,13 +1,16 @@
 #include "FilApp/Application.hpp"
-#include "FilApp/FilAppConversion.hpp"
 #include "FilApp/Window.hpp"
+#include "FilAppConversion.hpp"
 #include <SDL.h>
+#include <filament/Camera.h>
+#include <filament/Engine.h>
 #include <memory>
 #include <utils/Panic.h>
 
 namespace FilApp
 {
 std::unique_ptr<Application> Application::m_app;
+double_t Application::m_prevTimeStep = 0;
 
 void Application::init(const AppConfig& appConfig,
                        const WindowConfig& windowConfig)
@@ -38,21 +41,20 @@ Window* Application::getWindow()
 {
     return m_window.get();
 }
+double_t Application::getDeltaT()
+{
+    return (double_t)SDL_GetPerformanceCounter() /
+               (double_t)SDL_GetPerformanceFrequency() -
+           m_prevTimeStep;
+}
 void Application::run()
 {
     m_prevTimeStep = (double_t)SDL_GetPerformanceCounter() /
                      (double_t)SDL_GetPerformanceFrequency();
+
     while (!m_closeApp)
     {
-        double_t now = (double_t)SDL_GetPerformanceCounter() /
-                       (double_t)SDL_GetPerformanceFrequency();
-        double_t timeStep = now - m_prevTimeStep;
-
-        for (const auto& animationCallBack: m_window->getAnimationCallbacks())
-            if (animationCallBack)
-                animationCallBack(m_engine,
-                    m_window->getMainFilAppView()->getFilamentView(),
-                                  timeStep);
+        double_t deltaT = Application::getDeltaT();
 
         constexpr Uint32 K_MAX_EVENTS = 4;
         SDL_Event events[K_MAX_EVENTS];
@@ -95,27 +97,11 @@ void Application::run()
             }
         }
 
-        auto mainView = m_window->getMainFilAppView();
-        if (auto mainViewManip = mainView->getCameraManipulator())
-        {
-            filament::math::float3 eye;
-            filament::math::float3 center;
-            filament::math::float3 up;
-            mainViewManip->update(timeStep);
-            mainViewManip->getLookAt(&eye, &center, &up);
-            mainView->getCamera()->lookAt(eye, center, up);
-        }
-
         // TODO SDL_Delay.
         SDL_Delay(1);
 
-        filament::Renderer* renderer = m_window->getRenderer();
-        if (renderer->beginFrame(m_window->getSwapChain()))
-        {
-            for (auto const& view: m_window->getViews())
-                renderer->render(view->getFilamentView());
-            renderer->endFrame();
-        }
+        m_window->animate(deltaT);
+        m_window->render();
     }
 }
 } // namespace FilApp

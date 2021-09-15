@@ -1,20 +1,19 @@
 #include "FilApp/Application.hpp"
+#include "FilApp/IView.hpp"
 #include "FilApp/Renderable.hpp"
+#include "FilApp/Vec3.hpp"
 #include "FilApp/Vertex.hpp"
 #include "FilApp/Window.hpp"
-#include <filament/TransformManager.h>
 
 using namespace FilApp;
 
 int main()
 {
-    auto windowConfig = WindowConfig();
-
-    Application::init(AppConfig(), windowConfig);
+    Application::init(AppConfig(), WindowConfig());
 
     Window* window = Application::get().getWindow();
-    auto mainView = window->getMainFilAppView();
-    mainView->getFilamentView()->setPostProcessingEnabled(false);
+    IView* mainView = window->getMainIView();
+    mainView->setUsePostprocessing(false);
 
     std::vector<Vertex> vertices = {
         {{-1, 0, 0}, 0xffff0000u},
@@ -22,21 +21,10 @@ int main()
         {{0, 1, 0}, 0xff0000ffu},
     };
 
-    std::vector<uint16_t> indices = {0, 1, 2};
+    auto renderableId =
+        mainView->addRenderable(Renderable(std::move(vertices), {0, 1, 2}));
 
-    mainView->addRenderable(Renderable(vertices, indices));
-
-//    window->addAnimationCallback(
-//        [&renderable](filament::Engine* engine,
-//                      filament::View* filamentView,
-//                      double deltaT)
-//        {
-//            auto& tcm = engine->getTransformManager();
-//            tcm.setTransform(tcm.getInstance(renderable.renderableEntity),
-//                             filament::math::mat4f::rotation(
-//                                 deltaT,
-//                                 filament::math::float3{0, 1, 0}));
-//        });
+    mainView->addRotationAnimation(renderableId, Vec3{0, 1, 0});
 
     Application::get().run();
     return 0;

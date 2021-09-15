@@ -1,9 +1,11 @@
 #ifndef FILAPP_IMODEL_HPP
 #define FILAPP_IMODEL_HPP
 
+#include <filapp_export.h>
+
 namespace FilApp
 {
-class IModel
+class FILAPP_EXPORT IModel
 {
     virtual ~IModel() = default;
 };

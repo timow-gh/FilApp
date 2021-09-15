@@ -1,5 +1,6 @@
 #include "FilApp/FilAppView.hpp"
 #include "SDL_timer.h"
+#include <filament/TransformManager.h>
 
 namespace FilApp
 {
@@ -72,32 +73,6 @@ void FilAppView::setCamera(filament::Camera* camera)
 {
     m_filamentView->setCamera(camera);
 }
-void FilAppView::setCameraManipulator(
-    FilAppView::CameraManipulator* cameraManipulator)
-{
-    m_cameraManipulator.reset();
-    m_cameraManipulator = std::unique_ptr<CameraManipulator>(cameraManipulator);
-}
-void FilAppView::mouseDown(int button, ssize_t x, ssize_t y)
-{
-    if (m_cameraManipulator)
-        m_cameraManipulator->grabBegin(x, y, button == 3);
-}
-void FilAppView::mouseUp(ssize_t x, ssize_t y)
-{
-    if (m_cameraManipulator)
-        m_cameraManipulator->grabEnd();
-}
-void FilAppView::mouseMoved(ssize_t x, ssize_t y)
-{
-    if (m_cameraManipulator)
-        m_cameraManipulator->grabUpdate(x, y);
-}
-void FilAppView::mouseWheel(ssize_t x)
-{
-    if (m_cameraManipulator)
-        m_cameraManipulator->scroll(0, 0, x);
-}
 filament::View* FilAppView::getFilamentView()
 {
     return m_filamentView;
@@ -110,33 +85,12 @@ FilAppView::CameraManipulator* FilAppView::getCameraManipulator()
 {
     return m_cameraManipulator.get();
 }
-const filament::Viewport& FilAppView::getViewport()
+Viewport FilAppView::getViewport() const
 {
-    return m_viewport;
-}
-void FilAppView::keyDown(SDL_Scancode scancode)
-{
-    if (m_cameraManipulator)
-    {
-        CameraManipulator::Key key;
-        if (manipulatorKeyFromKeycode(scancode, key))
-            m_cameraManipulator->keyDown(key);
-    }
-}
-void FilAppView::keyUp(SDL_Scancode scancode)
-{
-    if (m_cameraManipulator)
-    {
-        CameraManipulator::Key key;
-        if (manipulatorKeyFromKeycode(scancode, key))
-        {
-            m_cameraManipulator->keyDown(key);
-        }
-    }
-}
-void FilAppView::resize(const filament::Viewport& viewport)
-{
-    setViewport(viewport);
+    return {m_viewport.left,
+            m_viewport.bottom,
+            m_viewport.width,
+            m_viewport.height};
 }
 bool FilAppView::manipulatorKeyFromKeycode(
     SDL_Scancode scancode,
@@ -165,8 +119,7 @@ void FilAppView::configureCameraProjection()
                             0.1,
                             100);
 }
-IView::RenderableIdentifier
-FilAppView::addRenderable(Renderable&& renderable)
+RenderableIdentifier FilAppView::addRenderable(Renderable&& renderable)
 {
     m_renderables.push_back(
         createBakedColorRenderable(std::move(renderable),
@@ -175,44 +128,95 @@ FilAppView::addRenderable(Renderable&& renderable)
     m_scene->addEntity(m_renderables.back().renderableEntity);
     return m_renderables.back().renderableEntity.getId();
 }
-std::vector<IView::RenderableIdentifier>
-FilAppView::getRenderableIdentifiers() const
+std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
 {
+    assert(false);
     // TODO Implement
     return std::vector<RenderableIdentifier>();
 }
-void FilAppView::removeRenderable(
-    IView::RenderableIdentifier renderableIdentifier)
+void FilAppView::removeRenderable(RenderableIdentifier renderableIdentifier)
 {
+    assert(false);
     // TODO Implement
 }
 void FilAppView::clearRenderables()
 {
     clearFilAppRenderables();
 }
+void FilAppView::setUsePostprocessing(bool usePostProcessing)
+{
+    m_filamentView->setPostProcessingEnabled(usePostProcessing);
+}
+void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
+                                      const Vec3& rotationAxis)
+{
+    m_animationCallbacks.emplace_back(
+        [renderableIdentifier,
+         engine = m_engine,
+         filamentView = m_filamentView](double deltaT)
+        {
+            auto& tcm = engine->getTransformManager();
+            tcm.setTransform(
+                tcm.getInstance(utils::Entity::import(renderableIdentifier)),
+                filament::math::mat4f::rotation(
+                    deltaT,
+                    filament::math::float3{0, 1, 0}));
+        });
+}
+void FilAppView::animate(double deltaT)
+{
+    for (const auto& animationCallBack: m_animationCallbacks)
+        animationCallBack(deltaT);
+}
+void FilAppView::resize(const Viewport& viewport)
+{
+    setViewport(filament::Viewport(viewport.left,
+                                   viewport.bottom,
+                                   viewport.width,
+                                   viewport.height));
+}
 void FilAppView::mouseDown(const MouseDownEvent& mouseDownEvent)
 {
-    // TODO Implement
+    if (m_cameraManipulator)
+        m_cameraManipulator->grabBegin(mouseDownEvent.pos.x,
+                                       mouseDownEvent.pos.y,
+                                       mouseDownEvent.button == 3);
 }
 void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent) const
 {
-    // TODO Implement
+    if (m_cameraManipulator)
+        m_cameraManipulator->grabEnd();
 }
 void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent) const
 {
-    // TODO Implement
+    if (m_cameraManipulator)
+        m_cameraManipulator->grabUpdate(mouseMovedEvent.pos.x,
+                                        mouseMovedEvent.pos.y);
 }
 void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent) const
 {
-    // TODO Implement
+    if (m_cameraManipulator)
+        m_cameraManipulator->scroll(0, 0, mouseWheelEvent.x);
 }
 void FilAppView::keyDown(const KeyDownEvent& keyDownEvent) const
 {
-    // TODO Implement
+    if (m_cameraManipulator)
+    {
+        CameraManipulator::Key key;
+        if (manipulatorKeyFromKeycode(keyDownEvent.sdlScancode, key))
+            m_cameraManipulator->keyDown(key);
+    }
 }
 void FilAppView::keyUp(const KeyUpEvent& keyUpEvent) const
 {
-    // TODO Implement
+    if (m_cameraManipulator)
+    {
+        CameraManipulator::Key key;
+        if (manipulatorKeyFromKeycode(keyUpEvent.sdlScancode, key))
+        {
+            m_cameraManipulator->keyDown(key);
+        }
+    }
 }
 void FilAppView::clearFilAppRenderables()
 {
