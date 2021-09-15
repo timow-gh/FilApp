@@ -1,22 +1,35 @@
 build_resources()
 
-set(FILAPP_SOURCES
-        source/Application.cpp
-        source/View.cpp
-        source/Window.cpp
-        source/NativeWindowHelper.cpp
-        source/Renderable.cpp include/FilApp/FilAppConversion.cpp)
-
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Application.hpp
-        include/FilApp/View.hpp
+        include/FilApp/FilAppView.hpp
         include/FilApp/ViewEvents.hpp
         include/FilApp/Window.hpp
         include/FilApp/WindowConfig.hpp
         include/FilApp/AppConfig.hpp
-        include/FilApp/Renderable.hpp
+        include/FilApp/FilAppRenderable.hpp
         include/FilApp/Vertex.hpp
-        include/FilApp/NativeWindowHelper.h include/FilApp/IController.h include/FilApp/IView.h include/FilApp/IModel.h include/FilApp/InputEvents.h include/FilApp/EvtPos.h include/FilApp/IInputListener.h include/FilApp/CameraMode.h include/FilApp/BackendMode.h include/FilApp/FilAppConversion.h)
+        include/FilApp/NativeWindowHelper.hpp
+        include/FilApp/IController.hpp
+        include/FilApp/IView.hpp
+        include/FilApp/IModel.hpp
+        include/FilApp/InputEvents.hpp
+        include/FilApp/EvtPos.hpp
+        include/FilApp/IInputListener.hpp
+        include/FilApp/CameraMode.hpp
+        include/FilApp/BackendMode.hpp
+        include/FilApp/FilAppConversion.hpp
+        include/FilApp/Renderable.hpp
+        )
+
+set(FILAPP_SOURCES
+        source/Application.cpp
+        source/FilAppView.cpp
+        source/Window.cpp
+        source/NativeWindowHelper.cpp
+        source/FilAppRenderable.cpp
+        source/FilAppConversion.cpp
+        )
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)

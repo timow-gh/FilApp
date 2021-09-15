@@ -1,5 +1,5 @@
 #include "FilApp/Application.hpp"
-#include "FilApp/FilAppConversion.h"
+#include "FilApp/FilAppConversion.hpp"
 #include "FilApp/Window.hpp"
 #include <SDL.h>
 #include <memory>
@@ -51,7 +51,7 @@ void Application::run()
         for (const auto& animationCallBack: m_window->getAnimationCallbacks())
             if (animationCallBack)
                 animationCallBack(m_engine,
-                                  m_window->getMainView()->getFilamentView(),
+                    m_window->getMainFilAppView()->getFilamentView(),
                                   timeStep);
 
         constexpr Uint32 K_MAX_EVENTS = 4;
@@ -95,7 +95,7 @@ void Application::run()
             }
         }
 
-        auto mainView = m_window->getMainView();
+        auto mainView = m_window->getMainFilAppView();
         if (auto mainViewManip = mainView->getCameraManipulator())
         {
             filament::math::float3 eye;

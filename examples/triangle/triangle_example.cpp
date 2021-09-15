@@ -1,4 +1,5 @@
 #include "FilApp/Application.hpp"
+#include "FilApp/Renderable.hpp"
 #include "FilApp/Vertex.hpp"
 #include "FilApp/Window.hpp"
 
@@ -10,25 +11,19 @@ int main()
     Application::init(AppConfig(), windowConfig);
 
     Window* window = Application::get().getWindow();
-    auto mainView = window->getMainView();
-    mainView->getFilamentView()->setPostProcessingEnabled(false);
+    auto mainView = window->getMainIView();
+    // TODO Push down use of filament
+    window->getMainFilAppView()->getFilamentView()->setPostProcessingEnabled(false);
 
-    std::vector<Vertex> vertices = {
-        {{0, 0, 0}, 0xffff0000u},
-        {{1, 0, 0}, 0xff00ff00u},
-        {{0, 0, 2}, 0xff0000ffu},
-    };
-
-    std::vector<uint16_t> indices = {0, 1, 2};
-
-    auto renderable =
-        createBakedColorRenderable(vertices,
-                                   indices,
-                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
-                                   Application::get().getEngine());
-
-    mainView->addRenderable(renderable);
+    mainView->addRenderable(Renderable(
+        {
+            Vertex{{0, 0, 0}, 0xffff0000u},
+            Vertex{{1, 0, 0}, 0xff00ff00u},
+            Vertex{{0, 0, 2}, 0xff0000ffu},
+        },
+        {0, 1, 2}));
 
     Application::get().run();
+
     return 0;
 }

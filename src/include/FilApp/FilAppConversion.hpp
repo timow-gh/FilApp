@@ -1,8 +1,8 @@
-#ifndef FILAPP_FILAPPCONVERSION_H
-#define FILAPP_FILAPPCONVERSION_H
+#ifndef FILAPP_FILAPPCONVERSION_HPP
+#define FILAPP_FILAPPCONVERSION_HPP
 
-#include "BackendMode.h"
-#include "CameraMode.h"
+#include "BackendMode.hpp"
+#include "CameraMode.hpp"
 #include <camutils/Bookmark.h>
 #include <filament/Engine.h>
 
@@ -13,4 +13,4 @@ filament::camutils::Mode calcCameraMode(CameraMode cameraMode);
 
 } // namespace FilApp
 
-#endif // FILAPP_FILAPPCONVERSION_H
+#endif // FILAPP_FILAPPCONVERSION_HPP

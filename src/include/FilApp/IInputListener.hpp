@@ -1,5 +1,7 @@
-#ifndef FILAPP_IINPUTLISTENER_H
-#define FILAPP_IINPUTLISTENER_H
+#ifndef FILAPP_IINPUTLISTENER_HPP
+#define FILAPP_IINPUTLISTENER_HPP
+
+#include "FilApp/InputEvents.hpp"
 
 namespace FilApp
 {
@@ -17,4 +19,4 @@ class IInputListener
 };
 } // namespace FilApp
 
-#endif // FILAPP_IINPUTLISTENER_H
+#endif // FILAPP_IINPUTLISTENER_HPP

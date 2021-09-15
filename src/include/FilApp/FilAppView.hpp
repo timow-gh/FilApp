@@ -1,7 +1,8 @@
-#ifndef FILAPP_VIEW_HPP
-#define FILAPP_VIEW_HPP
+#ifndef FILAPP_FILAPPVIEW_HPP
+#define FILAPP_FILAPPVIEW_HPP
 
-#include "Renderable.hpp"
+#include "FilApp/IView.hpp"
+#include "FilAppRenderable.hpp"
 #include "ViewEvents.hpp"
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
@@ -19,7 +20,8 @@
 
 namespace FilApp
 {
-class FILAPP_EXPORT View
+class FilAppView
+    : public IView
 {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
@@ -35,17 +37,30 @@ class FILAPP_EXPORT View
 
     filament::Viewport m_viewport;
 
-    std::vector<Renderable> m_renderables;
+    std::vector<FilAppRenderable> m_renderables;
 
     std::string m_name;
 
   public:
-    View(filament::Renderer& renderer,
-         const std::string& name,
-         const filament::Viewport& viewport,
-         filament::math::float4 skyBoxDefaultColor,
-         filament::camutils::Mode cameraMode);
-    ~View();
+    FilAppView(filament::Renderer& renderer,
+               const std::string& name,
+               const filament::Viewport& viewport,
+               filament::math::float4 skyBoxDefaultColor,
+               filament::camutils::Mode cameraMode);
+    ~FilAppView() override;
+
+    // clang-format off
+    auto addRenderable(Renderable&& renderable) -> IView::RenderableIdentifier override;
+    auto getRenderableIdentifiers() const -> std::vector<IView::RenderableIdentifier> override;
+    void removeRenderable(IView::RenderableIdentifier renderableIdentifier) override;
+    void clearRenderables() override;
+    // clang-format on
+    void mouseDown(const MouseDownEvent& mouseDownEvent) override;
+    void mouseUp(const MouseUpEvent& mouseUpEvent) const override;
+    void mouseMoved(const MouseMovedEvent& mouseMovedEvent) const override;
+    void mouseWheel(const MouseWheelEvent& mouseWheelEvent) const override;
+    void keyDown(const KeyDownEvent& keyDownEvent) const override;
+    void keyUp(const KeyUpEvent& keyUpEvent) const override;
 
     void setViewport(const filament::Viewport& viewport);
     void setCamera(filament::Camera* camera);
@@ -58,9 +73,6 @@ class FILAPP_EXPORT View
     [[nodiscard]] CameraManipulator* getCameraManipulator();
     [[nodiscard]] const filament::Viewport& getViewport();
 
-    void addRenderable(const Renderable& renderable);
-    void clearRenderables();
-
     virtual void mouseDown(int button, ssize_t x, ssize_t y);
     virtual void mouseUp(ssize_t x, ssize_t y);
     virtual void mouseMoved(ssize_t x, ssize_t y);
@@ -71,10 +83,11 @@ class FILAPP_EXPORT View
     void resize(const filament::Viewport& viewport);
 
   private:
+    void clearFilAppRenderables();
     bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
                                    CameraManipulator::Key& key) const;
     void configureCameraProjection();
 };
 } // namespace FilApp
 
-#endif // FILAPP_VIEW_HPP
+#endif // FILAPP_FILAPPVIEW_HPP

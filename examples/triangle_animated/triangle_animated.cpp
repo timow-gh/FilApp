@@ -1,4 +1,5 @@
 #include "FilApp/Application.hpp"
+#include "FilApp/Renderable.hpp"
 #include "FilApp/Vertex.hpp"
 #include "FilApp/Window.hpp"
 #include <filament/TransformManager.h>
@@ -12,7 +13,7 @@ int main()
     Application::init(AppConfig(), windowConfig);
 
     Window* window = Application::get().getWindow();
-    auto mainView = window->getMainView();
+    auto mainView = window->getMainFilAppView();
     mainView->getFilamentView()->setPostProcessingEnabled(false);
 
     std::vector<Vertex> vertices = {
@@ -23,25 +24,19 @@ int main()
 
     std::vector<uint16_t> indices = {0, 1, 2};
 
-    auto renderable =
-        createBakedColorRenderable(vertices,
-                                   indices,
-                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
-                                   Application::get().getEngine());
+    mainView->addRenderable(Renderable(vertices, indices));
 
-    mainView->addRenderable(renderable);
-
-    window->addAnimationCallback(
-        [&renderable](filament::Engine* engine,
-                      filament::View* filamentView,
-                      double deltaT)
-        {
-            auto& tcm = engine->getTransformManager();
-            tcm.setTransform(tcm.getInstance(renderable.renderableEntity),
-                             filament::math::mat4f::rotation(
-                                 deltaT,
-                                 filament::math::float3{0, 1, 0}));
-        });
+//    window->addAnimationCallback(
+//        [&renderable](filament::Engine* engine,
+//                      filament::View* filamentView,
+//                      double deltaT)
+//        {
+//            auto& tcm = engine->getTransformManager();
+//            tcm.setTransform(tcm.getInstance(renderable.renderableEntity),
+//                             filament::math::mat4f::rotation(
+//                                 deltaT,
+//                                 filament::math::float3{0, 1, 0}));
+//        });
 
     Application::get().run();
     return 0;

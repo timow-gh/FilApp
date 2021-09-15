@@ -1,7 +1,9 @@
-#ifndef FILAPP_INPUTEVENTS_H
-#define FILAPP_INPUTEVENTS_H
+#ifndef FILAPP_INPUTEVENTS_HPP
+#define FILAPP_INPUTEVENTS_HPP
 
-#include "FilApp/InputEvents.h"
+#include "FilApp/EvtPos.hpp"
+#include "FilApp/InputEvents.hpp"
+#include <SDL_scancode.h>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
@@ -77,4 +79,4 @@ struct FILAPP_EXPORT KeyUpEvent
 
 } // namespace FilApp
 
-#endif // FILAPP_INPUTEVENTS_H
+#endif // FILAPP_INPUTEVENTS_HPP

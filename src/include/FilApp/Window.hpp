@@ -2,7 +2,7 @@
 #define FILAPP_WINDOW_HPP
 
 #include "Application.hpp"
-#include "View.hpp"
+#include "FilAppView.hpp"
 #include "WindowConfig.hpp"
 #include <SDL_video.h>
 #include <filament/Engine.h>
@@ -23,9 +23,9 @@ class FILAPP_EXPORT Window
     filament::SwapChain* m_swapChain = nullptr;
 
     filament::Viewport m_viewport;
-    std::vector<std::unique_ptr<View>> m_views;
-    View* m_mainView;
-    View* m_mouseEventTarget = nullptr;
+    std::vector<std::unique_ptr<FilAppView>> m_views;
+    FilAppView* m_mainView;
+    FilAppView* m_mouseEventTarget = nullptr;
 
     uint32_t m_width = 0;
     uint32_t m_height = 0;
@@ -35,7 +35,7 @@ class FILAPP_EXPORT Window
     std::vector<AnimationCallBack> m_animationCallbacks;
     std::vector<ResizeCallback> m_resizeCallbacks;
 
-    std::unordered_map<SDL_Scancode, View*> m_keyEventTarget;
+    std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
 
   public:
     Window(const WindowConfig& windowConfig, Application* application);
@@ -61,8 +61,9 @@ class FILAPP_EXPORT Window
     void clearAnimationsCallbacks();
     void clearResizeCallbacks();
 
-    [[nodiscard]] View* getMainView();
-    [[nodiscard]] std::vector<std::unique_ptr<View>>& getViews();
+    [[nodiscard]] IView* getMainIView();
+    [[nodiscard]] FilAppView* getMainFilAppView();
+    [[nodiscard]] std::vector<std::unique_ptr<FilAppView>>& getViews();
     [[nodiscard]] filament::Renderer* getRenderer();
     [[nodiscard]] filament::SwapChain* getSwapChain();
 

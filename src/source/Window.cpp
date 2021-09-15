@@ -1,6 +1,6 @@
 #include "FilApp/Window.hpp"
-#include "FilApp/FilAppConversion.h"
-#include "FilApp/NativeWindowHelper.h"
+#include "FilApp/FilAppConversion.hpp"
+#include "FilApp/NativeWindowHelper.hpp"
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
 
@@ -82,7 +82,7 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
 
     calcWindowViewport();
     m_views.emplace_back(
-        std::make_unique<View>(*m_renderer,
+        std::make_unique<FilAppView>(*m_renderer,
                                "Main Window",
                                m_viewport,
                                filament::math::float4{0.1, 0.125, 0.25, 1.0},
@@ -153,7 +153,7 @@ void Window::keyDown(SDL_Scancode scancode)
     // If we're currently in a mouse grap session, it should be the mouse grab's
     // target view. Otherwise, it should be whichever view we're currently
     // hovering over.
-    View* targetView = nullptr;
+    FilAppView* targetView = nullptr;
     if (m_mouseEventTarget)
         targetView = m_mouseEventTarget;
     else
@@ -189,11 +189,11 @@ Window::~Window()
     m_application->getEngine()->destroy(m_swapChain);
     SDL_DestroyWindow(m_sdlWindow);
 }
-View* Window::getMainView()
+FilAppView* Window::getMainFilAppView()
 {
     return m_mainView;
 }
-std::vector<std::unique_ptr<View>>& Window::getViews()
+std::vector<std::unique_ptr<FilAppView>>& Window::getViews()
 {
     return m_views;
 }
@@ -267,6 +267,10 @@ uint32_t Window::getWidth() const
 uint32_t Window::getHeight() const
 {
     return m_height;
+}
+IView* Window::getMainIView()
+{
+    return m_mainView;
 }
 bool intersects(const filament::Viewport& viewport, ssize_t x, ssize_t y)
 {

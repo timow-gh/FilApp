@@ -1,5 +1,5 @@
-#ifndef FILAPP_IMODEL_H
-#define FILAPP_IMODEL_H
+#ifndef FILAPP_IMODEL_HPP
+#define FILAPP_IMODEL_HPP
 
 namespace FilApp
 {
@@ -9,4 +9,4 @@ class IModel
 };
 } // namespace FilApp
 
-#endif // FILAPP_IMODEL_H
+#endif // FILAPP_IMODEL_HPP
