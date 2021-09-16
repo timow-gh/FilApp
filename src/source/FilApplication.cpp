@@ -1,4 +1,4 @@
-#include "FilApp/Application.hpp"
+#include "FilApp/FilApplication.hpp"
 #include "FilApp/FilWindow.hpp"
 #include "FilAppConversion.hpp"
 #include <SDL.h>
@@ -9,52 +9,52 @@
 
 namespace FilApp
 {
-std::unique_ptr<Application> Application::m_app;
-double_t Application::m_prevTimeStep = 0;
+std::unique_ptr<FilApplication> FilApplication::m_app;
+double_t FilApplication::m_prevTimeStep = 0;
 
-void Application::init(const AppConfig& appConfig,
+void FilApplication::init(const AppConfig& appConfig,
                        const WindowConfig& windowConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
-    m_app = std::make_unique<Application>();
+    m_app = std::make_unique<FilApplication>();
     m_app->m_engine =
         filament::Engine::create(calcFilamentBackend(appConfig.backendMode));
     m_app->m_window =
-        std::make_unique<FilWindow>(windowConfig, &Application::get());
+        std::make_unique<FilWindow>(windowConfig, &FilApplication::get());
 }
-Application::~Application()
+FilApplication::~FilApplication()
 {
     m_window.reset();
     filament::Engine::destroy(&m_engine);
     m_engine = nullptr;
     SDL_Quit();
 }
-Application& Application::get()
+FilApplication& FilApplication::get()
 {
     return *m_app;
 }
-filament::Engine* Application::getEngine()
+filament::Engine* FilApplication::getEngine()
 {
     return m_engine;
 }
-FilWindow* Application::getWindow()
+FilWindow* FilApplication::getWindow()
 {
     return m_window.get();
 }
-double_t Application::getDeltaT()
+double_t FilApplication::getDeltaT()
 {
     return (double_t)SDL_GetPerformanceCounter() /
                (double_t)SDL_GetPerformanceFrequency() -
            m_prevTimeStep;
 }
-void Application::run()
+void FilApplication::run()
 {
     m_prevTimeStep = (double_t)SDL_GetPerformanceCounter() /
                      (double_t)SDL_GetPerformanceFrequency();
 
     while (!m_closeApp)
     {
-        double_t deltaT = Application::getDeltaT();
+        double_t deltaT = FilApplication::getDeltaT();
 
         constexpr Uint32 K_MAX_EVENTS = 4;
         SDL_Event events[K_MAX_EVENTS];

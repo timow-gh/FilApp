@@ -1,9 +1,9 @@
 #ifndef FILAPP_FILWINDOW_HPP
 #define FILAPP_FILWINDOW_HPP
 
-#include "Application.hpp"
 #include "FilApp/Interfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
+#include "FilApplication.hpp"
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
@@ -17,7 +17,7 @@ namespace FilApp
 class FilWindow
 {
     SDL_Window* m_sdlWindow = nullptr;
-    Application* m_application = nullptr;
+    FilApplication* m_application = nullptr;
     filament::Renderer* m_renderer = nullptr;
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
@@ -36,7 +36,7 @@ class FilWindow
     std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
 
   public:
-    FilWindow(const WindowConfig& windowConfig, Application* application);
+    FilWindow(const WindowConfig& windowConfig, FilApplication* application);
     FilWindow(FilWindow&& window) = default;
     FilWindow& operator=(FilWindow&& window) = default;
     ~FilWindow();

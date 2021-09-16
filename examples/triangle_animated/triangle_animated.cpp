@@ -1,4 +1,4 @@
-#include "FilApp/Application.hpp"
+#include "FilApp/FilApplication.hpp"
 #include "FilApp/FilWindow.hpp"
 #include "FilApp/Interfaces/IView.hpp"
 #include "FilApp/Interfaces/Renderable.hpp"
@@ -9,9 +9,9 @@ using namespace FilApp;
 
 int main()
 {
-    Application::init(AppConfig(), WindowConfig());
+    FilApplication::init(AppConfig(), WindowConfig());
 
-    FilWindow* window = Application::get().getWindow();
+    FilWindow* window = FilApplication::get().getWindow();
     IView* mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
 
@@ -26,6 +26,6 @@ int main()
 
     mainView->addRotationAnimation(renderableId, Vec3{0, 1, 0});
 
-    Application::get().run();
+    FilApplication::get().run();
     return 0;
 }

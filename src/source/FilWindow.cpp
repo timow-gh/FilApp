@@ -22,7 +22,8 @@ void FilWindow::calcWindowViewport()
                   static_cast<uint32_t>(m_width),
                   static_cast<uint32_t>(m_height)};
 }
-FilWindow::FilWindow(const WindowConfig& windowConfig, Application* application)
+FilWindow::FilWindow(const WindowConfig& windowConfig,
+                     FilApplication* application)
 {
     m_application = application;
 
@@ -99,7 +100,7 @@ void FilWindow::mouseDown(int button, size_t x, size_t y)
         {
             m_mouseEventTarget = view.get();
             view->mouseDown(
-                MouseDownEvent(button, x, y, FilApp::Application::getDeltaT()));
+                MouseDownEvent(button, x, y, FilApp::FilApplication::getDeltaT()));
             break;
         }
     }
@@ -111,7 +112,7 @@ void FilWindow::mouseUp(size_t x, size_t y)
     {
         y = m_height - y;
         m_mouseEventTarget->mouseUp(
-            MouseUpEvent(x, y, FilApp::Application::getDeltaT()));
+            MouseUpEvent(x, y, FilApp::FilApplication::getDeltaT()));
         m_mouseEventTarget = nullptr;
     }
 }
@@ -121,7 +122,7 @@ void FilWindow::mouseMoved(size_t x, size_t y)
     y = m_height - y;
     if (m_mouseEventTarget)
         m_mouseEventTarget->mouseMoved(
-            MouseMovedEvent(x, y, FilApp::Application::getDeltaT()));
+            MouseMovedEvent(x, y, FilApp::FilApplication::getDeltaT()));
     m_lastX = x;
     m_lastY = y;
 }
@@ -129,7 +130,7 @@ void FilWindow::mouseWheel(size_t x)
 {
     if (m_mouseEventTarget)
         m_mouseEventTarget->mouseWheel(
-            MouseWheelEvent(x, FilApp::Application::getDeltaT()));
+            MouseWheelEvent(x, FilApp::FilApplication::getDeltaT()));
     else
     {
         for (auto const& view: m_views)
@@ -137,7 +138,7 @@ void FilWindow::mouseWheel(size_t x)
             if (intersects(view->getViewport(), m_lastX, m_lastY))
             {
                 view->mouseWheel(
-                    MouseWheelEvent(x, FilApp::Application::getDeltaT()));
+                    MouseWheelEvent(x, FilApp::FilApplication::getDeltaT()));
                 break;
             }
         }
@@ -175,7 +176,7 @@ void FilWindow::keyDown(SDL_Scancode scancode)
 
     if (targetView)
     {
-        targetView->keyDown(KeyDownEvent(scancode, Application::getDeltaT()));
+        targetView->keyDown(KeyDownEvent(scancode, FilApplication::getDeltaT()));
         eventTarget = targetView;
     }
 }
@@ -184,7 +185,7 @@ void FilWindow::keyUp(SDL_Scancode scancode)
     auto& eventTargetView = m_keyEventTarget[scancode];
     if (!eventTargetView)
         return;
-    eventTargetView->keyUp(KeyUpEvent(scancode, Application::getDeltaT()));
+    eventTargetView->keyUp(KeyUpEvent(scancode, FilApplication::getDeltaT()));
     eventTargetView = nullptr;
 }
 FilWindow::~FilWindow()

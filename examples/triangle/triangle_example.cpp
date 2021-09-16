@@ -1,4 +1,4 @@
-#include "FilApp/Application.hpp"
+#include "FilApp/FilApplication.hpp"
 #include "FilApp/FilWindow.hpp"
 #include "FilApp/Interfaces/Renderable.hpp"
 #include "FilApp/Interfaces/Vertex.hpp"
@@ -7,9 +7,9 @@ using namespace FilApp;
 
 int main()
 {
-    Application::init(AppConfig(), WindowConfig());
+    FilApplication::init(AppConfig(), WindowConfig());
 
-    FilWindow* window = Application::get().getWindow();
+    FilWindow* window = FilApplication::get().getWindow();
     auto mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
 
@@ -21,7 +21,7 @@ int main()
         },
         {0, 1, 2}));
 
-    Application::get().run();
+    FilApplication::get().run();
 
     return 0;
 }

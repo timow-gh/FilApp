@@ -1,5 +1,5 @@
-#ifndef FILAPP_APPLICATION_HPP
-#define FILAPP_APPLICATION_HPP
+#ifndef FILAPP_FILAPPLICATION_HPP
+#define FILAPP_FILAPPLICATION_HPP
 
 #include "FilApp/Interfaces/AppConfig.hpp"
 #include "FilApp/Interfaces/WindowConfig.hpp"
@@ -16,19 +16,19 @@ namespace FilApp
 {
 class FilWindow;
 
-class FILAPP_EXPORT Application
+class FILAPP_EXPORT FilApplication
 {
   public:
     static void init(const AppConfig& appConfig,
                      const WindowConfig& windowConfig);
-    static Application& get();
+    static FilApplication& get();
 
-    Application() = default;
-    Application(const Application& application) = delete;
-    Application& operator=(const Application& application) = delete;
-    Application(Application&& application) = delete;
-    Application& operator=(Application&& application) = delete;
-    ~Application();
+    FilApplication() = default;
+    FilApplication(const FilApplication& application) = delete;
+    FilApplication& operator=(const FilApplication& application) = delete;
+    FilApplication(FilApplication&& application) = delete;
+    FilApplication& operator=(FilApplication&& application) = delete;
+    ~FilApplication();
 
     [[nodiscard]] filament::Engine* getEngine();
     [[nodiscard]] FilWindow* getWindow();
@@ -38,7 +38,7 @@ class FILAPP_EXPORT Application
     void run();
 
   private:
-    static std::unique_ptr<Application> m_app;
+    static std::unique_ptr<FilApplication> m_app;
     static double_t m_prevTimeStep;
 
     filament::Engine* m_engine = nullptr;
@@ -49,4 +49,4 @@ class FILAPP_EXPORT Application
 };
 } // namespace FilApp
 
-#endif // FILAPP_APPLICATION_HPP
+#endif // FILAPP_FILAPPLICATION_HPP
