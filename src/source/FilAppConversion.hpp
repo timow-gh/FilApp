@@ -1,8 +1,8 @@
 #ifndef FILAPP_FILAPPCONVERSION_HPP
 #define FILAPP_FILAPPCONVERSION_HPP
 
-#include "FilApp/BackendMode.hpp"
-#include "FilApp/CameraMode.hpp"
+#include "FilApp/Interfaces/BackendMode.hpp"
+#include "FilApp/Interfaces/CameraMode.hpp"
 #include <camutils/Bookmark.h>
 #include <filament/Engine.h>
 

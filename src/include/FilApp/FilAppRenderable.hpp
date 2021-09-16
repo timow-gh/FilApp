@@ -1,8 +1,8 @@
 #ifndef FILAPP_FILAPPRENDERABLE_HPP
 #define FILAPP_FILAPPRENDERABLE_HPP
 
-#include "Vertex.hpp"
-#include <FilApp/Renderable.hpp>
+#include "FilApp/Interfaces/Vertex.hpp"
+#include <FilApp/Interfaces/Renderable.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>

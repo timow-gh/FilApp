@@ -1,12 +1,12 @@
 #ifndef FILAPP_ICONTROLLER_HPP
 #define FILAPP_ICONTROLLER_HPP
 
-#include "FilApp/IInputListener.hpp"
-#include "FilApp/IModel.hpp"
-#include "FilApp/IView.hpp"
-#include "FilApp/InputEvents.hpp"
-#include <memory>
+#include "IInputListener.hpp"
+#include "IModel.hpp"
+#include "IView.hpp"
+#include "InputEvents.hpp"
 #include <filapp_export.h>
+#include <memory>
 
 namespace FilApp
 {

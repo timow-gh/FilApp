@@ -1,9 +1,9 @@
 #ifndef FILAPP_IVIEW_HPP
 #define FILAPP_IVIEW_HPP
 
-#include "FilApp/IInputListener.hpp"
-#include "FilApp/Renderable.hpp"
-#include "FilApp/Vec3.hpp"
+#include "IInputListener.hpp"
+#include "Renderable.hpp"
+#include "Vec3.hpp"
 #include "Viewport.hpp"
 #include <filapp_export.h>
 

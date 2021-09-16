@@ -1,7 +1,7 @@
 #ifndef FILAPP_APPCONFIG_HPP
 #define FILAPP_APPCONFIG_HPP
 
-#include "FilApp/BackendMode.hpp"
+#include "BackendMode.hpp"
 #include <filapp_export.h>
 
 namespace FilApp

@@ -1,8 +1,8 @@
 #ifndef FILAPP_APPLICATION_HPP
 #define FILAPP_APPLICATION_HPP
 
-#include "AppConfig.hpp"
-#include "WindowConfig.hpp"
+#include "FilApp/Interfaces/AppConfig.hpp"
+#include "FilApp/Interfaces/WindowConfig.hpp"
 #include <cmath>
 #include <filapp_export.h>
 #include <memory>
@@ -14,7 +14,7 @@ class Engine;
 
 namespace FilApp
 {
-class Window;
+class FilWindow;
 
 class FILAPP_EXPORT Application
 {
@@ -31,7 +31,7 @@ class FILAPP_EXPORT Application
     ~Application();
 
     [[nodiscard]] filament::Engine* getEngine();
-    [[nodiscard]] Window* getWindow();
+    [[nodiscard]] FilWindow* getWindow();
 
     static double_t getDeltaT();
 
@@ -43,7 +43,7 @@ class FILAPP_EXPORT Application
 
     filament::Engine* m_engine = nullptr;
 
-    std::unique_ptr<Window> m_window;
+    std::unique_ptr<FilWindow> m_window;
 
     bool m_closeApp = false;
 };

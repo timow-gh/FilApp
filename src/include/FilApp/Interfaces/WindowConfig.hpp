@@ -1,7 +1,7 @@
 #ifndef FILAPP_WINDOWCONFIG_HPP
 #define FILAPP_WINDOWCONFIG_HPP
 
-#include "CameraMode.hpp"
+#include "FilApp/Interfaces/CameraMode.hpp"
 #include <filapp_export.h>
 #include <string>
 

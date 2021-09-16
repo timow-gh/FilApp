@@ -1,4 +1,4 @@
-#include "FilApp/Window.hpp"
+#include "FilApp/FilWindow.hpp"
 #include "FilAppConversion.hpp"
 #include "NativeWindowHelper.hpp"
 #include <SDL_video.h>
@@ -6,7 +6,7 @@
 
 namespace FilApp
 {
-void Window::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
+void FilWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
 {
     int dw, dh, ww, wh;
     SDL_GL_GetDrawableSize(m_sdlWindow, &dw, &dh);
@@ -14,7 +14,7 @@ void Window::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
     x = x * dw / ww;
     y = y * dh / wh;
 }
-void Window::calcWindowViewport()
+void FilWindow::calcWindowViewport()
 {
     SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);
     m_viewport = {0,
@@ -22,7 +22,7 @@ void Window::calcWindowViewport()
                   static_cast<uint32_t>(m_width),
                   static_cast<uint32_t>(m_height)};
 }
-Window::Window(const WindowConfig& windowConfig, Application* application)
+FilWindow::FilWindow(const WindowConfig& windowConfig, Application* application)
 {
     m_application = application;
 
@@ -89,7 +89,7 @@ Window::Window(const WindowConfig& windowConfig, Application* application)
         calcCameraMode(windowConfig.cameraMode)));
     m_mainView = m_views.back().get();
 }
-void Window::mouseDown(int button, size_t x, size_t y)
+void FilWindow::mouseDown(int button, size_t x, size_t y)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
@@ -104,7 +104,7 @@ void Window::mouseDown(int button, size_t x, size_t y)
         }
     }
 }
-void Window::mouseUp(size_t x, size_t y)
+void FilWindow::mouseUp(size_t x, size_t y)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     if (m_mouseEventTarget)
@@ -115,7 +115,7 @@ void Window::mouseUp(size_t x, size_t y)
         m_mouseEventTarget = nullptr;
     }
 }
-void Window::mouseMoved(size_t x, size_t y)
+void FilWindow::mouseMoved(size_t x, size_t y)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
@@ -125,7 +125,7 @@ void Window::mouseMoved(size_t x, size_t y)
     m_lastX = x;
     m_lastY = y;
 }
-void Window::mouseWheel(size_t x)
+void FilWindow::mouseWheel(size_t x)
 {
     if (m_mouseEventTarget)
         m_mouseEventTarget->mouseWheel(
@@ -143,7 +143,7 @@ void Window::mouseWheel(size_t x)
         }
     }
 }
-void Window::keyDown(SDL_Scancode scancode)
+void FilWindow::keyDown(SDL_Scancode scancode)
 {
     auto& eventTarget = m_keyEventTarget[scancode];
 
@@ -179,7 +179,7 @@ void Window::keyDown(SDL_Scancode scancode)
         eventTarget = targetView;
     }
 }
-void Window::keyUp(SDL_Scancode scancode)
+void FilWindow::keyUp(SDL_Scancode scancode)
 {
     auto& eventTargetView = m_keyEventTarget[scancode];
     if (!eventTargetView)
@@ -187,33 +187,33 @@ void Window::keyUp(SDL_Scancode scancode)
     eventTargetView->keyUp(KeyUpEvent(scancode, Application::getDeltaT()));
     eventTargetView = nullptr;
 }
-Window::~Window()
+FilWindow::~FilWindow()
 {
     m_views.clear();
     m_application->getEngine()->destroy(m_renderer);
     m_application->getEngine()->destroy(m_swapChain);
     SDL_DestroyWindow(m_sdlWindow);
 }
-FilAppView* Window::getMainFilAppView()
+FilAppView* FilWindow::getMainFilAppView()
 {
     return m_mainView;
 }
-std::vector<IView*> Window::getViews() const
+std::vector<IView*> FilWindow::getViews() const
 {
     std::vector<IView*> views;
     for (const auto& filappview: m_views)
         views.push_back(filappview.get());
     return views;
 }
-filament::Renderer* Window::getRenderer()
+filament::Renderer* FilWindow::getRenderer()
 {
     return m_renderer;
 }
-filament::SwapChain* Window::getSwapChain()
+filament::SwapChain* FilWindow::getSwapChain()
 {
     return m_swapChain;
 }
-void Window::resize()
+void FilWindow::resize()
 {
     void* nativeWindow = ::getNativeWindow(m_sdlWindow);
 
@@ -240,19 +240,19 @@ void Window::resize()
                                     m_viewport.height));
     }
 }
-uint32_t Window::getWidth() const
+uint32_t FilWindow::getWidth() const
 {
     return m_width;
 }
-uint32_t Window::getHeight() const
+uint32_t FilWindow::getHeight() const
 {
     return m_height;
 }
-IView* Window::getMainIView()
+IView* FilWindow::getMainIView()
 {
     return m_mainView;
 }
-void Window::render()
+void FilWindow::render()
 {
     if (m_renderer->beginFrame(getSwapChain()))
     {
@@ -261,7 +261,7 @@ void Window::render()
         m_renderer->endFrame();
     }
 }
-void Window::animate(double_t deltaT)
+void FilWindow::animate(double_t deltaT)
 {
     if (auto mainViewManip = m_mainView->getCameraManipulator())
     {

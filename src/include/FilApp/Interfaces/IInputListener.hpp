@@ -1,7 +1,7 @@
 #ifndef FILAPP_IINPUTLISTENER_HPP
 #define FILAPP_IINPUTLISTENER_HPP
 
-#include "FilApp/InputEvents.hpp"
+#include "InputEvents.hpp"
 #include <filapp_export.h>
 
 namespace FilApp

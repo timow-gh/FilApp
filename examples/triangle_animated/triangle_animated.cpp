@@ -1,9 +1,9 @@
 #include "FilApp/Application.hpp"
-#include "FilApp/IView.hpp"
-#include "FilApp/Renderable.hpp"
-#include "FilApp/Vec3.hpp"
-#include "FilApp/Vertex.hpp"
-#include "FilApp/Window.hpp"
+#include "FilApp/FilWindow.hpp"
+#include "FilApp/Interfaces/IView.hpp"
+#include "FilApp/Interfaces/Renderable.hpp"
+#include "FilApp/Interfaces/Vec3.hpp"
+#include "FilApp/Interfaces/Vertex.hpp"
 
 using namespace FilApp;
 
@@ -11,7 +11,7 @@ int main()
 {
     Application::init(AppConfig(), WindowConfig());
 
-    Window* window = Application::get().getWindow();
+    FilWindow* window = Application::get().getWindow();
     IView* mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
 

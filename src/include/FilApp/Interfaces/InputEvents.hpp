@@ -1,8 +1,8 @@
 #ifndef FILAPP_INPUTEVENTS_HPP
 #define FILAPP_INPUTEVENTS_HPP
 
-#include "FilApp/EvtPos.hpp"
-#include "FilApp/InputEvents.hpp"
+#include "EvtPos.hpp"
+#include "InputEvents.hpp"
 #include <SDL_scancode.h>
 #include <cmath>
 #include <cstddef>

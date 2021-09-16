@@ -3,28 +3,28 @@ build_resources()
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Application.hpp
         include/FilApp/FilAppView.hpp
-        include/FilApp/Window.hpp
-        include/FilApp/WindowConfig.hpp
-        include/FilApp/AppConfig.hpp
+        include/FilApp/FilWindow.hpp
+        include/FilApp/Interfaces/WindowConfig.hpp
+        include/FilApp/Interfaces/AppConfig.hpp
         include/FilApp/FilAppRenderable.hpp
-        include/FilApp/Vertex.hpp
-        include/FilApp/IController.hpp
-        include/FilApp/IView.hpp
-        include/FilApp/IModel.hpp
-        include/FilApp/InputEvents.hpp
-        include/FilApp/EvtPos.hpp
-        include/FilApp/IInputListener.hpp
-        include/FilApp/CameraMode.hpp
-        include/FilApp/BackendMode.hpp
+        include/FilApp/Interfaces/Vertex.hpp
+        include/FilApp/Interfaces/IController.hpp
+        include/FilApp/Interfaces/IView.hpp
+        include/FilApp/Interfaces/IModel.hpp
+        include/FilApp/Interfaces/InputEvents.hpp
+        include/FilApp/Interfaces/EvtPos.hpp
+        include/FilApp/Interfaces/IInputListener.hpp
+        include/FilApp/Interfaces/CameraMode.hpp
+        include/FilApp/Interfaces/BackendMode.hpp
         source/FilAppConversion.hpp
-        include/FilApp/Renderable.hpp
-        include/FilApp/Vec3.hpp
-        include/FilApp/Viewport.hpp)
+        include/FilApp/Interfaces/Renderable.hpp
+        include/FilApp/Interfaces/Vec3.hpp
+        include/FilApp/Interfaces/Viewport.hpp)
 
 set(FILAPP_SOURCES
         source/Application.cpp
         source/FilAppView.cpp
-        source/Window.cpp
+        source/FilWindow.cpp
         source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp
         source/FilAppRenderable.cpp

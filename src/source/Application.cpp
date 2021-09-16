@@ -1,5 +1,5 @@
 #include "FilApp/Application.hpp"
-#include "FilApp/Window.hpp"
+#include "FilApp/FilWindow.hpp"
 #include "FilAppConversion.hpp"
 #include <SDL.h>
 #include <filament/Camera.h>
@@ -20,7 +20,7 @@ void Application::init(const AppConfig& appConfig,
     m_app->m_engine =
         filament::Engine::create(calcFilamentBackend(appConfig.backendMode));
     m_app->m_window =
-        std::make_unique<Window>(windowConfig, &Application::get());
+        std::make_unique<FilWindow>(windowConfig, &Application::get());
 }
 Application::~Application()
 {
@@ -37,7 +37,7 @@ filament::Engine* Application::getEngine()
 {
     return m_engine;
 }
-Window* Application::getWindow()
+FilWindow* Application::getWindow()
 {
     return m_window.get();
 }
