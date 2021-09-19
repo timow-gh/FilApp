@@ -2,6 +2,7 @@
 #define FILAPP_FILAPPLICATION_HPP
 
 #include "FilApp/Interfaces/AppConfig.hpp"
+#include "FilApp/Interfaces/IWindow.hpp"
 #include "FilApp/Interfaces/WindowConfig.hpp"
 #include <cmath>
 #include <filapp_export.h>
@@ -31,7 +32,7 @@ class FILAPP_EXPORT FilApplication
     ~FilApplication();
 
     [[nodiscard]] filament::Engine* getEngine();
-    [[nodiscard]] FilWindow* getWindow();
+    [[nodiscard]] IWindow* getWindow();
 
     static double_t getDeltaT();
 

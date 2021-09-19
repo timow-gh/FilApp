@@ -30,7 +30,6 @@ class FILAPP_EXPORT IView
                                       const Vec3& rotationAxis) = 0;
 
     virtual void animate(double deltaT) = 0;
-
     virtual Viewport getViewport() const = 0;
     virtual void resize(const Viewport& viewport) = 0;
 };

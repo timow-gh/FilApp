@@ -1,5 +1,4 @@
 #include "FilApp/FilApplication.hpp"
-#include "FilApp/FilWindow.hpp"
 #include "FilApp/Interfaces/IView.hpp"
 #include "FilApp/Interfaces/Renderable.hpp"
 #include "FilApp/Interfaces/Vec3.hpp"
@@ -11,7 +10,7 @@ int main()
 {
     FilApplication::init(AppConfig(), WindowConfig());
 
-    FilWindow* window = FilApplication::get().getWindow();
+    IWindow* window = FilApplication::get().getWindow();
     IView* mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
 

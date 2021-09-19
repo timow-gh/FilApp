@@ -13,7 +13,7 @@ std::unique_ptr<FilApplication> FilApplication::m_app;
 double_t FilApplication::m_prevTimeStep = 0;
 
 void FilApplication::init(const AppConfig& appConfig,
-                       const WindowConfig& windowConfig)
+                          const WindowConfig& windowConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
     m_app = std::make_unique<FilApplication>();
@@ -37,7 +37,7 @@ filament::Engine* FilApplication::getEngine()
 {
     return m_engine;
 }
-FilWindow* FilApplication::getWindow()
+IWindow* FilApplication::getWindow()
 {
     return m_window.get();
 }
@@ -65,26 +65,34 @@ void FilApplication::run()
         for (Uint32 i = 0; i < nevents; i++)
         {
             const SDL_Event& event = events[i];
+
+            // TODO Support for multiple windows. Use IWindow::WindowId
+
             switch (event.type)
             {
             case SDL_QUIT: m_closeApp = true; break;
             case SDL_KEYDOWN:
                 if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                     m_closeApp = true;
-                m_window->keyDown(event.key.keysym.scancode);
+                m_window->keyDown(event.key.keysym.scancode, deltaT);
                 break;
-            case SDL_KEYUP: m_window->keyUp(event.key.keysym.scancode); break;
-            case SDL_MOUSEWHEEL: m_window->mouseWheel(event.wheel.y); break;
+            case SDL_KEYUP:
+                m_window->keyUp(event.key.keysym.scancode, deltaT);
+                break;
+            case SDL_MOUSEWHEEL:
+                m_window->mouseWheel(event.wheel.y, deltaT);
+                break;
             case SDL_MOUSEBUTTONDOWN:
                 m_window->mouseDown(event.button.button,
                                     event.button.x,
-                                    event.button.y);
+                                    event.button.y,
+                                    deltaT);
                 break;
             case SDL_MOUSEBUTTONUP:
-                m_window->mouseUp(event.button.x, event.button.y);
+                m_window->mouseUp(event.button.x, event.button.y, deltaT);
                 break;
             case SDL_MOUSEMOTION:
-                m_window->mouseMoved(event.motion.x, event.motion.y);
+                m_window->mouseMoved(event.motion.x, event.motion.y, deltaT);
                 break;
             case SDL_WINDOWEVENT:
                 switch (event.window.event)

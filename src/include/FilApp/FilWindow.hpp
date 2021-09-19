@@ -1,6 +1,7 @@
 #ifndef FILAPP_FILWINDOW_HPP
 #define FILAPP_FILWINDOW_HPP
 
+#include "FilApp/Interfaces/IWindow.hpp"
 #include "FilApp/Interfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
 #include "FilApplication.hpp"
@@ -15,8 +16,10 @@ namespace FilApp
 {
 
 class FilWindow
+    : public IWindow
 {
     SDL_Window* m_sdlWindow = nullptr;
+    IWindow::WindowId m_windowId{0};
     FilApplication* m_application = nullptr;
     filament::Renderer* m_renderer = nullptr;
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
@@ -39,28 +42,30 @@ class FilWindow
     FilWindow(const WindowConfig& windowConfig, FilApplication* application);
     FilWindow(FilWindow&& window) = default;
     FilWindow& operator=(FilWindow&& window) = default;
-    ~FilWindow();
+    ~FilWindow() override;
 
-    void mouseDown(int button, size_t x, size_t y);
-    void mouseUp(size_t x, size_t y);
-    void mouseMoved(size_t x, size_t y);
-    void mouseWheel(size_t x);
-    void keyDown(SDL_Scancode scancode);
-    void keyUp(SDL_Scancode scancode);
+    void mouseDown(int button, size_t x, size_t y, double_t deltaT);
+    void mouseUp(size_t x, size_t y, double_t deltaT);
+    void mouseMoved(size_t x, size_t y, double_t deltaT);
+    void mouseWheel(size_t x, double_t deltaT);
+    void keyDown(SDL_Scancode scancode, double_t deltaT);
+    void keyUp(SDL_Scancode scancode, double_t deltaT);
 
     void resize();
-
     void animate(double_t deltaT);
     void render();
 
-    [[nodiscard]] IView* getMainIView();
-    [[nodiscard]] FilAppView* getMainFilAppView();
-    [[nodiscard]] std::vector<IView*> getViews() const;
-    [[nodiscard]] filament::Renderer* getRenderer();
-    [[nodiscard]] filament::SwapChain* getSwapChain();
+    [[nodiscard]] IView* getMainIView() override;
+    [[nodiscard]] std::vector<IView*> getIViews() override;
+
+    WindowId getIWindowId() override;
 
     [[nodiscard]] uint32_t getWidth() const;
     [[nodiscard]] uint32_t getHeight() const;
+
+    [[nodiscard]] FilAppView* getMainFilAppView();
+    [[nodiscard]] filament::Renderer* getRenderer();
+    [[nodiscard]] filament::SwapChain* getSwapChain();
 
   private:
     void fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const;
