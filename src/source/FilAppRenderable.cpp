@@ -3,6 +3,18 @@
 
 namespace FilApp
 {
+filament::RenderableManager::PrimitiveType
+calcFilamentPrimitiveType(Renderable::RenderableType renderableType)
+{
+    switch (renderableType)
+    {
+    case Renderable::RenderableType::POINTS:
+        return filament::RenderableManager::PrimitiveType::POINTS;
+    case Renderable::RenderableType::TRIANGLES:
+        return filament::RenderableManager::PrimitiveType::TRIANGLES;
+    default: return filament::RenderableManager::PrimitiveType::NONE;
+    }
+}
 FilAppRenderable createBakedColorRenderable(Renderable&& renderable,
                                             const filament::Box& aabb,
                                             filament::Engine* engine)
@@ -73,7 +85,8 @@ FilAppRenderable createBakedColorRenderable(Renderable&& renderable,
         .boundingBox(aabb)
         .material(0, filAppRenderable.mat->getDefaultInstance())
         .geometry(0,
-                  filament::RenderableManager::PrimitiveType::TRIANGLES,
+                  calcFilamentPrimitiveType(
+                      filAppRenderable.renderable->getRenderableType()),
                   filAppRenderable.vb,
                   filAppRenderable.ib,
                   OFFSET,

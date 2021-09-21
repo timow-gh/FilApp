@@ -1,6 +1,7 @@
 #ifndef FILAPP_VIEWPORT_HPP
 #define FILAPP_VIEWPORT_HPP
 
+#include <cstdint>
 #include <filapp_export.h>
 
 namespace FilApp

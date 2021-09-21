@@ -23,6 +23,13 @@ include(BuildResourceHelper)
 option(FilApp_BUILD_EXAMPLES "" ON)
 
 preamble()
+if (MSVC)
+    # The ASM_MASM compiler id for this compiler is "MSVC", so fill out the runtime library table.
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreaded         "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDLL      "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebug    "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebugDLL "")
+endif ()
 
 add_subdirectory(dependencies)
 

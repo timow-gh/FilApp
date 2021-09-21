@@ -9,6 +9,7 @@
 #include <filament/RenderableManager.h>
 #include <filament/VertexBuffer.h>
 #include <filapp_export.h>
+#include <memory>
 #include <utils/EntityManager.h>
 #include <vector>
 
@@ -32,9 +33,13 @@ struct FilAppRenderable
     }
 };
 
-FilAppRenderable createBakedColorRenderable(Renderable&& renderable,
-                                            const filament::Box& aabb,
-                                            filament::Engine* engine);
+filament::RenderableManager::PrimitiveType
+calcFilamentPrimitiveType(Renderable::RenderableType renderableType);
+
+FilAppRenderable createBakedColorRenderable(
+    Renderable&& renderable,
+    const filament::Box& aabb,
+    filament::Engine* engine);
 
 } // namespace FilApp
 

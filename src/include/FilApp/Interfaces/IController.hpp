@@ -10,7 +10,6 @@
 
 namespace FilApp
 {
-
 class FILAPP_EXPORT IController
     : public IInputListener
 {

@@ -25,11 +25,11 @@ class FILAPP_EXPORT FilApplication
     static FilApplication& get();
 
     FilApplication() = default;
-    FilApplication(const FilApplication& application) = delete;
-    FilApplication& operator=(const FilApplication& application) = delete;
-    FilApplication(FilApplication&& application) = delete;
-    FilApplication& operator=(FilApplication&& application) = delete;
     ~FilApplication();
+    FilApplication(const FilApplication& application) = delete;
+    FilApplication(FilApplication&& application) = delete;
+    FilApplication& operator=(const FilApplication& application) = delete;
+    FilApplication& operator=(FilApplication&& application) = delete;
 
     [[nodiscard]] filament::Engine* getEngine();
     [[nodiscard]] IWindow* getWindow();
