@@ -1,4 +1,5 @@
 #include <FilApp/FilApplication.hpp>
+#include <FilApp/Interfaces/IView.hpp>
 #include <FilApp/Interfaces/IWindow.hpp>
 #include <FilApp/Interfaces/Renderable.hpp>
 #include <FilApp/Interfaces/Vertex.hpp>
@@ -8,8 +9,8 @@ using namespace FilApp;
 
 int main()
 {
-    FilApplication::init(WindowConfig(), AppConfig());
-    auto app = FilApplication::get();
+    FilApplication::init(AppConfig(), WindowConfig());
+    auto& app = FilApplication::get();
 
     std::vector<Vertex> vertices = {
         Vertex{{0, 0, 0}, 0xffff0000u},
@@ -20,7 +21,9 @@ int main()
     IWindow* window = app.getWindow();
     IView* mainView = window->getMainIView();
 
-    auto pointRenderable = Renderable
+    mainView->addRenderable(Renderable(std::move(vertices),
+                                       {0, 1, 2},
+                                       Renderable::RenderableType::POINTS));
 
     app.run();
 }

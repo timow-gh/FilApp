@@ -1,4 +1,4 @@
-#include "FilApp/FilWindow.hpp"
+#include "FilApp/FilAppWindow.hpp"
 #include "FilAppConversion.hpp"
 #include "NativeWindowHelper.hpp"
 #include <SDL_video.h>
@@ -6,7 +6,7 @@
 
 namespace FilApp
 {
-FilWindow::FilWindow(const WindowConfig& windowConfig,
+FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
                      FilApplication* application)
 {
     m_application = application;
@@ -76,7 +76,7 @@ FilWindow::FilWindow(const WindowConfig& windowConfig,
         calcCameraMode(windowConfig.cameraMode)));
     m_mainView = m_views.back().get();
 }
-void FilWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
+void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
@@ -94,7 +94,7 @@ void FilWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
         }
     }
 }
-void FilWindow::mouseUp(size_t x, size_t y, double_t deltaT)
+void FilAppWindow::mouseUp(size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     if (m_mouseEventTarget)
@@ -105,7 +105,7 @@ void FilWindow::mouseUp(size_t x, size_t y, double_t deltaT)
         m_mouseEventTarget = nullptr;
     }
 }
-void FilWindow::mouseMoved(size_t x, size_t y, double_t deltaT)
+void FilAppWindow::mouseMoved(size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
@@ -115,7 +115,7 @@ void FilWindow::mouseMoved(size_t x, size_t y, double_t deltaT)
     m_lastX = x;
     m_lastY = y;
 }
-void FilWindow::mouseWheel(size_t x, double_t deltaT)
+void FilAppWindow::mouseWheel(size_t x, double_t deltaT)
 {
     if (m_mouseEventTarget)
         m_mouseEventTarget->mouseWheel(
@@ -133,7 +133,7 @@ void FilWindow::mouseWheel(size_t x, double_t deltaT)
         }
     }
 }
-void FilWindow::keyDown(SDL_Scancode scancode, double_t deltaT)
+void FilAppWindow::keyDown(SDL_Scancode scancode, double_t deltaT)
 {
     auto& eventTarget = m_keyEventTarget[scancode];
 
@@ -170,7 +170,7 @@ void FilWindow::keyDown(SDL_Scancode scancode, double_t deltaT)
         eventTarget = targetView;
     }
 }
-void FilWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
+void FilAppWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
 {
     auto& eventTargetView = m_keyEventTarget[scancode];
     if (!eventTargetView)
@@ -178,45 +178,45 @@ void FilWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
     eventTargetView->keyUp(KeyUpEvent(scancode, deltaT));
     eventTargetView = nullptr;
 }
-FilWindow::~FilWindow()
+FilAppWindow::~FilAppWindow()
 {
     m_views.clear();
     m_application->getEngine()->destroy(m_renderer);
     m_application->getEngine()->destroy(m_swapChain);
     SDL_DestroyWindow(m_sdlWindow);
 }
-std::vector<IView*> FilWindow::getIViews()
+std::vector<IView*> FilAppWindow::getIViews()
 {
     std::vector<IView*> views;
     for (const auto& filappview: m_views)
         views.push_back(filappview.get());
     return views;
 }
-IWindow::WindowId FilWindow::getIWindowId()
+IWindow::WindowId FilAppWindow::getIWindowId()
 {
     return m_windowId;
 }
-uint32_t FilWindow::getWidth() const
+uint32_t FilAppWindow::getWidth() const
 {
     return m_width;
 }
-uint32_t FilWindow::getHeight() const
+uint32_t FilAppWindow::getHeight() const
 {
     return m_height;
 }
-FilAppView* FilWindow::getMainFilAppView()
+FilAppView* FilAppWindow::getMainFilAppView()
 {
     return m_mainView;
 }
-filament::Renderer* FilWindow::getRenderer()
+filament::Renderer* FilAppWindow::getRenderer()
 {
     return m_renderer;
 }
-filament::SwapChain* FilWindow::getSwapChain()
+filament::SwapChain* FilAppWindow::getSwapChain()
 {
     return m_swapChain;
 }
-void FilWindow::resize()
+void FilAppWindow::resize()
 {
     void* nativeWindow = ::getNativeWindow(m_sdlWindow);
 
@@ -243,11 +243,11 @@ void FilWindow::resize()
                                     m_viewport.height));
     }
 }
-IView* FilWindow::getMainIView()
+IView* FilAppWindow::getMainIView()
 {
     return m_mainView;
 }
-void FilWindow::render()
+void FilAppWindow::render()
 {
     if (m_renderer->beginFrame(getSwapChain()))
     {
@@ -256,7 +256,7 @@ void FilWindow::render()
         m_renderer->endFrame();
     }
 }
-void FilWindow::animate(double_t deltaT)
+void FilAppWindow::animate(double_t deltaT)
 {
     if (auto mainViewManip = m_mainView->getCameraManipulator())
     {
@@ -278,7 +278,7 @@ bool intersects(const Viewport& viewport, size_t x, size_t y)
             return true;
     return false;
 }
-void FilWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
+void FilAppWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
 {
     int dw, dh, ww, wh;
     SDL_GL_GetDrawableSize(m_sdlWindow, &dw, &dh);
@@ -286,7 +286,7 @@ void FilWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
     x = x * dw / ww;
     y = y * dh / wh;
 }
-void FilWindow::calcWindowViewport()
+void FilAppWindow::calcWindowViewport()
 {
     SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);
     m_viewport = {0,

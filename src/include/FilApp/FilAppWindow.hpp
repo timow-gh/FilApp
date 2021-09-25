@@ -1,5 +1,5 @@
-#ifndef FILAPP_FILWINDOW_HPP
-#define FILAPP_FILWINDOW_HPP
+#ifndef FILAPP_FILAPPWINDOW_HPP
+#define FILAPP_FILAPPWINDOW_HPP
 
 #include "FilApp/Interfaces/IWindow.hpp"
 #include "FilApp/Interfaces/WindowConfig.hpp"
@@ -15,7 +15,7 @@
 namespace FilApp
 {
 
-class FilWindow
+class FilAppWindow
     : public IWindow
 {
     SDL_Window* m_sdlWindow = nullptr;
@@ -39,10 +39,10 @@ class FilWindow
     std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
 
   public:
-    FilWindow(const WindowConfig& windowConfig, FilApplication* application);
-    FilWindow(FilWindow&& window) = default;
-    FilWindow& operator=(FilWindow&& window) = default;
-    ~FilWindow() override;
+    FilAppWindow(const WindowConfig& windowConfig, FilApplication* application);
+    FilAppWindow(FilAppWindow&& window) = default;
+    FilAppWindow& operator=(FilAppWindow&& window) = default;
+    ~FilAppWindow() override;
 
     void mouseDown(int button, size_t x, size_t y, double_t deltaT);
     void mouseUp(size_t x, size_t y, double_t deltaT);
@@ -75,4 +75,4 @@ class FilWindow
 bool intersects(const Viewport& viewport, size_t x, size_t y);
 } // namespace FilApp
 
-#endif // FILAPP_FILWINDOW_HPP
+#endif // FILAPP_FILAPPWINDOW_HPP

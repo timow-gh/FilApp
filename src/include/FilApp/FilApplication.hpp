@@ -15,7 +15,7 @@ class Engine;
 
 namespace FilApp
 {
-class FilWindow;
+class FilAppWindow;
 
 class FILAPP_EXPORT FilApplication
 {
@@ -44,7 +44,7 @@ class FILAPP_EXPORT FilApplication
 
     filament::Engine* m_engine = nullptr;
 
-    std::unique_ptr<FilWindow> m_window;
+    std::unique_ptr<FilAppWindow> m_window;
 
     bool m_closeApp = false;
 };

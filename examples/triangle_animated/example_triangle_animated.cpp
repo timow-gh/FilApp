@@ -1,8 +1,6 @@
 #include "FilApp/FilApplication.hpp"
 #include "FilApp/Interfaces/IView.hpp"
 #include "FilApp/Interfaces/Renderable.hpp"
-#include "FilApp/Interfaces/Vec3.hpp"
-#include "FilApp/Interfaces/Vertex.hpp"
 
 using namespace FilApp;
 

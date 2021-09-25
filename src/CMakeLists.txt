@@ -3,7 +3,7 @@ build_resources()
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppView.hpp
-        include/FilApp/FilWindow.hpp
+        include/FilApp/FilAppWindow.hpp
         include/FilApp/Interfaces/WindowConfig.hpp
         include/FilApp/Interfaces/AppConfig.hpp
         include/FilApp/FilAppRenderable.hpp
@@ -25,7 +25,7 @@ set(FILAPP_SOURCES
         source/FilAppConversion.hpp
         source/FilApplication.cpp
         source/FilAppView.cpp
-        source/FilWindow.cpp
+        source/FilAppWindow.cpp
         source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp
         source/FilAppRenderable.cpp
