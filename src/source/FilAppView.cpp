@@ -121,12 +121,21 @@ void FilAppView::configureCameraProjection()
 }
 RenderableIdentifier FilAppView::addRenderable(TriangleRenderable&& renderable)
 {
-    m_renderables.push_back(
-        createBakedColorRenderable(std::move(renderable),
+    m_triangleRenderables.emplace_back(
+        std::make_unique<TriangleRenderable>(std::move(renderable)));
+
+    return addRenderable(
+        createBakedColorRenderable(m_triangleRenderables.back().get(),
                                    filament::Box{{0, 0, 0}, {10, 10, 10}},
                                    m_engine));
-    m_scene->addEntity(m_renderables.back().renderableEntity);
-    return m_renderables.back().renderableEntity.getId();
+}
+RenderableIdentifier FilAppView::addRenderable(PointRenderable&& renderable)
+{
+    //    return addRenderable(
+    //        createBakedColorRenderable(std::move(renderable),
+    //                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
+    //                                   m_engine));
+    return RenderableIdentifier();
 }
 std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
 {
@@ -217,6 +226,13 @@ void FilAppView::keyUp(const KeyUpEvent& keyUpEvent) const
             m_cameraManipulator->keyDown(key);
         }
     }
+}
+RenderableIdentifier
+FilAppView::addRenderable(FilAppRenderable&& filAppRenderable)
+{
+    m_renderables.emplace_back(std::move(filAppRenderable));
+    m_scene->addEntity(m_renderables.back().renderableEntity);
+    return m_renderables.back().renderableEntity.getId();
 }
 void FilAppView::clearFilAppRenderables()
 {

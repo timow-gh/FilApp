@@ -1,7 +1,7 @@
 #ifndef FILAPP_TRIANGLERENDERABLE_HPP
 #define FILAPP_TRIANGLERENDERABLE_HPP
 
-#include "Vertex.hpp"
+#include "FilApp/Interfaces/Vertex.hpp"
 #include <filapp_export.h>
 #include <utility>
 #include <vector>
@@ -18,8 +18,8 @@ class FILAPP_EXPORT TriangleRenderable
     {
     }
 
-    const std::vector<Vertex>& getVertices() const { return m_vertices; }
-    const std::vector<uint16_t>& getIndices() const { return m_indices; }
+    [[nodiscard]] const std::vector<Vertex>& getVertices() const { return m_vertices; }
+    [[nodiscard]] const std::vector<uint16_t>& getIndices() const { return m_indices; }
 
   private:
     std::vector<Vertex> m_vertices;

@@ -1,6 +1,6 @@
 #include "FilApp/FilApplication.hpp"
 #include "FilApp/Interfaces/IView.hpp"
-#include "FilApp/Interfaces/TriangleRenderable.hpp"
+#include "FilApp/TriangleRenderable.hpp"
 
 using namespace FilApp;
 

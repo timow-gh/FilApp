@@ -38,6 +38,9 @@ class FilAppView
 
     filament::Viewport m_viewport;
 
+    std::vector<std::unique_ptr<PointRenderable>> m_pointRenderables;
+    std::vector<std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
+
     std::vector<FilAppRenderable> m_renderables;
 
     std::vector<AnimationCallBack> m_animationCallbacks;
@@ -54,6 +57,7 @@ class FilAppView
 
     // clang-format off
     auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
+    auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
     auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
     void removeRenderable(RenderableIdentifier renderableIdentifier) override;
     void clearRenderables() override;
@@ -83,6 +87,7 @@ class FilAppView
     [[nodiscard]] CameraManipulator* getCameraManipulator();
 
   private:
+    RenderableIdentifier addRenderable(FilAppRenderable&& filAppRenderable);
     void clearFilAppRenderables();
     bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
                                    CameraManipulator::Key& key) const;

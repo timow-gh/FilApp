@@ -1,8 +1,9 @@
 #ifndef FILAPP_IVIEW_HPP
 #define FILAPP_IVIEW_HPP
 
+#include "FilApp/PointRenderable.hpp"
+#include "FilApp/TriangleRenderable.hpp"
 #include "IInputListener.hpp"
-#include "TriangleRenderable.hpp"
 #include "Vec3.hpp"
 #include "Viewport.hpp"
 #include <filapp_export.h>
@@ -19,6 +20,7 @@ class FILAPP_EXPORT IView
 
     // clang-format off
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier = 0;
+    virtual auto addRenderable(PointRenderable&& renderable) -> RenderableIdentifier = 0;
     virtual auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> = 0;
     virtual void removeRenderable(RenderableIdentifier renderableIdentifier) = 0;
     virtual void clearRenderables() = 0;

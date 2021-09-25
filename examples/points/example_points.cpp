@@ -1,8 +1,8 @@
 #include <FilApp/FilApplication.hpp>
 #include <FilApp/Interfaces/IView.hpp>
 #include <FilApp/Interfaces/IWindow.hpp>
-#include <FilApp/Interfaces/TriangleRenderable.hpp>
 #include <FilApp/Interfaces/Vertex.hpp>
+#include <FilApp/TriangleRenderable.hpp>
 #include <vector>
 
 using namespace FilApp;
