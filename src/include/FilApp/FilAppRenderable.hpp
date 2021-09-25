@@ -2,7 +2,7 @@
 #define FILAPP_FILAPPRENDERABLE_HPP
 
 #include "FilApp/Interfaces/Vertex.hpp"
-#include <FilApp/Interfaces/Renderable.hpp>
+#include <FilApp/Interfaces/TriangleRenderable.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>
@@ -17,7 +17,7 @@ namespace FilApp
 {
 struct FilAppRenderable
 {
-    std::unique_ptr<Renderable> renderable;
+    std::unique_ptr<TriangleRenderable> renderable;
     filament::Engine* engine = nullptr;
     filament::VertexBuffer* vb = nullptr;
     filament::IndexBuffer* ib = nullptr;
@@ -33,11 +33,7 @@ struct FilAppRenderable
     }
 };
 
-filament::RenderableManager::PrimitiveType
-calcFilamentPrimitiveType(Renderable::RenderableType renderableType);
-
-FilAppRenderable createBakedColorRenderable(
-    Renderable&& renderable,
+FilAppRenderable createBakedColorRenderable(TriangleRenderable&& renderable,
     const filament::Box& aabb,
     filament::Engine* engine);
 

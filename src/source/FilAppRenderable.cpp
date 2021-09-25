@@ -3,25 +3,13 @@
 
 namespace FilApp
 {
-filament::RenderableManager::PrimitiveType
-calcFilamentPrimitiveType(Renderable::RenderableType renderableType)
-{
-    switch (renderableType)
-    {
-    case Renderable::RenderableType::POINTS:
-        return filament::RenderableManager::PrimitiveType::POINTS;
-    case Renderable::RenderableType::TRIANGLES:
-        return filament::RenderableManager::PrimitiveType::TRIANGLES;
-    default: return filament::RenderableManager::PrimitiveType::NONE;
-    }
-}
-FilAppRenderable createBakedColorRenderable(Renderable&& renderable,
+FilAppRenderable createBakedColorRenderable(TriangleRenderable&& renderable,
                                             const filament::Box& aabb,
                                             filament::Engine* engine)
 {
     FilAppRenderable filAppRenderable;
     filAppRenderable.renderable =
-        std::make_unique<Renderable>(std::move(renderable));
+        std::make_unique<TriangleRenderable>(std::move(renderable));
     filAppRenderable.engine = engine;
 
     constexpr std::size_t VERTEX_SIZE = sizeof(Vertex);
@@ -74,8 +62,8 @@ FilAppRenderable createBakedColorRenderable(Renderable&& renderable,
             INDICES_BUFFER_SIZE,
             nullptr));
     filAppRenderable.mat = filament::Material::Builder()
-                               .package(FILAPP_RESOURCES_BAKEDCOLOR_DATA,
-                                        FILAPP_RESOURCES_BAKEDCOLOR_SIZE)
+                               .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
+                                        FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
                                .build(*filAppRenderable.engine);
 
     filAppRenderable.renderableEntity = utils::EntityManager::get().create();
@@ -85,8 +73,7 @@ FilAppRenderable createBakedColorRenderable(Renderable&& renderable,
         .boundingBox(aabb)
         .material(0, filAppRenderable.mat->getDefaultInstance())
         .geometry(0,
-                  calcFilamentPrimitiveType(
-                      filAppRenderable.renderable->getRenderableType()),
+                  filament::RenderableManager::PrimitiveType::TRIANGLES,
                   filAppRenderable.vb,
                   filAppRenderable.ib,
                   OFFSET,

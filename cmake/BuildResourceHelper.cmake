@@ -63,7 +63,7 @@ function(build_resources)
     file(MAKE_DIRECTORY ${MATERIAL_DIR})
     set(RESOURCE_BINS)
 
-    set(MATERIALSRC resources/material/bakedColor.mat)
+    set(MATERIALSRC resources/material/bakedFragColor.mat)
     get_filename_component(localname ${MATERIALSRC} NAME_WE)
     message(STATUS "LOCALNAME: ${localname}")
     get_filename_component(fullname ${MATERIALSRC} ABSOLUTE)

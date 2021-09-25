@@ -1,10 +1,17 @@
 material {
-    name : BakedColor,
+    name : BakedFragColor,
     requires : [
+        custom0,
         color
     ],
     shadingModel : unlit,
     culling : none
+}
+
+vertex {
+    void materialVertex(inout MaterialVertexInputs material) {
+        gl_PointSize = getCustom0().r;
+    }
 }
 
 fragment {

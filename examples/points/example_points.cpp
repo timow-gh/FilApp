@@ -1,7 +1,7 @@
 #include <FilApp/FilApplication.hpp>
 #include <FilApp/Interfaces/IView.hpp>
 #include <FilApp/Interfaces/IWindow.hpp>
-#include <FilApp/Interfaces/Renderable.hpp>
+#include <FilApp/Interfaces/TriangleRenderable.hpp>
 #include <FilApp/Interfaces/Vertex.hpp>
 #include <vector>
 
@@ -21,9 +21,7 @@ int main()
     IWindow* window = app.getWindow();
     IView* mainView = window->getMainIView();
 
-    mainView->addRenderable(Renderable(std::move(vertices),
-                                       {0, 1, 2},
-                                       Renderable::RenderableType::POINTS));
+    mainView->addRenderable(TriangleRenderable(std::move(vertices), {0, 1, 2}));
 
     app.run();
 }

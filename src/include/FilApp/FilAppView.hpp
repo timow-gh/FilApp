@@ -53,7 +53,7 @@ class FilAppView
     ~FilAppView() override;
 
     // clang-format off
-    auto addRenderable(Renderable&& renderable) -> RenderableIdentifier override;
+    auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
     auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
     void removeRenderable(RenderableIdentifier renderableIdentifier) override;
     void clearRenderables() override;

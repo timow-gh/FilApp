@@ -16,7 +16,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Interfaces/IInputListener.hpp
         include/FilApp/Interfaces/CameraMode.hpp
         include/FilApp/Interfaces/BackendMode.hpp
-        include/FilApp/Interfaces/Renderable.hpp
+        include/FilApp/Interfaces/TriangleRenderable.hpp
         include/FilApp/Interfaces/Vec3.hpp
         include/FilApp/Interfaces/Viewport.hpp
         include/FilApp/Interfaces/IWindow.hpp)

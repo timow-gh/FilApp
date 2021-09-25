@@ -119,7 +119,7 @@ void FilAppView::configureCameraProjection()
                             0.1,
                             100);
 }
-RenderableIdentifier FilAppView::addRenderable(Renderable&& renderable)
+RenderableIdentifier FilAppView::addRenderable(TriangleRenderable&& renderable)
 {
     m_renderables.push_back(
         createBakedColorRenderable(std::move(renderable),
