@@ -7,7 +7,7 @@
 namespace FilApp
 {
 FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
-                     FilApplication* application)
+                           FilApplication* application)
 {
     m_application = application;
 
@@ -22,8 +22,8 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
     m_sdlWindow = SDL_CreateWindow(windowConfig.title.c_str(),
                                    x,
                                    y,
-                                   windowConfig.width,
-                                   windowConfig.height,
+                                   static_cast<int>(windowConfig.width),
+                                   static_cast<int>(windowConfig.height),
                                    windowFlags);
 
     m_windowId = SDL_GetWindowID(m_sdlWindow);
@@ -85,11 +85,7 @@ void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
         if (intersects(view->getViewport(), x, y))
         {
             m_mouseEventTarget = view.get();
-            view->mouseDown(
-                MouseDownEvent(button,
-                               x,
-                               y,
-                               deltaT));
+            view->mouseDown(MouseDownEvent(button, x, y, deltaT));
             break;
         }
     }
@@ -100,8 +96,7 @@ void FilAppWindow::mouseUp(size_t x, size_t y, double_t deltaT)
     if (m_mouseEventTarget)
     {
         y = m_height - y;
-        m_mouseEventTarget->mouseUp(
-            MouseUpEvent(x, y, deltaT));
+        m_mouseEventTarget->mouseUp(MouseUpEvent(x, y, deltaT));
         m_mouseEventTarget = nullptr;
     }
 }
@@ -110,24 +105,21 @@ void FilAppWindow::mouseMoved(size_t x, size_t y, double_t deltaT)
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
     if (m_mouseEventTarget)
-        m_mouseEventTarget->mouseMoved(
-            MouseMovedEvent(x, y, deltaT));
+        m_mouseEventTarget->mouseMoved(MouseMovedEvent(x, y, deltaT));
     m_lastX = x;
     m_lastY = y;
 }
 void FilAppWindow::mouseWheel(size_t x, double_t deltaT)
 {
     if (m_mouseEventTarget)
-        m_mouseEventTarget->mouseWheel(
-            MouseWheelEvent(x, deltaT));
+        m_mouseEventTarget->mouseWheel(MouseWheelEvent(x, deltaT));
     else
     {
         for (auto const& view: m_views)
         {
             if (intersects(view->getViewport(), m_lastX, m_lastY))
             {
-                view->mouseWheel(
-                    MouseWheelEvent(x, deltaT));
+                view->mouseWheel(MouseWheelEvent(x, deltaT));
                 break;
             }
         }
@@ -165,8 +157,7 @@ void FilAppWindow::keyDown(SDL_Scancode scancode, double_t deltaT)
 
     if (targetView)
     {
-        targetView->keyDown(
-            KeyDownEvent(scancode, deltaT));
+        targetView->keyDown(KeyDownEvent(scancode, deltaT));
         eventTarget = targetView;
     }
 }
