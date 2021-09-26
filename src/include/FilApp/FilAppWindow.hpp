@@ -2,9 +2,9 @@
 #define FILAPP_FILAPPWINDOW_HPP
 
 #include "FilApp/Interfaces/IWindow.hpp"
-#include "FilApp/Interfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
 #include "FilApplication.hpp"
+#include "WindowConfig.hpp"
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>

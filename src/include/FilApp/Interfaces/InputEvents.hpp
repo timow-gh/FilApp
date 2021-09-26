@@ -1,7 +1,6 @@
 #ifndef FILAPP_INPUTEVENTS_HPP
 #define FILAPP_INPUTEVENTS_HPP
 
-#include "EvtPos.hpp"
 #include "InputEvents.hpp"
 #include <SDL_scancode.h>
 #include <cmath>
@@ -11,6 +10,14 @@
 
 namespace FilApp
 {
+struct FILAPP_EXPORT EvtPos
+{
+    size_t x;
+    size_t y;
+
+    EvtPos(size_t x, size_t y) : x(x), y(y) {}
+};
+
 struct FILAPP_EXPORT MouseDownEvent
 {
     int button;

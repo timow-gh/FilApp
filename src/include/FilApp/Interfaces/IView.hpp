@@ -1,10 +1,10 @@
 #ifndef FILAPP_IVIEW_HPP
 #define FILAPP_IVIEW_HPP
 
-#include "FilApp/PointRenderable.hpp"
-#include "FilApp/TriangleRenderable.hpp"
+#include "FilApp/Renderables/PointRenderable.hpp"
+#include "FilApp/Renderables/TriangleRenderable.hpp"
+#include "FilApp/Vec3.hpp"
 #include "IInputListener.hpp"
-#include "Vec3.hpp"
 #include "Viewport.hpp"
 #include <filapp_export.h>
 

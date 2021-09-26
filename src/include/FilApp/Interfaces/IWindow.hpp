@@ -14,7 +14,7 @@ class FILAPP_EXPORT IWindow
   public:
     virtual ~IWindow() = default;
 
-    using WindowId = Uint32;
+    using WindowId = uint32_t;
 
     virtual IView* getMainIView() = 0;
     virtual std::vector<IView*> getIViews() = 0;

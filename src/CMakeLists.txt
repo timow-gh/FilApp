@@ -4,22 +4,19 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppView.hpp
         include/FilApp/FilAppWindow.hpp
-        include/FilApp/Interfaces/WindowConfig.hpp
-        include/FilApp/Interfaces/AppConfig.hpp
+        include/FilApp/WindowConfig.hpp
+        include/FilApp/AppConfig.hpp
         source/FilAppRenderable.hpp
-        include/FilApp/Interfaces/Vertex.hpp
+        include/FilApp/Renderables/Vertex.hpp
         include/FilApp/Interfaces/IController.hpp
         include/FilApp/Interfaces/IView.hpp
         include/FilApp/Interfaces/IModel.hpp
         include/FilApp/Interfaces/InputEvents.hpp
-        include/FilApp/Interfaces/EvtPos.hpp
         include/FilApp/Interfaces/IInputListener.hpp
-        include/FilApp/Interfaces/CameraMode.hpp
-        include/FilApp/Interfaces/BackendMode.hpp
-        include/FilApp/TriangleRenderable.hpp
-        include/FilApp/Interfaces/Vec3.hpp
+        include/FilApp/Renderables/TriangleRenderable.hpp
+        include/FilApp/Vec3.hpp
         include/FilApp/Interfaces/Viewport.hpp
-        include/FilApp/Interfaces/IWindow.hpp include/FilApp/PointRenderable.hpp)
+        include/FilApp/Interfaces/IWindow.hpp include/FilApp/Renderables/PointRenderable.hpp)
 
 set(FILAPP_SOURCES
         source/FilAppConversion.hpp
