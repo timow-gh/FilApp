@@ -131,11 +131,13 @@ RenderableIdentifier FilAppView::addRenderable(TriangleRenderable&& renderable)
 }
 RenderableIdentifier FilAppView::addRenderable(PointRenderable&& renderable)
 {
-    //    return addRenderable(
-    //        createBakedColorRenderable(std::move(renderable),
-    //                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
-    //                                   m_engine));
-    return RenderableIdentifier();
+    m_pointRenderables.emplace_back(
+        std::make_unique<PointRenderable>(std::move(renderable)));
+
+    return addRenderable(
+        createBakedColorRenderable(m_pointRenderables.back().get(),
+                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
+                                   m_engine));
 }
 std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
 {

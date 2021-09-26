@@ -11,8 +11,12 @@ namespace FilApp
 class FILAPP_EXPORT PointRenderable
 {
   public:
-    PointRenderable(std::vector<Vertex> vertices, const float_t& pointSize)
-        : m_vertices(std::move(vertices)), m_pointSize(pointSize)
+    PointRenderable(std::vector<Vertex> vertices,
+                    std::vector<uint16_t> indices,
+                    std::vector<float_t> pointSizes)
+        : m_vertices(std::move(vertices))
+        , m_indices(std::move(indices))
+        , m_pointSizes(std::move(pointSizes))
     {
     }
 
@@ -20,11 +24,19 @@ class FILAPP_EXPORT PointRenderable
     {
         return m_vertices;
     }
-    [[nodiscard]] float_t getPointSize() const { return m_pointSize; }
+    [[nodiscard]] const std::vector<uint16_t>& getIndices() const
+    {
+        return m_indices;
+    }
+    [[nodiscard]] const std::vector<float_t>& getPointSizes() const
+    {
+        return m_pointSizes;
+    }
 
   private:
     std::vector<Vertex> m_vertices;
-    float_t m_pointSize;
+    std::vector<uint16_t> m_indices;
+    std::vector<float_t> m_pointSizes;
 };
 } // namespace FilApp
 

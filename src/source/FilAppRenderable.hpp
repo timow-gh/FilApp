@@ -7,6 +7,7 @@
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>
+#include <filament/MaterialInstance.h>
 #include <filament/RenderableManager.h>
 #include <filament/VertexBuffer.h>
 #include <filapp_export.h>
@@ -22,6 +23,7 @@ struct FilAppRenderable
     filament::VertexBuffer* vb = nullptr;
     filament::IndexBuffer* ib = nullptr;
     filament::Material* mat = nullptr;
+    filament::MaterialInstance* matInstance = nullptr;
     utils::Entity renderableEntity;
 
     void destroy() const
@@ -33,13 +35,14 @@ struct FilAppRenderable
     }
 };
 
-FilAppRenderable createBakedColorRenderable(TriangleRenderable* triangleRenderable,
+FilAppRenderable
+createBakedColorRenderable(TriangleRenderable* triangleRenderable,
+                           const filament::Box& aabb,
+                           filament::Engine* engine);
+
+FilAppRenderable createBakedColorRenderable(PointRenderable* renderable,
                                             const filament::Box& aabb,
                                             filament::Engine* engine);
-
-//FilAppRenderable createBakedColorRenderable(PointRenderable&& renderable,
-//                                            const filament::Box& aabb,
-//                                            filament::Engine* engine);
 } // namespace FilApp
 
 #endif // FILAPP_FILAPPRENDERABLE_HPP

@@ -2,7 +2,7 @@
 #include <FilApp/Interfaces/IView.hpp>
 #include <FilApp/Interfaces/IWindow.hpp>
 #include <FilApp/Interfaces/Vertex.hpp>
-#include <FilApp/TriangleRenderable.hpp>
+#include <FilApp/PointRenderable.hpp>
 #include <vector>
 
 using namespace FilApp;
@@ -14,14 +14,15 @@ int main()
 
     std::vector<Vertex> vertices = {
         Vertex{{0, 0, 0}, 0xffff0000u},
-        Vertex{{1, 0, 0}, 0xff00ff00u},
-        Vertex{{0, 0, 2}, 0xff0000ffu},
+        Vertex{{1, 0, 0}, 0xffff0000u},
+        Vertex{{0, 0, 2}, 0xffff0000u},
     };
 
     IWindow* window = app.getWindow();
     IView* mainView = window->getMainIView();
 
-    mainView->addRenderable(TriangleRenderable(std::move(vertices), {0, 1, 2}));
+    mainView->addRenderable(
+        PointRenderable(std::move(vertices), {0, 1, 2}, {4.0, 4.0, 4.0}));
 
     app.run();
 }

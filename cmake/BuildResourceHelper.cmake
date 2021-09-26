@@ -45,13 +45,13 @@ function(build_resources)
 
     if (FILAMENT_SUPPORTS_OPENGL)
         set(MATC_API_FLAGS ${MATC_API_FLAGS} -a opengl)
-    endif()
+    endif ()
     if (FILAMENT_SUPPORTS_VULKAN)
         set(MATC_API_FLAGS ${MATC_API_FLAGS} -a vulkan)
-    endif()
+    endif ()
     if (FILAMENT_SUPPORTS_METAL)
         set(MATC_API_FLAGS ${MATC_API_FLAGS} -a metal)
-    endif()
+    endif ()
 
     ## ==================================================================================================
     ## Build materials
@@ -63,23 +63,26 @@ function(build_resources)
     file(MAKE_DIRECTORY ${MATERIAL_DIR})
     set(RESOURCE_BINS)
 
-    set(MATERIALSRC resources/material/bakedFragColor.mat)
-    get_filename_component(localname ${MATERIALSRC} NAME_WE)
-    message(STATUS "LOCALNAME: ${localname}")
-    get_filename_component(fullname ${MATERIALSRC} ABSOLUTE)
-    message(STATUS "FULLNAME: ${fullname}")
-    set(output_path "${MATERIAL_DIR}/${localname}.filamat")
-    add_custom_command(
-            OUTPUT ${output_path}
-            COMMAND matc ${MATC_BASE_FLAGS} -o ${output_path} ${fullname}
-            MAIN_DEPENDENCY ${MATERIALSRC}
-            DEPENDS matc
-            COMMENT "Compiling material ${MATERIALSRC} to ${output_path}"
-    )
     message(STATUS "MATC_BASE_FLAGS: ${MATC_BASE_FLAGS}")
 
-    list(APPEND RESOURCE_BINS ${output_path})
-    message(STATUS "RESOURCE_BINS: ${RESOURCE_BINS}")
+    file(GLOB MATERIAL_SRCS ${CMAKE_CURRENT_LIST_DIR}/resources/material/*.mat)
+    foreach (MATERIAL_SRC IN LISTS MATERIAL_SRCS)
+        message(STATUS "MATERIAL_SRC: ${MATERIAL_SRC}")
+
+        get_filename_component(localname ${MATERIAL_SRC} NAME_WE)
+        get_filename_component(fullname ${MATERIAL_SRC} ABSOLUTE)
+        set(output_path "${MATERIAL_DIR}/${localname}.filamat")
+        add_custom_command(
+                OUTPUT ${output_path}
+                COMMAND matc ${MATC_BASE_FLAGS} -o ${output_path} ${fullname}
+                MAIN_DEPENDENCY ${MATERIAL_SRC}
+                DEPENDS matc
+                COMMENT "Compiling material ${MATERIAL_SRC} to ${output_path}"
+        )
+
+        list(APPEND RESOURCE_BINS ${output_path})
+        message(STATUS "RESOURCE_BINS: ${RESOURCE_BINS}")
+    endforeach ()
 
     ## ==================================================================================================
     ## Build resources
@@ -98,7 +101,7 @@ function(build_resources)
 
     if (DEFINED RESGEN_SOURCE_FLAGS)
         set_source_files_properties(${RESGEN_SOURCE} PROPERTIES COMPILE_FLAGS ${RESGEN_SOURCE_FLAGS})
-    endif()
+    endif ()
 
     # CMake fails to invoke ar on Windows unless there is at least one C/C++ file in the library.
     set(DUMMY_SRC "${RESOURCE_DIR}/dummy.c")
