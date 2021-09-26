@@ -6,8 +6,7 @@
 namespace FilApp
 {
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
-                        TriangleRenderable* triangleRenderable,
-                        std::size_t VERTEX_SIZE);
+                        const std::vector<Vertex>& vertices);
 
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
                         PointRenderable* pointRenderable,

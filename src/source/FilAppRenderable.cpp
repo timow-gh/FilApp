@@ -5,21 +5,20 @@
 
 namespace FilApp
 {
-FilAppRenderable
-createBakedColorRenderable(TriangleRenderable* triangleRenderable,
-                           const filament::Box& aabb,
-                           filament::Engine* engine)
+FilAppRenderable createBakedColorRenderable(
+    const std::vector<Vertex>& vertices,
+    const std::vector<uint16_t>& indices,
+    filament::RenderableManager::PrimitiveType primitiveType,
+    const filament::Box& aabb,
+    filament::Engine* engine)
 {
     FilAppRenderable filAppRenderable;
     filAppRenderable.engine = engine;
 
     filAppRenderable.renderableEntity = utils::EntityManager::get().create();
 
-    constexpr std::size_t VERTEX_SIZE = sizeof(Vertex);
-    static_assert(VERTEX_SIZE == 16, "Strange vertex size.");
-
-    createVertexBuffer(&filAppRenderable, triangleRenderable, VERTEX_SIZE);
-    createIndicesBuffer(&filAppRenderable, triangleRenderable->getIndices());
+    createVertexBuffer(&filAppRenderable, vertices);
+    createIndicesBuffer(&filAppRenderable, indices);
 
     filAppRenderable.mat = filament::Material::Builder()
                                .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
@@ -31,7 +30,7 @@ createBakedColorRenderable(TriangleRenderable* triangleRenderable,
         .boundingBox(aabb)
         .material(0, filAppRenderable.mat->getDefaultInstance())
         .geometry(0,
-                  filament::RenderableManager::PrimitiveType::TRIANGLES,
+                  primitiveType,
                   filAppRenderable.vb,
                   filAppRenderable.ib,
                   OFFSET,

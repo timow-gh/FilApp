@@ -1,15 +1,16 @@
 #include "FilApp/FilAppView.hpp"
 #include "SDL_timer.h"
 #include <filament/TransformManager.h>
+#include <utility>
 
 namespace FilApp
 {
 FilAppView::FilAppView(filament::Renderer& renderer,
-                       const std::string& name,
+                       std::string name,
                        const filament::Viewport& viewport,
                        filament::math::float4 skyBoxDefaultColor,
                        filament::camutils::Mode cameraMode)
-    : m_engine(renderer.getEngine()), m_name(name)
+    : m_engine(renderer.getEngine()), m_name(std::move(name))
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
@@ -67,7 +68,8 @@ void FilAppView::setViewport(const filament::Viewport& viewport)
     m_filamentView->setViewport(m_viewport);
     configureCameraProjection();
     if (m_cameraManipulator)
-        m_cameraManipulator->setViewport(viewport.width, viewport.height);
+        m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
+                                         static_cast<int>(viewport.height));
 }
 void FilAppView::setCamera(filament::Camera* camera)
 {
@@ -94,7 +96,7 @@ Viewport FilAppView::getViewport() const
 }
 bool FilAppView::manipulatorKeyFromKeycode(
     SDL_Scancode scancode,
-    filament::camutils::Manipulator<float_t>::Key& key) const
+    filament::camutils::Manipulator<float_t>::Key& key)
 {
     switch (scancode)
     {
@@ -119,15 +121,19 @@ void FilAppView::configureCameraProjection()
                             0.1,
                             100);
 }
-RenderableIdentifier FilAppView::addRenderable(TriangleRenderable&& renderable)
+RenderableIdentifier
+FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 {
     m_triangleRenderables.emplace_back(
-        std::make_unique<TriangleRenderable>(std::move(renderable)));
+        std::make_unique<TriangleRenderable>(std::move(triangleRenderable)));
 
-    return addRenderable(
-        createBakedColorRenderable(m_triangleRenderables.back().get(),
-                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
-                                   m_engine));
+    auto* renderable = m_triangleRenderables.back().get();
+    return addRenderable(createBakedColorRenderable(
+        renderable->getVertices(),
+        renderable->getIndices(),
+        filament::RenderableManager::PrimitiveType::TRIANGLES,
+        filament::Box{{0, 0, 0}, {10, 10, 10}},
+        m_engine));
 }
 RenderableIdentifier FilAppView::addRenderable(PointRenderable&& renderable)
 {
@@ -139,11 +145,24 @@ RenderableIdentifier FilAppView::addRenderable(PointRenderable&& renderable)
                                    filament::Box{{0, 0, 0}, {10, 10, 10}},
                                    m_engine));
 }
+RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
+{
+    m_lineRenderables.emplace_back(
+        std::make_unique<LineRenderable>(std::move(lineREnderable)));
+
+    auto* renderable = m_lineRenderables.back().get();
+    return addRenderable(createBakedColorRenderable(
+        renderable->getVertices(),
+        renderable->getIndices(),
+        filament::RenderableManager::PrimitiveType::LINES,
+        filament::Box{{0, 0, 0}, {10, 10, 10}},
+        m_engine));
+}
 std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
 {
     assert(false);
     // TODO Implement
-    return std::vector<RenderableIdentifier>();
+    return {};
 }
 void FilAppView::removeRenderable(RenderableIdentifier renderableIdentifier)
 {
@@ -167,11 +186,11 @@ void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
          filamentView = m_filamentView](double deltaT)
         {
             auto& tcm = engine->getTransformManager();
-            tcm.setTransform(
-                tcm.getInstance(utils::Entity::import(renderableIdentifier)),
-                filament::math::mat4f::rotation(
-                    deltaT,
-                    filament::math::float3{0, 1, 0}));
+            tcm.setTransform(tcm.getInstance(utils::Entity::import(
+                                 static_cast<int>(renderableIdentifier))),
+                             filament::math::mat4f::rotation(
+                                 deltaT,
+                                 filament::math::float3{0, 1, 0}));
         });
 }
 void FilAppView::animate(double deltaT)
@@ -189,8 +208,8 @@ void FilAppView::resize(const Viewport& viewport)
 void FilAppView::mouseDown(const MouseDownEvent& mouseDownEvent)
 {
     if (m_cameraManipulator)
-        m_cameraManipulator->grabBegin(mouseDownEvent.pos.x,
-                                       mouseDownEvent.pos.y,
+        m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
+                                       static_cast<int>(mouseDownEvent.pos.y),
                                        mouseDownEvent.button == 3);
 }
 void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent) const
@@ -201,8 +220,9 @@ void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent) const
 void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent) const
 {
     if (m_cameraManipulator)
-        m_cameraManipulator->grabUpdate(mouseMovedEvent.pos.x,
-                                        mouseMovedEvent.pos.y);
+        m_cameraManipulator->grabUpdate(
+            static_cast<int>(mouseMovedEvent.pos.x),
+            static_cast<int>(mouseMovedEvent.pos.y));
 }
 void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent) const
 {
@@ -230,9 +250,9 @@ void FilAppView::keyUp(const KeyUpEvent& keyUpEvent) const
     }
 }
 RenderableIdentifier
-FilAppView::addRenderable(FilAppRenderable&& filAppRenderable)
+FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
 {
-    m_renderables.emplace_back(std::move(filAppRenderable));
+    m_renderables.emplace_back(filAppRenderable);
     m_scene->addEntity(m_renderables.back().renderableEntity);
     return m_renderables.back().renderableEntity.getId();
 }

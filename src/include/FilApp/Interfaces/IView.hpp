@@ -6,6 +6,7 @@
 #include "FilApp/Vec3.hpp"
 #include "IInputListener.hpp"
 #include "Viewport.hpp"
+#include <FilApp/Renderables/LineRenderable.hpp>
 #include <filapp_export.h>
 
 namespace FilApp
@@ -21,6 +22,7 @@ class FILAPP_EXPORT IView
     // clang-format off
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier = 0;
     virtual auto addRenderable(PointRenderable&& renderable) -> RenderableIdentifier = 0;
+    virtual auto addRenderable(LineRenderable&& renderable) -> RenderableIdentifier = 0;
     virtual auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> = 0;
     virtual void removeRenderable(RenderableIdentifier renderableIdentifier) = 0;
     virtual void clearRenderables() = 0;

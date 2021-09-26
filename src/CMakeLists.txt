@@ -16,7 +16,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Renderables/TriangleRenderable.hpp
         include/FilApp/Vec3.hpp
         include/FilApp/Interfaces/Viewport.hpp
-        include/FilApp/Interfaces/IWindow.hpp include/FilApp/Renderables/PointRenderable.hpp)
+        include/FilApp/Interfaces/IWindow.hpp include/FilApp/Renderables/PointRenderable.hpp include/FilApp/Renderables/LineRenderable.hpp)
 
 set(FILAPP_SOURCES
         source/FilAppConversion.hpp
@@ -27,7 +27,7 @@ set(FILAPP_SOURCES
         source/NativeWindowHelper.cpp
         source/FilAppRenderable.cpp
         source/FilAppConversion.cpp
-        source/FilAppRenderableBuffers.cpp source/FilAppRenderableBuffers.hpp)
+        source/FilAppRenderableBuffers.cpp source/FilAppRenderableBuffers.hpp source/Renderables/PointRenderable.cpp source/Renderables/LineRenderable.cpp)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)

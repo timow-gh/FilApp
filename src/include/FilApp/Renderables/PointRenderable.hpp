@@ -20,6 +20,12 @@ class FILAPP_EXPORT PointRenderable
     {
     }
 
+    static PointRenderable create(const Vertex& vertex, float_t pointSize);
+    static PointRenderable create(std::vector<Vertex> vertices,
+                                  float_t pointSize);
+    static PointRenderable create(std::vector<Vertex> vertices,
+                                  std::vector<float_t> pointSizes);
+
     [[nodiscard]] const std::vector<Vertex>& getVertices() const
     {
         return m_vertices;

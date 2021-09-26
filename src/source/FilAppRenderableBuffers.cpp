@@ -3,10 +3,11 @@
 namespace FilApp
 {
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
-                        TriangleRenderable* triangleRenderable,
-                        std::size_t VERTEX_SIZE)
+                        const std::vector<Vertex>& vertices)
 {
-    const std::size_t VERTEX_COUNT = triangleRenderable->getVertices().size();
+    const std::size_t VERTEX_COUNT = vertices.size();
+    const std::size_t VERTEX_SIZE = sizeof(Vertex);
+    static_assert(VERTEX_SIZE == 16, "Strange vertex size.");
     constexpr std::size_t VERTEX_POSITION_OFFSET = 0;
     constexpr std::size_t VERTEX_COLOR_OFFSET = 12;
     filAppRenderable->vb =
@@ -30,15 +31,14 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
     filAppRenderable->vb->setBufferAt(
         *filAppRenderable->engine,
         0,
-        filament::VertexBuffer::BufferDescriptor(
-            triangleRenderable->getVertices().data(),
-            VERTICES_BUFFER_SIZE,
-            nullptr));
+        filament::VertexBuffer::BufferDescriptor(vertices.data(),
+                                                 VERTICES_BUFFER_SIZE,
+                                                 nullptr));
 }
 
-void FilApp::createVertexBuffer(FilAppRenderable* filAppRenderable,
-                                PointRenderable* pointRenderable,
-                                std::size_t VERTEX_SIZE)
+void createVertexBuffer(FilAppRenderable* filAppRenderable,
+                        PointRenderable* pointRenderable,
+                        std::size_t VERTEX_SIZE)
 {
 
     const std::size_t VERTEX_COUNT = pointRenderable->getVertices().size();

@@ -22,7 +22,9 @@ int main()
     IView* mainView = window->getMainIView();
 
     mainView->addRenderable(
-        PointRenderable(std::move(vertices), {0, 1, 2}, {4.0, 4.0, 4.0}));
+        PointRenderable::create(std::move(vertices), {3.0, 3.0, 3.0}));
+    mainView->addRenderable(
+        PointRenderable::create(Vertex{{2, 0, 0}, 0xffff0000u}, 15.0));
 
     app.run();
 }

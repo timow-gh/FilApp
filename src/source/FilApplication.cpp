@@ -80,7 +80,8 @@ void FilApplication::run()
                 m_window->keyUp(event.key.keysym.scancode, deltaT);
                 break;
             case SDL_MOUSEWHEEL:
-                m_window->mouseWheel(event.wheel.y, deltaT);
+                m_window->mouseWheel(static_cast<float_t>(event.wheel.y),
+                                     deltaT);
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 m_window->mouseDown(event.button.button,

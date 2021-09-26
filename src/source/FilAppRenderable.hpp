@@ -1,9 +1,10 @@
 #ifndef FILAPP_FILAPPRENDERABLE_HPP
 #define FILAPP_FILAPPRENDERABLE_HPP
 
-#include "FilApp/Renderables/Vertex.hpp"
+#include <FilApp/Renderables/LineRenderable.hpp>
 #include <FilApp/Renderables/PointRenderable.hpp>
 #include <FilApp/Renderables/TriangleRenderable.hpp>
+#include <FilApp/Renderables/Vertex.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>
@@ -35,14 +36,17 @@ struct FilAppRenderable
     }
 };
 
-FilAppRenderable
-createBakedColorRenderable(TriangleRenderable* triangleRenderable,
-                           const filament::Box& aabb,
-                           filament::Engine* engine);
+FilAppRenderable createBakedColorRenderable(
+    const std::vector<Vertex>& vertices,
+    const std::vector<uint16_t>& indices,
+    filament::RenderableManager::PrimitiveType primitiveType,
+    const filament::Box& aabb,
+    filament::Engine* engine);
 
 FilAppRenderable createBakedColorRenderable(PointRenderable* pointRenderable,
                                             const filament::Box& aabb,
                                             filament::Engine* engine);
+
 } // namespace FilApp
 
 #endif // FILAPP_FILAPPRENDERABLE_HPP

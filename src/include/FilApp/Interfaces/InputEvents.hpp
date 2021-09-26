@@ -54,10 +54,10 @@ struct FILAPP_EXPORT MouseMovedEvent
 
 struct FILAPP_EXPORT MouseWheelEvent
 {
-    size_t x;
+    float_t x;
     double_t timeStamp;
 
-    MouseWheelEvent(size_t x, double_t timeStamp) : x(x), timeStamp(timeStamp)
+    MouseWheelEvent(float_t x, double_t timeStamp) : x(x), timeStamp(timeStamp)
     {
     }
 };

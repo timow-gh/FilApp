@@ -39,6 +39,7 @@ class FilAppView
     filament::Viewport m_viewport;
 
     std::vector<std::unique_ptr<PointRenderable>> m_pointRenderables;
+    std::vector<std::unique_ptr<LineRenderable>> m_lineRenderables;
     std::vector<std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
 
     std::vector<FilAppRenderable> m_renderables;
@@ -49,7 +50,7 @@ class FilAppView
 
   public:
     FilAppView(filament::Renderer& renderer,
-               const std::string& name,
+               std::string name,
                const filament::Viewport& viewport,
                filament::math::float4 skyBoxDefaultColor,
                filament::camutils::Mode cameraMode);
@@ -58,6 +59,7 @@ class FilAppView
     // clang-format off
     auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
     auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
+    auto addRenderable(LineRenderable && renderable) -> RenderableIdentifier override;
     auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
     void removeRenderable(RenderableIdentifier renderableIdentifier) override;
     void clearRenderables() override;
@@ -87,10 +89,11 @@ class FilAppView
     [[nodiscard]] CameraManipulator* getCameraManipulator();
 
   private:
-    RenderableIdentifier addRenderable(FilAppRenderable&& filAppRenderable);
+    RenderableIdentifier
+    addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
-    bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
-                                   CameraManipulator::Key& key) const;
+    static bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
+                                          CameraManipulator::Key& key);
     void configureCameraProjection();
 };
 } // namespace FilApp

@@ -109,7 +109,7 @@ void FilAppWindow::mouseMoved(size_t x, size_t y, double_t deltaT)
     m_lastX = x;
     m_lastY = y;
 }
-void FilAppWindow::mouseWheel(size_t x, double_t deltaT)
+void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
     if (m_mouseEventTarget)
         m_mouseEventTarget->mouseWheel(MouseWheelEvent(x, deltaT));
@@ -209,7 +209,7 @@ filament::SwapChain* FilAppWindow::getSwapChain()
 }
 void FilAppWindow::resize()
 {
-    void* nativeWindow = ::getNativeWindow(m_sdlWindow);
+    __attribute__((unused)) void* nativeWindow = ::getNativeWindow(m_sdlWindow);
 
 #if defined(__APPLE__)
     if (mBackend == filament::Engine::Backend::METAL)

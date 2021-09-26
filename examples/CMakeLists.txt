@@ -1,3 +1,4 @@
+add_subdirectory(lines)
 add_subdirectory(points)
 add_subdirectory(triangle)
 add_subdirectory(triangle_animated)
