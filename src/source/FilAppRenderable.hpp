@@ -40,7 +40,7 @@ createBakedColorRenderable(TriangleRenderable* triangleRenderable,
                            const filament::Box& aabb,
                            filament::Engine* engine);
 
-FilAppRenderable createBakedColorRenderable(PointRenderable* renderable,
+FilAppRenderable createBakedColorRenderable(PointRenderable* pointRenderable,
                                             const filament::Box& aabb,
                                             filament::Engine* engine);
 } // namespace FilApp

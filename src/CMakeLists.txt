@@ -30,7 +30,7 @@ set(FILAPP_SOURCES
         source/NativeWindowHelper.cpp
         source/FilAppRenderable.cpp
         source/FilAppConversion.cpp
-        )
+        source/FilAppRenderableBuffers.cpp source/FilAppRenderableBuffers.hpp)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)
