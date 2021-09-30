@@ -12,11 +12,11 @@ class FILAPP_EXPORT IInputListener
     virtual ~IInputListener() = default;
 
     virtual void mouseDown(const MouseDownEvent& mouseDownEvent) = 0;
-    virtual void mouseUp(const MouseUpEvent& mouseUpEvent) const = 0;
-    virtual void mouseMoved(const MouseMovedEvent& mouseMovedEvent) const = 0;
-    virtual void mouseWheel(const MouseWheelEvent& mouseWheelEvent) const = 0;
-    virtual void keyDown(const KeyDownEvent& keyDownEvent) const = 0;
-    virtual void keyUp(const KeyUpEvent& keyUpEvent) const = 0;
+    virtual void mouseUp(const MouseUpEvent& mouseUpEvent) = 0;
+    virtual void mouseMoved(const MouseMovedEvent& mouseMovedEvent) = 0;
+    virtual void mouseWheel(const MouseWheelEvent& mouseWheelEvent) = 0;
+    virtual void keyDown(const KeyDownEvent& keyDownEvent) = 0;
+    virtual void keyUp(const KeyUpEvent& keyUpEvent) = 0;
 };
 } // namespace FilApp
 

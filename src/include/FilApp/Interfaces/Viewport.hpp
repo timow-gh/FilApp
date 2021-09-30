@@ -12,11 +12,11 @@ struct FILAPP_EXPORT Viewport
     int32_t bottom;
     uint32_t width;
     uint32_t height;
-
     Viewport(int32_t left, int32_t bottom, uint32_t width, uint32_t height)
         : left(left), bottom(bottom), width(width), height(height)
     {
     }
+
 };
 } // namespace FilApp
 

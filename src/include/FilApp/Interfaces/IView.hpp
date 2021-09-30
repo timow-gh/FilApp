@@ -23,7 +23,7 @@ class FILAPP_EXPORT IView
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier = 0;
     virtual auto addRenderable(PointRenderable&& renderable) -> RenderableIdentifier = 0;
     virtual auto addRenderable(LineRenderable&& renderable) -> RenderableIdentifier = 0;
-    virtual auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> = 0;
+    [[nodiscard]] virtual auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> = 0;
     virtual void removeRenderable(RenderableIdentifier renderableIdentifier) = 0;
     virtual void clearRenderables() = 0;
     // clang-format on
@@ -34,7 +34,7 @@ class FILAPP_EXPORT IView
                                       const Vec3& rotationAxis) = 0;
 
     virtual void animate(double deltaT) = 0;
-    virtual Viewport getViewport() const = 0;
+    [[nodiscard]] virtual Viewport getViewport() const = 0;
     virtual void resize(const Viewport& viewport) = 0;
 };
 } // namespace FilApp

@@ -22,10 +22,10 @@ struct FILAPP_EXPORT MouseDownEvent
 {
     int button;
     EvtPos pos;
-    double_t timeStamp;
+    double_t time;
 
-    MouseDownEvent(int button, size_t x, size_t y, double_t timeStamp)
-        : button(button), pos(EvtPos(x, y)), timeStamp(timeStamp)
+    MouseDownEvent(int button, size_t x, size_t y, double_t time)
+        : button(button), pos(EvtPos(x, y)), time(time)
     {
     }
 };
@@ -33,10 +33,10 @@ struct FILAPP_EXPORT MouseDownEvent
 struct FILAPP_EXPORT MouseUpEvent
 {
     EvtPos pos;
-    double_t timeStamp;
+    double_t time;
 
-    MouseUpEvent(size_t x, size_t y, double_t timeStamp)
-        : pos(EvtPos(x, y)), timeStamp(timeStamp)
+    MouseUpEvent(size_t x, size_t y, double_t time)
+        : pos(EvtPos(x, y)), time(time)
     {
     }
 };
@@ -44,10 +44,10 @@ struct FILAPP_EXPORT MouseUpEvent
 struct FILAPP_EXPORT MouseMovedEvent
 {
     EvtPos pos;
-    double_t timeStamp;
+    double_t time;
 
-    MouseMovedEvent(size_t x, size_t y, double_t timeStamp)
-        : pos(EvtPos(x, y)), timeStamp(timeStamp)
+    MouseMovedEvent(size_t x, size_t y, double_t time)
+        : pos(EvtPos(x, y)), time(time)
     {
     }
 };
@@ -55,20 +55,18 @@ struct FILAPP_EXPORT MouseMovedEvent
 struct FILAPP_EXPORT MouseWheelEvent
 {
     float_t x;
-    double_t timeStamp;
+    double_t time;
 
-    MouseWheelEvent(float_t x, double_t timeStamp) : x(x), timeStamp(timeStamp)
-    {
-    }
+    MouseWheelEvent(float_t x, double_t time) : x(x), time(time) {}
 };
 
 struct FILAPP_EXPORT KeyDownEvent
 {
     SDL_Scancode sdlScancode;
-    double_t timeStamp;
+    double_t time;
 
-    KeyDownEvent(SDL_Scancode sdlScancode, double_t timeStamp)
-        : sdlScancode(sdlScancode), timeStamp(timeStamp)
+    KeyDownEvent(SDL_Scancode sdlScancode, double_t time)
+        : sdlScancode(sdlScancode), time(time)
     {
     }
 };
@@ -76,10 +74,10 @@ struct FILAPP_EXPORT KeyDownEvent
 struct FILAPP_EXPORT KeyUpEvent
 {
     SDL_Scancode sdlScancode;
-    double_t timeStamp;
+    double_t time;
 
-    KeyUpEvent(SDL_Scancode sdlScancode, double_t timeStamp)
-        : sdlScancode(sdlScancode), timeStamp(timeStamp)
+    KeyUpEvent(SDL_Scancode sdlScancode, double_t time)
+        : sdlScancode(sdlScancode), time(time)
     {
     }
 };

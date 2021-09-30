@@ -75,11 +75,11 @@ class FilAppView
     void resize(const Viewport& viewport) override;
 
     void mouseDown(const MouseDownEvent& mouseDownEvent) override;
-    void mouseUp(const MouseUpEvent& mouseUpEvent) const override;
-    void mouseMoved(const MouseMovedEvent& mouseMovedEvent) const override;
-    void mouseWheel(const MouseWheelEvent& mouseWheelEvent) const override;
-    void keyDown(const KeyDownEvent& keyDownEvent) const override;
-    void keyUp(const KeyUpEvent& keyUpEvent) const override;
+    void mouseUp(const MouseUpEvent& mouseUpEvent) override;
+    void mouseMoved(const MouseMovedEvent& mouseMovedEvent) override;
+    void mouseWheel(const MouseWheelEvent& mouseWheelEvent) override;
+    void keyDown(const KeyDownEvent& keyDownEvent) override;
+    void keyUp(const KeyUpEvent& keyUpEvent) override;
 
     void setViewport(const filament::Viewport& viewport);
     void setCamera(filament::Camera* camera);

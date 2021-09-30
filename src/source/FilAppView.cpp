@@ -212,24 +212,24 @@ void FilAppView::mouseDown(const MouseDownEvent& mouseDownEvent)
                                        static_cast<int>(mouseDownEvent.pos.y),
                                        mouseDownEvent.button == 3);
 }
-void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent) const
+void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabEnd();
 }
-void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent) const
+void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabUpdate(
             static_cast<int>(mouseMovedEvent.pos.x),
             static_cast<int>(mouseMovedEvent.pos.y));
 }
-void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent) const
+void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->scroll(0, 0, mouseWheelEvent.x);
 }
-void FilAppView::keyDown(const KeyDownEvent& keyDownEvent) const
+void FilAppView::keyDown(const KeyDownEvent& keyDownEvent)
 {
     if (m_cameraManipulator)
     {
@@ -238,7 +238,7 @@ void FilAppView::keyDown(const KeyDownEvent& keyDownEvent) const
             m_cameraManipulator->keyDown(key);
     }
 }
-void FilAppView::keyUp(const KeyUpEvent& keyUpEvent) const
+void FilAppView::keyUp(const KeyUpEvent& keyUpEvent)
 {
     if (m_cameraManipulator)
     {
