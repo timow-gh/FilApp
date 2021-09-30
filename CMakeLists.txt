@@ -24,10 +24,28 @@ option(FilApp_BUILD_EXAMPLES "" ON)
 
 preamble()
 if (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE")
+
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    if (NOT BUILD_SHARED_LIBS)
+        message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")
+        add_compile_options(
+                $<$<CONFIG:>:/MT>
+                $<$<CONFIG:Debug>:/MTd>
+                $<$<CONFIG:Release>:/MT>
+        )
+    else ()
+        add_compile_options(
+                $<$<CONFIG:>:/MD>
+                $<$<CONFIG:Debug>:/MDd>
+                $<$<CONFIG:Release>:/MD>
+        )
+    endif ()
     # The ASM_MASM compiler id for this compiler is "MSVC", so fill out the runtime library table.
-    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreaded         "")
-    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDLL      "")
-    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebug    "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreaded "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDLL "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebug "")
     set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebugDLL "")
 endif ()
 

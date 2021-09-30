@@ -209,7 +209,7 @@ filament::SwapChain* FilAppWindow::getSwapChain()
 }
 void FilAppWindow::resize()
 {
-    __attribute__((unused)) void* nativeWindow = ::getNativeWindow(m_sdlWindow);
+    [[maybe_unused]] void* nativeWindow = ::getNativeWindow(m_sdlWindow);
 
 #if defined(__APPLE__)
     if (mBackend == filament::Engine::Backend::METAL)
