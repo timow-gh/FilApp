@@ -53,6 +53,8 @@ add_subdirectory(dependencies)
 
 add_subdirectory(src)
 
+add_subdirectory(flowmesh)
+
 if (FilApp_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif ()

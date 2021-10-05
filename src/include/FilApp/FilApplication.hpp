@@ -2,6 +2,7 @@
 #define FILAPP_FILAPPLICATION_HPP
 
 #include "AppConfig.hpp"
+#include "FilApp/Interfaces/IApplication.hpp"
 #include "FilApp/Interfaces/IWindow.hpp"
 #include "WindowConfig.hpp"
 #include <cmath>
@@ -18,6 +19,7 @@ namespace FilApp
 class FilAppWindow;
 
 class FILAPP_EXPORT FilApplication
+    : public IApplication
 {
   public:
     static void init(const AppConfig& appConfig,
@@ -25,14 +27,14 @@ class FILAPP_EXPORT FilApplication
     static FilApplication& get();
 
     FilApplication() = default;
-    ~FilApplication();
+    ~FilApplication() override;
     FilApplication(const FilApplication& application) = delete;
     FilApplication(FilApplication&& application) = delete;
     FilApplication& operator=(const FilApplication& application) = delete;
     FilApplication& operator=(FilApplication&& application) = delete;
 
     [[nodiscard]] filament::Engine* getEngine();
-    [[nodiscard]] IWindow* getWindow();
+    [[nodiscard]] IWindow* getWindow() override;
 
     static double_t getDeltaT();
 

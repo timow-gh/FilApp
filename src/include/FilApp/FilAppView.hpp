@@ -60,7 +60,7 @@ class FilAppView
     auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
     auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
     auto addRenderable(LineRenderable && renderable) -> RenderableIdentifier override;
-    auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
+    [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
     void removeRenderable(RenderableIdentifier renderableIdentifier) override;
     void clearRenderables() override;
     // clang-format on
@@ -71,7 +71,7 @@ class FilAppView
 
     void animate(double deltaT) override;
 
-    Viewport getViewport() const override;
+    [[nodiscard]] Viewport getViewport() const override;
     void resize(const Viewport& viewport) override;
 
     void mouseDown(const MouseDownEvent& mouseDownEvent) override;
@@ -89,11 +89,12 @@ class FilAppView
     [[nodiscard]] CameraManipulator* getCameraManipulator();
 
   private:
+    static bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
+                                          CameraManipulator::Key& key);
+
     RenderableIdentifier
     addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
-    static bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
-                                          CameraManipulator::Key& key);
     void configureCameraProjection();
 };
 } // namespace FilApp

@@ -1,5 +1,4 @@
 #include "FilApp/FilAppView.hpp"
-#include "SDL_timer.h"
 #include <filament/TransformManager.h>
 #include <utility>
 
@@ -93,21 +92,6 @@ Viewport FilAppView::getViewport() const
             m_viewport.bottom,
             m_viewport.width,
             m_viewport.height};
-}
-bool FilAppView::manipulatorKeyFromKeycode(
-    SDL_Scancode scancode,
-    filament::camutils::Manipulator<float_t>::Key& key)
-{
-    switch (scancode)
-    {
-    case SDL_SCANCODE_W: key = CameraManipulator::Key::FORWARD; return true;
-    case SDL_SCANCODE_A: key = CameraManipulator::Key::LEFT; return true;
-    case SDL_SCANCODE_S: key = CameraManipulator::Key::BACKWARD; return true;
-    case SDL_SCANCODE_D: key = CameraManipulator::Key::RIGHT; return true;
-    case SDL_SCANCODE_E: key = CameraManipulator::Key::UP; return true;
-    case SDL_SCANCODE_Q: key = CameraManipulator::Key::DOWN; return true;
-    default: return false;
-    }
 }
 void FilAppView::configureCameraProjection()
 {
@@ -211,11 +195,15 @@ void FilAppView::mouseDown(const MouseDownEvent& mouseDownEvent)
         m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
                                        static_cast<int>(mouseDownEvent.pos.y),
                                        mouseDownEvent.button == 3);
+    for (auto listener: m_inputEventListener)
+        listener->mouseDown(mouseDownEvent);
 }
 void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabEnd();
+    for (auto listener: m_inputEventListener)
+        listener->mouseUp(mouseUpEvent);
 }
 void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent)
 {
@@ -223,11 +211,15 @@ void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent)
         m_cameraManipulator->grabUpdate(
             static_cast<int>(mouseMovedEvent.pos.x),
             static_cast<int>(mouseMovedEvent.pos.y));
+    for (auto listener: m_inputEventListener)
+        listener->mouseMoved(mouseMovedEvent);
 }
 void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->scroll(0, 0, mouseWheelEvent.x);
+    for (auto listener: m_inputEventListener)
+        listener->mouseWheel(mouseWheelEvent);
 }
 void FilAppView::keyDown(const KeyDownEvent& keyDownEvent)
 {
@@ -237,6 +229,8 @@ void FilAppView::keyDown(const KeyDownEvent& keyDownEvent)
         if (manipulatorKeyFromKeycode(keyDownEvent.sdlScancode, key))
             m_cameraManipulator->keyDown(key);
     }
+    for (auto listener: m_inputEventListener)
+        listener->keyDown(keyDownEvent);
 }
 void FilAppView::keyUp(const KeyUpEvent& keyUpEvent)
 {
@@ -247,6 +241,23 @@ void FilAppView::keyUp(const KeyUpEvent& keyUpEvent)
         {
             m_cameraManipulator->keyDown(key);
         }
+    }
+    for (auto listener: m_inputEventListener)
+        listener->keyUp(keyUpEvent);
+}
+bool FilAppView::manipulatorKeyFromKeycode(
+    SDL_Scancode scancode,
+    filament::camutils::Manipulator<float_t>::Key& key)
+{
+    switch (scancode)
+    {
+    case SDL_SCANCODE_W: key = CameraManipulator::Key::FORWARD; return true;
+    case SDL_SCANCODE_A: key = CameraManipulator::Key::LEFT; return true;
+    case SDL_SCANCODE_S: key = CameraManipulator::Key::BACKWARD; return true;
+    case SDL_SCANCODE_D: key = CameraManipulator::Key::RIGHT; return true;
+    case SDL_SCANCODE_E: key = CameraManipulator::Key::UP; return true;
+    case SDL_SCANCODE_Q: key = CameraManipulator::Key::DOWN; return true;
+    default: return false;
     }
 }
 RenderableIdentifier

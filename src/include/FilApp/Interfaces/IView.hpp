@@ -4,6 +4,7 @@
 #include "FilApp/Renderables/PointRenderable.hpp"
 #include "FilApp/Renderables/TriangleRenderable.hpp"
 #include "FilApp/Vec3.hpp"
+#include "IInputEventDispatcher.hpp"
 #include "IInputListener.hpp"
 #include "Viewport.hpp"
 #include <FilApp/Renderables/LineRenderable.hpp>
@@ -15,6 +16,7 @@ using RenderableIdentifier = uint32_t;
 
 class FILAPP_EXPORT IView
     : public IInputListener
+    , public IInputEventDispatcher
 {
   public:
     ~IView() override = default;

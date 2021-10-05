@@ -6,17 +6,18 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilAppWindow.hpp
         include/FilApp/WindowConfig.hpp
         include/FilApp/AppConfig.hpp
-        source/FilAppRenderable.hpp
         include/FilApp/Renderables/Vertex.hpp
-        include/FilApp/Interfaces/IController.hpp
         include/FilApp/Interfaces/IView.hpp
-        include/FilApp/Interfaces/IModel.hpp
         include/FilApp/Interfaces/InputEvents.hpp
         include/FilApp/Interfaces/IInputListener.hpp
         include/FilApp/Renderables/TriangleRenderable.hpp
         include/FilApp/Vec3.hpp
         include/FilApp/Interfaces/Viewport.hpp
-        include/FilApp/Interfaces/IWindow.hpp include/FilApp/Renderables/PointRenderable.hpp include/FilApp/Renderables/LineRenderable.hpp)
+        include/FilApp/Interfaces/IWindow.hpp
+        include/FilApp/Renderables/PointRenderable.hpp
+        include/FilApp/Renderables/LineRenderable.hpp
+        include/FilApp/Interfaces/IApplication.hpp
+        include/FilApp/Interfaces/IInputEventDispatcher.hpp)
 
 set(FILAPP_SOURCES
         source/FilAppConversion.hpp
@@ -25,9 +26,13 @@ set(FILAPP_SOURCES
         source/FilAppWindow.cpp
         source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp
+        source/FilAppRenderable.hpp
         source/FilAppRenderable.cpp
         source/FilAppConversion.cpp
-        source/FilAppRenderableBuffers.cpp source/FilAppRenderableBuffers.hpp source/Renderables/PointRenderable.cpp source/Renderables/LineRenderable.cpp)
+        source/FilAppRenderableBuffers.cpp
+        source/FilAppRenderableBuffers.hpp
+        source/Renderables/PointRenderable.cpp
+        source/Renderables/LineRenderable.cpp)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)
