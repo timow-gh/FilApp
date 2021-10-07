@@ -22,6 +22,7 @@ set_target_properties(flow_mesh
 target_link_libraries(flow_mesh
         PUBLIC
         filapp::filapp
+        Geometry::Geometry
         )
 
 include(GenerateExportHeader)

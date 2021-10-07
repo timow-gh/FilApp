@@ -1,4 +1,7 @@
 include(FetchContent)
+
+add_subdirectory(geometry)
+
 #set(FETCHCONTENT_SOURCE_DIR_FILAMENT "path-to-local-filament-repo" CACHE STRING "" FORCE)
 FetchContent_Declare(
         filament
