@@ -18,7 +18,10 @@ class FILAPP_EXPORT IInputEventDispatcher
     }
     void removeInputListener(IInputListener* inputEventListener)
     {
-        std::erase(m_inputEventListener, inputEventListener);
+        auto it = std::remove(m_inputEventListener.begin(),
+                              m_inputEventListener.end(),
+                              inputEventListener);
+        m_inputEventListener.erase(it, m_inputEventListener.end());
     }
 };
 } // namespace FilApp

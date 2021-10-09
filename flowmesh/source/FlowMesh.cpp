@@ -10,7 +10,7 @@ FilApp::TriangleRenderable
 createTriangleRenderable(const FlowMeshSphere& flowMeshSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
-        buildSphereMesh<double_t>(flowMeshSphere.getSphere());
+        buildSphereMesh(flowMeshSphere.getSphere());
 
     std::vector<FilApp::Vertex> vertices;
     uint32_t color = 0xff0000ffu;

@@ -10,7 +10,7 @@ class IApplication
   public:
     virtual ~IApplication() = default;
 
-    virtual [[nodiscard]] IWindow* getWindow() = 0;
+    virtual IWindow* getWindow() = 0;
 };
 } // namespace FilApp
 
