@@ -1,5 +1,5 @@
 set(FLOWMESH_PUBLIC_HEADERS
-        include/FlowMesh/FlowMesh.hpp)
+        include/FlowMesh/FlowMesh.hpp include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp)
 
 set(FLOWMESH_SOURCES
         source/FlowMesh.cpp)
