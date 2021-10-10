@@ -9,7 +9,7 @@ FetchContent_Declare(
         GIT_TAG tw-cmake-minimal)
 FetchContent_GetProperties(filament)
 if (NOT filament_POPULATED)
-    set(FILAMENT_SUPPORTS_OPENGL OFF CACHE BOOL "Include the OpenGL backend" FORCE)
+    set(FILAMENT_SUPPORTS_OPENGL ON CACHE BOOL "Include the OpenGL backend" FORCE)
     set(FILAMENT_SUPPORTS_VULKAN ON CACHE BOOL "Include the Vulkan backend" FORCE)
     set(FILAMENT_SUPPORTS_METAL OFF CACHE BOOL "Include the Metal backend" FORCE)
 
