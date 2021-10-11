@@ -1,13 +1,12 @@
+#include "FlowMesh/FlowMeshPresenter.hpp"
 #include <FilApp/Renderables/Vertex.hpp>
-#include <FlowMesh/FlowMesh.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
 
 namespace FlowMesh
 {
-
-FilApp::TriangleRenderable
-createTriangleRenderable(const FlowMeshSphere& flowMeshSphere)
+FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
+    const FlowMeshSphere& flowMeshSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
         buildSphereMesh(flowMeshSphere.getSphere());
@@ -23,5 +22,8 @@ createTriangleRenderable(const FlowMeshSphere& flowMeshSphere)
             Geometry::calcTriangleIndices<double_t, uint16_t>(
                 sphereMesh->getFacets())};
 }
-
+void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
+{
+    m_mainView->addRenderable(createTriangleRenderable(flowMeshSphere));
+}
 } // namespace FlowMesh

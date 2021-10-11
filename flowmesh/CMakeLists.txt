@@ -1,8 +1,19 @@
 set(FLOWMESH_PUBLIC_HEADERS
-        include/FlowMesh/FlowMesh.hpp include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp)
+        include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp
+        include/FlowMesh/Interactors/PickingContext.hpp
+        include/FlowMesh/FlowMeshModel.hpp
+        include/FlowMesh/FlowMeshSphere.hpp
+        include/FlowMesh/FlowMeshController.hpp
+        include/FlowMesh/FlowMeshPresenter.hpp
+        )
 
 set(FLOWMESH_SOURCES
-        source/FlowMesh.cpp)
+        source/Interactors/PickingContext.cpp
+        source/FlowMeshPresenter.cpp
+        source/FlowMeshController.cpp
+        source/FlowMeshModel.cpp
+        source/FlowMeshSphere.cpp
+        )
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})
 add_library(flowmesh::flowmesh ALIAS flow_mesh)
@@ -23,6 +34,7 @@ target_link_libraries(flow_mesh
         PUBLIC
         filapp::filapp
         Geometry::Geometry
+        CrossGuid::CrossGuid
         )
 
 include(GenerateExportHeader)

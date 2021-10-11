@@ -1,8 +1,8 @@
 include(FetchContent)
 
+add_subdirectory(crossguid)
 add_subdirectory(geometry)
 
-#set(FETCHCONTENT_SOURCE_DIR_FILAMENT "path-to-local-filament-repo" CACHE STRING "" FORCE)
 FetchContent_Declare(
         filament
         GIT_REPOSITORY https://github.com/timow-gh/filament.git
@@ -14,7 +14,7 @@ if (NOT filament_POPULATED)
     set(FILAMENT_SUPPORTS_METAL OFF CACHE BOOL "Include the Metal backend" FORCE)
 
     set(FILAMENT_BUILD_FILAMAT ON CACHE BOOL "Build filamat and JNI buildings" FORCE)
-#    set(FILAMENT_SKIP_SAMPLES ON CACHE BOOL "Don't build samples" FORCE)
+    #    set(FILAMENT_SKIP_SAMPLES ON CACHE BOOL "Don't build samples" FORCE)
     option(FILAMENT_SKIP_SAMPLES "" OFF)
 
     set(FILAMENT_PER_RENDER_PASS_ARENA_SIZE_IN_MB "2" CACHE STRING

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdint>
 #include <filapp_export.h>
+#include <math/vec3.h>
 
 namespace FilApp
 {

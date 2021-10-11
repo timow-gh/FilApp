@@ -1,10 +1,25 @@
 #include "FilAppRenderable.hpp"
 #include "FilAppRenderableBuffers.hpp"
 #include "generated/resources/filapp_resources.h"
-#include "math/vec2.h"
+#include "math/vec3.h"
 
 namespace FilApp
 {
+filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
+{
+    filament::math::float3 minVec(std::numeric_limits<float>::max());
+    filament::math::float3 maxVec(std::numeric_limits<float>::lowest());
+    for (const auto& vertex: vertices)
+    {
+        filament::math::float3 vec{vertex.position[0],
+                                   vertex.position[1],
+                                   vertex.position[2]};
+        minVec = min(minVec, vec);
+        maxVec = max(maxVec, vec);
+    }
+    return filament::Box().set(minVec, maxVec);
+}
+
 FilAppRenderable createBakedColorRenderable(
     const std::vector<Vertex>& vertices,
     const std::vector<uint16_t>& indices,
@@ -27,7 +42,7 @@ FilAppRenderable createBakedColorRenderable(
 
     const std::size_t OFFSET = 0;
     filament::RenderableManager::Builder(1)
-        .boundingBox(aabb)
+        .boundingBox(calcFilamentBbox(vertices))
         .material(0, filAppRenderable.mat->getDefaultInstance())
         .geometry(0,
                   primitiveType,
@@ -63,7 +78,7 @@ FilAppRenderable createBakedColorRenderable(PointRenderable* pointRenderable,
     filAppRenderable.matInstance = filAppRenderable.mat->createInstance();
 
     filament::RenderableManager::Builder(1)
-        .boundingBox({{-1, -1, -1}, {1, 1, 1}})
+        .boundingBox(aabb)
         .material(0, filAppRenderable.matInstance)
         .geometry(0,
                   filament::RenderableManager::PrimitiveType::POINTS,
