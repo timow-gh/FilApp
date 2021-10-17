@@ -5,14 +5,17 @@
 
 namespace FlowMesh
 {
-FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
-    const FlowMeshSphere& flowMeshSphere)
+FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(const FlowMeshPoint& flowMeshSphere)
 {
     // TODO Color
     constexpr uint32_t COLOR = 0xff00aaffu;
 
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
-        buildSphereMesh(flowMeshSphere.getSphere());
+        Geometry::SphereMeshBuilder<double_t>()
+            .setPolarCount(3)
+            .setAzimuthCount(4)
+            .setSphere(flowMeshSphere.getSphere())
+            .build();
 
     std::vector<FilApp::Vertex> vertices;
     for (const auto& vec: sphereMesh->getVertexPoints())
@@ -20,6 +23,7 @@ FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
                                            static_cast<float_t>(vec[1]),
                                            static_cast<float_t>(vec[2])},
                                           COLOR});
+
     return {std::move(vertices),
             Geometry::calcTriangleIndices<double_t, uint16_t>(
                 sphereMesh->getFacets())};
@@ -47,7 +51,7 @@ FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
 
     return FilApp::LineRenderable::create(vertices);
 }
-void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
+void FlowMeshPresenter::add(const FlowMeshPoint& flowMeshSphere)
 {
     m_mainView->addRenderable(createTriangleRenderable(flowMeshSphere));
 }

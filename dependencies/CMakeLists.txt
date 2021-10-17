@@ -17,16 +17,16 @@ if (NOT filament_POPULATED)
     #    set(FILAMENT_SKIP_SAMPLES ON CACHE BOOL "Don't build samples" FORCE)
     option(FILAMENT_SKIP_SAMPLES "" OFF)
 
-    set(FILAMENT_PER_RENDER_PASS_ARENA_SIZE_IN_MB "2" CACHE STRING
+    set(FILAMENT_PER_RENDER_PASS_ARENA_SIZE_IN_MB "3" CACHE STRING
             "Per render pass arena size. Must be roughly 1 MB larger than FILAMENT_PER_FRAME_COMMANDS_SIZE_IN_MB, default 2."
             )
-    set(FILAMENT_PER_FRAME_COMMANDS_SIZE_IN_MB "1" CACHE STRING
+    set(FILAMENT_PER_FRAME_COMMANDS_SIZE_IN_MB "2" CACHE STRING
             "Size of the high-level draw commands buffer. Rule of thumb, 1 MB less than FILAMENT_PER_RENDER_PASS_ARENA_SIZE_IN_MB, default 1."
             )
-    set(FILAMENT_MIN_COMMAND_BUFFERS_SIZE_IN_MB "1" CACHE STRING
+    set(FILAMENT_MIN_COMMAND_BUFFERS_SIZE_IN_MB "5" CACHE STRING
             "Size of the command-stream buffer. As a rule of thumb use the same value as FILAMENT_PER_FRRAME_COMMANDS_SIZE_IN_MB, default 1."
             )
-    set(FILAMENT_OPENGL_HANDLE_ARENA_SIZE_IN_MB "4" CACHE STRING
+    set(FILAMENT_OPENGL_HANDLE_ARENA_SIZE_IN_MB "32" CACHE STRING
             "Size of the OpenGL handle arena, default 4."
             )
     set(FILAMENT_METAL_HANDLE_ARENA_SIZE_IN_MB "8" CACHE STRING

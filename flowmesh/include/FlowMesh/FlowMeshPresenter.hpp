@@ -4,8 +4,8 @@
 #include <Core/Types/TMap.hpp>
 #include <CrossGuid/Guid.hpp>
 #include <FilApp/FilAppView.hpp>
+#include <FlowMesh/FlowMeshPoint.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
-#include <FlowMesh/FlowMeshSphere.hpp>
 
 namespace FilApp
 {
@@ -21,12 +21,12 @@ class FlowMeshPresenter
   public:
     void setMainView(FilApp::IView* mainView) { m_mainView = mainView; }
 
-    void add(const FlowMeshSphere& flowMeshSphere);
+    void add(const FlowMeshPoint& flowMeshSphere);
     void add(const FlowMeshSegments& flowMeshSegments);
 
   private:
     static FilApp::TriangleRenderable
-    createTriangleRenderable(const FlowMeshSphere& flowMeshSphere);
+    createTriangleRenderable(const FlowMeshPoint& flowMeshSphere);
     static FilApp::LineRenderable
     createLineRenderables(const FlowMeshSegments& flowMeshSegments);
 

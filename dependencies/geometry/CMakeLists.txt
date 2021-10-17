@@ -1,6 +1,6 @@
-#set(FETCHCONTENT_SOURCE_DIR_geometry "/home/timo/dev/repos/Geometry")
+set(FETCHCONTENT_SOURCE_DIR_GEOMETRY "/home/timo/dev/repos/Geometry")
 FetchContent_Declare(
         geometry
         GIT_REPOSITORY git@github.com:timow-gh/Geometry.git
-        GIT_TAG main)
+        GIT_TAG refactor_halfedgemeshbuilder)
 FetchContent_MakeAvailable(geometry)

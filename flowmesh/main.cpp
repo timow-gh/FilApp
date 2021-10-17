@@ -4,6 +4,7 @@
 #include <FilApp/Interfaces/IWindow.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
+#include <FlowMesh/FlowMeshPoint.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
 #include <Geometry/Segment.hpp>
@@ -47,28 +48,14 @@ int main()
     flowMeshModel.addSegments(FlowMeshSegments(xSegs, xg::newGuid()));
     flowMeshModel.addSegments(FlowMeshSegments(ySegs, xg::newGuid()));
 
-    //
-    //    constexpr double_t RADIUS = 0.035;
-    //    flowMeshModel.addSphere(
-    //        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 0, 0}, RADIUS),
-    //                       xg::newGuid()));
-    //    flowMeshModel.addSphere(
-    //        FlowMeshSphere(Sphere<double_t>(Vec3d{1, 0, 0}, RADIUS),
-    //                       xg::newGuid()));
-    //    flowMeshModel.addSphere(
-    //        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 2, 0}, RADIUS),
-    //                       xg::newGuid()));
-    //    flowMeshModel.addSphere(
-    //        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 0, 3}, RADIUS),
-    //                       xg::newGuid()));
-
-    constexpr int32_t MINMAX = 9;
-    constexpr double_t RADIUS = 0.035;
+    constexpr int32_t MINMAX = 10;
+    constexpr double_t RADIUS = 0.03;
+    constexpr double_t DIST = 0.3;
     for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
         for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
-            flowMeshModel.addSphere(FlowMeshSphere(
-                Sphere<double_t>(Vec3d{static_cast<double>(i) * 0.1,
-                                       static_cast<double>(j) * 0.1,
+            flowMeshModel.addSphere(FlowMeshPoint(
+                Sphere<double_t>(Vec3d{static_cast<double>(i) * DIST,
+                                       static_cast<double>(j) * DIST,
                                        0},
                                  RADIUS),
                 xg::newGuid()));
