@@ -4,6 +4,7 @@
 #include <Core/Types/TMap.hpp>
 #include <CrossGuid/Guid.hpp>
 #include <FilApp/FilAppView.hpp>
+#include <FlowMesh/FlowMeshSegments.hpp>
 #include <FlowMesh/FlowMeshSphere.hpp>
 
 namespace FilApp
@@ -21,10 +22,15 @@ class FlowMeshPresenter
     void setMainView(FilApp::IView* mainView) { m_mainView = mainView; }
 
     void add(const FlowMeshSphere& flowMeshSphere);
+    void add(const FlowMeshSegments& flowMeshSegments);
 
   private:
-    FilApp::TriangleRenderable
+    static FilApp::TriangleRenderable
     createTriangleRenderable(const FlowMeshSphere& flowMeshSphere);
+    static FilApp::LineRenderable
+    createLineRenderables(const FlowMeshSegments& flowMeshSegments);
+
+    LinAl::Matrix3d m_mathLcsToFilamentLcs;
 };
 } // namespace FlowMesh
 

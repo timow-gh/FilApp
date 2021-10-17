@@ -41,6 +41,9 @@ class FilAppView
     std::vector<std::unique_ptr<PointRenderable>> m_pointRenderables;
     std::vector<std::unique_ptr<LineRenderable>> m_lineRenderables;
     std::vector<std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
+    float_t m_near{0.1f};
+    float_t m_far{100.0f};
+    float_t m_orthogonalCameraZoom{3.0f};
 
     std::vector<FilAppRenderable> m_renderables;
 
@@ -95,7 +98,7 @@ class FilAppView
     RenderableIdentifier
     addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
-    void configureCameraProjection();
+    void configureOrthogonalProjection(float_t near, float_t far, float_t zoom);
 };
 } // namespace FilApp
 

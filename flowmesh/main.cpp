@@ -1,9 +1,12 @@
+#include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <FilApp/Interfaces/IView.hpp>
 #include <FilApp/Interfaces/IWindow.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
+#include <FlowMesh/FlowMeshSegments.hpp>
+#include <Geometry/Segment.hpp>
 
 using namespace FilApp;
 using namespace FlowMesh;
@@ -26,19 +29,49 @@ int main()
     FlowMeshModel flowMeshModel;
     flowMeshModel.setFlowMeshPresenter(&flowMeshPresenter);
 
+    Core::TVector<Geometry::Segment3d> xSegs;
+    Core::TVector<Geometry::Segment3d> ySegs;
+    constexpr int32_t MIN = -5;
+    constexpr int32_t MAX = 5;
+    constexpr std::size_t SEG_COUNT = MAX - MIN + 1;
+    constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
+    for (int32_t i = 0; i <= SEG_COUNT; ++i)
+    {
+        xSegs.push_back(Geometry::Segment3d{
+            {static_cast<double>(MIN + i), -LENGTH_HALF, 0},
+            {static_cast<double>(MIN + i), LENGTH_HALF, 0}});
+        ySegs.push_back(Geometry::Segment3d{
+            {-LENGTH_HALF, static_cast<double>(MIN + i), 0},
+            {LENGTH_HALF, static_cast<double>(MIN + i), 0}});
+    }
+    flowMeshModel.addSegments(FlowMeshSegments(xSegs, xg::newGuid()));
+    flowMeshModel.addSegments(FlowMeshSegments(ySegs, xg::newGuid()));
+
+    //
+    //    constexpr double_t RADIUS = 0.035;
+    //    flowMeshModel.addSphere(
+    //        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 0, 0}, RADIUS),
+    //                       xg::newGuid()));
+    //    flowMeshModel.addSphere(
+    //        FlowMeshSphere(Sphere<double_t>(Vec3d{1, 0, 0}, RADIUS),
+    //                       xg::newGuid()));
+    //    flowMeshModel.addSphere(
+    //        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 2, 0}, RADIUS),
+    //                       xg::newGuid()));
+    //    flowMeshModel.addSphere(
+    //        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 0, 3}, RADIUS),
+    //                       xg::newGuid()));
+
+    constexpr int32_t MINMAX = 9;
     constexpr double_t RADIUS = 0.035;
-    flowMeshModel.addSphere(
-        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 0, 0}, RADIUS),
-                       xg::newGuid()));
-    flowMeshModel.addSphere(
-        FlowMeshSphere(Sphere<double_t>(Vec3d{1, 0, 0}, RADIUS),
-                       xg::newGuid()));
-    flowMeshModel.addSphere(
-        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 1, 0}, RADIUS),
-                       xg::newGuid()));
-    flowMeshModel.addSphere(
-        FlowMeshSphere(Sphere<double_t>(Vec3d{0, 0, 1}, RADIUS),
-                       xg::newGuid()));
+    for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
+        for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
+            flowMeshModel.addSphere(FlowMeshSphere(
+                Sphere<double_t>(Vec3d{static_cast<double>(i) * 0.1,
+                                       static_cast<double>(j) * 0.1,
+                                       0},
+                                 RADIUS),
+                xg::newGuid()));
 
     app.run();
 }
