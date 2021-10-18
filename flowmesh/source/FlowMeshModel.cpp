@@ -7,7 +7,7 @@ void FlowMeshModel::setFlowMeshPresenter(FlowMeshPresenter* flowMeshPresenter)
 {
     m_flowMeshPresenter = flowMeshPresenter;
 }
-void FlowMeshModel::addSphere(const FlowMeshPoint& sphere)
+void FlowMeshModel::addSphere(const FlowMeshSphere& sphere)
 {
     auto res = m_spheres.emplace(sphere.getGuid(), sphere);
     if (res.second)

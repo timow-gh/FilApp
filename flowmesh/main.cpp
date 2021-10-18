@@ -4,9 +4,9 @@
 #include <FilApp/Interfaces/IWindow.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
-#include <FlowMesh/FlowMeshPoint.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
+#include <FlowMesh/FlowMeshSphere.hpp>
 #include <Geometry/Segment.hpp>
 
 using namespace FilApp;
@@ -48,12 +48,12 @@ int main()
     flowMeshModel.addSegments(FlowMeshSegments(xSegs, xg::newGuid()));
     flowMeshModel.addSegments(FlowMeshSegments(ySegs, xg::newGuid()));
 
-    constexpr int32_t MINMAX = 2;
+    constexpr int32_t MINMAX = 1;
     constexpr double_t RADIUS = 0.5;
     constexpr double_t DIST = 1.5;
     for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
         for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
-            flowMeshModel.addSphere(FlowMeshPoint(
+            flowMeshModel.addSphere(FlowMeshSphere(
                 Sphere<double_t>(Vec3d{static_cast<double>(i) * DIST,
                                        static_cast<double>(j) * DIST,
                                        0},

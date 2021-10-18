@@ -2,7 +2,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp
         include/FlowMesh/Interactors/PickingContext.hpp
         include/FlowMesh/FlowMeshModel.hpp
-        include/FlowMesh/FlowMeshPoint.hpp
+        include/FlowMesh/FlowMeshSphere.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
         source/FlowMeshSegments.cpp
@@ -13,7 +13,7 @@ set(FLOWMESH_SOURCES
         source/FlowMeshPresenter.cpp
         source/FlowMeshController.cpp
         source/FlowMeshModel.cpp
-        source/FlowMeshPoint.cpp
+        source/FlowMeshSphere.cpp
         )
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})

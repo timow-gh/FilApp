@@ -1,24 +1,18 @@
 #include "FlowMesh/FlowMeshPresenter.hpp"
 #include <FilApp/Renderables/Vertex.hpp>
-#include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
+#include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
 
 namespace FlowMesh
 {
-FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(const FlowMeshPoint& flowMeshSphere)
+FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
+    const Geometry::HalfedgeMesh<double_t>& halfedgeMesh)
 {
     // TODO Color
     constexpr uint32_t COLOR = 0xff00aaffu;
 
-    std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
-        Geometry::SphereMeshBuilder<double_t>()
-            .setPolarCount(3)
-            .setAzimuthCount(4)
-            .setSphere(flowMeshSphere.getSphere())
-            .build();
-
     std::vector<FilApp::Vertex> vertices;
-    for (const auto& vec: sphereMesh->getVertexPoints())
+    for (const auto& vec: halfedgeMesh.getVertexPoints())
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(vec[0]),
                                            static_cast<float_t>(vec[1]),
                                            static_cast<float_t>(vec[2])},
@@ -26,7 +20,7 @@ FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(const Flo
 
     return {std::move(vertices),
             Geometry::calcTriangleIndices<double_t, uint16_t>(
-                sphereMesh->getFacets())};
+                halfedgeMesh.getFacets())};
 }
 FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
     const FlowMeshSegments& flowMeshSegments)
@@ -51,9 +45,34 @@ FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
 
     return FilApp::LineRenderable::create(vertices);
 }
-void FlowMeshPresenter::add(const FlowMeshPoint& flowMeshSphere)
+void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
 {
-    m_mainView->addRenderable(createTriangleRenderable(flowMeshSphere));
+    std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
+        Geometry::SphereMeshBuilder<double_t>()
+            .setPolarCount(5)
+            .setAzimuthCount(10)
+            .setSphere(flowMeshSphere.getSphere())
+            .build();
+
+    const auto& segIndices = Geometry::calcSegmentIndices(*sphereMesh);
+    std::vector<FilApp::Vertex> vertices;
+    vertices.reserve(segIndices.size());
+    for (const auto& segmentIndices: segIndices)
+    {
+        auto sPoint = sphereMesh->getVertex(segmentIndices.source).getPoint();
+        auto tPoint = sphereMesh->getVertex(segmentIndices.target).getPoint();
+        vertices.push_back(FilApp::Vertex{{static_cast<float_t>(sPoint[0]),
+                                           static_cast<float_t>(sPoint[1]),
+                                           static_cast<float_t>(sPoint[2])},
+                                          0xff000000u});
+        vertices.push_back(FilApp::Vertex{{static_cast<float_t>(tPoint[0]),
+                                           static_cast<float_t>(tPoint[1]),
+                                           static_cast<float_t>(tPoint[2])},
+                                          0xff000000u});
+    }
+    m_mainView->addRenderable(FilApp::LineRenderable::create(vertices));
+
+    m_mainView->addRenderable(createTriangleRenderable(*sphereMesh));
 }
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {
