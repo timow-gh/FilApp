@@ -36,7 +36,7 @@ int main()
     constexpr int32_t MAX = 5;
     constexpr std::size_t SEG_COUNT = MAX - MIN + 1;
     constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
-    for (int32_t i = 0; i <= SEG_COUNT; ++i)
+    for (int32_t i = 0; i < SEG_COUNT; ++i)
     {
         xSegs.push_back(Geometry::Segment3d{
             {static_cast<double>(MIN + i), -LENGTH_HALF, 0},
@@ -48,9 +48,9 @@ int main()
     flowMeshModel.addSegments(FlowMeshSegments(xSegs, xg::newGuid()));
     flowMeshModel.addSegments(FlowMeshSegments(ySegs, xg::newGuid()));
 
-    constexpr int32_t MINMAX = 10;
-    constexpr double_t RADIUS = 0.03;
-    constexpr double_t DIST = 0.3;
+    constexpr int32_t MINMAX = 2;
+    constexpr double_t RADIUS = 0.5;
+    constexpr double_t DIST = 1.5;
     for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
         for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
             flowMeshModel.addSphere(FlowMeshPoint(

@@ -14,21 +14,13 @@ int main()
     IView* mainView = mainWindow->getMainIView();
 
     mainView->addRenderable(
-        LineRenderable::create(Vertex{{0, 0, 0}, 0xffff0000u},
-                               Vertex{{2, 0, 0}, 0xffff0000u}));
+        LineRenderable::create(Vertex{{0, 0, 0}, 0xffffffffu},
+                               Vertex{{1, 0, 0}, 0xffffffffu}));
 
-    mainView->addRenderable(
-        LineRenderable::create(Vertex{{0, 0, 0}, 0xffff0000u},
-                               Vertex{{0, 2, 0}, 0xffff0000u}));
-
-    mainView->addRenderable(
-        LineRenderable::create(Vertex{{0, 0, 0}, 0xffff0000u},
-                               Vertex{{0, 0, 2}, 0xffff0000u}));
-
-    std::vector<Vertex> vertices = {Vertex{{1, 0, 0}, 0xffff0000u},
-                                    Vertex{{0, 1, 0}, 0xffff0000u},
-                                    Vertex{{0, 0, 1}, 0xffff0000u},
-                                    Vertex{{1, 0, 0}, 0xffff0000u}};
+    std::vector<Vertex> vertices = {Vertex{{0, 0, 0}, 0xffffffffu},
+                                    Vertex{{0, 2, 0}, 0xffffffffu},
+                                    Vertex{{0, 0, 0}, 0xffffffffu},
+                                    Vertex{{0, 0, 3}, 0xffffffffu}};
 
     mainView->addRenderable(LineRenderable::create(std::move(vertices)));
 
