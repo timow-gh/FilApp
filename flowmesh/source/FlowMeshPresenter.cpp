@@ -49,8 +49,8 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
         Geometry::SphereMeshBuilder<double_t>()
-            .setPolarCount(5)
-            .setAzimuthCount(10)
+            .setPolarCount(10)
+            .setAzimuthCount(20)
             .setSphere(flowMeshSphere.getSphere())
             .build();
 
