@@ -34,6 +34,7 @@ set_target_properties(flow_mesh
 target_link_libraries(flow_mesh
         PUBLIC
         filapp::filapp
+        LinAl::LinAl
         Geometry::Geometry
         CrossGuid::CrossGuid
         )

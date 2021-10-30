@@ -1,6 +1,7 @@
 include(FetchContent)
 
 add_subdirectory(crossguid)
+add_subdirectory(linal)
 add_subdirectory(geometry)
 
 FetchContent_Declare(
