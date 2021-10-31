@@ -29,9 +29,9 @@ struct FilAppRenderable
     void destroy() const
     {
         engine->destroy(renderableEntity);
-        //        engine->destroy(mat);
         engine->destroy(vb);
         engine->destroy(ib);
+        // FilAppRenderable does not own material and material instance
     }
 };
 

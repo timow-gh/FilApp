@@ -1,0 +1,9 @@
+#ifndef FILAPP_RENDEREABLEIDENTIFIER_HPP
+#define FILAPP_RENDEREABLEIDENTIFIER_HPP
+
+namespace FilApp
+{
+using RenderableIdentifier = uint32_t;
+}
+
+#endif // FILAPP_RENDEREABLEIDENTIFIER_HPP

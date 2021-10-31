@@ -30,14 +30,16 @@ class FilAppRenderableCreator
     std::map<FilAppMaterialType, MatPair> m_filAppMaterials;
 
   public:
+    using PrimitiveType = filament::RenderableManager::PrimitiveType;
+
     explicit FilAppRenderableCreator(filament::Engine* engine);
     ~FilAppRenderableCreator();
 
-    FilAppRenderable createBakedColorRenderable(
-        const std::vector<Vertex>& vertices,
-        const std::vector<uint16_t>& indices,
-        filament::RenderableManager::PrimitiveType primitiveType,
-        const filament::Box& aabb);
+    FilAppRenderable
+    createBakedColorRenderable(const std::vector<Vertex>& vertices,
+                               const std::vector<uint16_t>& indices,
+                               PrimitiveType primitiveType,
+                               const filament::Box& aabb);
 
     FilAppRenderable
     createBakedColorRenderable(PointRenderable* pointRenderable,

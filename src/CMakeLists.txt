@@ -8,6 +8,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/Interfaces/IWindow.hpp
         include/FilApp/Interfaces/IApplication.hpp
         include/FilApp/Interfaces/IInputEventDispatcher.hpp
+        include/FilApp/Renderables/RendereableIdentifier.hpp
         include/FilApp/Renderables/PointRenderable.hpp
         include/FilApp/Renderables/LineRenderable.hpp
         include/FilApp/Renderables/Vertex.hpp

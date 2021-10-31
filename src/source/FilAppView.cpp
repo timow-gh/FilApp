@@ -112,47 +112,66 @@ void FilAppView::configureOrthogonalProjection(float_t near,
 RenderableIdentifier
 FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 {
-    m_triangleRenderables.emplace_back(
-        std::make_unique<TriangleRenderable>(std::move(triangleRenderable)));
+    auto renderable =
+        std::make_unique<TriangleRenderable>(std::move(triangleRenderable));
 
-    auto* renderable = m_triangleRenderables.back().get();
-    return addRenderable(m_renderableCreator.createBakedColorRenderable(
+    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
         renderable->getIndices(),
         filament::RenderableManager::PrimitiveType::TRIANGLES,
         filament::Box{{0, 0, 0}, {10, 10, 10}}));
-}
-RenderableIdentifier FilAppView::addRenderable(PointRenderable&& renderable)
-{
-    m_pointRenderables.emplace_back(
-        std::make_unique<PointRenderable>(std::move(renderable)));
 
-    return addRenderable(m_renderableCreator.createBakedColorRenderable(
-        m_pointRenderables.back().get(),
+    m_triangleRenderables.emplace(id, std::move(renderable));
+
+    return id;
+}
+RenderableIdentifier
+FilAppView::addRenderable(PointRenderable&& pointRenderable)
+{
+    auto renderable =
+        std::make_unique<PointRenderable>(std::move(pointRenderable));
+
+    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
+        renderable.get(),
         filament::Box{{0, 0, 0}, {10, 10, 10}}));
+
+    m_pointRenderables.emplace(id, std::move(renderable));
+
+    return id;
 }
 RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
 {
-    m_lineRenderables.emplace_back(
-        std::make_unique<LineRenderable>(std::move(lineREnderable)));
+    auto renderable =
+        std::make_unique<LineRenderable>(std::move(lineREnderable));
 
-    auto* renderable = m_lineRenderables.back().get();
-    return addRenderable(m_renderableCreator.createBakedColorRenderable(
+    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
         renderable->getIndices(),
         filament::RenderableManager::PrimitiveType::LINES,
         filament::Box{{0, 0, 0}, {10, 10, 10}}));
+
+    m_lineRenderables.emplace(id, std::move(renderable));
+    return id;
 }
 std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
 {
-    assert(false);
-    // TODO Implement
-    return {};
+    std::vector<RenderableIdentifier> result;
+    for (const auto& filAppRenderable: m_renderables)
+        result.push_back(filAppRenderable.renderableEntity.getId());
+    return result;
 }
-void FilAppView::removeRenderable(RenderableIdentifier renderableIdentifier)
+void FilAppView::removeRenderable(RenderableIdentifier id)
 {
-    assert(false);
-    // TODO Implement
+    eraseFromMap(m_pointRenderables, id);
+    eraseFromMap(m_lineRenderables, id);
+    eraseFromMap(m_triangleRenderables, id);
+    auto iter = std::remove_if(m_renderables.begin(),
+                               m_renderables.end(),
+                               [id = id](const FilAppRenderable& item)
+                               {
+                                   return item.renderableEntity.getId() == id;
+                               });
+    m_renderables.erase(iter, m_renderables.end());
 }
 void FilAppView::clearRenderables()
 {

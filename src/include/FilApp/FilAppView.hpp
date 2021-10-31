@@ -40,17 +40,20 @@ class FilAppView
     filament::Viewport m_viewport;
 
     FilAppRenderableCreator m_renderableCreator;
-    std::vector<std::unique_ptr<PointRenderable>> m_pointRenderables;
-    std::vector<std::unique_ptr<LineRenderable>> m_lineRenderables;
-    std::vector<std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
+    std::map<RenderableIdentifier, std::unique_ptr<PointRenderable>>
+        m_pointRenderables;
+    std::map<RenderableIdentifier, std::unique_ptr<LineRenderable>>
+        m_lineRenderables;
+    std::map<RenderableIdentifier, std::unique_ptr<TriangleRenderable>>
+        m_triangleRenderables;
+
+    std::vector<FilAppRenderable> m_renderables;
+
     float_t m_near{0.1f};
     float_t m_far{100.0f};
     float_t m_orthogonalCameraZoom{3.0f};
 
-    std::vector<FilAppRenderable> m_renderables;
-
     std::vector<AnimationCallBack> m_animationCallbacks;
-
     std::string m_name;
 
   public:
@@ -66,7 +69,7 @@ class FilAppView
     auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
     auto addRenderable(LineRenderable && renderable) -> RenderableIdentifier override;
     [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
-    void removeRenderable(RenderableIdentifier renderableIdentifier) override;
+    void removeRenderable(RenderableIdentifier id) override;
     void clearRenderables() override;
     // clang-format on
     void setUsePostprocessing(bool usePostProcessing) override;
@@ -101,6 +104,15 @@ class FilAppView
     addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
     void configureOrthogonalProjection(float_t near, float_t far, float_t zoom);
+
+    template <typename V>
+    void eraseFromMap(std::map<RenderableIdentifier, V>& map,
+                      RenderableIdentifier id)
+    {
+        auto idIter = map.find(id);
+        if (idIter != map.end())
+            map.erase(idIter);
+    }
 };
 } // namespace FilApp
 

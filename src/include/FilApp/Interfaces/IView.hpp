@@ -1,18 +1,18 @@
 #ifndef FILAPP_IVIEW_HPP
 #define FILAPP_IVIEW_HPP
 
-#include "FilApp/Renderables/PointRenderable.hpp"
-#include "FilApp/Renderables/TriangleRenderable.hpp"
-#include "FilApp/Vec3.hpp"
-#include "IInputEventDispatcher.hpp"
-#include "IInputListener.hpp"
-#include "Viewport.hpp"
+#include <FilApp/Interfaces/IInputEventDispatcher.hpp>
+#include <FilApp/Interfaces/IInputListener.hpp>
+#include <FilApp/Interfaces/Viewport.hpp>
 #include <FilApp/Renderables/LineRenderable.hpp>
+#include <FilApp/Renderables/PointRenderable.hpp>
+#include <FilApp/Renderables/RendereableIdentifier.hpp>
+#include <FilApp/Renderables/TriangleRenderable.hpp>
+#include <FilApp/Vec3.hpp>
 #include <filapp_export.h>
 
 namespace FilApp
 {
-using RenderableIdentifier = uint32_t;
 
 class FILAPP_EXPORT IView
     : public IInputListener

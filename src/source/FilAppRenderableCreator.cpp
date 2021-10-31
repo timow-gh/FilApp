@@ -13,9 +13,12 @@ FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
 
 FilAppRenderableCreator::~FilAppRenderableCreator()
 {
-    // Destroy material instances
+    // Destroy material
     for (const auto& pair: m_filAppMaterials)
+    {
+        m_engine->destroy(pair.second.material);
         m_engine->destroy(pair.second.matInstance);
+    }
 }
 
 filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
@@ -36,7 +39,7 @@ filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
 FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     const std::vector<Vertex>& vertices,
     const std::vector<uint16_t>& indices,
-    filament::RenderableManager::PrimitiveType primitiveType,
+    PrimitiveType primitiveType,
     const filament::Box& aabb)
 
 {
@@ -51,7 +54,10 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     const MatPair& matPair = getMaterial(FilAppMaterialType::BAKEDVERTEXCOLOR);
 
     filAppRenderable.mat = matPair.material;
-    filAppRenderable.matInstance = filAppRenderable.mat->getDefaultInstance();
+    filAppRenderable.matInstance = matPair.matInstance;
+
+    if (primitiveType == PrimitiveType::LINES)
+        filAppRenderable.matInstance->setPolygonOffset(0.8f, 0.1f);
 
     const std::size_t OFFSET = 0;
     filament::RenderableManager::Builder(1)
@@ -67,27 +73,6 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
         .receiveShadows(false)
         .castShadows(false)
         .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
-
-    //    filAppRenderable.mat = filament::Material::Builder()
-    //                               .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
-    //                                        FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
-    //                               .build(*filAppRenderable.engine);
-
-    //    const std::size_t OFFSET = 0;
-    //    filament::RenderableManager::Builder(1)
-    //        .boundingBox(calcFilamentBbox(vertices))
-    //        .material(0, filAppRenderable.mat->getDefaultInstance())
-    //        .geometry(0,
-    //                  primitiveType,
-    //                  filAppRenderable.vb,
-    //                  filAppRenderable.ib,
-    //                  OFFSET,
-    //                  filAppRenderable.ib->getIndexCount())
-    //        .culling(false)
-    //        .receiveShadows(false)
-    //        .castShadows(false)
-    //        .build(*filAppRenderable.engine,
-    //        filAppRenderable.renderableEntity);
 
     return filAppRenderable;
 }
@@ -122,30 +107,6 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
         .receiveShadows(false)
         .castShadows(false)
         .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
-
-    //    filAppRenderable.mat = filament::Material::Builder()
-    //                               .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
-    //                                        FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE)
-    //                               .build(*filAppRenderable.engine);
-    //
-    //    filAppRenderable.renderableEntity =
-    //    utils::EntityManager::get().create(); filAppRenderable.matInstance =
-    //    filAppRenderable.mat->createInstance();
-    //
-    //    filament::RenderableManager::Builder(1)
-    //        .boundingBox(aabb)
-    //        .material(0, filAppRenderable.matInstance)
-    //        .geometry(0,
-    //                  filament::RenderableManager::PrimitiveType::POINTS,
-    //                  filAppRenderable.vb,
-    //                  filAppRenderable.ib,
-    //                  0,
-    //                  filAppRenderable.ib->getIndexCount())
-    //        .culling(false)
-    //        .receiveShadows(false)
-    //        .castShadows(false)
-    //        .build(*filAppRenderable.engine,
-    //        filAppRenderable.renderableEntity);
 
     return filAppRenderable;
 }

@@ -78,4 +78,9 @@ void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {
     m_mainView->addRenderable(createLineRenderables(flowMeshSegments));
 }
+void FlowMeshPresenter::setIdleAnimation(const FilApp::Vec3& rotationAxis)
+{
+    for (const auto id: m_mainView->getRenderableIdentifiers())
+        m_mainView->addRotationAnimation(id, rotationAxis);
+}
 } // namespace FlowMesh

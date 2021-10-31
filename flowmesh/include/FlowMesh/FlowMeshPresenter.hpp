@@ -25,6 +25,8 @@ class FlowMeshPresenter
     void add(const FlowMeshSphere& flowMeshSphere);
     void add(const FlowMeshSegments& flowMeshSegments);
 
+    void setIdleAnimation(const FilApp::Vec3& rotationAxis);
+
   private:
     static FilApp::TriangleRenderable createTriangleRenderable(
         const Geometry::HalfedgeMesh<double_t>& halfedgeMesh);

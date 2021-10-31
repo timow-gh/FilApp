@@ -63,5 +63,7 @@ int main()
                                  RADIUS),
                 xg::newGuid()));
 
+    flowMeshPresenter.setIdleAnimation(FilApp::Vec3{0, 1, 0});
+
     app.run();
 }
