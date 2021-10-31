@@ -14,7 +14,6 @@
 #include <filapp_export.h>
 #include <memory>
 #include <utils/EntityManager.h>
-#include <vector>
 
 namespace FilApp
 {
@@ -30,22 +29,11 @@ struct FilAppRenderable
     void destroy() const
     {
         engine->destroy(renderableEntity);
-        engine->destroy(mat);
+        //        engine->destroy(mat);
         engine->destroy(vb);
         engine->destroy(ib);
     }
 };
-
-FilAppRenderable createBakedColorRenderable(
-    const std::vector<Vertex>& vertices,
-    const std::vector<uint16_t>& indices,
-    filament::RenderableManager::PrimitiveType primitiveType,
-    const filament::Box& aabb,
-    filament::Engine* engine);
-
-FilAppRenderable createBakedColorRenderable(PointRenderable* pointRenderable,
-                                            const filament::Box& aabb,
-                                            filament::Engine* engine);
 
 } // namespace FilApp
 

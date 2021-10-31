@@ -16,7 +16,10 @@ using namespace LinAl;
 
 int main()
 {
-    FilApplication::init(AppConfig(), WindowConfig());
+    AppConfig appConfig{};
+    appConfig.backendMode = BackendMode::OPENGL;
+
+    FilApplication::init(appConfig, WindowConfig());
     FilApplication& app = FilApplication::get();
 
     IWindow* mainWindow = app.getWindow();

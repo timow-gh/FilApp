@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPRENDERABLEBUFFERS_HPP
 #define FILAPP_FILAPPRENDERABLEBUFFERS_HPP
 
-#include "FilAppRenderable.hpp"
+#include "FilApp/FilAppRenderable.hpp"
 
 namespace FilApp
 {

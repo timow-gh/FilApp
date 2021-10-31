@@ -9,7 +9,9 @@ FilAppView::FilAppView(filament::Renderer& renderer,
                        const filament::Viewport& viewport,
                        filament::math::float4 skyBoxDefaultColor,
                        filament::camutils::Mode cameraMode)
-    : m_engine(renderer.getEngine()), m_name(std::move(name))
+    : m_engine(renderer.getEngine())
+    , m_name(std::move(name))
+    , m_renderableCreator(renderer.getEngine())
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
@@ -114,22 +116,20 @@ FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
         std::make_unique<TriangleRenderable>(std::move(triangleRenderable)));
 
     auto* renderable = m_triangleRenderables.back().get();
-    return addRenderable(createBakedColorRenderable(
+    return addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
         renderable->getIndices(),
         filament::RenderableManager::PrimitiveType::TRIANGLES,
-        filament::Box{{0, 0, 0}, {10, 10, 10}},
-        m_engine));
+        filament::Box{{0, 0, 0}, {10, 10, 10}}));
 }
 RenderableIdentifier FilAppView::addRenderable(PointRenderable&& renderable)
 {
     m_pointRenderables.emplace_back(
         std::make_unique<PointRenderable>(std::move(renderable)));
 
-    return addRenderable(
-        createBakedColorRenderable(m_pointRenderables.back().get(),
-                                   filament::Box{{0, 0, 0}, {10, 10, 10}},
-                                   m_engine));
+    return addRenderable(m_renderableCreator.createBakedColorRenderable(
+        m_pointRenderables.back().get(),
+        filament::Box{{0, 0, 0}, {10, 10, 10}}));
 }
 RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
 {
@@ -137,12 +137,11 @@ RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
         std::make_unique<LineRenderable>(std::move(lineREnderable)));
 
     auto* renderable = m_lineRenderables.back().get();
-    return addRenderable(createBakedColorRenderable(
+    return addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
         renderable->getIndices(),
         filament::RenderableManager::PrimitiveType::LINES,
-        filament::Box{{0, 0, 0}, {10, 10, 10}},
-        m_engine));
+        filament::Box{{0, 0, 0}, {10, 10, 10}}));
 }
 std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
 {

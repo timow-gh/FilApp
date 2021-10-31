@@ -3,6 +3,7 @@
 
 #include "FilApp/Interfaces/IView.hpp"
 #include "FilAppRenderable.hpp"
+#include "FilAppRenderableCreator.hpp"
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -38,6 +39,7 @@ class FilAppView
 
     filament::Viewport m_viewport;
 
+    FilAppRenderableCreator m_renderableCreator;
     std::vector<std::unique_ptr<PointRenderable>> m_pointRenderables;
     std::vector<std::unique_ptr<LineRenderable>> m_lineRenderables;
     std::vector<std::unique_ptr<TriangleRenderable>> m_triangleRenderables;

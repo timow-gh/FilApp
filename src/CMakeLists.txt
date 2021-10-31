@@ -1,38 +1,39 @@
 build_resources()
 
 set(FILAPP_PUBLIC_HEADERS
+        include/FilApp/Interfaces/IView.hpp
+        include/FilApp/Interfaces/InputEvents.hpp
+        include/FilApp/Interfaces/IInputListener.hpp
+        include/FilApp/Interfaces/Viewport.hpp
+        include/FilApp/Interfaces/IWindow.hpp
+        include/FilApp/Interfaces/IApplication.hpp
+        include/FilApp/Interfaces/IInputEventDispatcher.hpp
+        include/FilApp/Renderables/PointRenderable.hpp
+        include/FilApp/Renderables/LineRenderable.hpp
+        include/FilApp/Renderables/Vertex.hpp
+        include/FilApp/Renderables/TriangleRenderable.hpp
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppView.hpp
         include/FilApp/FilAppWindow.hpp
         include/FilApp/WindowConfig.hpp
         include/FilApp/AppConfig.hpp
-        include/FilApp/Renderables/Vertex.hpp
-        include/FilApp/Interfaces/IView.hpp
-        include/FilApp/Interfaces/InputEvents.hpp
-        include/FilApp/Interfaces/IInputListener.hpp
-        include/FilApp/Renderables/TriangleRenderable.hpp
         include/FilApp/Vec3.hpp
-        include/FilApp/Interfaces/Viewport.hpp
-        include/FilApp/Interfaces/IWindow.hpp
-        include/FilApp/Renderables/PointRenderable.hpp
-        include/FilApp/Renderables/LineRenderable.hpp
-        include/FilApp/Interfaces/IApplication.hpp
-        include/FilApp/Interfaces/IInputEventDispatcher.hpp)
+        include/FilApp/FilAppRenderable.hpp
+        include/FilApp/FilAppRenderableCreator.hpp)
 
 set(FILAPP_SOURCES
+        source/Renderables/PointRenderable.cpp
+        source/Renderables/LineRenderable.cpp
         source/FilAppConversion.hpp
         source/FilApplication.cpp
         source/FilAppView.cpp
         source/FilAppWindow.cpp
         source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp
-        source/FilAppRenderable.hpp
-        source/FilAppRenderable.cpp
         source/FilAppConversion.cpp
         source/FilAppRenderableBuffers.cpp
         source/FilAppRenderableBuffers.hpp
-        source/Renderables/PointRenderable.cpp
-        source/Renderables/LineRenderable.cpp)
+        source/FilAppRenderableCreator.cpp)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)

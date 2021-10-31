@@ -1,0 +1,179 @@
+#include "FilApp/FilAppRenderableCreator.hpp"
+#include "generated/resources/filapp_resources.h"
+#include "math/vec3.h"
+#include <FilAppRenderableBuffers.hpp>
+
+namespace FilApp
+{
+FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
+    : m_engine(engine)
+{
+    createMaterials();
+}
+
+FilAppRenderableCreator::~FilAppRenderableCreator()
+{
+    // Destroy material instances
+    for (const auto& pair: m_filAppMaterials)
+        m_engine->destroy(pair.second.matInstance);
+}
+
+filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
+{
+    filament::math::float3 minVec(std::numeric_limits<float>::max());
+    filament::math::float3 maxVec(std::numeric_limits<float>::lowest());
+    for (const auto& vertex: vertices)
+    {
+        filament::math::float3 vec{vertex.position[0],
+                                   vertex.position[1],
+                                   vertex.position[2]};
+        minVec = min(minVec, vec);
+        maxVec = max(maxVec, vec);
+    }
+    return filament::Box().set(minVec, maxVec);
+}
+
+FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
+    const std::vector<Vertex>& vertices,
+    const std::vector<uint16_t>& indices,
+    filament::RenderableManager::PrimitiveType primitiveType,
+    const filament::Box& aabb)
+
+{
+    FilAppRenderable filAppRenderable;
+    filAppRenderable.engine = m_engine;
+
+    filAppRenderable.renderableEntity = utils::EntityManager::get().create();
+
+    createVertexBuffer(&filAppRenderable, vertices);
+    createIndicesBuffer(&filAppRenderable, indices);
+
+    const MatPair& matPair = getMaterial(FilAppMaterialType::BAKEDVERTEXCOLOR);
+
+    filAppRenderable.mat = matPair.material;
+    filAppRenderable.matInstance = filAppRenderable.mat->getDefaultInstance();
+
+    const std::size_t OFFSET = 0;
+    filament::RenderableManager::Builder(1)
+        .boundingBox(calcFilamentBbox(vertices))
+        .material(0, filAppRenderable.matInstance)
+        .geometry(0,
+                  primitiveType,
+                  filAppRenderable.vb,
+                  filAppRenderable.ib,
+                  OFFSET,
+                  filAppRenderable.ib->getIndexCount())
+        .culling(false)
+        .receiveShadows(false)
+        .castShadows(false)
+        .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
+
+    //    filAppRenderable.mat = filament::Material::Builder()
+    //                               .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
+    //                                        FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
+    //                               .build(*filAppRenderable.engine);
+
+    //    const std::size_t OFFSET = 0;
+    //    filament::RenderableManager::Builder(1)
+    //        .boundingBox(calcFilamentBbox(vertices))
+    //        .material(0, filAppRenderable.mat->getDefaultInstance())
+    //        .geometry(0,
+    //                  primitiveType,
+    //                  filAppRenderable.vb,
+    //                  filAppRenderable.ib,
+    //                  OFFSET,
+    //                  filAppRenderable.ib->getIndexCount())
+    //        .culling(false)
+    //        .receiveShadows(false)
+    //        .castShadows(false)
+    //        .build(*filAppRenderable.engine,
+    //        filAppRenderable.renderableEntity);
+
+    return filAppRenderable;
+}
+
+FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
+    PointRenderable* pointRenderable,
+    const filament::Box& aabb)
+{
+    FilAppRenderable filAppRenderable;
+    filAppRenderable.engine = m_engine;
+
+    constexpr std::size_t VERTEX_SIZE = sizeof(Vertex);
+    createVertexBuffer(&filAppRenderable, pointRenderable, VERTEX_SIZE);
+    createIndicesBuffer(&filAppRenderable, pointRenderable->getIndices());
+
+    filAppRenderable.renderableEntity = utils::EntityManager::get().create();
+
+    const MatPair& matPair = getMaterial(FilAppMaterialType::BAKEDFRAGCOLOR);
+    filAppRenderable.mat = matPair.material;
+    filAppRenderable.matInstance = matPair.matInstance;
+
+    filament::RenderableManager::Builder(1)
+        .boundingBox(aabb)
+        .material(0, filAppRenderable.matInstance)
+        .geometry(0,
+                  filament::RenderableManager::PrimitiveType::POINTS,
+                  filAppRenderable.vb,
+                  filAppRenderable.ib,
+                  0,
+                  filAppRenderable.ib->getIndexCount())
+        .culling(false)
+        .receiveShadows(false)
+        .castShadows(false)
+        .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
+
+    //    filAppRenderable.mat = filament::Material::Builder()
+    //                               .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
+    //                                        FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE)
+    //                               .build(*filAppRenderable.engine);
+    //
+    //    filAppRenderable.renderableEntity =
+    //    utils::EntityManager::get().create(); filAppRenderable.matInstance =
+    //    filAppRenderable.mat->createInstance();
+    //
+    //    filament::RenderableManager::Builder(1)
+    //        .boundingBox(aabb)
+    //        .material(0, filAppRenderable.matInstance)
+    //        .geometry(0,
+    //                  filament::RenderableManager::PrimitiveType::POINTS,
+    //                  filAppRenderable.vb,
+    //                  filAppRenderable.ib,
+    //                  0,
+    //                  filAppRenderable.ib->getIndexCount())
+    //        .culling(false)
+    //        .receiveShadows(false)
+    //        .castShadows(false)
+    //        .build(*filAppRenderable.engine,
+    //        filAppRenderable.renderableEntity);
+
+    return filAppRenderable;
+}
+void FilAppRenderableCreator::createMaterials()
+{
+    filament::Material* mat = nullptr;
+    filament::MaterialInstance* matInstance = nullptr;
+
+    mat = filament::Material::Builder()
+              .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA,
+                       FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE)
+              .build(*m_engine);
+    matInstance = mat->createInstance();
+    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDVERTEXCOLOR,
+                              MatPair(mat, matInstance));
+
+    mat = filament::Material::Builder()
+              .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA,
+                       FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
+              .build(*m_engine);
+    matInstance = mat->createInstance();
+    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDVERTEXCOLOR,
+                              MatPair(mat, matInstance));
+}
+const FilAppRenderableCreator::MatPair& FilAppRenderableCreator::getMaterial(
+    FilAppRenderableCreator::FilAppMaterialType filAppMaterialType) const
+{
+    auto iter = m_filAppMaterials.find(filAppMaterialType);
+    return iter->second;
+}
+} // namespace FilApp
