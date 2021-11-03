@@ -3,24 +3,55 @@
 
 namespace FlowMesh
 {
+bool GeometryElementsMap::add(const FlowMeshSegments& segments)
+{
+    auto res = m_segments.emplace(segments.getTypeId(), segments);
+    return res.second;
+}
+bool GeometryElementsMap::add(const FlowMeshSphere& sphere)
+{
+    auto res = m_spheres.emplace(sphere.getTypeId(), sphere);
+    return res.second;
+}
+void GeometryElementsMap::remove(const TypeId& typeId)
+{
+    removeElement(m_segments, typeId);
+    removeElement(m_spheres, typeId);
+}
+std::vector<TypeId> GeometryElementsMap::calcTypeIds() const
+{
+    std::vector<TypeId> result;
+    std::size_t resultSize = m_segments.size() + m_spheres.size();
+    result.reserve(resultSize);
+
+    calcTypeIds(result, m_segments);
+    calcTypeIds(result, m_spheres);
+
+    return result;
+}
+
 void FlowMeshModel::setFlowMeshPresenter(FlowMeshPresenter* flowMeshPresenter)
 {
     m_flowMeshPresenter = flowMeshPresenter;
 }
-void FlowMeshModel::addSphere(const FlowMeshSphere& sphere)
+std::vector<TypeId> FlowMeshModel::calcTypeIds() const
 {
-    auto res = m_spheres.emplace(sphere.getGuid(), sphere);
-    if (res.second)
-        m_flowMeshPresenter->add(res.first->second);
-}
-void FlowMeshModel::remove(const xg::Guid& guid)
-{
-    m_spheres.erase(guid);
+    return m_geometryElements.calcTypeIds();
 }
 void FlowMeshModel::addSegments(const FlowMeshSegments& flowMeshSegments)
 {
-    auto res = m_segments.emplace(flowMeshSegments.getGuid(), flowMeshSegments);
-    if (res.second)
-        m_flowMeshPresenter->add(res.first->second);
+    if (m_geometryElements.add(flowMeshSegments))
+        m_flowMeshPresenter->add(flowMeshSegments);
 }
+void FlowMeshModel::addSphere(const FlowMeshSphere& sphere)
+{
+    if (m_geometryElements.add(sphere))
+        m_flowMeshPresenter->add(sphere);
+}
+void FlowMeshModel::remove(const TypeId& typeId)
+{
+    m_geometryElements.remove(typeId);
+    m_flowMeshPresenter->remove(typeId);
+}
+
 } // namespace FlowMesh

@@ -1,4 +1,5 @@
 #include <FilApp/Renderables/LineRenderable.hpp>
+#include <cassert>
 
 namespace FilApp
 {

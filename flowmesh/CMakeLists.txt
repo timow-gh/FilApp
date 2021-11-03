@@ -6,7 +6,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
         source/FlowMeshSegments.cpp
-        include/FlowMesh/FlowMeshSegments.hpp)
+        include/FlowMesh/FlowMeshSegments.hpp include/FlowMesh/TypeId.hpp)
 
 set(FLOWMESH_SOURCES
         source/Interactors/PickingContext.cpp

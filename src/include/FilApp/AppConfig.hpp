@@ -11,9 +11,16 @@ enum class BackendMode
     OPENGL
 };
 
+enum class EventPollingMode
+{
+    POLL_EVENTS,
+    WAIT_EVENTS
+};
+
 struct FILAPP_EXPORT AppConfig
 {
     BackendMode backendMode = BackendMode::VULKAN;
+    EventPollingMode eventPollingMode = EventPollingMode::WAIT_EVENTS;
 };
 } // namespace FilApp
 

@@ -1,5 +1,7 @@
 #include "FilApp/FilAppView.hpp"
 #include <filament/TransformManager.h>
+#include <iomanip>
+#include <iostream>
 #include <utility>
 
 namespace FilApp
@@ -9,12 +11,13 @@ FilAppView::FilAppView(filament::Renderer& renderer,
                        const filament::Viewport& viewport,
                        filament::math::float4 skyBoxDefaultColor,
                        filament::camutils::Mode cameraMode)
-    : m_engine(renderer.getEngine())
-    , m_name(std::move(name))
-    , m_renderableCreator(renderer.getEngine())
+    : m_engine(renderer.getEngine()), m_name(std::move(name))
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
+
+    m_filamentView->setAntiAliasing(filament::AntiAliasing::FXAA);
+    m_filamentView->setSampleCount(8);
 
     m_scene = m_engine->createScene();
     m_filamentView->setScene(m_scene);
@@ -51,16 +54,19 @@ FilAppView::FilAppView(filament::Renderer& renderer,
                "Camera manipulator not "
                "implemented.");
 
+    m_renderableCreator = FilAppRenderableCreator::create(m_engine);
+
     setViewport(viewport);
 }
 FilAppView::~FilAppView()
 {
     utils::EntityManager& entityManager = utils::EntityManager::get();
+    clearFilAppRenderables();
     entityManager.destroy(m_cameraEntity);
     m_engine->destroyCameraComponent(m_cameraEntity);
+    //    m_renderableCreator.destroyMaterials();
     m_engine->destroy(m_skybox);
     m_engine->destroy(m_filamentView);
-    clearFilAppRenderables();
     m_engine->destroy(m_scene);
 }
 void FilAppView::setViewport(const filament::Viewport& viewport)
@@ -165,12 +171,19 @@ void FilAppView::removeRenderable(RenderableIdentifier id)
     eraseFromMap(m_pointRenderables, id);
     eraseFromMap(m_lineRenderables, id);
     eraseFromMap(m_triangleRenderables, id);
-    auto iter = std::remove_if(m_renderables.begin(),
-                               m_renderables.end(),
-                               [id = id](const FilAppRenderable& item)
-                               {
-                                   return item.renderableEntity.getId() == id;
-                               });
+    auto iter =
+        std::remove_if(m_renderables.begin(),
+                       m_renderables.end(),
+                       [id = id, scene = m_scene](const FilAppRenderable& item)
+                       {
+                           if (item.renderableEntity.getId() == id)
+                           {
+                               scene->remove(item.renderableEntity);
+                               item.destroy();
+                               return true;
+                           }
+                           return false;
+                       });
     m_renderables.erase(iter, m_renderables.end());
 }
 void FilAppView::clearRenderables()
@@ -193,7 +206,7 @@ void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
             tcm.setTransform(tcm.getInstance(utils::Entity::import(
                                  static_cast<int>(renderableIdentifier))),
                              filament::math::mat4f::rotation(
-                                 deltaT,
+                                 deltaT * 0.4,
                                  filament::math::float3{0, 1, 0}));
         });
 }

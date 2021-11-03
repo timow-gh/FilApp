@@ -5,20 +5,17 @@
 
 namespace FilApp
 {
+FilAppRenderableCreator
+FilAppRenderableCreator::create(filament::Engine* engine)
+{
+    FilAppRenderableCreator result = FilAppRenderableCreator(engine);
+    result.createMaterials();
+    return result;
+}
 FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
     : m_engine(engine)
 {
     createMaterials();
-}
-
-FilAppRenderableCreator::~FilAppRenderableCreator()
-{
-    // Destroy material
-    for (const auto& pair: m_filAppMaterials)
-    {
-        m_engine->destroy(pair.second.material);
-        m_engine->destroy(pair.second.matInstance);
-    }
 }
 
 filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
@@ -57,7 +54,7 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     filAppRenderable.matInstance = matPair.matInstance;
 
     if (primitiveType == PrimitiveType::LINES)
-        filAppRenderable.matInstance->setPolygonOffset(0.8f, 0.1f);
+        filAppRenderable.matInstance->setPolygonOffset(1.0f, 1.0f);
 
     const std::size_t OFFSET = 0;
     filament::RenderableManager::Builder(1)
@@ -137,4 +134,13 @@ const FilAppRenderableCreator::MatPair& FilAppRenderableCreator::getMaterial(
     auto iter = m_filAppMaterials.find(filAppMaterialType);
     return iter->second;
 }
+void FilAppRenderableCreator::destroyMaterials()
+{
+    for (const auto& pair: m_filAppMaterials)
+    {
+        m_engine->destroy(pair.second.material);
+        m_engine->destroy(pair.second.matInstance);
+    }
+}
+
 } // namespace FilApp

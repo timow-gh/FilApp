@@ -3,12 +3,12 @@
 namespace FlowMesh
 {
 FlowMeshSphere::FlowMeshSphere()
-    : m_sphere(Geometry::Sphere<double_t>(LinAl::ZERO_VEC3D, 1.0)), m_guid()
+    : m_sphere(Geometry::Sphere<double_t>(LinAl::ZERO_VEC3D, 1.0)), m_typeId()
 {
 }
 FlowMeshSphere::FlowMeshSphere(Geometry::Sphere<double_t> sphere,
                                const xg::Guid& guid)
-    : m_sphere(std::move(sphere)), m_guid(guid)
+    : m_sphere(std::move(sphere)), m_typeId(guid)
 {
 }
 const Geometry::Sphere<double_t>& FlowMeshSphere::getSphere() const
@@ -19,14 +19,14 @@ void FlowMeshSphere::setSphere(const Geometry::Sphere<double_t>& sphere)
 {
     m_sphere = sphere;
 }
-const xg::Guid& FlowMeshSphere::getGuid() const
+const xg::Guid& FlowMeshSphere::getTypeId() const
 {
-    return m_guid;
+    return m_typeId;
 }
 bool operator==(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs)
 {
-    return std::tie(lhs.m_sphere, lhs.m_guid) ==
-           std::tie(rhs.m_sphere, rhs.m_guid);
+    return std::tie(lhs.m_sphere, lhs.m_typeId) ==
+           std::tie(rhs.m_sphere, rhs.m_typeId);
 }
 bool operator!=(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs)
 {
@@ -34,7 +34,7 @@ bool operator!=(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs)
 }
 bool operator<(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs)
 {
-    return lhs.m_guid < rhs.m_guid;
+    return lhs.m_typeId < rhs.m_typeId;
 }
 bool operator>(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs)
 {

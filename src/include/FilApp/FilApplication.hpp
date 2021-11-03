@@ -49,6 +49,7 @@ class FILAPP_EXPORT FilApplication
     std::unique_ptr<FilAppWindow> m_window;
 
     bool m_closeApp = false;
+    AppConfig m_appConfig;
 };
 } // namespace FilApp
 

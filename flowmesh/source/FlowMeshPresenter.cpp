@@ -70,17 +70,34 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
                                            static_cast<float_t>(tPoint[2])},
                                           0xff000000u});
     }
-    m_mainView->addRenderable(FilApp::LineRenderable::create(vertices));
+    auto verticesId =
+        m_mainView->addRenderable(FilApp::LineRenderable::create(vertices));
+    auto sphereId =
+        m_mainView->addRenderable(createTriangleRenderable(*sphereMesh));
 
-    m_mainView->addRenderable(createTriangleRenderable(*sphereMesh));
+    m_typeIdRenderableMapping.emplace(
+        flowMeshSphere.getTypeId(),
+        std::vector<FilApp::RenderableIdentifier>{verticesId, sphereId});
 }
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {
-    m_mainView->addRenderable(createLineRenderables(flowMeshSegments));
+    auto segmentsId =
+        m_mainView->addRenderable(createLineRenderables(flowMeshSegments));
+    m_typeIdRenderableMapping.emplace(
+        flowMeshSegments.getTypeId(),
+        std::vector<FilApp::RenderableIdentifier>{segmentsId});
+}
+void FlowMeshPresenter::remove(const TypeId& typeId)
+{
+    auto iter = m_typeIdRenderableMapping.find(typeId);
+    if (iter != m_typeIdRenderableMapping.end())
+        for (const FilApp::RenderableIdentifier id: iter->second)
+            m_mainView->removeRenderable(id);
 }
 void FlowMeshPresenter::setIdleAnimation(const FilApp::Vec3& rotationAxis)
 {
     for (const auto id: m_mainView->getRenderableIdentifiers())
         m_mainView->addRotationAnimation(id, rotationAxis);
 }
+
 } // namespace FlowMesh

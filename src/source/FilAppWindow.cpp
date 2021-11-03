@@ -171,9 +171,8 @@ void FilAppWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
 }
 FilAppWindow::~FilAppWindow()
 {
-    m_views.clear();
-    m_application->getEngine()->destroy(m_renderer);
-    m_application->getEngine()->destroy(m_swapChain);
+    //    m_views.clear();
+    //    m_application->getEngine()->destroy(m_swapChain);
     SDL_DestroyWindow(m_sdlWindow);
 }
 std::vector<IView*> FilAppWindow::getIViews()
