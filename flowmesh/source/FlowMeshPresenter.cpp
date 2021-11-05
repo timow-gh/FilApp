@@ -1,6 +1,7 @@
 #include "FlowMesh/FlowMeshPresenter.hpp"
 #include <FilApp/Renderables/Vertex.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
+#include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
 
 namespace FlowMesh
@@ -45,22 +46,16 @@ FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
 
     return FilApp::LineRenderable::create(vertices);
 }
-void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
-{
-    std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
-        Geometry::SphereMeshBuilder<double_t>()
-            .setPolarCount(10)
-            .setAzimuthCount(20)
-            .setSphere(flowMeshSphere.getSphere())
-            .build();
 
-    const auto& segIndices = Geometry::calcSegmentIndices(*sphereMesh);
-    std::vector<FilApp::Vertex> vertices;
-    vertices.reserve(segIndices.size());
+static void
+segmentFilAppVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
+                      const std::vector<Geometry::SegmentIndices>& segIndices,
+                      std::vector<FilApp::Vertex>& vertices)
+{
     for (const auto& segmentIndices: segIndices)
     {
-        auto sPoint = sphereMesh->getVertex(segmentIndices.source).getPoint();
-        auto tPoint = sphereMesh->getVertex(segmentIndices.target).getPoint();
+        auto sPoint = heMesh.getVertex(segmentIndices.source).getPoint();
+        auto tPoint = heMesh.getVertex(segmentIndices.target).getPoint();
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(sPoint[0]),
                                            static_cast<float_t>(sPoint[1]),
                                            static_cast<float_t>(sPoint[2])},
@@ -70,14 +65,51 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
                                            static_cast<float_t>(tPoint[2])},
                                           0xff000000u});
     }
-    auto verticesId =
-        m_mainView->addRenderable(FilApp::LineRenderable::create(vertices));
+}
+
+void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
+{
+    std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
+        Geometry::SphereMeshBuilder<double_t>()
+            .setPolarCount(10)
+            .setAzimuthCount(20)
+            .setSphere(flowMeshSphere.getSphere())
+            .build();
+
+    const auto& segIndices = Geometry::calcMeshSegmentIndices(*sphereMesh);
+    std::vector<FilApp::Vertex> filAppVertices;
+    filAppVertices.reserve(segIndices.size());
+    segmentFilAppVertices(*sphereMesh, segIndices, filAppVertices);
+
+    auto verticesId = m_mainView->addRenderable(
+        FilApp::LineRenderable::create(filAppVertices));
     auto sphereId =
         m_mainView->addRenderable(createTriangleRenderable(*sphereMesh));
 
     m_typeIdRenderableMapping.emplace(
         flowMeshSphere.getTypeId(),
         std::vector<FilApp::RenderableIdentifier>{verticesId, sphereId});
+}
+void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
+{
+    auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
+                        .setCone((flowMeshCone.getCone()))
+                        .setAzimuth(20)
+                        .build();
+
+    const auto& segIndices = Geometry::calcMeshSegmentIndices(*coneMesh);
+    std::vector<FilApp::Vertex> filAppVertices;
+    filAppVertices.reserve(segIndices.size());
+    segmentFilAppVertices(*coneMesh, segIndices, filAppVertices);
+
+    auto verticesId = m_mainView->addRenderable(
+        FilApp::LineRenderable::create(filAppVertices));
+    auto coneId =
+        m_mainView->addRenderable(createTriangleRenderable(*coneMesh));
+
+    m_typeIdRenderableMapping.emplace(
+        flowMeshCone.getTypeId(),
+        std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
 }
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {

@@ -4,6 +4,7 @@
 #include <Core/Types/TMap.hpp>
 #include <FilApp/FilAppView.hpp>
 #include <FilApp/Renderables/RendereableIdentifier.hpp>
+#include <FlowMesh/FlowMeshCone.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
 #include <FlowMesh/FlowMeshSphere.hpp>
 #include <FlowMesh/TypeId.hpp>
@@ -27,6 +28,7 @@ class FlowMeshPresenter
     void setMainView(FilApp::IView* mainView) { m_mainView = mainView; }
 
     void add(const FlowMeshSphere& flowMeshSphere);
+    void add(const FlowMeshCone& flowMeshCone);
     void add(const FlowMeshSegments& flowMeshSegments);
 
     void remove(const TypeId& typeId);

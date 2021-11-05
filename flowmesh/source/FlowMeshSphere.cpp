@@ -3,7 +3,8 @@
 namespace FlowMesh
 {
 FlowMeshSphere::FlowMeshSphere()
-    : m_sphere(Geometry::Sphere<double_t>(LinAl::ZERO_VEC3D, 1.0)), m_typeId()
+    : m_sphere(Geometry::Sphere<double_t>(LinAl::ZERO_VEC3D, 1.0))
+    , m_typeId(TypeId())
 {
 }
 FlowMeshSphere::FlowMeshSphere(Geometry::Sphere<double_t> sphere,

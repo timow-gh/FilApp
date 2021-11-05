@@ -3,10 +3,12 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/PickingContext.hpp
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshSphere.hpp
+        include/FlowMesh/FlowMeshCone.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
         source/FlowMeshSegments.cpp
-        include/FlowMesh/FlowMeshSegments.hpp include/FlowMesh/TypeId.hpp)
+        include/FlowMesh/FlowMeshSegments.hpp
+        include/FlowMesh/TypeId.hpp)
 
 set(FLOWMESH_SOURCES
         source/Interactors/PickingContext.cpp
@@ -14,6 +16,7 @@ set(FLOWMESH_SOURCES
         source/FlowMeshController.cpp
         source/FlowMeshModel.cpp
         source/FlowMeshSphere.cpp
+        source/FlowMeshCone.cpp
         )
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})

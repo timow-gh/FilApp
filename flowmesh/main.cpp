@@ -7,7 +7,10 @@
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
 #include <FlowMesh/FlowMeshSphere.hpp>
+#include <Geometry/Cone.hpp>
 #include <Geometry/Segment.hpp>
+#include <Geometry/Sphere.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 
 using namespace FilApp;
 using namespace FlowMesh;
@@ -49,8 +52,8 @@ int main()
             {-LENGTH_HALF, static_cast<double>(MIN + i), 0},
             {LENGTH_HALF, static_cast<double>(MIN + i), 0}});
     }
-    flowMeshModel.addSegments(FlowMeshSegments(xSegs, xg::newGuid()));
-    flowMeshModel.addSegments(FlowMeshSegments(ySegs, xg::newGuid()));
+    flowMeshModel.addSegments(FlowMeshSegments(xSegs, newTypeId()));
+    flowMeshModel.addSegments(FlowMeshSegments(ySegs, newTypeId()));
 
     TypeId sphereToRemove;
 
@@ -61,7 +64,7 @@ int main()
     {
         for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
         {
-            TypeId id = xg::newGuid();
+            TypeId id = newTypeId();
             if (i == 0 && j == 0)
                 sphereToRemove = id;
 
@@ -75,6 +78,11 @@ int main()
     }
 
     flowMeshModel.remove(sphereToRemove);
+
+    flowMeshModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(Segment3d{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
+                                 1.0),
+        newTypeId()));
 
     //    flowMeshPresenter.setIdleAnimation(FilApp::Vec3{0, 1, 0});
 
