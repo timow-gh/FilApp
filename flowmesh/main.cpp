@@ -79,10 +79,17 @@ int main()
 
     flowMeshModel.remove(sphereToRemove);
 
-    flowMeshModel.addCone(FlowMeshCone(
-        Geometry::Cone<double_t>(Segment3d{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
-                                 1.0),
-        newTypeId()));
+    flowMeshModel.addCone(
+        FlowMeshCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0},
+                                                        LinAl::Vec3d{0, 0, 1}},
+                                              0.5),
+                     newTypeId()));
+
+    flowMeshModel.addCone(
+        FlowMeshCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 1},
+                                                        LinAl::Vec3d{1, 1, 2}},
+                                              0.5),
+                     newTypeId()));
 
     //    flowMeshPresenter.setIdleAnimation(FilApp::Vec3{0, 1, 0});
 
