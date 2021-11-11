@@ -17,12 +17,14 @@ project(FilApp
         VERSION 0.1.0
         LANGUAGES C CXX ASM)
 
-set(CMAKE_CXX_STANDARD 20)
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(BuildResourceHelper)
 
-option(FilApp_BUILD_EXAMPLES "" ON)
+if ((CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR))
+    option(FilApp_BUILD_EXAMPLES "" ON)
+else ()
+    option(FilApp_BUILD_EXAMPLES "" OFF)
+endif ()
 
 preamble()
 if (MSVC)
