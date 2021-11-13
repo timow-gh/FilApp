@@ -56,6 +56,8 @@ class FilAppView
     std::vector<AnimationCallBack> m_animationCallbacks;
     std::string m_name;
 
+    utils::Entity m_globalTrafoComponent;
+
   public:
     FilAppView(filament::Renderer& renderer,
                std::string name,
@@ -72,6 +74,7 @@ class FilAppView
     void removeRenderable(RenderableIdentifier id) override;
     void clearRenderables() override;
     // clang-format on
+
     void setUsePostprocessing(bool usePostProcessing) override;
 
     void addRotationAnimation(RenderableIdentifier renderableIdentifier,

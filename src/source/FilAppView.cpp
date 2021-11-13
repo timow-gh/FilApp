@@ -56,6 +56,18 @@ FilAppView::FilAppView(filament::Renderer& renderer,
 
     m_renderableCreator = FilAppRenderableCreator::create(m_engine);
 
+    m_globalTrafoComponent = utils::EntityManager::get().create();
+    auto& tcm = m_engine->getTransformManager();
+    tcm.create(m_globalTrafoComponent);
+    auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
+    constexpr float_t rotAngle = -filament::math::F_PI_2; //-1.57079632679
+    filament::math::mat4f rotX =
+        filament::math::mat4f::rotation(rotAngle,
+                                        filament::math::float4{1, 0, 0, 1});
+    filament::math::mat4f rotY =
+        filament::math::mat4f::rotation(rotAngle,
+                                        filament::math::float4{0, 1, 0, 1});
+    tcm.setTransform(globalInstance, rotY * rotX);
     setViewport(viewport);
 }
 FilAppView::~FilAppView()
@@ -68,6 +80,8 @@ FilAppView::~FilAppView()
     m_engine->destroy(m_skybox);
     m_engine->destroy(m_filamentView);
     m_engine->destroy(m_scene);
+    auto& tcm = utils::EntityManager::get();
+    tcm.destroy(m_globalTrafoComponent);
 }
 void FilAppView::setViewport(const filament::Viewport& viewport)
 {
@@ -302,7 +316,14 @@ RenderableIdentifier
 FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
 {
     m_renderables.emplace_back(filAppRenderable);
-    m_scene->addEntity(m_renderables.back().renderableEntity);
+    auto entity = m_renderables.back().renderableEntity;
+    m_scene->addEntity(entity);
+
+    auto& tcm = m_engine->getTransformManager();
+    auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
+    auto renderableInstance = tcm.getInstance(entity);
+    tcm.setParent(renderableInstance, globalInstance);
+
     return m_renderables.back().renderableEntity.getId();
 }
 void FilAppView::clearFilAppRenderables()

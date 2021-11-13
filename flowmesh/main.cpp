@@ -17,6 +17,90 @@ using namespace FlowMesh;
 using namespace Geometry;
 using namespace LinAl;
 
+void createGridSegments(FlowMeshModel& fMModel)
+{
+    Core::TVector<Geometry::Segment3d> xSegs;
+    Core::TVector<Geometry::Segment3d> ySegs;
+    constexpr int32_t MIN = -8;
+    constexpr int32_t MAX = 8;
+    constexpr std::size_t SEG_COUNT = MAX - MIN + 1;
+    constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
+    for (int32_t i = 0; i < SEG_COUNT; ++i)
+    {
+        xSegs.push_back(Geometry::Segment3d{
+            {static_cast<double>(MIN + i), -LENGTH_HALF, 0},
+            {static_cast<double>(MIN + i), LENGTH_HALF, 0}});
+        ySegs.push_back(Geometry::Segment3d{
+            {-LENGTH_HALF, static_cast<double>(MIN + i), 0},
+            {LENGTH_HALF, static_cast<double>(MIN + i), 0}});
+    }
+    fMModel.addSegments(FlowMeshSegments(xSegs, newTypeId()));
+    fMModel.addSegments(FlowMeshSegments(ySegs, newTypeId()));
+}
+
+void createSpheres(FlowMeshModel& fMModel)
+{
+    TypeId sphereToRemove;
+
+    constexpr int32_t MINMAX = 1;
+    constexpr double_t RADIUS = 0.5;
+    constexpr double_t DIST = 1.5;
+    for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
+    {
+        for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
+        {
+            TypeId id = newTypeId();
+            if (i == 0 && j == 0)
+                sphereToRemove = id;
+
+            fMModel.addSphere(FlowMeshSphere(
+                Sphere<double_t>(Vec3d{static_cast<double>(i) * DIST,
+                                       static_cast<double>(j) * DIST,
+                                       0},
+                                 RADIUS),
+                id));
+        }
+    }
+
+    fMModel.remove(sphereToRemove);
+}
+
+void createCones(FlowMeshModel& fmModel)
+{
+    fmModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(
+            Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}},
+            0.1),
+        newTypeId()));
+
+    fmModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(
+            Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}},
+            0.1),
+        newTypeId()));
+    fmModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(
+            Segment3d{LinAl::Vec3d{0, 0.5, 0}, LinAl::Vec3d{0, 1.0, 0}},
+            0.1),
+        newTypeId()));
+
+    fmModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(
+            Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}},
+            0.1),
+        newTypeId()));
+    fmModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(
+            Segment3d{LinAl::Vec3d{0, 0, 0.5}, LinAl::Vec3d{0, 0, 1.0}},
+            0.1),
+        newTypeId()));
+    fmModel.addCone(FlowMeshCone(
+        Geometry::Cone<double_t>(
+            Segment3d{LinAl::Vec3d{0, 0, 1.0}, LinAl::Vec3d{0, 0, 1.5}},
+            0.1),
+        newTypeId()));
+}
+
 int main()
 {
     AppConfig appConfig{};
@@ -37,61 +121,10 @@ int main()
     FlowMeshModel flowMeshModel;
     flowMeshModel.setFlowMeshPresenter(&flowMeshPresenter);
 
-    Core::TVector<Geometry::Segment3d> xSegs;
-    Core::TVector<Geometry::Segment3d> ySegs;
-    constexpr int32_t MIN = -8;
-    constexpr int32_t MAX = 8;
-    constexpr std::size_t SEG_COUNT = MAX - MIN + 1;
-    constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
-    for (int32_t i = 0; i < SEG_COUNT; ++i)
-    {
-        xSegs.push_back(Geometry::Segment3d{
-            {static_cast<double>(MIN + i), -LENGTH_HALF, 0},
-            {static_cast<double>(MIN + i), LENGTH_HALF, 0}});
-        ySegs.push_back(Geometry::Segment3d{
-            {-LENGTH_HALF, static_cast<double>(MIN + i), 0},
-            {LENGTH_HALF, static_cast<double>(MIN + i), 0}});
-    }
-    flowMeshModel.addSegments(FlowMeshSegments(xSegs, newTypeId()));
-    flowMeshModel.addSegments(FlowMeshSegments(ySegs, newTypeId()));
-
-    TypeId sphereToRemove;
-
-    constexpr int32_t MINMAX = 1;
-    constexpr double_t RADIUS = 0.5;
-    constexpr double_t DIST = 1.5;
-    for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
-    {
-        for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
-        {
-            TypeId id = newTypeId();
-            if (i == 0 && j == 0)
-                sphereToRemove = id;
-
-            flowMeshModel.addSphere(FlowMeshSphere(
-                Sphere<double_t>(Vec3d{static_cast<double>(i) * DIST,
-                                       static_cast<double>(j) * DIST,
-                                       0},
-                                 RADIUS),
-                id));
-        }
-    }
-
-    flowMeshModel.remove(sphereToRemove);
-
-    flowMeshModel.addCone(
-        FlowMeshCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0},
-                                                        LinAl::Vec3d{0, 0, 1}},
-                                              0.5),
-                     newTypeId()));
-
-    flowMeshModel.addCone(
-        FlowMeshCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 1},
-                                                        LinAl::Vec3d{1, 1, 2}},
-                                              0.5),
-                     newTypeId()));
+    createGridSegments(flowMeshModel);
+    createSpheres(flowMeshModel);
+    createCones(flowMeshModel);
 
     //    flowMeshPresenter.setIdleAnimation(FilApp::Vec3{0, 1, 0});
-
     app.run();
 }
