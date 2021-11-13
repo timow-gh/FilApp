@@ -67,12 +67,14 @@ void createSpheres(FlowMeshModel& fMModel)
 
 void createCones(FlowMeshModel& fmModel)
 {
+    // x
     fmModel.addCone(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}},
             0.1),
         newTypeId()));
 
+    // y
     fmModel.addCone(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}},
@@ -84,6 +86,7 @@ void createCones(FlowMeshModel& fmModel)
             0.1),
         newTypeId()));
 
+    // z
     fmModel.addCone(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}},

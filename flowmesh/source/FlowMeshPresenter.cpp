@@ -94,7 +94,7 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
 {
     auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
                         .setCone((flowMeshCone.getCone()))
-                        .setAzimuth(20)
+                        .setAzimuth(10)
                         .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*coneMesh);
