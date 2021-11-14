@@ -107,7 +107,7 @@ void createCones(FlowMeshModel& fmModel)
 int main()
 {
     AppConfig appConfig{};
-    appConfig.backendMode = BackendMode::OPENGL;
+    appConfig.backendMode = BackendMode::VULKAN;
     appConfig.eventPollingMode = EventPollingMode::WAIT_EVENTS;
 
     FilApplication::init(appConfig, WindowConfig());
@@ -128,6 +128,15 @@ int main()
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 
-    //    flowMeshPresenter.setIdleAnimation(FilApp::Vec3{0, 1, 0});
+    constexpr double_t radius = 0.5;
+    constexpr Vec3d connectVec = LinAl::Vec3d{0, 0, 4};
+    constexpr Segment3d cylinderSeg = {LinAl::Vec3d{0, 0, 1}, connectVec};
+    constexpr Segment3d coneSeg = {connectVec, LinAl::Vec3d{0, 0, 6}};
+    flowMeshModel.addCylinder(
+        FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg, radius),
+                         newTypeId()));
+    flowMeshModel.addCone(
+        FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius), newTypeId()));
+
     app.run();
 }

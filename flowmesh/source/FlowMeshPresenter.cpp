@@ -1,7 +1,9 @@
 #include "FlowMesh/FlowMeshPresenter.hpp"
 #include <FilApp/Renderables/Vertex.hpp>
+#include <FlowMesh/FlowMeshCylinder.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
+#include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
 
 namespace FlowMesh
@@ -94,7 +96,7 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
 {
     auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
                         .setCone((flowMeshCone.getCone()))
-                        .setAzimuth(10)
+                        .setAzimuthCount(10)
                         .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*coneMesh);
@@ -109,6 +111,27 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
 
     m_typeIdRenderableMapping.emplace(
         flowMeshCone.getTypeId(),
+        std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
+}
+void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
+{
+    auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
+                            .setCylinder(flowMeshCylinder.getCylinder())
+                            .setAzimuthCount(10)
+                            .build();
+
+    const auto& segIndices = Geometry::calcMeshSegmentIndices(*cylinderMesh);
+    std::vector<FilApp::Vertex> filAppVertices;
+    filAppVertices.reserve(segIndices.size());
+    segmentFilAppVertices(*cylinderMesh, segIndices, filAppVertices);
+
+    auto verticesId = m_mainView->addRenderable(
+        FilApp::LineRenderable::create(filAppVertices));
+    auto coneId =
+        m_mainView->addRenderable(createTriangleRenderable(*cylinderMesh));
+
+    m_typeIdRenderableMapping.emplace(
+        flowMeshCylinder.getTypeId(),
         std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
 }
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)

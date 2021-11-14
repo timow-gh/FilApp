@@ -4,6 +4,7 @@
 #include <Core/Types/TSet.hpp>
 #include <Core/Types/TVector.hpp>
 #include <FlowMesh/FlowMeshCone.hpp>
+#include <FlowMesh/FlowMeshCylinder.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
 #include <FlowMesh/FlowMeshSphere.hpp>
@@ -18,11 +19,13 @@ class GeometryElementsMap
     std::map<TypeId, FlowMeshSegments> m_segments;
     std::map<TypeId, FlowMeshSphere> m_spheres;
     std::map<TypeId, FlowMeshCone> m_cones;
+    std::map<TypeId, FlowMeshCylinder> m_cylinder;
 
   public:
     bool add(const FlowMeshSegments& segments);
     bool add(const FlowMeshSphere& sphere);
     bool add(const FlowMeshCone& cone);
+    bool add(const FlowMeshCylinder& cylinder);
 
     void remove(const TypeId& typeId);
 
@@ -58,6 +61,7 @@ class FlowMeshModel
 
     void addSphere(const FlowMeshSphere& sphere);
     void addCone(const FlowMeshCone& flowMeshCone);
+    void addCylinder(const FlowMeshCylinder& cylinder);
     void addSegments(const FlowMeshSegments& flowMeshSegments);
 
     void remove(const TypeId& typeId);

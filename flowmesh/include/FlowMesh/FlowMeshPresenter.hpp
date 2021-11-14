@@ -5,6 +5,7 @@
 #include <FilApp/FilAppView.hpp>
 #include <FilApp/Renderables/RendereableIdentifier.hpp>
 #include <FlowMesh/FlowMeshCone.hpp>
+#include <FlowMesh/FlowMeshCylinder.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
 #include <FlowMesh/FlowMeshSphere.hpp>
 #include <FlowMesh/TypeId.hpp>
@@ -29,6 +30,7 @@ class FlowMeshPresenter
 
     void add(const FlowMeshSphere& flowMeshSphere);
     void add(const FlowMeshCone& flowMeshCone);
+    void add(const FlowMeshCylinder& flowMeshCylinder);
     void add(const FlowMeshSegments& flowMeshSegments);
 
     void remove(const TypeId& typeId);

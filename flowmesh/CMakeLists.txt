@@ -6,15 +6,17 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/FlowMeshCone.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
-        source/FlowMeshSegments.cpp
         include/FlowMesh/FlowMeshSegments.hpp
-        include/FlowMesh/TypeId.hpp)
+        include/FlowMesh/TypeId.hpp
+        include/FlowMesh/FlowMeshCylinder.hpp)
 
 set(FLOWMESH_SOURCES
         source/Interactors/PickingContext.cpp
         source/FlowMeshPresenter.cpp
         source/FlowMeshController.cpp
         source/FlowMeshModel.cpp
+        source/FlowMeshSegments.cpp
+        source/FlowMeshCylinder.cpp
         source/FlowMeshSphere.cpp
         source/FlowMeshCone.cpp
         )
