@@ -83,18 +83,10 @@ FilAppView::~FilAppView()
     auto& tcm = utils::EntityManager::get();
     tcm.destroy(m_globalTrafoComponent);
 }
-void FilAppView::setViewport(const filament::Viewport& viewport)
+void FilAppView::animate(double deltaT)
 {
-    m_viewport = viewport;
-    m_filamentView->setViewport(m_viewport);
-    configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
-    if (m_cameraManipulator)
-        m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
-                                         static_cast<int>(viewport.height));
-}
-void FilAppView::setCamera(filament::Camera* camera)
-{
-    m_filamentView->setCamera(camera);
+    for (const auto& animationCallBack: m_animationCallbacks)
+        animationCallBack(deltaT);
 }
 filament::View* FilAppView::getFilamentView()
 {
@@ -107,13 +99,6 @@ filament::Camera* FilAppView::getCamera()
 FilAppView::CameraManipulator* FilAppView::getCameraManipulator()
 {
     return m_cameraManipulator.get();
-}
-Viewport FilAppView::getViewport() const
-{
-    return {m_viewport.left,
-            m_viewport.bottom,
-            m_viewport.width,
-            m_viewport.height};
 }
 void FilAppView::configureOrthogonalProjection(float_t near,
                                                float_t far,
@@ -224,10 +209,25 @@ void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
                                  filament::math::float3{0, 1, 0}));
         });
 }
-void FilAppView::animate(double deltaT)
+Viewport FilAppView::getViewport() const
 {
-    for (const auto& animationCallBack: m_animationCallbacks)
-        animationCallBack(deltaT);
+    return {m_viewport.left,
+            m_viewport.bottom,
+            m_viewport.width,
+            m_viewport.height};
+}
+void FilAppView::setViewport(const filament::Viewport& viewport)
+{
+    m_viewport = viewport;
+    m_filamentView->setViewport(m_viewport);
+    configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
+    if (m_cameraManipulator)
+        m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
+                                         static_cast<int>(viewport.height));
+}
+void FilAppView::setCamera(filament::Camera* camera)
+{
+    m_filamentView->setCamera(camera);
 }
 void FilAppView::resize(const Viewport& viewport)
 {

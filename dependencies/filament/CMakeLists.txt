@@ -37,5 +37,5 @@ if (NOT filament_POPULATED)
     FetchContent_Populate(filament)
 
     list(APPEND CMAKE_MODULE_PATH ${filament_SOURCE_DIR})
-    add_subdirectory(${filament_SOURCE_DIR} ${filament_BINARY_DIR})
+    add_subdirectory(${filament_SOURCE_DIR} ${filament_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()

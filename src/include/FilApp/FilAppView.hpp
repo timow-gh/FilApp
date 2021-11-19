@@ -36,8 +36,8 @@ class FilAppView
     std::unique_ptr<CameraManipulator> m_cameraManipulator = nullptr;
     filament::Camera* m_camera = nullptr;
     utils::Entity m_cameraEntity;
-
     filament::Viewport m_viewport;
+    utils::Entity m_globalTrafoComponent;
 
     FilAppRenderableCreator m_renderableCreator;
     std::map<RenderableIdentifier, std::unique_ptr<PointRenderable>>
@@ -49,14 +49,12 @@ class FilAppView
 
     std::vector<FilAppRenderable> m_renderables;
 
+    std::string m_name;
     float_t m_near{0.1f};
     float_t m_far{100.0f};
     float_t m_orthogonalCameraZoom{3.0f};
 
     std::vector<AnimationCallBack> m_animationCallbacks;
-    std::string m_name;
-
-    utils::Entity m_globalTrafoComponent;
 
   public:
     FilAppView(filament::Renderer& renderer,
@@ -80,9 +78,9 @@ class FilAppView
     void addRotationAnimation(RenderableIdentifier renderableIdentifier,
                               const Vec3& rotationAxis) override;
 
-    void animate(double deltaT) override;
-
     [[nodiscard]] Viewport getViewport() const override;
+    void setViewport(const filament::Viewport& viewport);
+    void setCamera(filament::Camera* camera);
     void resize(const Viewport& viewport) override;
 
     void mouseDown(const MouseDownEvent& mouseDownEvent) override;
@@ -92,8 +90,7 @@ class FilAppView
     void keyDown(const KeyDownEvent& keyDownEvent) override;
     void keyUp(const KeyUpEvent& keyUpEvent) override;
 
-    void setViewport(const filament::Viewport& viewport);
-    void setCamera(filament::Camera* camera);
+    void animate(double deltaT) override;
 
     [[nodiscard]] filament::View* getFilamentView();
     [[nodiscard]] filament::Camera* getCamera();
