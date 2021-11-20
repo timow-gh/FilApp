@@ -20,7 +20,8 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/AppConfig.hpp
         include/FilApp/Vec3.hpp
         include/FilApp/FilAppRenderable.hpp
-        include/FilApp/FilAppRenderableCreator.hpp)
+        include/FilApp/FilAppRenderableCreator.hpp
+        include/FilApp/GlobalCS.hpp)
 
 set(FILAPP_SOURCES
         source/Renderables/PointRenderable.cpp
@@ -70,15 +71,6 @@ endif ()
 
 include(GenerateExportHeader)
 generate_export_header(fil_app BASE_NAME FilApp)
-#        filamat
-#        stb
-#        assimp
-#        filament-iblprefilter
-#        getopt
-#        imgui
-#        filagui
-#        image
-#        geometry
 
 install(DIRECTORY "include/FilApp" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 install(TARGETS

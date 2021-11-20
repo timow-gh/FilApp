@@ -36,8 +36,7 @@ filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
 FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     const std::vector<Vertex>& vertices,
     const std::vector<uint16_t>& indices,
-    PrimitiveType primitiveType,
-    const filament::Box& aabb)
+    PrimitiveType primitiveType)
 
 {
     FilAppRenderable filAppRenderable;
@@ -75,8 +74,7 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
 }
 
 FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
-    PointRenderable* pointRenderable,
-    const filament::Box& aabb)
+    PointRenderable* pointRenderable)
 {
     FilAppRenderable filAppRenderable;
     filAppRenderable.engine = m_engine;
@@ -92,7 +90,7 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     filAppRenderable.matInstance = matPair.matInstance;
 
     filament::RenderableManager::Builder(1)
-        .boundingBox(aabb)
+        .boundingBox(calcFilamentBbox(pointRenderable->getVertices()))
         .material(0, filAppRenderable.matInstance)
         .geometry(0,
                   filament::RenderableManager::PrimitiveType::POINTS,

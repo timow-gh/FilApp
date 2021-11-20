@@ -65,9 +65,9 @@ class FilAppView
     ~FilAppView() override;
 
     // clang-format off
-    auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
-    auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
-    auto addRenderable(LineRenderable && renderable) -> RenderableIdentifier override;
+    [[nodiscard]] auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
+    [[nodiscard]] auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
+    [[nodiscard]] auto addRenderable(LineRenderable && renderable) -> RenderableIdentifier override;
     [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
     void removeRenderable(RenderableIdentifier id) override;
     void clearRenderables() override;
@@ -97,10 +97,11 @@ class FilAppView
     [[nodiscard]] CameraManipulator* getCameraManipulator();
 
   private:
-    static bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
-                                          CameraManipulator::Key& key);
+    [[nodiscard]] static bool
+    manipulatorKeyFromKeycode(SDL_Scancode scancode,
+                              CameraManipulator::Key& key);
 
-    RenderableIdentifier
+    [[nodiscard]] RenderableIdentifier
     addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
     void configureOrthogonalProjection(float_t near, float_t far, float_t zoom);

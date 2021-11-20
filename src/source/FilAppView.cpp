@@ -1,7 +1,9 @@
 #include "FilApp/FilAppView.hpp"
+#include <FilApp/GlobalCS.hpp>
 #include <filament/TransformManager.h>
-#include <iomanip>
-#include <iostream>
+#include <math/mat4.h>
+#include <math/mathfwd.h>
+#include <math/vec3.h>
 #include <utility>
 
 namespace FilApp
@@ -29,12 +31,9 @@ FilAppView::FilAppView(filament::Renderer& renderer,
     utils::EntityManager& entityManager = utils::EntityManager::get();
     m_cameraEntity = entityManager.create();
     m_camera = m_engine->createCamera(m_cameraEntity);
-    m_camera->setExposure(16.0f, 1 / 125.0f, 100.0f);
     m_camera->lookAt({15, 15, 15}, {0, 0, 0}, {0, 0, 1});
-
     m_filamentView->setCamera(m_camera);
 
-    // TODO Working orbit camera
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
@@ -60,23 +59,17 @@ FilAppView::FilAppView(filament::Renderer& renderer,
     auto& tcm = m_engine->getTransformManager();
     tcm.create(m_globalTrafoComponent);
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
-    constexpr float_t rotAngle = -filament::math::F_PI_2; //-1.57079632679
-    filament::math::mat4f rotX =
-        filament::math::mat4f::rotation(rotAngle,
-                                        filament::math::float4{1, 0, 0, 1});
-    filament::math::mat4f rotY =
-        filament::math::mat4f::rotation(rotAngle,
-                                        filament::math::float4{0, 1, 0, 1});
-    tcm.setTransform(globalInstance, rotY * rotX);
+    tcm.setTransform(globalInstance, filamentCSToGlobalCS());
+
     setViewport(viewport);
 }
+
 FilAppView::~FilAppView()
 {
     utils::EntityManager& entityManager = utils::EntityManager::get();
     clearFilAppRenderables();
     entityManager.destroy(m_cameraEntity);
     m_engine->destroyCameraComponent(m_cameraEntity);
-    //    m_renderableCreator.destroyMaterials();
     m_engine->destroy(m_skybox);
     m_engine->destroy(m_filamentView);
     m_engine->destroy(m_scene);
@@ -104,7 +97,6 @@ void FilAppView::configureOrthogonalProjection(float_t near,
                                                float_t far,
                                                float zoom)
 {
-    //    constexpr float ZOOM = 3.0f;
     const float aspect = (float)m_viewport.width / (float)m_viewport.height;
     m_camera->setProjection(filament::Camera::Projection::ORTHO,
                             -aspect * zoom,
@@ -123,8 +115,7 @@ FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
     auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
         renderable->getIndices(),
-        filament::RenderableManager::PrimitiveType::TRIANGLES,
-        filament::Box{{0, 0, 0}, {10, 10, 10}}));
+        filament::RenderableManager::PrimitiveType::TRIANGLES));
 
     m_triangleRenderables.emplace(id, std::move(renderable));
 
@@ -136,9 +127,8 @@ FilAppView::addRenderable(PointRenderable&& pointRenderable)
     auto renderable =
         std::make_unique<PointRenderable>(std::move(pointRenderable));
 
-    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
-        renderable.get(),
-        filament::Box{{0, 0, 0}, {10, 10, 10}}));
+    auto id = addRenderable(
+        m_renderableCreator.createBakedColorRenderable(renderable.get()));
 
     m_pointRenderables.emplace(id, std::move(renderable));
 
@@ -152,8 +142,7 @@ RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
     auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
         renderable->getIndices(),
-        filament::RenderableManager::PrimitiveType::LINES,
-        filament::Box{{0, 0, 0}, {10, 10, 10}}));
+        filament::RenderableManager::PrimitiveType::LINES));
 
     m_lineRenderables.emplace(id, std::move(renderable));
     return id;
@@ -266,7 +255,7 @@ void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
     if (m_cameraManipulator)
     {
         m_cameraManipulator->scroll(0, 0, mouseWheelEvent.x);
-        m_orthogonalCameraZoom -= mouseWheelEvent.x * 0.1f;
+        m_orthogonalCameraZoom -= mouseWheelEvent.x * 1.5;
         configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
     }
 

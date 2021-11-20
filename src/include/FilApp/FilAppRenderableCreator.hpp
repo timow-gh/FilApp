@@ -39,12 +39,10 @@ class FilAppRenderableCreator
     FilAppRenderable
     createBakedColorRenderable(const std::vector<Vertex>& vertices,
                                const std::vector<uint16_t>& indices,
-                               PrimitiveType primitiveType,
-                               const filament::Box& aabb);
+                               PrimitiveType primitiveType);
 
     FilAppRenderable
-    createBakedColorRenderable(PointRenderable* pointRenderable,
-                               const filament::Box& aabb);
+    createBakedColorRenderable(PointRenderable* pointRenderable);
 
     void destroyMaterials();
 
