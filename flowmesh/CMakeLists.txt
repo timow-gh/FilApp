@@ -48,5 +48,5 @@ include(GenerateExportHeader)
 generate_export_header(flow_mesh BASE_NAME FlewMesh)
 
 
-add_executable(FLowMeshApp main.cpp)
-target_link_libraries(FLowMeshApp PRIVATE flowmesh::flowmesh)
+add_executable(FLowMesh main.cpp)
+target_link_libraries(FLowMesh PRIVATE flowmesh::flowmesh)
