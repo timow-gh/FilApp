@@ -60,5 +60,5 @@ add_subdirectory(src)
 add_subdirectory(flowmesh)
 
 if (FilApp_BUILD_EXAMPLES)
-    add_subdirectory(examples)
+    add_subdirectory(filapp_examples)
 endif ()
