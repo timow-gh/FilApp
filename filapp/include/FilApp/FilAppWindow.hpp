@@ -1,8 +1,8 @@
 #ifndef FILAPP_FILAPPWINDOW_HPP
 #define FILAPP_FILAPPWINDOW_HPP
 
-#include "FilApp/Interfaces/IWindow.hpp"
-#include "FilApp/Interfaces/WindowConfig.hpp"
+#include "../../../filapp_interfaces/IWindow.hpp"
+#include "../../../filapp_interfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
 #include "FilApplication.hpp"
 #include <SDL_video.h>

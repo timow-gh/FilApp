@@ -1,7 +1,7 @@
 #ifndef FILAPP_IINPUTEVENTDISPATCHER_HPP
 #define FILAPP_IINPUTEVENTDISPATCHER_HPP
 
-#include <FilApp/Interfaces/IInputListener.hpp>
+#include "IInputListener.hpp"
 #include <vector>
 
 namespace FilApp

@@ -1,7 +1,7 @@
 #ifndef FILAPP_FLOWMESHCONTROLLER_HPP
 #define FILAPP_FLOWMESHCONTROLLER_HPP
 
-#include <FilApp/Interfaces/IInputEventDispatcher.hpp>
+#include "../../../filapp_interfaces/IInputEventDispatcher.hpp"
 
 namespace FilApp
 {

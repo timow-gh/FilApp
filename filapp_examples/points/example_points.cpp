@@ -1,6 +1,6 @@
+#include "../../filapp_interfaces/IView.hpp"
+#include "../../filapp_interfaces/IWindow.hpp"
 #include <FilApp/FilApplication.hpp>
-#include <FilApp/Interfaces/IView.hpp>
-#include <FilApp/Interfaces/IWindow.hpp>
 #include <FilApp/Renderables/PointRenderable.hpp>
 #include <FilApp/Renderables/Vertex.hpp>
 #include <vector>

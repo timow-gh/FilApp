@@ -1,8 +1,8 @@
 #ifndef FILAPP_FILAPPCONVERSION_HPP
 #define FILAPP_FILAPPCONVERSION_HPP
 
-#include "FilApp/Interfaces/AppConfig.hpp"
-#include "FilApp/Interfaces/WindowConfig.hpp"
+#include "../../filapp_interfaces/AppConfig.hpp"
+#include "../../filapp_interfaces/WindowConfig.hpp"
 #include <camutils/Bookmark.h>
 #include <filament/Engine.h>
 

@@ -1,9 +1,9 @@
 #ifndef FILAPP_IVIEW_HPP
 #define FILAPP_IVIEW_HPP
 
-#include <FilApp/Interfaces/IInputEventDispatcher.hpp>
-#include <FilApp/Interfaces/IInputListener.hpp>
-#include <FilApp/Interfaces/Viewport.hpp>
+#include "IInputEventDispatcher.hpp"
+#include "IInputListener.hpp"
+#include "Viewport.hpp"
 #include <FilApp/Renderables/LineRenderable.hpp>
 #include <FilApp/Renderables/PointRenderable.hpp>
 #include <FilApp/Renderables/RendereableIdentifier.hpp>

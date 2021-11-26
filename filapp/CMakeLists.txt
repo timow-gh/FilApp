@@ -1,13 +1,6 @@
 build_resources()
 
 set(FILAPP_PUBLIC_HEADERS
-        include/FilApp/Interfaces/IView.hpp
-        include/FilApp/Interfaces/InputEvents.hpp
-        include/FilApp/Interfaces/IInputListener.hpp
-        include/FilApp/Interfaces/Viewport.hpp
-        include/FilApp/Interfaces/IWindow.hpp
-        include/FilApp/Interfaces/IApplication.hpp
-        include/FilApp/Interfaces/IInputEventDispatcher.hpp
         include/FilApp/Renderables/RendereableIdentifier.hpp
         include/FilApp/Renderables/PointRenderable.hpp
         include/FilApp/Renderables/LineRenderable.hpp
@@ -16,11 +9,10 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppView.hpp
         include/FilApp/FilAppWindow.hpp
-        include/FilApp/Interfaces/WindowConfig.hpp
-        include/FilApp/Interfaces/AppConfig.hpp
         include/FilApp/Vec3.hpp
         include/FilApp/FilAppRenderable.hpp
-        include/FilApp/FilAppRenderableCreator.hpp)
+        include/FilApp/FilAppRenderableCreator.hpp
+        )
 
 set(FILAPP_SOURCES
         source/Renderables/PointRenderable.cpp
@@ -34,14 +26,15 @@ set(FILAPP_SOURCES
         source/FilAppConversion.cpp
         source/FilAppRenderableBuffers.cpp
         source/FilAppRenderableBuffers.hpp
-        source/FilAppRenderableCreator.cpp)
+        source/FilAppRenderableCreator.cpp
+        )
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)
 target_include_directories(fil_app
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
-        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/filapp>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/source>
         )
@@ -51,7 +44,8 @@ set_target_properties(fil_app
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         DEBUG_POSTFIX d
         LINKER_LANGUAGE CXX
-        EXPORT_NAME filapp)
+        EXPORT_NAME filapp
+        )
 target_link_libraries(fil_app
         PUBLIC
         filament

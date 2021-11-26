@@ -1,10 +1,10 @@
 #ifndef FILAPP_FILAPPLICATION_HPP
 #define FILAPP_FILAPPLICATION_HPP
 
-#include "FilApp/Interfaces/AppConfig.hpp"
-#include "FilApp/Interfaces/IApplication.hpp"
-#include "FilApp/Interfaces/IWindow.hpp"
-#include "FilApp/Interfaces/WindowConfig.hpp"
+#include "../../../filapp_interfaces/AppConfig.hpp"
+#include "../../../filapp_interfaces/IApplication.hpp"
+#include "../../../filapp_interfaces/IWindow.hpp"
+#include "../../../filapp_interfaces/WindowConfig.hpp"
 #include <cmath>
 #include <filapp_export.h>
 #include <memory>
