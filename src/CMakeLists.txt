@@ -16,12 +16,11 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppView.hpp
         include/FilApp/FilAppWindow.hpp
-        include/FilApp/WindowConfig.hpp
-        include/FilApp/AppConfig.hpp
+        include/FilApp/Interfaces/WindowConfig.hpp
+        include/FilApp/Interfaces/AppConfig.hpp
         include/FilApp/Vec3.hpp
         include/FilApp/FilAppRenderable.hpp
-        include/FilApp/FilAppRenderableCreator.hpp
-        include/FilApp/GlobalCS.hpp)
+        include/FilApp/FilAppRenderableCreator.hpp)
 
 set(FILAPP_SOURCES
         source/Renderables/PointRenderable.cpp
@@ -62,6 +61,7 @@ target_link_libraries(fil_app
         utils
         camutils
         )
+target_compile_features(fil_app PUBLIC cxx_std_17)
 
 if (MSVC)
     target_compile_definitions(fil_app PRIVATE -DMSVC)

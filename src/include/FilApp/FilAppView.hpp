@@ -1,9 +1,9 @@
 #ifndef FILAPP_FILAPPVIEW_HPP
 #define FILAPP_FILAPPVIEW_HPP
 
-#include "FilApp/Interfaces/IView.hpp"
-#include "FilAppRenderable.hpp"
-#include "FilAppRenderableCreator.hpp"
+#include <FilApp/FilAppRenderable.hpp>
+#include <FilApp/FilAppRenderableCreator.hpp>
+#include <FilApp/Interfaces/IView.hpp>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -29,6 +29,7 @@ class FilAppView
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 
   private:
+    std::string m_name;
     filament::Engine* m_engine = nullptr;
     filament::View* m_filamentView = nullptr;
     filament::Scene* m_scene = nullptr;
@@ -49,7 +50,6 @@ class FilAppView
 
     std::vector<FilAppRenderable> m_renderables;
 
-    std::string m_name;
     float_t m_near{0.1f};
     float_t m_far{100.0f};
     float_t m_orthogonalCameraZoom{3.0f};

@@ -16,7 +16,6 @@ struct FILAPP_EXPORT Viewport
         : left(left), bottom(bottom), width(width), height(height)
     {
     }
-
 };
 } // namespace FilApp
 

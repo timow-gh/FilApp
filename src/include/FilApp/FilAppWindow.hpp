@@ -2,9 +2,9 @@
 #define FILAPP_FILAPPWINDOW_HPP
 
 #include "FilApp/Interfaces/IWindow.hpp"
+#include "FilApp/Interfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
 #include "FilApplication.hpp"
-#include "WindowConfig.hpp"
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
@@ -25,10 +25,10 @@ class FilAppWindow
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
 
-    filament::Viewport m_viewport;
+    filament::Viewport m_windowViewPort;
     std::vector<std::unique_ptr<FilAppView>> m_views;
 
-    FilAppView* m_mainView;
+    FilAppView* m_mainView{nullptr};
     FilAppView* m_mouseEventTarget = nullptr;
 
     uint32_t m_width = 0;
@@ -69,7 +69,7 @@ class FilAppWindow
 
   private:
     void fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const;
-    void calcWindowViewport();
+    [[nodiscard]] filament::Viewport calcWindowViewport();
 };
 
 bool intersects(const Viewport& viewport, size_t x, size_t y);

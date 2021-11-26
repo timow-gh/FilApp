@@ -1,5 +1,7 @@
 #include "FilApp/FilAppView.hpp"
 #include <FilApp/GlobalCS.hpp>
+#include <camutils/Bookmark.h>
+#include <filament/Options.h>
 #include <filament/TransformManager.h>
 #include <math/mat4.h>
 #include <math/mathfwd.h>
@@ -127,8 +129,10 @@ FilAppView::addRenderable(PointRenderable&& pointRenderable)
     auto renderable =
         std::make_unique<PointRenderable>(std::move(pointRenderable));
 
-    auto id = addRenderable(
-        m_renderableCreator.createBakedColorRenderable(renderable.get()));
+    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
+        renderable->getVertices(),
+        renderable->getIndices(),
+        filament::RenderableManager::PrimitiveType::POINTS));
 
     m_pointRenderables.emplace(id, std::move(renderable));
 
@@ -187,8 +191,7 @@ void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
 {
     m_animationCallbacks.emplace_back(
         [renderableIdentifier,
-         engine = m_engine,
-         filamentView = m_filamentView](double deltaT)
+         engine = m_engine](double deltaT)
         {
             auto& tcm = engine->getTransformManager();
             tcm.setTransform(tcm.getInstance(utils::Entity::import(

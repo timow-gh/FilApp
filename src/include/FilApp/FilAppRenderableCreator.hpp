@@ -17,9 +17,10 @@ class FilAppRenderableCreator
 
     struct MatPair
     {
-        filament::Material* material;
-        filament::MaterialInstance* matInstance;
+        filament::Material* material{nullptr};
+        filament::MaterialInstance* matInstance{nullptr};
 
+        MatPair() = default;
         MatPair(filament::Material* material,
                 filament::MaterialInstance* matInstance)
             : material(material), matInstance(matInstance)
@@ -40,9 +41,6 @@ class FilAppRenderableCreator
     createBakedColorRenderable(const std::vector<Vertex>& vertices,
                                const std::vector<uint16_t>& indices,
                                PrimitiveType primitiveType);
-
-    FilAppRenderable
-    createBakedColorRenderable(PointRenderable* pointRenderable);
 
     void destroyMaterials();
 

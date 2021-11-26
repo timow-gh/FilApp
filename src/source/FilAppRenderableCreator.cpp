@@ -47,7 +47,11 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     createVertexBuffer(&filAppRenderable, vertices);
     createIndicesBuffer(&filAppRenderable, indices);
 
-    const MatPair& matPair = getMaterial(FilAppMaterialType::BAKEDVERTEXCOLOR);
+    MatPair matPair;
+    if (primitiveType == PrimitiveType::POINTS)
+        matPair = getMaterial(FilAppMaterialType::BAKEDFRAGCOLOR);
+    else
+        matPair = getMaterial(FilAppMaterialType::BAKEDVERTEXCOLOR);
 
     filAppRenderable.mat = matPair.material;
     filAppRenderable.matInstance = matPair.matInstance;
@@ -73,38 +77,6 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     return filAppRenderable;
 }
 
-FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
-    PointRenderable* pointRenderable)
-{
-    FilAppRenderable filAppRenderable;
-    filAppRenderable.engine = m_engine;
-
-    constexpr std::size_t VERTEX_SIZE = sizeof(Vertex);
-    createVertexBuffer(&filAppRenderable, pointRenderable, VERTEX_SIZE);
-    createIndicesBuffer(&filAppRenderable, pointRenderable->getIndices());
-
-    filAppRenderable.renderableEntity = utils::EntityManager::get().create();
-
-    const MatPair& matPair = getMaterial(FilAppMaterialType::BAKEDFRAGCOLOR);
-    filAppRenderable.mat = matPair.material;
-    filAppRenderable.matInstance = matPair.matInstance;
-
-    filament::RenderableManager::Builder(1)
-        .boundingBox(calcFilamentBbox(pointRenderable->getVertices()))
-        .material(0, filAppRenderable.matInstance)
-        .geometry(0,
-                  filament::RenderableManager::PrimitiveType::POINTS,
-                  filAppRenderable.vb,
-                  filAppRenderable.ib,
-                  0,
-                  filAppRenderable.ib->getIndexCount())
-        .culling(false)
-        .receiveShadows(false)
-        .castShadows(false)
-        .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
-
-    return filAppRenderable;
-}
 void FilAppRenderableCreator::createMaterials()
 {
     filament::Material* mat = nullptr;

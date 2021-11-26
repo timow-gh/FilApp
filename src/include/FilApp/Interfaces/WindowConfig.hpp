@@ -13,7 +13,7 @@ enum class CameraMode
 
 struct FILAPP_EXPORT WindowConfig
 {
-    std::string title = "MainWindow";
+    std::string windowName = "MainWindow";
     bool isHeadless = false;
     bool isResizable = true;
     uint32_t width = 1024;

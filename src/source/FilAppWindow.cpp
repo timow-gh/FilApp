@@ -19,7 +19,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
 
     const int x = SDL_WINDOWPOS_CENTERED;
     const int y = SDL_WINDOWPOS_CENTERED;
-    m_sdlWindow = SDL_CreateWindow(windowConfig.title.c_str(),
+    m_sdlWindow = SDL_CreateWindow(windowConfig.windowName.c_str(),
                                    x,
                                    y,
                                    static_cast<int>(windowConfig.width),
@@ -41,40 +41,20 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
 
         void* nativeWindow = ::getNativeWindow(m_sdlWindow);
         void* nativeSwapChain = nativeWindow;
-
-#if defined(__APPLE__)
-        ::prepareNativeWindow(mWindow);
-
-        void* metalLayer = nullptr;
-        if (config.backend == filament::Engine::Backend::METAL)
-        {
-            metalLayer = setUpMetalLayer(nativeWindow);
-            // The swap chain on Metal is a CAMetalLayer.
-            nativeSwapChain = metalLayer;
-        }
-
-#if defined(FILAMENT_DRIVER_SUPPORTS_VULKAN)
-        if (config.backend == filament::Engine::Backend::VULKAN)
-        {
-            // We request a Metal layer for rendering via MoltenVK.
-            setUpMetalLayer(nativeWindow);
-        }
-#endif
-#endif
         m_swapChain =
             m_application->getEngine()->createSwapChain(nativeSwapChain);
     }
 
     m_renderer = m_application->getEngine()->createRenderer();
 
-    calcWindowViewport();
-    m_views.emplace_back(std::make_unique<FilAppView>(
-        *m_renderer,
-        "Main Window",
-        m_viewport,
-        filament::math::float4{0.1, 0.125, 0.25, 1.0},
-        calcCameraMode(windowConfig.cameraMode)));
-    m_mainView = m_views.back().get();
+    m_windowViewPort = calcWindowViewport();
+        m_views.emplace_back(std::make_unique<FilAppView>(
+            *m_renderer,
+            "Main Window",
+            m_windowViewPort,
+            filament::math::float4{0.1, 0.125, 0.25, 1.0},
+            calcCameraMode(windowConfig.cameraMode)));
+        m_mainView = m_views.back().get();
 }
 void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
 {
@@ -171,8 +151,6 @@ void FilAppWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
 }
 FilAppWindow::~FilAppWindow()
 {
-    //    m_views.clear();
-    //    m_application->getEngine()->destroy(m_swapChain);
     SDL_DestroyWindow(m_sdlWindow);
 }
 std::vector<IView*> FilAppWindow::getIViews()
@@ -208,29 +186,13 @@ filament::SwapChain* FilAppWindow::getSwapChain()
 }
 void FilAppWindow::resize()
 {
-    [[maybe_unused]] void* nativeWindow = ::getNativeWindow(m_sdlWindow);
-
-#if defined(__APPLE__)
-    if (mBackend == filament::Engine::Backend::METAL)
-    {
-        resizeMetalLayer(nativeWindow);
-    }
-
-#if defined(FILAMENT_DRIVER_SUPPORTS_VULKAN)
-    if (mBackend == filament::Engine::Backend::VULKAN)
-    {
-        resizeMetalLayer(nativeWindow);
-    }
-#endif
-#endif
-
     if (m_sdlWindow)
     {
-        calcWindowViewport();
-        m_mainView->resize(Viewport(m_viewport.left,
-                                    m_viewport.bottom,
-                                    m_viewport.width,
-                                    m_viewport.height));
+        m_windowViewPort = calcWindowViewport();
+        m_mainView->resize(Viewport(m_windowViewPort.left,
+                                    m_windowViewPort.bottom,
+                                    m_windowViewPort.width,
+                                    m_windowViewPort.height));
     }
 }
 IView* FilAppWindow::getMainIView()
@@ -276,12 +238,12 @@ void FilAppWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
     x = x * dw / ww;
     y = y * dh / wh;
 }
-void FilAppWindow::calcWindowViewport()
+filament::Viewport FilAppWindow::calcWindowViewport()
 {
     SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);
-    m_viewport = {0,
-                  0,
-                  static_cast<uint32_t>(m_width),
-                  static_cast<uint32_t>(m_height)};
+    return {0,
+            0,
+            static_cast<uint32_t>(m_width),
+            static_cast<uint32_t>(m_height)};
 }
 } // namespace FilApp
