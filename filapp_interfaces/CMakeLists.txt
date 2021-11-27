@@ -8,9 +8,8 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/IInputEventDispatcher.hpp
         include/FilAppInterfaces/WindowConfig.hpp
         include/FilAppInterfaces/AppConfig.hpp
-        ../filapp_interfaces/include/FilAppInterfaces/Vertex.hpp
-        ../filapp_interfaces/include/FilAppInterfaces/Vec3.hpp
-
+        include/FilAppInterfaces/Vertex.hpp
+        include/FilAppInterfaces/Vec3.hpp
         )
 
 add_library(filapp::interfaces ALIAS filapp_interfaces)

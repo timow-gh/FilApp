@@ -13,8 +13,6 @@ set(FILAPP_PUBLIC_HEADERS
         )
 
 set(FILAPP_SOURCES
-        source/Renderables/PointRenderable.cpp
-        source/Renderables/LineRenderable.cpp
         source/FilAppConversion.hpp
         source/FilApplication.cpp
         source/FilAppView.cpp
