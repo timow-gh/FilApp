@@ -4,10 +4,10 @@
 #include "IInputEventDispatcher.hpp"
 #include "IInputListener.hpp"
 #include "Viewport.hpp"
-#include <FilApp/Renderables/LineRenderable.hpp>
-#include <FilApp/Renderables/PointRenderable.hpp>
-#include <FilApp/Renderables/RendereableIdentifier.hpp>
-#include <FilApp/Renderables/TriangleRenderable.hpp>
+#include <FilAppInterfaces/Renderables/LineRenderable.hpp>
+#include <FilAppInterfaces/Renderables/PointRenderable.hpp>
+#include <FilAppInterfaces/Renderables/RendereableIdentifier.hpp>
+#include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
 #include <FilAppInterfaces/Vec3.hpp>
 
 namespace FilApp

@@ -6,10 +6,6 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilAppWindow.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
-        include/FilApp/Renderables/RendereableIdentifier.hpp
-        include/FilApp/Renderables/PointRenderable.hpp
-        include/FilApp/Renderables/LineRenderable.hpp
-        include/FilApp/Renderables/TriangleRenderable.hpp
         )
 
 set(FILAPP_SOURCES

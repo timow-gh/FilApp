@@ -1,7 +1,7 @@
 #include "FilAppInterfaces/IView.hpp"
 #include "FilAppInterfaces/IWindow.hpp"
 #include <FilApp/FilApplication.hpp>
-#include <FilApp/Renderables/LineRenderable.hpp>
+#include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
 
 using namespace FilApp;

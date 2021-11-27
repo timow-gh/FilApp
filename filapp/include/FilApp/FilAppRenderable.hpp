@@ -1,9 +1,9 @@
 #ifndef FILAPP_FILAPPRENDERABLE_HPP
 #define FILAPP_FILAPPRENDERABLE_HPP
 
-#include <FilApp/Renderables/LineRenderable.hpp>
-#include <FilApp/Renderables/PointRenderable.hpp>
-#include <FilApp/Renderables/TriangleRenderable.hpp>
+#include <FilAppInterfaces/Renderables/LineRenderable.hpp>
+#include <FilAppInterfaces/Renderables/PointRenderable.hpp>
+#include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>

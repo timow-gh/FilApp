@@ -1,7 +1,7 @@
 #include "FilAppInterfaces/IView.hpp"
 #include "FilAppInterfaces/IWindow.hpp"
 #include <FilApp/FilApplication.hpp>
-#include <FilApp/Renderables/PointRenderable.hpp>
+#include <FilAppInterfaces/Renderables/PointRenderable.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
 #include <vector>
 
