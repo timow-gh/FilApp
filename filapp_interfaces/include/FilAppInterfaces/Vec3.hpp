@@ -2,11 +2,10 @@
 #define FILAPP_VEC3_HPP
 
 #include <cmath>
-#include <filapp_export.h>
 
 namespace FilApp
 {
-struct FILAPP_EXPORT Vec3
+struct Vec3
 {
     float_t x;
     float_t y;

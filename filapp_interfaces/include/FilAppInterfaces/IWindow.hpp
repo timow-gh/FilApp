@@ -2,14 +2,14 @@
 #define FILAPP_IWINDOW_HPP
 
 #include "IInputListener.hpp"
-#include <filapp_export.h>
+
 #include <vector>
 
 namespace FilApp
 {
 class IView;
 
-class FILAPP_EXPORT IWindow
+class  IWindow
 {
   public:
     virtual ~IWindow() = default;

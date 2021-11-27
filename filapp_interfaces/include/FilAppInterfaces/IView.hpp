@@ -8,13 +8,12 @@
 #include <FilApp/Renderables/PointRenderable.hpp>
 #include <FilApp/Renderables/RendereableIdentifier.hpp>
 #include <FilApp/Renderables/TriangleRenderable.hpp>
-#include <FilApp/Vec3.hpp>
-#include <filapp_export.h>
+#include <FilAppInterfaces/Vec3.hpp>
 
 namespace FilApp
 {
 
-class FILAPP_EXPORT IView
+class  IView
     : public IInputListener
     , public IInputEventDispatcher
 {

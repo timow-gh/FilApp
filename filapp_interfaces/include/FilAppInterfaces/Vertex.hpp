@@ -3,11 +3,10 @@
 
 #include <cmath>
 #include <cstdint>
-#include <filapp_export.h>
 
 namespace FilApp
 {
-struct FILAPP_EXPORT Vertex
+struct Vertex
 {
     float_t position[3];
     uint32_t color;

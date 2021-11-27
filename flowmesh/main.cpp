@@ -1,5 +1,5 @@
-#include "../filapp_interfaces/IView.hpp"
-#include "../filapp_interfaces/IWindow.hpp"
+#include "../filapp_interfaces/include/FilAppInterfaces/IView.hpp"
+#include "../filapp_interfaces/include/FilAppInterfaces/IWindow.hpp"
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <FlowMesh/FlowMeshController.hpp>

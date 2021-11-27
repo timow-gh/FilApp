@@ -1,7 +1,7 @@
 #ifndef FILAPP_PICKINGCONTEXT_HPP
 #define FILAPP_PICKINGCONTEXT_HPP
 
-#include "../../../../filapp_interfaces/IInputListener.hpp"
+#include "FilAppInterfaces/IInputListener.hpp"
 #include <Core/Types/TVector.hpp>
 #include <Geometry/Line.hpp>
 

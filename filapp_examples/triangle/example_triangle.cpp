@@ -1,4 +1,4 @@
-#include "../../filapp_interfaces/IView.hpp"
+#include "FilAppInterfaces/IView.hpp"
 #include "FilApp/FilApplication.hpp"
 
 using namespace FilApp;

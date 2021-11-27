@@ -1,17 +1,15 @@
 build_resources()
 
 set(FILAPP_PUBLIC_HEADERS
-        include/FilApp/Renderables/RendereableIdentifier.hpp
-        include/FilApp/Renderables/PointRenderable.hpp
-        include/FilApp/Renderables/LineRenderable.hpp
-        include/FilApp/Renderables/Vertex.hpp
-        include/FilApp/Renderables/TriangleRenderable.hpp
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppView.hpp
         include/FilApp/FilAppWindow.hpp
-        include/FilApp/Vec3.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
+        include/FilApp/Renderables/RendereableIdentifier.hpp
+        include/FilApp/Renderables/PointRenderable.hpp
+        include/FilApp/Renderables/LineRenderable.hpp
+        include/FilApp/Renderables/TriangleRenderable.hpp
         )
 
 set(FILAPP_SOURCES
@@ -50,6 +48,7 @@ target_link_libraries(fil_app
         PUBLIC
         filament
         fil_app_sources
+        filapp_interfaces
         sdl2
         math
         utils
@@ -70,6 +69,7 @@ install(DIRECTORY "include/FilApp" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 install(TARGETS
         fil_app
         fil_app_sources
+        filapp_interfaces
         filament
         sdl2
         math

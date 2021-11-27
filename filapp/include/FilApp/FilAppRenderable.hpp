@@ -4,7 +4,7 @@
 #include <FilApp/Renderables/LineRenderable.hpp>
 #include <FilApp/Renderables/PointRenderable.hpp>
 #include <FilApp/Renderables/TriangleRenderable.hpp>
-#include <FilApp/Renderables/Vertex.hpp>
+#include <FilAppInterfaces/Vertex.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>

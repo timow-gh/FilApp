@@ -6,11 +6,11 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <filapp_export.h>
+
 
 namespace FilApp
 {
-struct FILAPP_EXPORT EvtPos
+struct  EvtPos
 {
     size_t x;
     size_t y;
@@ -18,7 +18,7 @@ struct FILAPP_EXPORT EvtPos
     EvtPos(size_t x, size_t y) : x(x), y(y) {}
 };
 
-struct FILAPP_EXPORT MouseDownEvent
+struct  MouseDownEvent
 {
     int button;
     EvtPos pos;
@@ -30,7 +30,7 @@ struct FILAPP_EXPORT MouseDownEvent
     }
 };
 
-struct FILAPP_EXPORT MouseUpEvent
+struct  MouseUpEvent
 {
     EvtPos pos;
     double_t time;
@@ -41,7 +41,7 @@ struct FILAPP_EXPORT MouseUpEvent
     }
 };
 
-struct FILAPP_EXPORT MouseMovedEvent
+struct  MouseMovedEvent
 {
     EvtPos pos;
     double_t time;
@@ -52,7 +52,7 @@ struct FILAPP_EXPORT MouseMovedEvent
     }
 };
 
-struct FILAPP_EXPORT MouseWheelEvent
+struct  MouseWheelEvent
 {
     float_t x;
     double_t time;
@@ -60,7 +60,7 @@ struct FILAPP_EXPORT MouseWheelEvent
     MouseWheelEvent(float_t x, double_t time) : x(x), time(time) {}
 };
 
-struct FILAPP_EXPORT KeyDownEvent
+struct  KeyDownEvent
 {
     SDL_Scancode sdlScancode;
     double_t time;
@@ -71,7 +71,7 @@ struct FILAPP_EXPORT KeyDownEvent
     }
 };
 
-struct FILAPP_EXPORT KeyUpEvent
+struct  KeyUpEvent
 {
     SDL_Scancode sdlScancode;
     double_t time;

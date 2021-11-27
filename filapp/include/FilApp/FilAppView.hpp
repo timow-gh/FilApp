@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPVIEW_HPP
 #define FILAPP_FILAPPVIEW_HPP
 
-#include "../../../filapp_interfaces/IView.hpp"
+#include "FilAppInterfaces/IView.hpp"
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <camutils/Manipulator.h>

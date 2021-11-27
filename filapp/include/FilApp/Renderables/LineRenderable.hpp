@@ -1,7 +1,7 @@
 #ifndef FILAPP_LINERENDERABLE_HPP
 #define FILAPP_LINERENDERABLE_HPP
 
-#include <FilApp/Renderables/Vertex.hpp>
+#include <FilAppInterfaces/Vertex.hpp>
 #include <filapp_export.h>
 #include <utility>
 #include <vector>

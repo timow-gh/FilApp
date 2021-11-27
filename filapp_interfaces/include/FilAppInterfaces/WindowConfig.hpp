@@ -1,7 +1,7 @@
 #ifndef FILAPP_WINDOWCONFIG_HPP
 #define FILAPP_WINDOWCONFIG_HPP
 
-#include <filapp_export.h>
+
 #include <string>
 
 namespace FilApp
@@ -11,7 +11,7 @@ enum class CameraMode
     ORBIT
 };
 
-struct FILAPP_EXPORT WindowConfig
+struct  WindowConfig
 {
     std::string windowName = "MainWindow";
     bool isHeadless = false;

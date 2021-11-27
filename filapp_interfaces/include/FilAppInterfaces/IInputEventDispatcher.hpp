@@ -6,7 +6,7 @@
 
 namespace FilApp
 {
-class FILAPP_EXPORT IInputEventDispatcher
+class IInputEventDispatcher
 {
   protected:
     std::vector<IInputListener*> m_inputEventListener;

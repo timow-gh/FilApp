@@ -1,7 +1,7 @@
 #ifndef FILAPP_APPCONFIG_HPP
 #define FILAPP_APPCONFIG_HPP
 
-#include <filapp_export.h>
+
 
 namespace FilApp
 {
@@ -17,7 +17,7 @@ enum class EventPollingMode
     WAIT_EVENTS
 };
 
-struct FILAPP_EXPORT AppConfig
+struct AppConfig
 {
     BackendMode backendMode = BackendMode::VULKAN;
     EventPollingMode eventPollingMode = EventPollingMode::WAIT_EVENTS;

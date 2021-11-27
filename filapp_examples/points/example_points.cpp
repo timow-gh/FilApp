@@ -1,8 +1,8 @@
-#include "../../filapp_interfaces/IView.hpp"
-#include "../../filapp_interfaces/IWindow.hpp"
+#include "FilAppInterfaces/IView.hpp"
+#include "FilAppInterfaces/IWindow.hpp"
 #include <FilApp/FilApplication.hpp>
 #include <FilApp/Renderables/PointRenderable.hpp>
-#include <FilApp/Renderables/Vertex.hpp>
+#include <FilAppInterfaces/Vertex.hpp>
 #include <vector>
 
 using namespace FilApp;

@@ -2,11 +2,11 @@
 #define FILAPP_IINPUTLISTENER_HPP
 
 #include "InputEvents.hpp"
-#include <filapp_export.h>
+
 
 namespace FilApp
 {
-class FILAPP_EXPORT IInputListener
+class  IInputListener
 {
   public:
     virtual ~IInputListener() = default;
