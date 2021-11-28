@@ -47,14 +47,11 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
 
     m_renderer = m_application->getEngine()->createRenderer();
 
-    m_windowViewPort = calcWindowViewport();
-        m_views.emplace_back(std::make_unique<FilAppView>(
-            *m_renderer,
-            "Main Window",
-            m_windowViewPort,
-            filament::math::float4{0.1, 0.125, 0.25, 1.0},
-            calcCameraMode(windowConfig.cameraMode)));
-        m_mainView = m_views.back().get();
+    ViewConfig viewConfig;
+    viewConfig.name = "MainView";
+    viewConfig.viewport = calcWindowViewport();
+    m_views.emplace_back(std::make_unique<FilAppView>(viewConfig, *m_renderer));
+    m_mainView = m_views.back().get();
 }
 void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
 {
@@ -187,13 +184,7 @@ filament::SwapChain* FilAppWindow::getSwapChain()
 void FilAppWindow::resize()
 {
     if (m_sdlWindow)
-    {
-        m_windowViewPort = calcWindowViewport();
-        m_mainView->resize(Viewport(m_windowViewPort.left,
-                                    m_windowViewPort.bottom,
-                                    m_windowViewPort.width,
-                                    m_windowViewPort.height));
-    }
+        m_mainView->resize(calcWindowViewport());
 }
 IView* FilAppWindow::getMainIView()
 {
@@ -238,7 +229,7 @@ void FilAppWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
     x = x * dw / ww;
     y = y * dh / wh;
 }
-filament::Viewport FilAppWindow::calcWindowViewport()
+Viewport FilAppWindow::calcWindowViewport()
 {
     SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);
     return {0,

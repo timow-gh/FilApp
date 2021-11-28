@@ -25,7 +25,6 @@ class FilAppWindow
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
 
-    filament::Viewport m_windowViewPort;
     std::vector<std::unique_ptr<FilAppView>> m_views;
 
     FilAppView* m_mainView{nullptr};
@@ -69,7 +68,7 @@ class FilAppWindow
 
   private:
     void fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const;
-    [[nodiscard]] filament::Viewport calcWindowViewport();
+    [[nodiscard]] Viewport calcWindowViewport();
 };
 
 bool intersects(const Viewport& viewport, size_t x, size_t y);

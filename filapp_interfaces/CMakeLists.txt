@@ -13,7 +13,7 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/WindowConfig.hpp
         include/FilAppInterfaces/AppConfig.hpp
         include/FilAppInterfaces/Vertex.hpp
-        include/FilAppInterfaces/Vec3.hpp
+        include/FilAppInterfaces/Vec.hpp
         )
 
 add_library(filapp::interfaces ALIAS filapp_interfaces)

@@ -1,9 +1,10 @@
 #ifndef FILAPP_FILAPPVIEW_HPP
 #define FILAPP_FILAPPVIEW_HPP
 
-#include "FilAppInterfaces/IView.hpp"
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
+#include <FilAppInterfaces/IView.hpp>
+#include <FilAppInterfaces/ViewConfig.hpp>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -57,11 +58,7 @@ class FilAppView
     std::vector<AnimationCallBack> m_animationCallbacks;
 
   public:
-    FilAppView(filament::Renderer& renderer,
-               std::string name,
-               const filament::Viewport& viewport,
-               filament::math::float4 skyBoxDefaultColor,
-               filament::camutils::Mode cameraMode);
+    FilAppView(const ViewConfig& viewConfig, filament::Renderer& renderer);
     ~FilAppView() override;
 
     // clang-format off
@@ -79,7 +76,7 @@ class FilAppView
                               const Vec3& rotationAxis) override;
 
     [[nodiscard]] Viewport getViewport() const override;
-    void setViewport(const filament::Viewport& viewport);
+    void setViewport(const Viewport& viewport);
     void setCamera(filament::Camera* camera);
     void resize(const Viewport& viewport) override;
 

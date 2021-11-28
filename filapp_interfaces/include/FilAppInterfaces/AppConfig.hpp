@@ -1,8 +1,6 @@
 #ifndef FILAPP_APPCONFIG_HPP
 #define FILAPP_APPCONFIG_HPP
 
-
-
 namespace FilApp
 {
 enum class BackendMode

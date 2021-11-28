@@ -1,5 +1,6 @@
 #include "FilApp/FilAppView.hpp"
-#include <FilApp/GlobalCS.hpp>
+#include "FilAppConversion.hpp"
+#include <FilApp/FilamentCoordinateSystem.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
 #include <filament/TransformManager.h>
@@ -10,44 +11,52 @@
 
 namespace FilApp
 {
-FilAppView::FilAppView(filament::Renderer& renderer,
-                       std::string name,
-                       const filament::Viewport& viewport,
-                       filament::math::float4 skyBoxDefaultColor,
-                       filament::camutils::Mode cameraMode)
-    : m_engine(renderer.getEngine()), m_name(std::move(name))
+FilAppView::FilAppView(const ViewConfig& viewConfig,
+                       filament::Renderer& renderer)
+    : m_engine(renderer.getEngine()), m_name(viewConfig.name)
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
 
-    m_filamentView->setAntiAliasing(filament::AntiAliasing::FXAA);
-    m_filamentView->setSampleCount(8);
+    if (viewConfig.useFXAA)
+    {
+        m_filamentView->setAntiAliasing(filament::AntiAliasing::FXAA);
+        m_filamentView->setSampleCount(viewConfig.fxaaSampleCount);
+    }
 
     m_scene = m_engine->createScene();
     m_filamentView->setScene(m_scene);
 
-    m_skybox =
-        filament::Skybox::Builder().color(skyBoxDefaultColor).build(*m_engine);
+    m_skybox = filament::Skybox::Builder()
+                   .color(toFilamentVec(viewConfig.skyBoxColor))
+                   .build(*m_engine);
     m_scene->setSkybox(m_skybox);
 
     utils::EntityManager& entityManager = utils::EntityManager::get();
     m_cameraEntity = entityManager.create();
     m_camera = m_engine->createCamera(m_cameraEntity);
-    m_camera->lookAt({15, 15, 15}, {0, 0, 0}, {0, 0, 1});
+
+    const filament::math::float3 eye = transformToFilamentVec(viewConfig.eye);
+    const filament::math::float3 center =
+        transformToFilamentVec(viewConfig.center);
+    const filament::math::float3 up = transformToFilamentVec(viewConfig.up);
+
+    m_camera->lookAt(eye, center, up);
     m_filamentView->setCamera(m_camera);
 
+    filament::camutils::Mode cameraMode = calcCameraMode(viewConfig.cameraMode);
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
-                .orbitHomePosition(15, 15, 15)
-                .targetPosition(0, 0, 0)
-                .upVector(0, 1, 0)
+                .orbitHomePosition(eye[0], eye[1], eye[2])
+                .targetPosition(center[0], center[1], center[2])
+                .upVector(up[0], up[1], up[2])
                 .zoomSpeed(1.0)
                 .build(cameraMode));
     else if (cameraMode == filament::camutils::Mode::FREE_FLIGHT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
-                .flightStartPosition(15, 15, 15)
+                .flightStartPosition(eye[0], eye[1], eye[2])
                 .flightMoveDamping(15.0)
                 .build(cameraMode));
     else
@@ -61,9 +70,9 @@ FilAppView::FilAppView(filament::Renderer& renderer,
     auto& tcm = m_engine->getTransformManager();
     tcm.create(m_globalTrafoComponent);
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
-    tcm.setTransform(globalInstance, filamentCSToGlobalCS());
+    tcm.setTransform(globalInstance, filCSToGlobalCS4());
 
-    setViewport(viewport);
+    setViewport(viewConfig.viewport);
 }
 
 FilAppView::~FilAppView()
@@ -190,8 +199,7 @@ void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
                                       const Vec3& rotationAxis)
 {
     m_animationCallbacks.emplace_back(
-        [renderableIdentifier,
-         engine = m_engine](double deltaT)
+        [renderableIdentifier, engine = m_engine](double deltaT)
         {
             auto& tcm = engine->getTransformManager();
             tcm.setTransform(tcm.getInstance(utils::Entity::import(
@@ -208,9 +216,9 @@ Viewport FilAppView::getViewport() const
             m_viewport.width,
             m_viewport.height};
 }
-void FilAppView::setViewport(const filament::Viewport& viewport)
+void FilAppView::setViewport(const Viewport& viewport)
 {
-    m_viewport = viewport;
+    m_viewport = calcViewport(viewport);
     m_filamentView->setViewport(m_viewport);
     configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
     if (m_cameraManipulator)
@@ -223,10 +231,7 @@ void FilAppView::setCamera(filament::Camera* camera)
 }
 void FilAppView::resize(const Viewport& viewport)
 {
-    setViewport(filament::Viewport(viewport.left,
-                                   viewport.bottom,
-                                   viewport.width,
-                                   viewport.height));
+    setViewport(viewport);
 }
 void FilAppView::mouseDown(const MouseDownEvent& mouseDownEvent)
 {
@@ -327,4 +332,5 @@ void FilAppView::clearFilAppRenderables()
     }
     m_renderables.clear();
 }
+
 } // namespace FilApp

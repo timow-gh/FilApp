@@ -1,6 +1,7 @@
-#include "FilAppInterfaces/IView.hpp"
 #include "FilApp/FilApplication.hpp"
+#include "FilAppInterfaces/IView.hpp"
 #include "FilAppInterfaces/Renderables/TriangleRenderable.hpp"
+#include <FilAppInterfaces/Vec.hpp>
 
 using namespace FilApp;
 
@@ -21,7 +22,7 @@ int main()
     auto renderableId = mainView->addRenderable(
         TriangleRenderable(std::move(vertices), {0, 1, 2}));
 
-    mainView->addRotationAnimation(renderableId, Vec3{0, 1, 0});
+    mainView->addRotationAnimation(renderableId, Vec3{0.0f, 1.0f, 0.0f});
 
     FilApplication::get().run();
     return 0;

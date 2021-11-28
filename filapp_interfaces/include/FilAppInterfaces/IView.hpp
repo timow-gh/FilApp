@@ -8,7 +8,7 @@
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
 #include <FilAppInterfaces/Renderables/RendereableIdentifier.hpp>
 #include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
-#include <FilAppInterfaces/Vec3.hpp>
+#include <FilAppInterfaces/Vec.hpp>
 
 namespace FilApp
 {
