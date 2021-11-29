@@ -15,7 +15,7 @@ struct Vec
     {
     }
 
-    [[nodiscard]] inline uint8_t size() const noexcept { return SIZE; }
+    [[nodiscard]] inline std::size_t size() const noexcept { return SIZE; }
     [[nodiscard]] inline float_t operator[](std::size_t i) const noexcept
     {
         return values[i];
