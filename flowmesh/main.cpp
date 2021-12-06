@@ -1,13 +1,12 @@
-#include "../filapp_interfaces/include/FilAppInterfaces/IView.hpp"
-#include "../filapp_interfaces/include/FilAppInterfaces/IWindow.hpp"
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
+#include <FilAppInterfaces/IView.hpp>
+#include <FilAppInterfaces/IWindow.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/FlowMeshSegments.hpp>
 #include <FlowMesh/FlowMeshSphere.hpp>
-#include <Geometry/Cone.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
