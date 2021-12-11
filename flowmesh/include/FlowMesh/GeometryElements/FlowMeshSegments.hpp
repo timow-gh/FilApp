@@ -10,7 +10,6 @@ namespace FlowMesh
 class FlowMeshSegments
 {
     Core::TVector<Geometry::Segment3d> m_segments;
-    FGuid m_fGuid;
 
   public:
     FlowMeshSegments() = default;
