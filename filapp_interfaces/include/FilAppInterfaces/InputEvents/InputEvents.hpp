@@ -2,11 +2,10 @@
 #define FILAPP_INPUTEVENTS_HPP
 
 #include "InputEvents.hpp"
-#include <SDL_scancode.h>
+#include "_deps/filament-src/third_party/libsdl2/include/SDL_scancode.h"
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
-
 
 namespace FilApp
 {

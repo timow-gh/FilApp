@@ -1,13 +1,12 @@
 #ifndef FILAPP_IINPUTEVENTDISPATCHER_HPP
 #define FILAPP_IINPUTEVENTDISPATCHER_HPP
 
-#include "IInputListener.hpp"
+#include <FilAppInterfaces/InputEvents/IInputListener.hpp>
 #include <vector>
 
 namespace FilApp
 {
-class IInputEventDispatcher
-{
+class IInputEventDispatcher {
   protected:
     std::vector<IInputListener*> m_inputEventListener;
 

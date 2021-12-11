@@ -4,12 +4,12 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/Renderables/LineRenderable.hpp
         include/FilAppInterfaces/Renderables/TriangleRenderable.hpp
         include/FilAppInterfaces/IView.hpp
-        include/FilAppInterfaces/InputEvents.hpp
-        include/FilAppInterfaces/IInputListener.hpp
+        include/FilAppInterfaces/InputEvents/InputEvents.hpp
+        include/FilAppInterfaces/InputEvents/IInputListener.hpp
         include/FilAppInterfaces/Viewport.hpp
         include/FilAppInterfaces/IWindow.hpp
         include/FilAppInterfaces/IApplication.hpp
-        include/FilAppInterfaces/IInputEventDispatcher.hpp
+        include/FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp
         include/FilAppInterfaces/WindowConfig.hpp
         include/FilAppInterfaces/AppConfig.hpp
         include/FilAppInterfaces/Vertex.hpp

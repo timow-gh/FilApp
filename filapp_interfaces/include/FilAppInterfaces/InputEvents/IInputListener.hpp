@@ -1,13 +1,11 @@
 #ifndef FILAPP_IINPUTLISTENER_HPP
 #define FILAPP_IINPUTLISTENER_HPP
 
-#include "InputEvents.hpp"
-
+#include <FilAppInterfaces/InputEvents/InputEvents.hpp>
 
 namespace FilApp
 {
-class  IInputListener
-{
+class IInputListener {
   public:
     virtual ~IInputListener() = default;
 

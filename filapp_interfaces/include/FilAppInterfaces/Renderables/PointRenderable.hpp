@@ -1,16 +1,14 @@
 #ifndef FILAPP_POINTRENDERABLE_HPP
 #define FILAPP_POINTRENDERABLE_HPP
 
-#include "FilAppInterfaces/Vertex.hpp"
-#include "filapp_export.h"
+#include <FilAppInterfaces/Vertex.hpp>
+#include <numeric>
 #include <utility>
 #include <vector>
-#include <numeric>
 
 namespace FilApp
 {
-class FILAPP_EXPORT PointRenderable
-{
+class PointRenderable {
   public:
     PointRenderable(std::vector<Vertex> vertices,
                     std::vector<uint16_t> indices,
@@ -46,7 +44,8 @@ class FILAPP_EXPORT PointRenderable
     std::vector<float_t> m_pointSizes;
 };
 
-inline PointRenderable PointRenderable::create(const Vertex& vertex, float_t pointSize)
+inline PointRenderable PointRenderable::create(const Vertex& vertex,
+                                               float_t pointSize)
 {
     return create(std::vector<Vertex>{vertex}, pointSize);
 }
@@ -63,7 +62,7 @@ inline PointRenderable PointRenderable::create(std::vector<Vertex> vertices,
 }
 
 inline PointRenderable PointRenderable::create(std::vector<Vertex> vertices,
-                                        std::vector<float_t> pointSizes)
+                                               std::vector<float_t> pointSizes)
 {
     std::vector<uint16_t> indices(vertices.size());
     std::iota(indices.begin(), indices.end(), 0);
