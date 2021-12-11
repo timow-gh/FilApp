@@ -1,7 +1,7 @@
 #ifndef FILAPP_IWINDOW_HPP
 #define FILAPP_IWINDOW_HPP
 
-#include <FilAppInterfaces/InputEvents/IInputListener.hpp>
+#include <FilAppInterfaces/InputEvents/IInputEventListener.hpp>
 #include <vector>
 
 namespace FilApp

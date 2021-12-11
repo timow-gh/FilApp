@@ -1,13 +1,13 @@
-#ifndef FILAPP_IINPUTLISTENER_HPP
-#define FILAPP_IINPUTLISTENER_HPP
+#ifndef FILAPP_IINPUTEVENTLISTENER_HPP
+#define FILAPP_IINPUTEVENTLISTENER_HPP
 
 #include <FilAppInterfaces/InputEvents/InputEvents.hpp>
 
 namespace FilApp
 {
-class IInputListener {
+class IInputEventListener {
   public:
-    virtual ~IInputListener() = default;
+    virtual ~IInputEventListener() = default;
 
     virtual void mouseDown(const MouseDownEvent& mouseDownEvent) = 0;
     virtual void mouseUp(const MouseUpEvent& mouseUpEvent) = 0;
@@ -18,4 +18,4 @@ class IInputListener {
 };
 } // namespace FilApp
 
-#endif // FILAPP_IINPUTLISTENER_HPP
+#endif // FILAPP_IINPUTEVENTLISTENER_HPP

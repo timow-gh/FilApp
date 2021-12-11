@@ -1,7 +1,7 @@
 #ifndef FILAPP_PICKINGCONTEXT_HPP
 #define FILAPP_PICKINGCONTEXT_HPP
 
-#include "FilAppInterfaces/InputEvents/IInputListener.hpp"
+#include "FilAppInterfaces/InputEvents/IInputEventListener.hpp"
 #include <Core/Types/TVector.hpp>
 #include <Geometry/Line.hpp>
 
@@ -14,8 +14,7 @@ struct PickingResult
 };
 
 class PickingContext
-    : public FilApp::IInputListener
-{
+    : public FilApp::IInputEventListener {
     Geometry::Ray3d m_pickingRay;
 
   public:

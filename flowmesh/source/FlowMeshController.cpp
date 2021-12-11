@@ -3,7 +3,7 @@
 namespace FlowMesh
 {
 void FlowMeshController::registerIInputEventListener(
-    FilApp::IInputListener* inputListener)
+    FilApp::IInputEventListener* inputListener)
 {
     m_inputEventDispatcher->registerInputListener(inputListener);
 }

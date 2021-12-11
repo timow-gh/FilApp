@@ -5,7 +5,7 @@
 
 namespace FilApp
 {
-class IInputListener;
+class IInputEventListener;
 }
 
 namespace FlowMesh
@@ -15,7 +15,7 @@ class FlowMeshController
     FilApp::IInputEventDispatcher* m_inputEventDispatcher{nullptr};
 
   public:
-    void registerIInputEventListener(FilApp::IInputListener* inputListener);
+    void registerIInputEventListener(FilApp::IInputEventListener* inputListener);
 };
 } // namespace FlowMesh
 

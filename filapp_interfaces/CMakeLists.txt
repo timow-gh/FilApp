@@ -4,7 +4,7 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/Renderables/LineRenderable.hpp
         include/FilAppInterfaces/Renderables/TriangleRenderable.hpp
         include/FilAppInterfaces/InputEvents/InputEvents.hpp
-        include/FilAppInterfaces/InputEvents/IInputListener.hpp
+        include/FilAppInterfaces/InputEvents/IInputEventListener.hpp
         include/FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp
         include/FilAppInterfaces/IView.hpp
         include/FilAppInterfaces/Viewport.hpp
