@@ -4,11 +4,11 @@
 #include <Core/Types/TMap.hpp>
 #include <FilApp/FilAppView.hpp>
 #include <FilAppInterfaces/Renderables/RendereableId.hpp>
-#include "FlowMesh/GeometryElements/FlowMeshCone.hpp"
-#include "FlowMesh/GeometryElements/FlowMeshCylinder.hpp"
-#include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
-#include "FlowMesh/GeometryElements/FlowMeshSphere.hpp"
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
 
 namespace FilApp
@@ -18,12 +18,10 @@ class IView;
 
 namespace FlowMesh
 {
-class FlowMeshPresenter
-{
+class FlowMeshPresenter {
     FilApp::IView* m_mainView{nullptr};
 
-    std::map<FGuid, std::vector<FilApp::RenderableId>>
-        m_fGuidRenderableMapping;
+    std::map<FGuid, std::vector<FilApp::RenderableId>> m_fGuidRenderableMapping;
 
   public:
     void setMainView(FilApp::IView* mainView) { m_mainView = mainView; }

@@ -1,11 +1,11 @@
 #ifndef FILAPP_GEOMETRYELEMENTS_HPP
 #define FILAPP_GEOMETRYELEMENTS_HPP
 
-#include "FlowMesh/FlowMeshGuid.hpp"
-#include "FlowMeshCone.hpp"
-#include "FlowMeshCylinder.hpp"
-#include "FlowMeshSegments.hpp"
-#include "FlowMeshSphere.hpp"
+#include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMeshCone.hpp>
+#include <FlowMeshCylinder.hpp>
+#include <FlowMeshSegments.hpp>
+#include <FlowMeshSphere.hpp>
 #include <map>
 #include <vector>
 
@@ -30,7 +30,7 @@ class GeometryElements {
   private:
     template <typename V>
     void calcAllGuids(std::vector<FGuid>& fGuids,
-                     const std::map<FGuid, V>& map) const
+                      const std::map<FGuid, V>& map) const
     {
         for (const auto& pair: map)
             fGuids.push_back(pair.first);

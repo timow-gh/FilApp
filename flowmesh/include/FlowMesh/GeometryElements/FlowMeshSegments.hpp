@@ -1,14 +1,13 @@
 #ifndef FILAPP_FLOWMESHSEGMENTS_HPP
 #define FILAPP_FLOWMESHSEGMENTS_HPP
 
-#include "_deps/core-src/src/types/Core/Types/TVector.hpp"
-#include "FlowMesh/FlowMeshGuid.hpp"
-#include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
+#include <Core/Types/TVector.hpp>
+#include <FlowMesh/FlowMeshGuid.hpp>
+#include <Geometry/Segment.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshSegments
-{
+class FlowMeshSegments {
     Core::TVector<Geometry::Segment3d> m_segments;
 
   public:
