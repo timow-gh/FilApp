@@ -200,11 +200,12 @@ void FilAppView::addRotationAnimation(RenderableId renderableIdentifier,
         [renderableIdentifier, engine = m_engine](double deltaT)
         {
             auto& tcm = engine->getTransformManager();
-            tcm.setTransform(tcm.getInstance(utils::Entity::import(
-                                 static_cast<int>(renderableIdentifier))),
-                             filament::math::mat4f::rotation(
-                                 deltaT * 0.4,
-                                 filament::math::float3{0, 1, 0}));
+            tcm.setTransform(
+                tcm.getInstance(utils::Entity::import(
+                    static_cast<int>(renderableIdentifier.getId()))),
+                filament::math::mat4f::rotation(
+                    deltaT * 0.4,
+                    filament::math::float3{0, 1, 0}));
         });
 }
 Viewport FilAppView::getViewport() const
