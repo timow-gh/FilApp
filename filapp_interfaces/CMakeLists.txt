@@ -3,7 +3,6 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/Renderables/PointRenderable.hpp
         include/FilAppInterfaces/Renderables/LineRenderable.hpp
         include/FilAppInterfaces/Renderables/TriangleRenderable.hpp
-        include/FilAppInterfaces/InputEvents/InputEvents.hpp
         include/FilAppInterfaces/InputEvents/IInputEventListener.hpp
         include/FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp
         include/FilAppInterfaces/IView.hpp
@@ -14,7 +13,7 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/AppConfig.hpp
         include/FilAppInterfaces/Vertex.hpp
         include/FilAppInterfaces/Vec.hpp
-        )
+        include/FilAppInterfaces/InputEvents/EvtPos.hpp include/FilAppInterfaces/InputEvents/MouseDownEvent.hpp include/FilAppInterfaces/InputEvents/MouseUpEvent.hpp include/FilAppInterfaces/InputEvents/MouseMovedEvent.hpp include/FilAppInterfaces/InputEvents/MouseWheelEvent.hpp include/FilAppInterfaces/InputEvents/KeyDownEvent.hpp include/FilAppInterfaces/InputEvents/KeyUpEvent.hpp)
 
 add_library(filapp::interfaces ALIAS filapp_interfaces)
 target_include_directories(filapp_interfaces
