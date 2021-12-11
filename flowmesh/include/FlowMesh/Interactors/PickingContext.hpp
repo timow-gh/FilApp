@@ -1,8 +1,8 @@
 #ifndef FILAPP_PICKINGCONTEXT_HPP
 #define FILAPP_PICKINGCONTEXT_HPP
 
-#include "FilAppInterfaces/InputEvents/IInputEventListener.hpp"
 #include <Core/Types/TVector.hpp>
+#include <FilAppInterfaces/InputEvents/IInputEventListener.hpp>
 #include <Geometry/Line.hpp>
 
 namespace FlowMesh
@@ -13,11 +13,8 @@ struct PickingResult
     Core::TVector<double_t> pickingOrdinates;
 };
 
-class PickingContext
-    : public FilApp::IInputEventListener {
+class PickingContext : public FilApp::IInputEventListener {
     Geometry::Ray3d m_pickingRay;
-
-  public:
 
   private:
     void mouseDown(const FilApp::MouseDownEvent& mouseDownEvent) override;

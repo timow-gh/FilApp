@@ -1,6 +1,8 @@
 #ifndef FILAPP_FGUIDBASE_HPP
 #define FILAPP_FGUIDBASE_HPP
 
+#include <FlowMesh/FlowMeshGuid.hpp>
+
 namespace FlowMesh
 {
 template <typename Derived>
@@ -29,6 +31,6 @@ class FGuidBase {
         return !(lhs < rhs);
     }
 };
-}
+} // namespace FlowMesh
 
 #endif // FILAPP_FGUIDBASE_HPP
