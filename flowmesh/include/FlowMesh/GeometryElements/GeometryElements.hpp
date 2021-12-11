@@ -2,10 +2,10 @@
 #define FILAPP_GEOMETRYELEMENTS_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMeshCone.hpp>
-#include <FlowMeshCylinder.hpp>
-#include <FlowMeshSegments.hpp>
-#include <FlowMeshSphere.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <map>
 #include <vector>
 
