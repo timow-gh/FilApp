@@ -7,7 +7,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
         include/FlowMesh/GeometryElements/FlowMeshSegments.hpp
-        include/FlowMesh/TypeId.hpp
+        include/FlowMesh/FlowMeshGuid.hpp
         include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         )

@@ -1,7 +1,7 @@
 #ifndef FILAPP_FLOWMESHCYLINDER_HPP
 #define FILAPP_FLOWMESHCYLINDER_HPP
 
-#include "FlowMesh/TypeId.hpp"
+#include "FlowMesh/FlowMeshGuid.hpp"
 #include "_deps/geometry-src/src/include/Geometry/Cylinder.hpp"
 #include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
 
@@ -10,15 +10,15 @@ namespace FlowMesh
 class FlowMeshCylinder
 {
     Geometry::Cylinder<double_t> m_cylinder;
-    TypeId m_typeId;
+    FGuid m_fGuid;
 
   public:
     FlowMeshCylinder();
     FlowMeshCylinder(const Geometry::Cylinder<double_t>& cylinder,
-                     const TypeId& typeId);
+                     const FGuid& fGuid);
 
     [[nodiscard]] const Geometry::Cylinder<double_t>& getCylinder() const;
-    [[nodiscard]] const TypeId& getTypeId() const;
+    [[nodiscard]] const FGuid& getFGuid() const;
 
     friend bool operator==(const FlowMeshCylinder& lhs,
                            const FlowMeshCylinder& rhs);

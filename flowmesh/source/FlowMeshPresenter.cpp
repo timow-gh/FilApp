@@ -88,8 +88,8 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
     auto sphereId =
         m_mainView->addRenderable(createTriangleRenderable(*sphereMesh));
 
-    m_typeIdRenderableMapping.emplace(
-        flowMeshSphere.getTypeId(),
+    m_fGuidRenderableMapping.emplace(
+        flowMeshSphere.getFGuid(),
         std::vector<FilApp::RenderableIdentifier>{verticesId, sphereId});
 }
 void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
@@ -109,8 +109,8 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
     auto coneId =
         m_mainView->addRenderable(createTriangleRenderable(*coneMesh));
 
-    m_typeIdRenderableMapping.emplace(
-        flowMeshCone.getTypeId(),
+    m_fGuidRenderableMapping.emplace(
+        flowMeshCone.getFGuid(),
         std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
 }
 void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
@@ -130,22 +130,22 @@ void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
     auto coneId =
         m_mainView->addRenderable(createTriangleRenderable(*cylinderMesh));
 
-    m_typeIdRenderableMapping.emplace(
-        flowMeshCylinder.getTypeId(),
+    m_fGuidRenderableMapping.emplace(
+        flowMeshCylinder.getFGuid(),
         std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
 }
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {
     auto segmentsId =
         m_mainView->addRenderable(createLineRenderables(flowMeshSegments));
-    m_typeIdRenderableMapping.emplace(
-        flowMeshSegments.getTypeId(),
+    m_fGuidRenderableMapping.emplace(
+        flowMeshSegments.getFGuid(),
         std::vector<FilApp::RenderableIdentifier>{segmentsId});
 }
-void FlowMeshPresenter::remove(const TypeId& typeId)
+void FlowMeshPresenter::remove(const FGuid& fGuid)
 {
-    auto iter = m_typeIdRenderableMapping.find(typeId);
-    if (iter != m_typeIdRenderableMapping.end())
+    auto iter = m_fGuidRenderableMapping.find(fGuid);
+    if (iter != m_fGuidRenderableMapping.end())
         for (const FilApp::RenderableIdentifier id: iter->second)
             m_mainView->removeRenderable(id);
 }

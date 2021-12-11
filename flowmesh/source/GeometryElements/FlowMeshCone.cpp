@@ -9,24 +9,24 @@ namespace FlowMesh
 {
 FlowMeshCone::FlowMeshCone()
     : m_cone(Cone<double_t>(Segment3d{ZERO_VEC3D, Z_VEC3D}, 1.0))
-    , m_typeId(TypeId())
+    , m_fGuid(FGuid())
 {
 }
-FlowMeshCone::FlowMeshCone(const Cone<double_t>& cone, const TypeId& typeId)
-    : m_cone(cone), m_typeId(typeId)
+FlowMeshCone::FlowMeshCone(const Cone<double_t>& cone, const FGuid& fGuid)
+    : m_cone(cone), m_fGuid(fGuid)
 {
 }
 const Cone<double_t>& FlowMeshCone::getCone() const
 {
     return m_cone;
 }
-const TypeId& FlowMeshCone::getTypeId() const
+const FGuid& FlowMeshCone::getFGuid() const
 {
-    return m_typeId;
+    return m_fGuid;
 }
 bool operator==(const FlowMeshCone& lhs, const FlowMeshCone& rhs)
 {
-    return lhs.m_cone == rhs.m_cone && lhs.m_typeId == rhs.m_typeId;
+    return lhs.m_cone == rhs.m_cone && lhs.m_fGuid == rhs.m_fGuid;
 }
 bool operator!=(const FlowMeshCone& lhs, const FlowMeshCone& rhs)
 {
@@ -34,7 +34,7 @@ bool operator!=(const FlowMeshCone& lhs, const FlowMeshCone& rhs)
 }
 bool operator<(const FlowMeshCone& lhs, const FlowMeshCone& rhs)
 {
-    return lhs.m_typeId < rhs.m_typeId;
+    return lhs.m_fGuid < rhs.m_fGuid;
 }
 bool operator>(const FlowMeshCone& lhs, const FlowMeshCone& rhs)
 {

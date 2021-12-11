@@ -1,7 +1,7 @@
 #ifndef FILAPP_FLOWMESHSPHERE_HPP
 #define FILAPP_FLOWMESHSPHERE_HPP
 
-#include "FlowMesh/TypeId.hpp"
+#include "FlowMesh/FlowMeshGuid.hpp"
 #include "_deps/geometry-src/src/include/Geometry/Sphere.hpp"
 #include "_deps/linal-src/src/include/LinAl/LinearAlgebra.hpp"
 
@@ -10,16 +10,16 @@ namespace FlowMesh
 class FlowMeshSphere
 {
     Geometry::Sphere<double_t> m_sphere;
-    TypeId m_typeId;
+    FGuid m_fGuid;
 
   public:
     FlowMeshSphere();
-    FlowMeshSphere(Geometry::Sphere<double_t> sphere, const TypeId& guid);
+    FlowMeshSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid);
 
     [[nodiscard]] const Geometry::Sphere<double_t>& getSphere() const;
     void setSphere(const Geometry::Sphere<double_t>& sphere);
 
-    [[nodiscard]] const TypeId& getTypeId() const;
+    [[nodiscard]] const FGuid& getFGuid() const;
 
     friend bool operator==(const FlowMeshSphere& lhs,
                            const FlowMeshSphere& rhs);

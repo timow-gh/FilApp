@@ -8,7 +8,7 @@
 #include "FlowMesh/GeometryElements/FlowMeshCylinder.hpp"
 #include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
 #include "FlowMesh/GeometryElements/FlowMeshSphere.hpp"
-#include <FlowMesh/TypeId.hpp>
+#include <FlowMesh/FlowMeshGuid.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
 
 namespace FilApp
@@ -22,8 +22,8 @@ class FlowMeshPresenter
 {
     FilApp::IView* m_mainView{nullptr};
 
-    std::map<TypeId, std::vector<FilApp::RenderableIdentifier>>
-        m_typeIdRenderableMapping;
+    std::map<FGuid, std::vector<FilApp::RenderableIdentifier>>
+        m_fGuidRenderableMapping;
 
   public:
     void setMainView(FilApp::IView* mainView) { m_mainView = mainView; }
@@ -33,7 +33,7 @@ class FlowMeshPresenter
     void add(const FlowMeshCylinder& flowMeshCylinder);
     void add(const FlowMeshSegments& flowMeshSegments);
 
-    void remove(const TypeId& typeId);
+    void remove(const FGuid& fGuid);
 
     void setIdleAnimation(const FilApp::Vec3& rotationAxis);
 

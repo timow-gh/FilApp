@@ -6,7 +6,7 @@ namespace FlowMesh
 
 FlowMeshSegments::FlowMeshSegments(Core::TVector<Geometry::Segment3d> segments,
                                    const xg::Guid& guid)
-    : m_segments(std::move(segments)), m_typeId(guid)
+    : m_segments(std::move(segments)), m_fGuid(guid)
 {
 }
 const Core::TVector<Geometry::Segment3d>& FlowMeshSegments::getSegments() const
@@ -18,14 +18,14 @@ void FlowMeshSegments::setSegments(
 {
     m_segments = segments;
 }
-const xg::Guid& FlowMeshSegments::getTypeId() const
+const xg::Guid& FlowMeshSegments::getFGuid() const
 {
-    return m_typeId;
+    return m_fGuid;
 }
 bool operator==(const FlowMeshSegments& lhs, const FlowMeshSegments& rhs)
 {
-    return std::tie(lhs.m_segments, lhs.m_typeId) ==
-           std::tie(rhs.m_segments, rhs.m_typeId);
+    return std::tie(lhs.m_segments, lhs.m_fGuid) ==
+           std::tie(rhs.m_segments, rhs.m_fGuid);
 }
 bool operator!=(const FlowMeshSegments& lhs, const FlowMeshSegments& rhs)
 {
@@ -33,7 +33,7 @@ bool operator!=(const FlowMeshSegments& lhs, const FlowMeshSegments& rhs)
 }
 bool operator<(const FlowMeshSegments& lhs, const FlowMeshSegments& rhs)
 {
-    return lhs.m_typeId < rhs.m_typeId;
+    return lhs.m_fGuid < rhs.m_fGuid;
 }
 bool operator>(const FlowMeshSegments& lhs, const FlowMeshSegments& rhs)
 {

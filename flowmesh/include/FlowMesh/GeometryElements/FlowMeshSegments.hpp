@@ -2,7 +2,7 @@
 #define FILAPP_FLOWMESHSEGMENTS_HPP
 
 #include "_deps/core-src/src/types/Core/Types/TVector.hpp"
-#include "FlowMesh/TypeId.hpp"
+#include "FlowMesh/FlowMeshGuid.hpp"
 #include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
 
 namespace FlowMesh
@@ -10,17 +10,17 @@ namespace FlowMesh
 class FlowMeshSegments
 {
     Core::TVector<Geometry::Segment3d> m_segments;
-    TypeId m_typeId;
+    FGuid m_fGuid;
 
   public:
     FlowMeshSegments() = default;
     FlowMeshSegments(Core::TVector<Geometry::Segment3d> segments,
-                     const TypeId& guid);
+                     const FGuid& guid);
 
     [[nodiscard]] const Core::TVector<Geometry::Segment3d>& getSegments() const;
     void setSegments(const Core::TVector<Geometry::Segment3d>& segments);
 
-    [[nodiscard]] const TypeId& getTypeId() const;
+    [[nodiscard]] const FGuid& getFGuid() const;
 
     friend bool operator==(const FlowMeshSegments& lhs,
                            const FlowMeshSegments& rhs);

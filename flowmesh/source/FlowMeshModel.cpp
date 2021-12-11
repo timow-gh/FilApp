@@ -7,33 +7,30 @@ void FlowMeshModel::setFlowMeshPresenter(FlowMeshPresenter* flowMeshPresenter)
 {
     m_flowMeshPresenter = flowMeshPresenter;
 }
-std::vector<TypeId> FlowMeshModel::calcTypeIds() const
+std::vector<FGuid> FlowMeshModel::calcFGuids() const
 {
-    return m_geometryElements.getTypeIdsFromMaps();
+    return m_geometryElements.getFGuidsFromMaps();
 }
 void FlowMeshModel::addSegments(const FlowMeshSegments& flowMeshSegments)
 {
-    if (m_geometryElements.add(flowMeshSegments))
-        m_flowMeshPresenter->add(flowMeshSegments);
+    addAndUpdateView(flowMeshSegments);
 }
 void FlowMeshModel::addSphere(const FlowMeshSphere& sphere)
 {
-    if (m_geometryElements.add(sphere))
-        m_flowMeshPresenter->add(sphere);
+    addAndUpdateView(sphere);
 }
 void FlowMeshModel::addCone(const FlowMeshCone& flowMeshCone)
 {
-    if (m_geometryElements.add(flowMeshCone))
-        m_flowMeshPresenter->add(flowMeshCone);
+    addAndUpdateView(flowMeshCone);
 }
 void FlowMeshModel::addCylinder(const FlowMeshCylinder& cylinder)
 {
     if (m_geometryElements.add(cylinder))
         m_flowMeshPresenter->add(cylinder);
 }
-void FlowMeshModel::remove(const TypeId& typeId)
+void FlowMeshModel::remove(const FGuid& fGuid)
 {
-    m_geometryElements.remove(typeId);
-    m_flowMeshPresenter->remove(typeId);
+    m_geometryElements.remove(fGuid);
+    m_flowMeshPresenter->remove(fGuid);
 }
 } // namespace FlowMesh
