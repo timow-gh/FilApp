@@ -33,7 +33,7 @@ filament::math::float4 toFilamentVec(const Vec4& vec4)
 {
     return {vec4[0], vec4[1], vec4[2], vec4[3]};
 }
-filament::math::float3 FilApp::toFilamentVec(const Vec3& vec3)
+filament::math::float3 toFilamentVec(const Vec3& vec3)
 {
     return {vec3[0], vec3[1], vec3[2]};
 }

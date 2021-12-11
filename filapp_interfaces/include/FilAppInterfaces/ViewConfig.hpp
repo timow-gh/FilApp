@@ -2,7 +2,7 @@
 #define FILAPP_VIEWCONFIG_HPP
 
 #include <FilAppInterfaces/Vec.hpp>
-#include <FilAppInterfaces/ViewPort.hpp>
+#include <FilAppInterfaces/Viewport.hpp>
 #include <FilAppInterfaces/WindowConfig.hpp>
 #include <string>
 
