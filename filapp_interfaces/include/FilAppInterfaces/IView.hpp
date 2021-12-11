@@ -1,22 +1,21 @@
 #ifndef FILAPP_IVIEW_HPP
 #define FILAPP_IVIEW_HPP
 
-#include "FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp"
-#include "FilAppInterfaces/InputEvents/IInputListener.hpp"
-#include "Viewport.hpp"
+#include <FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp>
+#include <FilAppInterfaces/InputEvents/IInputListener.hpp>
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
 #include <FilAppInterfaces/Renderables/RendereableId.hpp>
 #include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
 #include <FilAppInterfaces/Vec.hpp>
+#include <FilAppInterfaces/Viewport.hpp>
 
 namespace FilApp
 {
 
-class  IView
+class IView
     : public IInputListener
-    , public IInputEventDispatcher
-{
+    , public IInputEventDispatcher {
   public:
     ~IView() override = default;
 

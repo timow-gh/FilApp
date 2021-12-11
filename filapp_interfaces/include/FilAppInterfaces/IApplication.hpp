@@ -1,12 +1,11 @@
 #ifndef FILAPP_IAPPLICATION_HPP
 #define FILAPP_IAPPLICATION_HPP
 
-#include "IWindow.hpp"
+#include <FilAppInterfaces/IWindow.hpp>
 
 namespace FilApp
 {
-class IApplication
-{
+class IApplication {
   public:
     virtual ~IApplication() = default;
 

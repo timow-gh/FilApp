@@ -2,13 +2,12 @@
 #define FILAPP_TRIANGLERENDERABLE_HPP
 
 #include "FilAppInterfaces/Vertex.hpp"
-#include <filapp_export.h>
 #include <utility>
 #include <vector>
 
 namespace FilApp
 {
-class FILAPP_EXPORT TriangleRenderable
+class TriangleRenderable
 {
   public:
     TriangleRenderable() = default;

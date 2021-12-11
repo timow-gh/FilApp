@@ -1,7 +1,6 @@
 #ifndef FILAPP_WINDOWCONFIG_HPP
 #define FILAPP_WINDOWCONFIG_HPP
 
-
 #include <string>
 
 namespace FilApp

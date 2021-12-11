@@ -2,14 +2,13 @@
 #define FILAPP_LINERENDERABLE_HPP
 
 #include <FilAppInterfaces/Vertex.hpp>
-#include <filapp_export.h>
 #include <utility>
 #include <vector>
 #include <cassert>
 
 namespace FilApp
 {
-class FILAPP_EXPORT LineRenderable
+class  LineRenderable
 {
   public:
     LineRenderable(std::vector<Vertex> vertices, std::vector<uint16_t> indices)
