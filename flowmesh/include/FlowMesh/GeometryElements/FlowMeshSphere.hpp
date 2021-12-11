@@ -2,14 +2,14 @@
 #define FILAPP_FLOWMESHSPHERE_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/GeometryElements/FGuidBase.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshSphere {
+class FlowMeshSphere : public FGuidBase<FlowMeshSphere> {
     Geometry::Sphere<double_t> m_sphere;
-    FGuid m_fGuid;
 
   public:
     FlowMeshSphere();
@@ -17,20 +17,6 @@ class FlowMeshSphere {
 
     [[nodiscard]] const Geometry::Sphere<double_t>& getSphere() const;
     void setSphere(const Geometry::Sphere<double_t>& sphere);
-
-    [[nodiscard]] const FGuid& getFGuid() const;
-
-    friend bool operator==(const FlowMeshSphere& lhs,
-                           const FlowMeshSphere& rhs);
-    friend bool operator!=(const FlowMeshSphere& lhs,
-                           const FlowMeshSphere& rhs);
-
-    friend bool operator<(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs);
-    friend bool operator>(const FlowMeshSphere& lhs, const FlowMeshSphere& rhs);
-    friend bool operator<=(const FlowMeshSphere& lhs,
-                           const FlowMeshSphere& rhs);
-    friend bool operator>=(const FlowMeshSphere& lhs,
-                           const FlowMeshSphere& rhs);
 };
 } // namespace FlowMesh
 
