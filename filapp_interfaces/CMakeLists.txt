@@ -1,5 +1,5 @@
 add_library(filapp_interfaces INTERFACE
-        include/FilAppInterfaces/Renderables/RendereableIdentifier.hpp
+        include/FilAppInterfaces/Renderables/RendereableId.hpp
         include/FilAppInterfaces/Renderables/PointRenderable.hpp
         include/FilAppInterfaces/Renderables/LineRenderable.hpp
         include/FilAppInterfaces/Renderables/TriangleRenderable.hpp

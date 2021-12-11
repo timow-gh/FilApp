@@ -3,7 +3,7 @@
 
 #include <Core/Types/TMap.hpp>
 #include <FilApp/FilAppView.hpp>
-#include <FilAppInterfaces/Renderables/RendereableIdentifier.hpp>
+#include <FilAppInterfaces/Renderables/RendereableId.hpp>
 #include "FlowMesh/GeometryElements/FlowMeshCone.hpp"
 #include "FlowMesh/GeometryElements/FlowMeshCylinder.hpp"
 #include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
@@ -22,7 +22,7 @@ class FlowMeshPresenter
 {
     FilApp::IView* m_mainView{nullptr};
 
-    std::map<FGuid, std::vector<FilApp::RenderableIdentifier>>
+    std::map<FGuid, std::vector<FilApp::RenderableId>>
         m_fGuidRenderableMapping;
 
   public:

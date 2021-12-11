@@ -117,8 +117,7 @@ void FilAppView::configureOrthogonalProjection(float_t near,
                             near,
                             far);
 }
-RenderableIdentifier
-FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
+RenderableId FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 {
     auto renderable =
         std::make_unique<TriangleRenderable>(std::move(triangleRenderable));
@@ -132,8 +131,7 @@ FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 
     return id;
 }
-RenderableIdentifier
-FilAppView::addRenderable(PointRenderable&& pointRenderable)
+RenderableId FilAppView::addRenderable(PointRenderable&& pointRenderable)
 {
     auto renderable =
         std::make_unique<PointRenderable>(std::move(pointRenderable));
@@ -147,7 +145,7 @@ FilAppView::addRenderable(PointRenderable&& pointRenderable)
 
     return id;
 }
-RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
+RenderableId FilAppView::addRenderable(LineRenderable&& lineREnderable)
 {
     auto renderable =
         std::make_unique<LineRenderable>(std::move(lineREnderable));
@@ -160,14 +158,14 @@ RenderableIdentifier FilAppView::addRenderable(LineRenderable&& lineREnderable)
     m_lineRenderables.emplace(id, std::move(renderable));
     return id;
 }
-std::vector<RenderableIdentifier> FilAppView::getRenderableIdentifiers() const
+std::vector<RenderableId> FilAppView::getRenderableIdentifiers() const
 {
-    std::vector<RenderableIdentifier> result;
+    std::vector<RenderableId> result;
     for (const auto& filAppRenderable: m_renderables)
         result.push_back(filAppRenderable.renderableEntity.getId());
     return result;
 }
-void FilAppView::removeRenderable(RenderableIdentifier id)
+void FilAppView::removeRenderable(RenderableId id)
 {
     eraseFromMap(m_pointRenderables, id);
     eraseFromMap(m_lineRenderables, id);
@@ -195,7 +193,7 @@ void FilAppView::setUsePostprocessing(bool usePostProcessing)
 {
     m_filamentView->setPostProcessingEnabled(usePostProcessing);
 }
-void FilAppView::addRotationAnimation(RenderableIdentifier renderableIdentifier,
+void FilAppView::addRotationAnimation(RenderableId renderableIdentifier,
                                       const Vec3& rotationAxis)
 {
     m_animationCallbacks.emplace_back(
@@ -309,8 +307,7 @@ bool FilAppView::manipulatorKeyFromKeycode(
     default: return false;
     }
 }
-RenderableIdentifier
-FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
+RenderableId FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
 {
     m_renderables.emplace_back(filAppRenderable);
     auto entity = m_renderables.back().renderableEntity;

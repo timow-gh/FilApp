@@ -90,7 +90,7 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
 
     m_fGuidRenderableMapping.emplace(
         flowMeshSphere.getFGuid(),
-        std::vector<FilApp::RenderableIdentifier>{verticesId, sphereId});
+        std::vector<FilApp::RenderableId>{verticesId, sphereId});
 }
 void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
 {
@@ -111,7 +111,7 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
 
     m_fGuidRenderableMapping.emplace(
         flowMeshCone.getFGuid(),
-        std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
+        std::vector<FilApp::RenderableId>{verticesId, coneId});
 }
 void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
 {
@@ -132,7 +132,7 @@ void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
 
     m_fGuidRenderableMapping.emplace(
         flowMeshCylinder.getFGuid(),
-        std::vector<FilApp::RenderableIdentifier>{verticesId, coneId});
+        std::vector<FilApp::RenderableId>{verticesId, coneId});
 }
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {
@@ -140,13 +140,13 @@ void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
         m_mainView->addRenderable(createLineRenderables(flowMeshSegments));
     m_fGuidRenderableMapping.emplace(
         flowMeshSegments.getFGuid(),
-        std::vector<FilApp::RenderableIdentifier>{segmentsId});
+        std::vector<FilApp::RenderableId>{segmentsId});
 }
 void FlowMeshPresenter::remove(const FGuid& fGuid)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
     if (iter != m_fGuidRenderableMapping.end())
-        for (const FilApp::RenderableIdentifier id: iter->second)
+        for (const FilApp::RenderableId id: iter->second)
             m_mainView->removeRenderable(id);
 }
 void FlowMeshPresenter::setIdleAnimation(const FilApp::Vec3& rotationAxis)

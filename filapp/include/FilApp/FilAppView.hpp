@@ -42,11 +42,11 @@ class FilAppView
     utils::Entity m_globalTrafoComponent;
 
     FilAppRenderableCreator m_renderableCreator;
-    std::map<RenderableIdentifier, std::unique_ptr<PointRenderable>>
+    std::map<RenderableId, std::unique_ptr<PointRenderable>>
         m_pointRenderables;
-    std::map<RenderableIdentifier, std::unique_ptr<LineRenderable>>
+    std::map<RenderableId, std::unique_ptr<LineRenderable>>
         m_lineRenderables;
-    std::map<RenderableIdentifier, std::unique_ptr<TriangleRenderable>>
+    std::map<RenderableId, std::unique_ptr<TriangleRenderable>>
         m_triangleRenderables;
 
     std::vector<FilAppRenderable> m_renderables;
@@ -62,17 +62,17 @@ class FilAppView
     ~FilAppView() override;
 
     // clang-format off
-    [[nodiscard]] auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier override;
-    [[nodiscard]] auto addRenderable(PointRenderable && renderable) -> RenderableIdentifier override;
-    [[nodiscard]] auto addRenderable(LineRenderable && renderable) -> RenderableIdentifier override;
-    [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> override;
-    void removeRenderable(RenderableIdentifier id) override;
+    [[nodiscard]] auto addRenderable(TriangleRenderable&& renderable) -> RenderableId override;
+    [[nodiscard]] auto addRenderable(PointRenderable && renderable) -> RenderableId override;
+    [[nodiscard]] auto addRenderable(LineRenderable && renderable) -> RenderableId override;
+    [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableId> override;
+    void removeRenderable(RenderableId id) override;
     void clearRenderables() override;
     // clang-format on
 
     void setUsePostprocessing(bool usePostProcessing) override;
 
-    void addRotationAnimation(RenderableIdentifier renderableIdentifier,
+    void addRotationAnimation(RenderableId renderableIdentifier,
                               const Vec3& rotationAxis) override;
 
     [[nodiscard]] Viewport getViewport() const override;
@@ -98,14 +98,13 @@ class FilAppView
     manipulatorKeyFromKeycode(SDL_Scancode scancode,
                               CameraManipulator::Key& key);
 
-    [[nodiscard]] RenderableIdentifier
+    [[nodiscard]] RenderableId
     addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
     void configureOrthogonalProjection(float_t near, float_t far, float_t zoom);
 
     template <typename V>
-    void eraseFromMap(std::map<RenderableIdentifier, V>& map,
-                      RenderableIdentifier id)
+    void eraseFromMap(std::map<RenderableId, V>& map, RenderableId id)
     {
         auto idIter = map.find(id);
         if (idIter != map.end())

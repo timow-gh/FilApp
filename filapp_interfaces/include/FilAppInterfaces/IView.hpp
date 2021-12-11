@@ -6,7 +6,7 @@
 #include "Viewport.hpp"
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
-#include <FilAppInterfaces/Renderables/RendereableIdentifier.hpp>
+#include <FilAppInterfaces/Renderables/RendereableId.hpp>
 #include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
 #include <FilAppInterfaces/Vec.hpp>
 
@@ -21,17 +21,17 @@ class  IView
     ~IView() override = default;
 
     // clang-format off
-    virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableIdentifier = 0;
-    virtual auto addRenderable(PointRenderable&& renderable) -> RenderableIdentifier = 0;
-    virtual auto addRenderable(LineRenderable&& renderable) -> RenderableIdentifier = 0;
-    [[nodiscard]] virtual auto getRenderableIdentifiers() const -> std::vector<RenderableIdentifier> = 0;
-    virtual void removeRenderable(RenderableIdentifier renderableIdentifier) = 0;
+    virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;
+    virtual auto addRenderable(PointRenderable&& renderable) -> RenderableId = 0;
+    virtual auto addRenderable(LineRenderable&& renderable) -> RenderableId = 0;
+    [[nodiscard]] virtual auto getRenderableIdentifiers() const -> std::vector<RenderableId> = 0;
+    virtual void removeRenderable(RenderableId renderableIdentifier) = 0;
     virtual void clearRenderables() = 0;
     // clang-format on
 
     virtual void setUsePostprocessing(bool usePostProcessing) = 0;
 
-    virtual void addRotationAnimation(RenderableIdentifier renderableIdentifier,
+    virtual void addRotationAnimation(RenderableId renderableIdentifier,
                                       const Vec3& rotationAxis) = 0;
 
     virtual void animate(double deltaT) = 0;
