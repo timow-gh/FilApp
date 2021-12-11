@@ -4,10 +4,10 @@
 #include <Core/Types/TMap.hpp>
 #include <FilApp/FilAppView.hpp>
 #include <FilAppInterfaces/Renderables/RendereableIdentifier.hpp>
-#include <FlowMesh/FlowMeshCone.hpp>
-#include <FlowMesh/FlowMeshCylinder.hpp>
-#include <FlowMesh/FlowMeshSegments.hpp>
-#include <FlowMesh/FlowMeshSphere.hpp>
+#include "FlowMesh/GeometryElements/FlowMeshCone.hpp"
+#include "FlowMesh/GeometryElements/FlowMeshCylinder.hpp"
+#include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
+#include "FlowMesh/GeometryElements/FlowMeshSphere.hpp"
 #include <FlowMesh/TypeId.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
 

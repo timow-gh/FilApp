@@ -1,4 +1,4 @@
-#include "FlowMesh/FlowMeshSegments.hpp"
+#include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
 #include <utility>
 
 namespace FlowMesh

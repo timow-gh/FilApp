@@ -1,9 +1,9 @@
 #ifndef FILAPP_FLOWMESHSEGMENTS_HPP
 #define FILAPP_FLOWMESHSEGMENTS_HPP
 
-#include <Core/Types/TVector.hpp>
-#include <FlowMesh/TypeId.hpp>
-#include <Geometry/Segment.hpp>
+#include "_deps/core-src/src/types/Core/Types/TVector.hpp"
+#include "FlowMesh/TypeId.hpp"
+#include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
 
 namespace FlowMesh
 {

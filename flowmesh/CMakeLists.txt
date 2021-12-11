@@ -2,23 +2,26 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp
         include/FlowMesh/Interactors/PickingContext.hpp
         include/FlowMesh/FlowMeshModel.hpp
-        include/FlowMesh/FlowMeshSphere.hpp
-        include/FlowMesh/FlowMeshCone.hpp
+        include/FlowMesh/GeometryElements/FlowMeshSphere.hpp
+        include/FlowMesh/GeometryElements/FlowMeshCone.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
-        include/FlowMesh/FlowMeshSegments.hpp
+        include/FlowMesh/GeometryElements/FlowMeshSegments.hpp
         include/FlowMesh/TypeId.hpp
-        include/FlowMesh/FlowMeshCylinder.hpp)
+        include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
+        include/FlowMesh/GeometryElements/GeometryElements.hpp
+        )
 
 set(FLOWMESH_SOURCES
         source/Interactors/PickingContext.cpp
         source/FlowMeshPresenter.cpp
         source/FlowMeshController.cpp
         source/FlowMeshModel.cpp
-        source/FlowMeshSegments.cpp
-        source/FlowMeshCylinder.cpp
-        source/FlowMeshSphere.cpp
-        source/FlowMeshCone.cpp
+        source/GeometryElements/FlowMeshSegments.cpp
+        source/GeometryElements/FlowMeshCylinder.cpp
+        source/GeometryElements/FlowMeshSphere.cpp
+        source/GeometryElements/FlowMeshCone.cpp
+        source/GeometryElements/GeometryElements.cpp
         )
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})

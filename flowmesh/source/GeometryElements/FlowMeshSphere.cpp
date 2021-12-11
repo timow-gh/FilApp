@@ -1,4 +1,4 @@
-#include "FlowMesh/FlowMeshSphere.hpp"
+#include "FlowMesh/GeometryElements/FlowMeshSphere.hpp"
 
 namespace FlowMesh
 {

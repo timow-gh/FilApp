@@ -1,9 +1,9 @@
 #ifndef FILAPP_FLOWMESHCYLINDER_HPP
 #define FILAPP_FLOWMESHCYLINDER_HPP
 
-#include <FlowMesh/TypeId.hpp>
-#include <Geometry/Cylinder.hpp>
-#include <Geometry/Segment.hpp>
+#include "FlowMesh/TypeId.hpp"
+#include "_deps/geometry-src/src/include/Geometry/Cylinder.hpp"
+#include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
 
 namespace FlowMesh
 {

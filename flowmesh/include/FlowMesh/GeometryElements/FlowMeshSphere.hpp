@@ -1,9 +1,9 @@
 #ifndef FILAPP_FLOWMESHSPHERE_HPP
 #define FILAPP_FLOWMESHSPHERE_HPP
 
-#include <FlowMesh/TypeId.hpp>
-#include <Geometry/Sphere.hpp>
-#include <LinAl/LinearAlgebra.hpp>
+#include "FlowMesh/TypeId.hpp"
+#include "_deps/geometry-src/src/include/Geometry/Sphere.hpp"
+#include "_deps/linal-src/src/include/LinAl/LinearAlgebra.hpp"
 
 namespace FlowMesh
 {

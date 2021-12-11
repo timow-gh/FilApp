@@ -5,8 +5,8 @@
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
-#include <FlowMesh/FlowMeshSegments.hpp>
-#include <FlowMesh/FlowMeshSphere.hpp>
+#include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
+#include "FlowMesh/GeometryElements/FlowMeshSphere.hpp"
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>

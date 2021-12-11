@@ -1,6 +1,6 @@
 #include "FlowMesh/FlowMeshPresenter.hpp"
 #include <FilAppInterfaces/Vertex.hpp>
-#include <FlowMesh/FlowMeshCylinder.hpp>
+#include "FlowMesh/GeometryElements/FlowMeshCylinder.hpp"
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
