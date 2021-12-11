@@ -4,13 +4,12 @@
 #include "FlowMesh/FlowMeshGuid.hpp"
 #include "_deps/geometry-src/src/include/Geometry/Cylinder.hpp"
 #include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
+#include <FlowMesh/GeometryElements/FGuidBase.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshCylinder
-{
+class FlowMeshCylinder : public FGuidBase<FlowMeshCylinder> {
     Geometry::Cylinder<double_t> m_cylinder;
-    FGuid m_fGuid;
 
   public:
     FlowMeshCylinder();
@@ -18,21 +17,6 @@ class FlowMeshCylinder
                      const FGuid& fGuid);
 
     [[nodiscard]] const Geometry::Cylinder<double_t>& getCylinder() const;
-    [[nodiscard]] const FGuid& getFGuid() const;
-
-    friend bool operator==(const FlowMeshCylinder& lhs,
-                           const FlowMeshCylinder& rhs);
-    friend bool operator!=(const FlowMeshCylinder& lhs,
-                           const FlowMeshCylinder& rhs);
-
-    friend bool operator<(const FlowMeshCylinder& lhs,
-                          const FlowMeshCylinder& rhs);
-    friend bool operator>(const FlowMeshCylinder& lhs,
-                          const FlowMeshCylinder& rhs);
-    friend bool operator<=(const FlowMeshCylinder& lhs,
-                           const FlowMeshCylinder& rhs);
-    friend bool operator>=(const FlowMeshCylinder& lhs,
-                           const FlowMeshCylinder& rhs);
 };
 } // namespace FlowMesh
 

@@ -10,6 +10,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/FlowMeshGuid.hpp
         include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
         include/FlowMesh/GeometryElements/GeometryElements.hpp
+        include/FlowMesh/GeometryElements/FGuidBase.hpp
         )
 
 set(FLOWMESH_SOURCES
