@@ -175,7 +175,7 @@ void FilAppView::removeRenderable(RenderableId id)
                        m_renderables.end(),
                        [id = id, scene = m_scene](const FilAppRenderable& item)
                        {
-                           if (item.renderableEntity.getId() == id)
+                           if (item.renderableEntity.getId() == id.getId())
                            {
                                scene->remove(item.renderableEntity);
                                item.destroy();
