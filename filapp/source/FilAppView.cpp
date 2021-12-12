@@ -249,13 +249,11 @@ void FilAppView::event(const MouseUpEvent& mouseUpEvent)
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseUpEvent);
 
-    auto pickRayEvent = getPickRayMoveEvent(mouseUpEvent.pos.x,
-                                            mouseUpEvent.pos.y,
-                                            mouseUpEvent.time);
+    PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseUpEvent.pos.x,
+                                                    mouseUpEvent.pos.y,
+                                                    mouseUpEvent.time);
     for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
-        listener->event(PickRayMoveEvent(pickRayEvent.origin,
-                                         pickRayEvent.direction,
-                                         pickRayEvent.time));
+        listener->event(pickRayEvent);
 }
 
 void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
@@ -271,7 +269,9 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
                                                     mouseMoveEvent.pos.y,
                                                     mouseMoveEvent.time);
     for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
-        listener->event(pickRayEvent);
+        listener->event(PickRayMoveEvent(pickRayEvent.origin,
+                                         pickRayEvent.direction,
+                                         pickRayEvent.time));
 }
 void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 {

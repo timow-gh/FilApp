@@ -27,7 +27,6 @@ class FilAppWindow
     std::vector<std::unique_ptr<FilAppView>> m_views;
 
     FilAppView* m_mainView{nullptr};
-    FilAppView* m_mouseEventTarget = nullptr;
 
     uint32_t m_width = 0;
     uint32_t m_height = 0;

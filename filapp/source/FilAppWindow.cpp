@@ -52,17 +52,17 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
     viewConfig.viewport = calcWindowViewport();
     m_views.emplace_back(std::make_unique<FilAppView>(viewConfig, *m_renderer));
     m_mainView = m_views.back().get();
-    m_mouseEventTarget = m_mainView;
 }
 void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
+    m_mainView->event(MouseDownEvent(button, x, y, deltaT));
     for (const auto& view: m_views)
     {
         if (intersects(view->getViewport(), x, y))
         {
-            m_mouseEventTarget = view.get();
+
             view->event(MouseDownEvent(button, x, y, deltaT));
             break;
         }
@@ -71,35 +71,26 @@ void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
 void FilAppWindow::mouseUp(size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
-    if (m_mouseEventTarget)
-    {
-        y = m_height - y;
-        m_mouseEventTarget->event(MouseUpEvent(x, y, deltaT));
-        m_mouseEventTarget = nullptr;
-    }
+    y = m_height - y;
+    m_mainView->event(MouseUpEvent(x, y, deltaT));
 }
 void FilAppWindow::mouseMove(size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
-    if (m_mouseEventTarget)
-        m_mouseEventTarget->event(MouseMoveEvent(x, y, deltaT));
+    m_mainView->event(MouseMoveEvent(x, y, deltaT));
     m_lastX = x;
     m_lastY = y;
 }
 void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
-    if (m_mouseEventTarget)
-        m_mouseEventTarget->event(MouseWheelEvent(x, deltaT));
-    else
+    m_mainView->event(MouseWheelEvent(x, deltaT));
+    for (auto const& view: m_views)
     {
-        for (auto const& view: m_views)
+        if (intersects(view->getViewport(), m_lastX, m_lastY))
         {
-            if (intersects(view->getViewport(), m_lastX, m_lastY))
-            {
-                view->event(MouseWheelEvent(x, deltaT));
-                break;
-            }
+            view->event(MouseWheelEvent(x, deltaT));
+            break;
         }
     }
 }
@@ -110,33 +101,21 @@ void FilAppWindow::keyDown(SDL_Scancode scancode, double_t deltaT)
     // event events can be sent multiple times per key (for key repeat)
     // If this key is already down, do nothing.
     if (eventTarget)
-    {
         return;
-    }
 
     // Decide which view will get this key's corresponding event event.
     // If we're currently in a mouse grap session, it should be the mouse grab's
     // target view. Otherwise, it should be whichever view we're currently
     // hovering over.
-    FilAppView* targetView = nullptr;
-    if (m_mouseEventTarget)
-        targetView = m_mouseEventTarget;
-    else
-    {
-        for (auto const& view: m_views)
-        {
-            if (intersects(view->getViewport(), m_lastX, m_lastY))
-            {
-                targetView = view.get();
-                break;
-            }
-        }
-    }
+    m_mainView->event(KeyDownEvent(scancode, deltaT));
 
-    if (targetView)
+    for (auto const& view: m_views)
     {
-        targetView->event(KeyDownEvent(scancode, deltaT));
-        eventTarget = targetView;
+        if (intersects(view->getViewport(), m_lastX, m_lastY))
+        {
+            view->event(KeyDownEvent(scancode, deltaT));
+            break;
+        }
     }
 }
 void FilAppWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
