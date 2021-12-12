@@ -3,6 +3,7 @@
 
 #include <FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp>
 #include <FilAppInterfaces/InputEvents/IInputEventListener.hpp>
+#include <FilAppInterfaces/InputEvents/RayPickEventListener.hpp>
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
 #include <FilAppInterfaces/Renderables/RendereableId.hpp>
@@ -27,6 +28,9 @@ class IView
     virtual void removeRenderable(RenderableId renderableIdentifier) = 0;
     virtual void clearRenderables() = 0;
     // clang-format on
+
+    virtual void registerListener(RayPickEventListener* listener) = 0;
+    virtual void removeListener(RayPickEventListener* listener) = 0;
 
     virtual void setUsePostprocessing(bool usePostProcessing) = 0;
 

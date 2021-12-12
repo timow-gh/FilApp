@@ -23,8 +23,8 @@ inline filament::math::mat3f filCSToGlobalCS3()
 inline filament::math::mat3f globalCSToFilCS3()
 {
     constexpr float_t rotAngle =
-        filament::math::F_PI_2; // 1.57079632679
-                                //    return rotZ * rotY;
+        -filament::math::F_PI_2; // -1.57079632679
+                                 //    return rotZ * rotY;
     return filament::math::mat3f::rotation(rotAngle,
                                            filament::math::float3{0, 0, 1}) *
            filament::math::mat3f::rotation(rotAngle,

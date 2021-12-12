@@ -2,6 +2,7 @@
 #define FILAPP_VEC_HPP
 
 #include <cmath>
+#include <iostream>
 
 namespace FilApp
 {
@@ -21,6 +22,12 @@ struct Vec
         return values[i];
     }
     inline float_t& operator[](std::size_t i) noexcept { return values[i]; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Vec<SIZE>& vec)
+    {
+        os << vec[0] << ", " << vec[1] << ", " << vec[2] << std::endl;
+        return os;
+    }
 };
 
 // clang-format off

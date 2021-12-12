@@ -23,9 +23,7 @@ namespace FilApp
 {
 using AnimationCallBack = std::function<void(double now)>;
 
-class FilAppView
-    : public IView
-{
+class FilAppView : public IView {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 
@@ -42,10 +40,8 @@ class FilAppView
     utils::Entity m_globalTrafoComponent;
 
     FilAppRenderableCreator m_renderableCreator;
-    std::map<RenderableId, std::unique_ptr<PointRenderable>>
-        m_pointRenderables;
-    std::map<RenderableId, std::unique_ptr<LineRenderable>>
-        m_lineRenderables;
+    std::map<RenderableId, std::unique_ptr<PointRenderable>> m_pointRenderables;
+    std::map<RenderableId, std::unique_ptr<LineRenderable>> m_lineRenderables;
     std::map<RenderableId, std::unique_ptr<TriangleRenderable>>
         m_triangleRenderables;
 
@@ -56,6 +52,7 @@ class FilAppView
     float_t m_orthogonalCameraZoom{3.0f};
 
     std::vector<AnimationCallBack> m_animationCallbacks;
+    std::vector<RayPickEventListener*> m_rayPickEventListener;
 
   public:
     FilAppView(const ViewConfig& viewConfig, filament::Renderer& renderer);
@@ -70,6 +67,9 @@ class FilAppView
     void clearRenderables() override;
     // clang-format on
 
+    void registerListener(RayPickEventListener* listener) override;
+    void removeListener(RayPickEventListener* listener) override;
+
     void setUsePostprocessing(bool usePostProcessing) override;
 
     void addRotationAnimation(RenderableId renderableIdentifier,
@@ -82,7 +82,7 @@ class FilAppView
 
     void mouseDown(const MouseDownEvent& mouseDownEvent) override;
     void mouseUp(const MouseUpEvent& mouseUpEvent) override;
-    void mouseMoved(const MouseMovedEvent& mouseMovedEvent) override;
+    void mouseMove(const MouseMoveEvent& mouseMoveEvent) override;
     void mouseWheel(const MouseWheelEvent& mouseWheelEvent) override;
     void keyDown(const KeyDownEvent& keyDownEvent) override;
     void keyUp(const KeyUpEvent& keyUpEvent) override;

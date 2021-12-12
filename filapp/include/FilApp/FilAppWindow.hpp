@@ -45,7 +45,7 @@ class FilAppWindow
 
     void mouseDown(int button, size_t x, size_t y, double_t deltaT);
     void mouseUp(size_t x, size_t y, double_t deltaT);
-    void mouseMoved(size_t x, size_t y, double_t deltaT);
+    void mouseMove(size_t x, size_t y, double_t deltaT);
     void mouseWheel(float_t x, double_t deltaT);
     void keyDown(SDL_Scancode scancode, double_t deltaT);
     void keyUp(SDL_Scancode scancode, double_t deltaT);

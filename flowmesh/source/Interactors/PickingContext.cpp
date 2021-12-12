@@ -9,7 +9,7 @@ void PickingContext::mouseDown(const FilApp::MouseDownEvent& mouseDownEvent)
 void PickingContext::mouseUp(const FilApp::MouseUpEvent& mouseUpEvent)
 {
 }
-void PickingContext::mouseMoved(const FilApp::MouseMovedEvent& mouseMovedEvent)
+void PickingContext::mouseMove(const FilApp::MouseMoveEvent& mouseMovedEvent)
 {
 }
 void PickingContext::mouseWheel(const FilApp::MouseWheelEvent& mouseWheelEvent)

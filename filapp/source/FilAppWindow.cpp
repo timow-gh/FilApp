@@ -52,6 +52,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
     viewConfig.viewport = calcWindowViewport();
     m_views.emplace_back(std::make_unique<FilAppView>(viewConfig, *m_renderer));
     m_mainView = m_views.back().get();
+    m_mouseEventTarget = m_mainView;
 }
 void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
 {
@@ -77,12 +78,12 @@ void FilAppWindow::mouseUp(size_t x, size_t y, double_t deltaT)
         m_mouseEventTarget = nullptr;
     }
 }
-void FilAppWindow::mouseMoved(size_t x, size_t y, double_t deltaT)
+void FilAppWindow::mouseMove(size_t x, size_t y, double_t deltaT)
 {
     fixupMouseCoordinatesForHdpi(x, y);
     y = m_height - y;
     if (m_mouseEventTarget)
-        m_mouseEventTarget->mouseMoved(MouseMovedEvent(x, y, deltaT));
+        m_mouseEventTarget->mouseMove(MouseMoveEvent(x, y, deltaT));
     m_lastX = x;
     m_lastY = y;
 }

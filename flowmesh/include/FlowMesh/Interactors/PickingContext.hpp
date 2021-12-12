@@ -19,7 +19,7 @@ class PickingContext : public FilApp::IInputEventListener {
   private:
     void mouseDown(const FilApp::MouseDownEvent& mouseDownEvent) override;
     void mouseUp(const FilApp::MouseUpEvent& mouseUpEvent) override;
-    void mouseMoved(const FilApp::MouseMovedEvent& mouseMovedEvent) override;
+    void mouseMove(const FilApp::MouseMoveEvent& mouseMovedEvent) override;
     void mouseWheel(const FilApp::MouseWheelEvent& mouseWheelEvent) override;
     void keyDown(const FilApp::KeyDownEvent& keyDownEvent) override;
     void keyUp(const FilApp::KeyUpEvent& keyUpEvent) override;

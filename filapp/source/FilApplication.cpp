@@ -91,7 +91,7 @@ void FilApplication::run()
             m_window->mouseUp(event.button.x, event.button.y, deltaT);
             break;
         case SDL_MOUSEMOTION:
-            m_window->mouseMoved(event.motion.x, event.motion.y, deltaT);
+            m_window->mouseMove(event.motion.x, event.motion.y, deltaT);
             break;
         case SDL_WINDOWEVENT:
             switch (event.window.event)

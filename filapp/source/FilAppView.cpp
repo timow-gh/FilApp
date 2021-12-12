@@ -4,6 +4,7 @@
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
 #include <filament/TransformManager.h>
+#include <iostream>
 #include <math/mat4.h>
 #include <math/mathfwd.h>
 #include <math/vec3.h>
@@ -28,7 +29,7 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_filamentView->setScene(m_scene);
 
     m_skybox = filament::Skybox::Builder()
-                   .color(toFilamentVec(viewConfig.skyBoxColor))
+                   .color(vec4ToFilamentVec4(viewConfig.skyBoxColor))
                    .build(*m_engine);
     m_scene->setSkybox(m_skybox);
 
@@ -36,10 +37,16 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_cameraEntity = entityManager.create();
     m_camera = m_engine->createCamera(m_cameraEntity);
 
-    const filament::math::float3 eye = transformToFilamentVec(viewConfig.eye);
+    const filament::math::float3 eye = transformToFilamentCS(viewConfig.eye);
     const filament::math::float3 center =
-        transformToFilamentVec(viewConfig.center);
-    const filament::math::float3 up = transformToFilamentVec(viewConfig.up);
+        transformToFilamentCS(viewConfig.center);
+    const filament::math::float3 up = transformToFilamentCS(viewConfig.up);
+
+    std::cout << "Eye: " << eye[0] << ", " << eye[1] << ", " << eye[2]
+              << std::endl;
+    std::cout << "Center: " << center[0] << ", " << center[1] << ", "
+              << center[2] << std::endl;
+    std::cout << "Up: " << up[0] << ", " << up[1] << ", " << up[2] << std::endl;
 
     m_camera->lookAt(eye, center, up);
     m_filamentView->setCamera(m_camera);
@@ -162,7 +169,7 @@ std::vector<RenderableId> FilAppView::getRenderableIdentifiers() const
 {
     std::vector<RenderableId> result;
     for (const auto& filAppRenderable: m_renderables)
-        result.push_back(filAppRenderable.renderableEntity.getId());
+        result.emplace_back(filAppRenderable.renderableEntity.getId());
     return result;
 }
 void FilAppView::removeRenderable(RenderableId id)
@@ -188,6 +195,17 @@ void FilAppView::removeRenderable(RenderableId id)
 void FilAppView::clearRenderables()
 {
     clearFilAppRenderables();
+}
+void FilAppView::registerListener(RayPickEventListener* listener)
+{
+    m_rayPickEventListener.push_back(listener);
+}
+void FilAppView::removeListener(RayPickEventListener* listener)
+{
+    auto iter = std::remove(m_rayPickEventListener.begin(),
+                            m_rayPickEventListener.end(),
+                            listener);
+    m_rayPickEventListener.erase(iter, m_rayPickEventListener.end());
 }
 void FilAppView::setUsePostprocessing(bool usePostProcessing)
 {
@@ -248,14 +266,30 @@ void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent)
     for (auto listener: m_inputEventListener)
         listener->mouseUp(mouseUpEvent);
 }
-void FilAppView::mouseMoved(const MouseMovedEvent& mouseMovedEvent)
+void FilAppView::mouseMove(const MouseMoveEvent& mouseMoveEvent)
 {
+    const int x = static_cast<int>(mouseMoveEvent.pos.x);
+    const int y = static_cast<int>(mouseMoveEvent.pos.y);
     if (m_cameraManipulator)
-        m_cameraManipulator->grabUpdate(
-            static_cast<int>(mouseMovedEvent.pos.x),
-            static_cast<int>(mouseMovedEvent.pos.y));
+        m_cameraManipulator->grabUpdate(x, y);
     for (auto listener: m_inputEventListener)
-        listener->mouseMoved(mouseMovedEvent);
+        listener->mouseMove(mouseMoveEvent);
+
+    filament::math::float3 origin;
+    filament::math::float3 direction;
+    m_cameraManipulator->getRay(x, y, &origin, &direction);
+    Vec3 vec3Origin = transformToGlobalCS(origin);
+    Vec3 vec3Direction = transformToGlobalCS(direction);
+    std::cout << "Origin: " << vec3Origin << std::endl;
+    std::cout << "Direction: " << vec3Direction << std::endl;
+
+    for (RayPickEventListener* listener: m_rayPickEventListener)
+    {
+        PickRayEvent pickRayEvent(filamentVec3ToVec3(origin),
+                                  filamentVec3ToVec3(direction),
+                                  mouseMoveEvent.time);
+        listener->pickRayEvent(pickRayEvent);
+    }
 }
 void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
 {
@@ -330,5 +364,4 @@ void FilAppView::clearFilAppRenderables()
     }
     m_renderables.clear();
 }
-
 } // namespace FilApp

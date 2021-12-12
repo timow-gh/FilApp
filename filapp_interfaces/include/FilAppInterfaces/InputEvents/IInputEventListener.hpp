@@ -4,7 +4,7 @@
 #include <FilAppInterfaces/InputEvents/KeyDownEvent.hpp>
 #include <FilAppInterfaces/InputEvents/KeyUpEvent.hpp>
 #include <FilAppInterfaces/InputEvents/MouseDownEvent.hpp>
-#include <FilAppInterfaces/InputEvents/MouseMovedEvent.hpp>
+#include <FilAppInterfaces/InputEvents/MouseMoveEvent.hpp>
 #include <FilAppInterfaces/InputEvents/MouseUpEvent.hpp>
 #include <FilAppInterfaces/InputEvents/MouseWheelEvent.hpp>
 
@@ -16,7 +16,7 @@ class IInputEventListener {
 
     virtual void mouseDown(const MouseDownEvent& mouseDownEvent) = 0;
     virtual void mouseUp(const MouseUpEvent& mouseUpEvent) = 0;
-    virtual void mouseMoved(const MouseMovedEvent& mouseMovedEvent) = 0;
+    virtual void mouseMove(const MouseMoveEvent& mouseMovedEvent) = 0;
     virtual void mouseWheel(const MouseWheelEvent& mouseWheelEvent) = 0;
     virtual void keyDown(const KeyDownEvent& keyDownEvent) = 0;
     virtual void keyUp(const KeyUpEvent& keyUpEvent) = 0;
