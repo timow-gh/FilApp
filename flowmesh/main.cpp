@@ -1,7 +1,7 @@
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
-#include <FilAppInterfaces/IView.hpp>
-#include <FilAppInterfaces/IWindow.hpp>
+#include <FilAppInterfaces/View.hpp>
+#include <FilAppInterfaces/Window.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
@@ -112,8 +112,8 @@ int main()
     FilApplication::init(appConfig, WindowConfig());
     FilApplication& app = FilApplication::get();
 
-    IWindow* mainWindow = app.getWindow();
-    IView* mainView = mainWindow->getMainIView();
+    Window* mainWindow = app.getWindow();
+    View* mainView = mainWindow->getMainIView();
 
     FlowMeshController meshController;
 

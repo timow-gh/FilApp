@@ -1,4 +1,4 @@
-#include "FilAppInterfaces/IView.hpp"
+#include "FilAppInterfaces/View.hpp"
 #include "FilApp/FilApplication.hpp"
 
 using namespace FilApp;
@@ -7,7 +7,7 @@ int main()
 {
     FilApplication::init(AppConfig(), WindowConfig());
 
-    IWindow* window = FilApplication::get().getWindow();
+    Window* window = FilApplication::get().getWindow();
     auto mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
 

@@ -5,10 +5,10 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/Renderables/TriangleRenderable.hpp
         include/FilAppInterfaces/InputEvents/InputEventListener.hpp
         include/FilAppInterfaces/InputEvents/InputEventDispatcher.hpp
-        include/FilAppInterfaces/IView.hpp
+        include/FilAppInterfaces/View.hpp
         include/FilAppInterfaces/Viewport.hpp
-        include/FilAppInterfaces/IWindow.hpp
-        include/FilAppInterfaces/IApplication.hpp
+        include/FilAppInterfaces/Window.hpp
+        include/FilAppInterfaces/Application.hpp
         include/FilAppInterfaces/WindowConfig.hpp
         include/FilAppInterfaces/AppConfig.hpp
         include/FilAppInterfaces/Vertex.hpp

@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPWINDOW_HPP
 #define FILAPP_FILAPPWINDOW_HPP
 
-#include "FilAppInterfaces/IWindow.hpp"
+#include "FilAppInterfaces/Window.hpp"
 #include "FilAppInterfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
 #include "FilApplication.hpp"
@@ -16,10 +16,9 @@ namespace FilApp
 {
 
 class FilAppWindow
-    : public IWindow
-{
+    : public Window {
     SDL_Window* m_sdlWindow = nullptr;
-    IWindow::WindowId m_windowId{0};
+    Window::WindowId m_windowId{0};
     FilApplication* m_application = nullptr;
     filament::Renderer* m_renderer = nullptr;
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
@@ -54,8 +53,8 @@ class FilAppWindow
     void animate(double_t deltaT);
     void render();
 
-    [[nodiscard]] IView* getMainIView() override;
-    [[nodiscard]] std::vector<IView*> getIViews() override;
+    [[nodiscard]] View* getMainIView() override;
+    [[nodiscard]] std::vector<View*> getIViews() override;
 
     WindowId getIWindowId() override;
 

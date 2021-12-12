@@ -1,5 +1,5 @@
-#ifndef FILAPP_IVIEW_HPP
-#define FILAPP_IVIEW_HPP
+#ifndef FILAPP_VIEW_HPP
+#define FILAPP_VIEW_HPP
 
 #include <FilAppInterfaces/InputEvents/InputEventDispatcher.hpp>
 #include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
@@ -14,11 +14,11 @@
 namespace FilApp
 {
 
-class IView
+class View
     : public InputEventListener
     , public InputEventDispatcher {
   public:
-    ~IView() override = default;
+    ~View() override = default;
 
     // clang-format off
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;
@@ -43,4 +43,4 @@ class IView
 };
 } // namespace FilApp
 
-#endif // FILAPP_IVIEW_HPP
+#endif // FILAPP_VIEW_HPP

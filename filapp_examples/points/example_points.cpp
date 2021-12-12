@@ -1,5 +1,5 @@
-#include "FilAppInterfaces/IView.hpp"
-#include "FilAppInterfaces/IWindow.hpp"
+#include "FilAppInterfaces/View.hpp"
+#include "FilAppInterfaces/Window.hpp"
 #include <FilApp/FilApplication.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
@@ -18,8 +18,8 @@ int main()
         Vertex{{0, 0, 2}, 0xffff0000u},
     };
 
-    IWindow* window = app.getWindow();
-    IView* mainView = window->getMainIView();
+    Window* window = app.getWindow();
+    View* mainView = window->getMainIView();
 
     mainView->addRenderable(
         PointRenderable::create(std::move(vertices), {3.0, 3.0, 3.0}));

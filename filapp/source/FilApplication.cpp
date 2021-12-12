@@ -37,7 +37,7 @@ filament::Engine* FilApplication::getEngine()
 {
     return m_engine;
 }
-IWindow* FilApplication::getWindow()
+Window* FilApplication::getWindow()
 {
     return m_window.get();
 }
@@ -65,7 +65,7 @@ void FilApplication::run()
         case EventPollingMode::WAIT_EVENTS: SDL_WaitEvent(&event); break;
         }
 
-        // TODO Support for multiple windows. Use IWindow::WindowId
+        // TODO Support for multiple windows. Use Window::WindowId
 
         switch (event.type)
         {

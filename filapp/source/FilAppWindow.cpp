@@ -151,14 +151,14 @@ FilAppWindow::~FilAppWindow()
 {
     SDL_DestroyWindow(m_sdlWindow);
 }
-std::vector<IView*> FilAppWindow::getIViews()
+std::vector<View*> FilAppWindow::getIViews()
 {
-    std::vector<IView*> views;
+    std::vector<View*> views;
     for (const auto& filappview: m_views)
         views.push_back(filappview.get());
     return views;
 }
-IWindow::WindowId FilAppWindow::getIWindowId()
+Window::WindowId FilAppWindow::getIWindowId()
 {
     return m_windowId;
 }
@@ -187,7 +187,7 @@ void FilAppWindow::resize()
     if (m_sdlWindow)
         m_mainView->resize(calcWindowViewport());
 }
-IView* FilAppWindow::getMainIView()
+View* FilAppWindow::getMainIView()
 {
     return m_mainView;
 }

@@ -1,5 +1,5 @@
 #include "FilApp/FilApplication.hpp"
-#include "FilAppInterfaces/IView.hpp"
+#include "FilAppInterfaces/View.hpp"
 #include "FilAppInterfaces/Renderables/TriangleRenderable.hpp"
 #include <FilAppInterfaces/Vec.hpp>
 
@@ -9,8 +9,8 @@ int main()
 {
     FilApplication::init(AppConfig(), WindowConfig());
 
-    IWindow* window = FilApplication::get().getWindow();
-    IView* mainView = window->getMainIView();
+    Window* window = FilApplication::get().getWindow();
+    View* mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
 
     std::vector<Vertex> vertices = {

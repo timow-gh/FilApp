@@ -3,7 +3,7 @@
 
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
-#include <FilAppInterfaces/IView.hpp>
+#include <FilAppInterfaces/View.hpp>
 #include <FilAppInterfaces/ViewConfig.hpp>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
@@ -23,7 +23,7 @@ namespace FilApp
 {
 using AnimationCallBack = std::function<void(double now)>;
 
-class FilAppView : public IView {
+class FilAppView : public View {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 

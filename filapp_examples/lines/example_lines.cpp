@@ -1,5 +1,5 @@
-#include "FilAppInterfaces/IView.hpp"
-#include "FilAppInterfaces/IWindow.hpp"
+#include "FilAppInterfaces/View.hpp"
+#include "FilAppInterfaces/Window.hpp"
 #include <FilApp/FilApplication.hpp>
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
@@ -10,8 +10,8 @@ int main()
 {
     FilApplication::init(AppConfig(), WindowConfig());
     auto& app = FilApplication::get();
-    IWindow* mainWindow = app.getWindow();
-    IView* mainView = mainWindow->getMainIView();
+    Window* mainWindow = app.getWindow();
+    View* mainView = mainWindow->getMainIView();
 
     mainView->addRenderable(
         LineRenderable::create(Vertex{{0, 0, 0}, 0xffffffffu},

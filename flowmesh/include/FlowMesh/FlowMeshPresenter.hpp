@@ -13,18 +13,18 @@
 
 namespace FilApp
 {
-class IView;
+class View;
 }
 
 namespace FlowMesh
 {
 class FlowMeshPresenter {
-    FilApp::IView* m_mainView{nullptr};
+    FilApp::View* m_mainView{nullptr};
 
     std::map<FGuid, std::vector<FilApp::RenderableId>> m_fGuidRenderableMapping;
 
   public:
-    void setMainView(FilApp::IView* mainView) { m_mainView = mainView; }
+    void setMainView(FilApp::View* mainView) { m_mainView = mainView; }
 
     void add(const FlowMeshSphere& flowMeshSphere);
     void add(const FlowMeshCone& flowMeshCone);
