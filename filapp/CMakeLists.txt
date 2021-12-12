@@ -6,10 +6,10 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilAppWindow.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
+        include/FilApp/FilAppConversion.hpp
         )
 
 set(FILAPP_SOURCES
-        source/FilAppConversion.hpp
         source/FilApplication.cpp
         source/FilAppView.cpp
         source/FilAppWindow.cpp

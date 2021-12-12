@@ -1,6 +1,7 @@
 #ifndef FILAPP_FILAPPVIEW_HPP
 #define FILAPP_FILAPPVIEW_HPP
 
+#include "FilAppConversion.hpp"
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <FilAppInterfaces/View.hpp>
@@ -105,6 +106,20 @@ class FilAppView : public View {
         auto idIter = map.find(id);
         if (idIter != map.end())
             map.erase(idIter);
+    }
+
+    [[nodiscard]] PickRayEvent
+    getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const
+    {
+        filament::math::float3 origin;
+        filament::math::float3 direction;
+        m_cameraManipulator->getRay(static_cast<int>(x),
+                                    static_cast<int>(y),
+                                    &origin,
+                                    &direction);
+        return {transformToGlobalCS(origin),
+                transformToGlobalCS(direction),
+                time};
     }
 };
 } // namespace FilApp

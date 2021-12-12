@@ -28,7 +28,7 @@ class PickingInteractor : public Interactor {
     }
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
-        std::cout << "PickRayEvent: (" << pickRayMoveEvent.origin[0] << ", "
+        std::cout << "PickRayMoveEvent: (" << pickRayMoveEvent.origin[0] << ", "
                   << pickRayMoveEvent.origin[1] << ", "
                   << pickRayMoveEvent.origin[2] << "), ("
                   << pickRayMoveEvent.direction[0] << ", "

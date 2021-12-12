@@ -1,5 +1,5 @@
 #include "FilApp/FilAppView.hpp"
-#include "FilAppConversion.hpp"
+#include "FilApp/FilAppConversion.hpp"
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
@@ -248,7 +248,16 @@ void FilAppView::event(const MouseUpEvent& mouseUpEvent)
         m_cameraManipulator->grabEnd();
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseUpEvent);
+
+    auto pickRayEvent = getPickRayMoveEvent(mouseUpEvent.pos.x,
+                                            mouseUpEvent.pos.y,
+                                            mouseUpEvent.time);
+    for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
+        listener->event(PickRayMoveEvent(pickRayEvent.origin,
+                                         pickRayEvent.direction,
+                                         pickRayEvent.time));
 }
+
 void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
 {
     const int x = static_cast<int>(mouseMoveEvent.pos.x);
@@ -258,12 +267,9 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseMoveEvent);
 
-    filament::math::float3 origin;
-    filament::math::float3 direction;
-    m_cameraManipulator->getRay(x, y, &origin, &direction);
-    PickRayEvent pickRayEvent(transformToGlobalCS(origin),
-                              transformToGlobalCS(direction),
-                              mouseMoveEvent.time);
+    PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseMoveEvent.pos.x,
+                                                    mouseMoveEvent.pos.y,
+                                                    mouseMoveEvent.time);
     for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
         listener->event(pickRayEvent);
 }
