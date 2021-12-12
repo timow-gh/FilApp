@@ -5,8 +5,9 @@
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
-#include "FlowMesh/GeometryElements/FlowMeshSegments.hpp"
-#include "FlowMesh/GeometryElements/FlowMeshSphere.hpp"
+#include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
+#include <FlowMesh/Interactors/PickingInteractor.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
@@ -115,12 +116,16 @@ int main()
     Window* mainWindow = app.getWindow();
     View* mainView = mainWindow->getMainIView();
 
-    FlowMeshController meshController;
+    FlowMeshModel flowMeshModel;
+
+    FlowMeshController meshController =
+        FlowMeshController(mainView,
+                           &flowMeshModel,
+                           std::make_unique<PickingInteractor>(&flowMeshModel));
 
     FlowMeshPresenter flowMeshPresenter;
     flowMeshPresenter.setMainView(mainView);
 
-    FlowMeshModel flowMeshModel;
     flowMeshModel.setFlowMeshPresenter(&flowMeshPresenter);
 
     createGridSegments(flowMeshModel);

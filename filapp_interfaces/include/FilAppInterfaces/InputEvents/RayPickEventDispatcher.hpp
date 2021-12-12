@@ -7,7 +7,7 @@ namespace FilApp
 {
 class RayPickEventListener;
 
-class RayPickEventDispatcher : DispatcherBase<RayPickEventListener> {
+class RayPickEventDispatcher : public DispatcherBase<RayPickEventListener> {
   public:
     using DispatcherBase<RayPickEventListener>::DispatcherBase;
 };

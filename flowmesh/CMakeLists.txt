@@ -6,7 +6,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/FGuidBase.hpp
         include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp
-        include/FlowMesh/Interactors/PickingContext.hpp
+        include/FlowMesh/Interactors/PickingInteractor.hpp
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
@@ -19,7 +19,7 @@ set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSphere.cpp
         source/GeometryElements/FlowMeshCone.cpp
         source/GeometryElements/GeometryElements.cpp
-        source/Interactors/PickingContext.cpp
+        source/Interactors/PickingInteractor.cpp
         source/FlowMeshPresenter.cpp
         source/FlowMeshController.cpp
         source/FlowMeshModel.cpp

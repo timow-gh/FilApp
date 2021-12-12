@@ -52,7 +52,6 @@ class FilAppView : public View {
     float_t m_orthogonalCameraZoom{3.0f};
 
     std::vector<AnimationCallBack> m_animationCallbacks;
-    std::vector<RayPickEventListener*> m_rayPickEventListener;
 
   public:
     FilAppView(const ViewConfig& viewConfig, filament::Renderer& renderer);
@@ -66,9 +65,6 @@ class FilAppView : public View {
     void removeRenderable(RenderableId id) override;
     void clearRenderables() override;
     // clang-format on
-
-    void registerListener(RayPickEventListener* listener) override;
-    void removeListener(RayPickEventListener* listener) override;
 
     void setUsePostprocessing(bool usePostProcessing) override;
 

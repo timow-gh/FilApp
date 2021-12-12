@@ -2,6 +2,10 @@
 #define FILAPP_FLOWMESHCONTROLLER_HPP
 
 #include <FilAppInterfaces/InputEvents/InputEventDispatcher.hpp>
+#include <FilAppInterfaces/InputEvents/RayPickEventDispatcher.hpp>
+#include <FlowMesh/FlowMeshModel.hpp>
+#include <FlowMesh/Interactors/Interactor.hpp>
+#include <memory>
 
 namespace FilApp
 {
@@ -12,15 +16,27 @@ namespace FlowMesh
 {
 class FlowMeshController {
     FilApp::InputEventDispatcher* m_inputEventDispatcher{nullptr};
+    FilApp::RayPickEventDispatcher* m_rayPickDispatcher{nullptr};
+
+    FlowMeshModel* m_model{nullptr};
+
+    std::unique_ptr<Interactor> m_interactor{nullptr};
 
   public:
-    FlowMeshController() = default;
-    FlowMeshController(FilApp::InputEventDispatcher* mInputEventDispatcher)
-        : m_inputEventDispatcher(mInputEventDispatcher)
+    FlowMeshController(FilApp::View* mainView,
+                       FlowMeshModel* model,
+                       std::unique_ptr<Interactor>&& interactor)
+        : m_inputEventDispatcher(mainView)
+        , m_rayPickDispatcher(mainView)
+        , m_model(model)
+        , m_interactor(std::move(interactor))
     {
+        m_inputEventDispatcher->registerListener(m_interactor.get());
+        m_rayPickDispatcher->registerListener(m_interactor.get());
     }
 
-    void registerIInputEventListener(FilApp::InputEventListener* inputListener);
+    FlowMeshController(FlowMeshController&& rhs) noexcept = default;
+    FlowMeshController& operator=(FlowMeshController&& rhs) noexcept = default;
 };
 } // namespace FlowMesh
 

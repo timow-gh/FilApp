@@ -3,6 +3,7 @@
 
 #include <FilAppInterfaces/InputEvents/InputEventDispatcher.hpp>
 #include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
+#include <FilAppInterfaces/InputEvents/RayPickEventDispatcher.hpp>
 #include <FilAppInterfaces/InputEvents/RayPickEventListener.hpp>
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
@@ -16,7 +17,8 @@ namespace FilApp
 
 class View
     : public InputEventListener
-    , public InputEventDispatcher {
+    , public InputEventDispatcher
+    , public RayPickEventDispatcher {
   public:
     ~View() override = default;
 
@@ -28,9 +30,6 @@ class View
     virtual void removeRenderable(RenderableId renderableIdentifier) = 0;
     virtual void clearRenderables() = 0;
     // clang-format on
-
-    virtual void registerListener(RayPickEventListener* listener) = 0;
-    virtual void removeListener(RayPickEventListener* listener) = 0;
 
     virtual void setUsePostprocessing(bool usePostProcessing) = 0;
 
