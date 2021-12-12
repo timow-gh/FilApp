@@ -1,7 +1,7 @@
 #ifndef FILAPP_FLOWMESHCONTROLLER_HPP
 #define FILAPP_FLOWMESHCONTROLLER_HPP
 
-#include "FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp"
+#include "FilAppInterfaces/InputEvents/InputEventDispatcher.hpp"
 
 namespace FilApp
 {
@@ -12,7 +12,7 @@ namespace FlowMesh
 {
 class FlowMeshController
 {
-    FilApp::IInputEventDispatcher* m_inputEventDispatcher{nullptr};
+    FilApp::InputEventDispatcher* m_inputEventDispatcher{nullptr};
 
   public:
     void registerIInputEventListener(FilApp::InputEventListener* inputListener);

@@ -1,12 +1,12 @@
-#ifndef FILAPP_IINPUTEVENTDISPATCHER_HPP
-#define FILAPP_IINPUTEVENTDISPATCHER_HPP
+#ifndef FILAPP_INPUTEVENTDISPATCHER_HPP
+#define FILAPP_INPUTEVENTDISPATCHER_HPP
 
 #include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
 #include <vector>
 
 namespace FilApp
 {
-class IInputEventDispatcher {
+class InputEventDispatcher {
   protected:
     std::vector<InputEventListener*> m_inputEventListener;
 
@@ -25,4 +25,4 @@ class IInputEventDispatcher {
 };
 } // namespace FilApp
 
-#endif // FILAPP_IINPUTEVENTDISPATCHER_HPP
+#endif // FILAPP_INPUTEVENTDISPATCHER_HPP
