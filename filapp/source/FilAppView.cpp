@@ -42,12 +42,6 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
         transformToFilamentCS(viewConfig.center);
     const filament::math::float3 up = transformToFilamentCS(viewConfig.up);
 
-    std::cout << "Eye: " << eye[0] << ", " << eye[1] << ", " << eye[2]
-              << std::endl;
-    std::cout << "Center: " << center[0] << ", " << center[1] << ", "
-              << center[2] << std::endl;
-    std::cout << "Up: " << up[0] << ", " << up[1] << ", " << up[2] << std::endl;
-
     m_camera->lookAt(eye, center, up);
     m_filamentView->setCamera(m_camera);
 
@@ -278,18 +272,11 @@ void FilAppView::mouseMove(const MouseMoveEvent& mouseMoveEvent)
     filament::math::float3 origin;
     filament::math::float3 direction;
     m_cameraManipulator->getRay(x, y, &origin, &direction);
-    Vec3 vec3Origin = transformToGlobalCS(origin);
-    Vec3 vec3Direction = transformToGlobalCS(direction);
-    std::cout << "Origin: " << vec3Origin << std::endl;
-    std::cout << "Direction: " << vec3Direction << std::endl;
-
+    PickRayEvent pickRayEvent(transformToGlobalCS(origin),
+                              transformToGlobalCS(direction),
+                              mouseMoveEvent.time);
     for (RayPickEventListener* listener: m_rayPickEventListener)
-    {
-        PickRayEvent pickRayEvent(filamentVec3ToVec3(origin),
-                                  filamentVec3ToVec3(direction),
-                                  mouseMoveEvent.time);
-        listener->pickRayEvent(pickRayEvent);
-    }
+        listener->event(pickRayEvent);
 }
 void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
 {
