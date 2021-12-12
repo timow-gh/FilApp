@@ -250,14 +250,14 @@ void FilAppView::event(const MouseDownEvent& mouseDownEvent)
         m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
                                        static_cast<int>(mouseDownEvent.pos.y),
                                        mouseDownEvent.button == 3);
-    for (auto listener: m_inputEventListener)
+    for (auto listener: m_listener)
         listener->event(mouseDownEvent);
 }
 void FilAppView::event(const MouseUpEvent& mouseUpEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabEnd();
-    for (auto listener: m_inputEventListener)
+    for (auto listener: m_listener)
         listener->event(mouseUpEvent);
 }
 void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
@@ -266,7 +266,7 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
     const int y = static_cast<int>(mouseMoveEvent.pos.y);
     if (m_cameraManipulator)
         m_cameraManipulator->grabUpdate(x, y);
-    for (auto listener: m_inputEventListener)
+    for (auto listener: m_listener)
         listener->event(mouseMoveEvent);
 
     filament::math::float3 origin;
@@ -287,7 +287,7 @@ void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
         configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
     }
 
-    for (auto listener: m_inputEventListener)
+    for (auto listener: m_listener)
         listener->event(mouseWheelEvent);
 }
 void FilAppView::event(const KeyDownEvent& keyDownEvent)
@@ -298,7 +298,7 @@ void FilAppView::event(const KeyDownEvent& keyDownEvent)
         if (manipulatorKeyFromKeycode(keyDownEvent.sdlScancode, key))
             m_cameraManipulator->keyDown(key);
     }
-    for (auto listener: m_inputEventListener)
+    for (auto listener: m_listener)
         listener->event(keyDownEvent);
 }
 void FilAppView::event(const KeyUpEvent& keyUpEvent)
@@ -311,7 +311,7 @@ void FilAppView::event(const KeyUpEvent& keyUpEvent)
             m_cameraManipulator->keyDown(key);
         }
     }
-    for (auto listener: m_inputEventListener)
+    for (auto listener: m_listener)
         listener->event(keyUpEvent);
 }
 bool FilAppView::manipulatorKeyFromKeycode(

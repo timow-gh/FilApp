@@ -5,6 +5,6 @@ namespace FlowMesh
 void FlowMeshController::registerIInputEventListener(
     FilApp::InputEventListener* inputListener)
 {
-    m_inputEventDispatcher->registerInputListener(inputListener);
+    m_inputEventDispatcher->registerListener(inputListener);
 }
 } // namespace FlowMesh
