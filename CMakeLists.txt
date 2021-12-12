@@ -22,8 +22,10 @@ include(BuildResourceHelper)
 
 if ((CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR))
     option(FilApp_BUILD_EXAMPLES "" ON)
+    option(FilApp_BUILD_TESTS "" ON)
 else ()
     option(FilApp_BUILD_EXAMPLES "" OFF)
+    option(FilApp_BUILD_TESTS "" OFF)
 endif ()
 
 preamble()
@@ -57,6 +59,12 @@ add_subdirectory(dependencies)
 
 add_subdirectory(filapp_interfaces)
 add_subdirectory(filapp)
+if (FilApp_BUILD_TESTS)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(filapp_test)
+endif ()
+
 
 add_subdirectory(flowmesh)
 

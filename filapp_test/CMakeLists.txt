@@ -1,0 +1,3 @@
+#add_executable(Test_FilAppConversion FilAppTest_FilAppConversion.cpp)
+#target_link_libraries(Test_FilAppConversion PRIVATE gtest_main)
+#add_test(NAME Test_FilAppConversion COMMAND Test_FilAppConversion)

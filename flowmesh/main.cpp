@@ -7,7 +7,7 @@
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
-#include <FlowMesh/Interactors/PickingInteractor.hpp>
+#include <FlowMesh/Interactors/PlacingInteractor.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
@@ -121,7 +121,7 @@ int main()
     FlowMeshController meshController =
         FlowMeshController(mainView,
                            &flowMeshModel,
-                           std::make_unique<PickingInteractor>(&flowMeshModel));
+                           std::make_unique<PlacingInteractor>(&flowMeshModel));
 
     FlowMeshPresenter flowMeshPresenter;
     flowMeshPresenter.setMainView(mainView);

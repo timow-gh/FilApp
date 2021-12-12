@@ -18,8 +18,7 @@ set(FILAPP_SOURCES
         source/FilAppConversion.cpp
         source/FilAppRenderableBuffers.cpp
         source/FilAppRenderableBuffers.hpp
-        source/FilAppRenderableCreator.cpp
-        )
+        source/FilAppRenderableCreator.cpp)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)
