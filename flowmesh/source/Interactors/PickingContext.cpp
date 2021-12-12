@@ -3,22 +3,22 @@
 namespace FlowMesh
 {
 
-void PickingContext::mouseDown(const FilApp::MouseDownEvent& mouseDownEvent)
+void PickingContext::event(const FilApp::MouseDownEvent& mouseDownEvent)
 {
 }
-void PickingContext::mouseUp(const FilApp::MouseUpEvent& mouseUpEvent)
+void PickingContext::event(const FilApp::MouseUpEvent& mouseUpEvent)
 {
 }
-void PickingContext::mouseMove(const FilApp::MouseMoveEvent& mouseMovedEvent)
+void PickingContext::event(const FilApp::MouseMoveEvent& mouseMovedEvent)
 {
 }
-void PickingContext::mouseWheel(const FilApp::MouseWheelEvent& mouseWheelEvent)
+void PickingContext::event(const FilApp::MouseWheelEvent& mouseWheelEvent)
 {
 }
-void PickingContext::keyDown(const FilApp::KeyDownEvent& keyDownEvent)
+void PickingContext::event(const FilApp::KeyDownEvent& keyDownEvent)
 {
 }
-void PickingContext::keyUp(const FilApp::KeyUpEvent& keyUpEvent)
+void PickingContext::event(const FilApp::KeyUpEvent& keyUpEvent)
 {
 }
 

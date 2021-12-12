@@ -1,21 +1,21 @@
 #ifndef FILAPP_IINPUTEVENTDISPATCHER_HPP
 #define FILAPP_IINPUTEVENTDISPATCHER_HPP
 
-#include <FilAppInterfaces/InputEvents/IInputEventListener.hpp>
+#include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
 #include <vector>
 
 namespace FilApp
 {
 class IInputEventDispatcher {
   protected:
-    std::vector<IInputEventListener*> m_inputEventListener;
+    std::vector<InputEventListener*> m_inputEventListener;
 
   public:
-    void registerInputListener(IInputEventListener* inputEventListener)
+    void registerInputListener(InputEventListener* inputEventListener)
     {
         m_inputEventListener.push_back(inputEventListener);
     }
-    void removeInputListener(IInputEventListener* inputEventListener)
+    void removeInputListener(InputEventListener* inputEventListener)
     {
         auto it = std::remove(m_inputEventListener.begin(),
                               m_inputEventListener.end(),

@@ -244,30 +244,30 @@ void FilAppView::resize(const Viewport& viewport)
 {
     setViewport(viewport);
 }
-void FilAppView::mouseDown(const MouseDownEvent& mouseDownEvent)
+void FilAppView::event(const MouseDownEvent& mouseDownEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
                                        static_cast<int>(mouseDownEvent.pos.y),
                                        mouseDownEvent.button == 3);
     for (auto listener: m_inputEventListener)
-        listener->mouseDown(mouseDownEvent);
+        listener->event(mouseDownEvent);
 }
-void FilAppView::mouseUp(const MouseUpEvent& mouseUpEvent)
+void FilAppView::event(const MouseUpEvent& mouseUpEvent)
 {
     if (m_cameraManipulator)
         m_cameraManipulator->grabEnd();
     for (auto listener: m_inputEventListener)
-        listener->mouseUp(mouseUpEvent);
+        listener->event(mouseUpEvent);
 }
-void FilAppView::mouseMove(const MouseMoveEvent& mouseMoveEvent)
+void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
 {
     const int x = static_cast<int>(mouseMoveEvent.pos.x);
     const int y = static_cast<int>(mouseMoveEvent.pos.y);
     if (m_cameraManipulator)
         m_cameraManipulator->grabUpdate(x, y);
     for (auto listener: m_inputEventListener)
-        listener->mouseMove(mouseMoveEvent);
+        listener->event(mouseMoveEvent);
 
     filament::math::float3 origin;
     filament::math::float3 direction;
@@ -278,7 +278,7 @@ void FilAppView::mouseMove(const MouseMoveEvent& mouseMoveEvent)
     for (RayPickEventListener* listener: m_rayPickEventListener)
         listener->event(pickRayEvent);
 }
-void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
+void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 {
     if (m_cameraManipulator)
     {
@@ -288,9 +288,9 @@ void FilAppView::mouseWheel(const MouseWheelEvent& mouseWheelEvent)
     }
 
     for (auto listener: m_inputEventListener)
-        listener->mouseWheel(mouseWheelEvent);
+        listener->event(mouseWheelEvent);
 }
-void FilAppView::keyDown(const KeyDownEvent& keyDownEvent)
+void FilAppView::event(const KeyDownEvent& keyDownEvent)
 {
     if (m_cameraManipulator)
     {
@@ -299,9 +299,9 @@ void FilAppView::keyDown(const KeyDownEvent& keyDownEvent)
             m_cameraManipulator->keyDown(key);
     }
     for (auto listener: m_inputEventListener)
-        listener->keyDown(keyDownEvent);
+        listener->event(keyDownEvent);
 }
-void FilAppView::keyUp(const KeyUpEvent& keyUpEvent)
+void FilAppView::event(const KeyUpEvent& keyUpEvent)
 {
     if (m_cameraManipulator)
     {
@@ -312,7 +312,7 @@ void FilAppView::keyUp(const KeyUpEvent& keyUpEvent)
         }
     }
     for (auto listener: m_inputEventListener)
-        listener->keyUp(keyUpEvent);
+        listener->event(keyUpEvent);
 }
 bool FilAppView::manipulatorKeyFromKeycode(
     SDL_Scancode scancode,

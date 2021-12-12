@@ -2,7 +2,7 @@
 #define FILAPP_IVIEW_HPP
 
 #include <FilAppInterfaces/InputEvents/IInputEventDispatcher.hpp>
-#include <FilAppInterfaces/InputEvents/IInputEventListener.hpp>
+#include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
 #include <FilAppInterfaces/InputEvents/RayPickEventListener.hpp>
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
@@ -15,7 +15,7 @@ namespace FilApp
 {
 
 class IView
-    : public IInputEventListener
+    : public InputEventListener
     , public IInputEventDispatcher {
   public:
     ~IView() override = default;
