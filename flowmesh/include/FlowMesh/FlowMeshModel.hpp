@@ -22,10 +22,10 @@ class FlowMeshModel {
 
     [[nodiscard]] std::vector<FGuid> calcFGuids() const;
 
-    void addSphere(const FlowMeshSphere& sphere);
-    void addCone(const FlowMeshCone& flowMeshCone);
-    void addCylinder(const FlowMeshCylinder& cylinder);
-    void addSegments(const FlowMeshSegments& flowMeshSegments);
+    void add(const FlowMeshSphere& sphere);
+    void add(const FlowMeshCone& flowMeshCone);
+    void add(const FlowMeshCylinder& cylinder);
+    void add(const FlowMeshSegments& flowMeshSegments);
 
     void remove(const FGuid& fGuid);
 

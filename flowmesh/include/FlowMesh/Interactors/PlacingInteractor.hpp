@@ -25,13 +25,6 @@ class PlacingInteractor : public Interactor {
   private:
     void event(const FilApp::PickRayEvent& pickRayEvent) override
     {
-        //        std::cout << "PickRayEvent: (" << pickRayEvent.origin[0] << ",
-        //        "
-        //                  << pickRayEvent.origin[1] << ", " <<
-        //                  pickRayEvent.origin[2]
-        //                  << "), (" << pickRayEvent.direction[0] << ", "
-        //                  << pickRayEvent.direction[1] << ", "
-        //                  << pickRayEvent.direction[2] << ")\n";
         const FilApp::Vec3& pickOrigin = pickRayEvent.origin;
         const FilApp::Vec3& pickDirection = pickRayEvent.direction;
         const Geometry::Ray3<double_t> ray{
@@ -44,18 +37,11 @@ class PlacingInteractor : public Interactor {
             auto sphere = Geometry::Sphere<double_t>{*intersection, radius};
             FlowMeshSphere flowMeshSphere{sphere, newFGuid()};
             m_tmpPointGuid = flowMeshSphere.getFGuid();
-            m_model->addSphere(flowMeshSphere);
+            m_model->add(flowMeshSphere);
         }
     }
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
-        //        std::cout << "PickRayMoveEvent: (" <<
-        //        pickRayMoveEvent.origin[0] << ", "
-        //                  << pickRayMoveEvent.origin[1] << ", "
-        //                  << pickRayMoveEvent.origin[2] << "), ("
-        //                  << pickRayMoveEvent.direction[0] << ", "
-        //                  << pickRayMoveEvent.direction[1] << ", "
-        //                  << pickRayMoveEvent.direction[2] << ")\n";
         if (m_tmpPointGuid)
             m_model->remove(*m_tmpPointGuid);
         const FilApp::Vec3& pickOrigin = pickRayMoveEvent.origin;
@@ -71,7 +57,7 @@ class PlacingInteractor : public Interactor {
             auto sphere = Geometry::Sphere<double_t>{*intersection, radius};
             FlowMeshSphere flowMeshSphere{sphere, newFGuid()};
             m_tmpPointGuid = flowMeshSphere.getFGuid();
-            m_model->addSphere(flowMeshSphere);
+            m_model->add(flowMeshSphere);
         }
     }
 };

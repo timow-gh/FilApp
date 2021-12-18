@@ -11,19 +11,19 @@ std::vector<FGuid> FlowMeshModel::calcFGuids() const
 {
     return m_geometryElements.getFGuidsFromMaps();
 }
-void FlowMeshModel::addSegments(const FlowMeshSegments& flowMeshSegments)
+void FlowMeshModel::add(const FlowMeshSegments& flowMeshSegments)
 {
     addAndUpdateView(flowMeshSegments);
 }
-void FlowMeshModel::addSphere(const FlowMeshSphere& sphere)
+void FlowMeshModel::add(const FlowMeshSphere& sphere)
 {
     addAndUpdateView(sphere);
 }
-void FlowMeshModel::addCone(const FlowMeshCone& flowMeshCone)
+void FlowMeshModel::add(const FlowMeshCone& flowMeshCone)
 {
     addAndUpdateView(flowMeshCone);
 }
-void FlowMeshModel::addCylinder(const FlowMeshCylinder& cylinder)
+void FlowMeshModel::add(const FlowMeshCylinder& cylinder)
 {
     if (m_geometryElements.add(cylinder))
         m_flowMeshPresenter->add(cylinder);

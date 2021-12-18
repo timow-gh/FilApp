@@ -34,8 +34,8 @@ void createGridSegments(FlowMeshModel& fMModel)
             {-LENGTH_HALF, static_cast<double>(MIN + i), 0},
             {LENGTH_HALF, static_cast<double>(MIN + i), 0}});
     }
-    fMModel.addSegments(FlowMeshSegments(xSegs, newFGuid()));
-    fMModel.addSegments(FlowMeshSegments(ySegs, newFGuid()));
+    fMModel.add(FlowMeshSegments(xSegs, newFGuid()));
+    fMModel.add(FlowMeshSegments(ySegs, newFGuid()));
 }
 
 void createSpheres(FlowMeshModel& fMModel)
@@ -53,7 +53,7 @@ void createSpheres(FlowMeshModel& fMModel)
             if (i == 0 && j == 0)
                 sphereToRemove = id;
 
-            fMModel.addSphere(FlowMeshSphere(
+            fMModel.add(FlowMeshSphere(
                 Sphere<double_t>(Vec3d{static_cast<double>(i) * DIST,
                                        static_cast<double>(j) * DIST,
                                        0},
@@ -68,36 +68,36 @@ void createSpheres(FlowMeshModel& fMModel)
 void createCones(FlowMeshModel& fmModel)
 {
     // x
-    fmModel.addCone(FlowMeshCone(
+    fmModel.add(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}},
             0.1),
         newFGuid()));
 
     // y
-    fmModel.addCone(FlowMeshCone(
+    fmModel.add(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}},
             0.1),
         newFGuid()));
-    fmModel.addCone(FlowMeshCone(
+    fmModel.add(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0.5, 0}, LinAl::Vec3d{0, 1.0, 0}},
             0.1),
         newFGuid()));
 
     // z
-    fmModel.addCone(FlowMeshCone(
+    fmModel.add(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}},
             0.1),
         newFGuid()));
-    fmModel.addCone(FlowMeshCone(
+    fmModel.add(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 0.5}, LinAl::Vec3d{0, 0, 1.0}},
             0.1),
         newFGuid()));
-    fmModel.addCone(FlowMeshCone(
+    fmModel.add(FlowMeshCone(
         Geometry::Cone<double_t>(
             Segment3d{LinAl::Vec3d{0, 0, 1.0}, LinAl::Vec3d{0, 0, 1.5}},
             0.1),
@@ -136,10 +136,10 @@ int main()
     constexpr Vec3d connectVec = LinAl::Vec3d{0, 0, 4};
     constexpr Segment3d cylinderSeg = {LinAl::Vec3d{0, 0, 1}, connectVec};
     constexpr Segment3d coneSeg = {connectVec, LinAl::Vec3d{0, 0, 6}};
-    flowMeshModel.addCylinder(
+    flowMeshModel.add(
         FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg, radius),
                          newFGuid()));
-    flowMeshModel.addCone(
+    flowMeshModel.add(
         FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius), newFGuid()));
 
     app.run();
