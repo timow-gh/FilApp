@@ -39,6 +39,7 @@ set_target_properties(fil_app
         )
 target_link_libraries(fil_app
         PUBLIC
+        Core::Utils
         filament
         fil_app_sources
         filapp_interfaces

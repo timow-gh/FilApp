@@ -8,7 +8,7 @@ class RenderableId {
     using Type = uint32_t;
 
     RenderableId() noexcept = default;
-    RenderableId(Type type) noexcept : m_id(type) {}
+    explicit RenderableId(Type type) noexcept : m_id(type) {}
 
     RenderableId(const RenderableId& id) noexcept = default;
     RenderableId(RenderableId&& id) noexcept = default;
@@ -21,6 +21,7 @@ class RenderableId {
     {
         return m_id == rhs.m_id;
     }
+
     bool operator!=(const RenderableId& rhs) const noexcept
     {
         return !(rhs == *this);
@@ -30,14 +31,17 @@ class RenderableId {
     {
         return m_id < rhs.m_id;
     }
+
     bool operator>(const RenderableId& rhs) const noexcept
     {
         return rhs < *this;
     }
+
     bool operator<=(const RenderableId& rhs) const noexcept
     {
         return !(rhs < *this);
     }
+
     bool operator>=(const RenderableId& rhs) const noexcept
     {
         return !(*this < rhs);

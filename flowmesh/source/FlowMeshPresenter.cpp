@@ -1,6 +1,7 @@
-#include "FlowMesh/FlowMeshPresenter.hpp"
+#include <FilAppInterfaces/Vec.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
-#include "FlowMesh/GeometryElements/FlowMeshCylinder.hpp"
+#include <FlowMesh/FlowMeshPresenter.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
@@ -142,6 +143,18 @@ void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
         flowMeshSegments.getFGuid(),
         std::vector<FilApp::RenderableId>{segmentsId});
 }
+void FlowMeshPresenter::updatePosition(const FGuid& fGuid,
+                                       const LinAl::Vec3d& position)
+{
+    auto iter = m_fGuidRenderableMapping.find(fGuid);
+    if (iter != m_fGuidRenderableMapping.cend())
+        for (const FilApp::RenderableId& id: iter->second)
+            m_mainView->updatePosition(
+                id,
+                FilApp::Vec3(static_cast<float_t>(position[0]),
+                             static_cast<float_t>(position[1]),
+                             static_cast<float_t>(position[2])));
+}
 void FlowMeshPresenter::remove(const FGuid& fGuid)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
@@ -154,5 +167,4 @@ void FlowMeshPresenter::setIdleAnimation(const FilApp::Vec3& rotationAxis)
     for (const auto id: m_mainView->getRenderableIdentifiers())
         m_mainView->addRotationAnimation(id, rotationAxis);
 }
-
 } // namespace FlowMesh

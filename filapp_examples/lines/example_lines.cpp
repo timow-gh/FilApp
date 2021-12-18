@@ -11,8 +11,8 @@ int main()
     FilApplication::init(AppConfig(), WindowConfig());
     auto& app = FilApplication::get();
     Window* mainWindow = app.getWindow();
-    View* mainView = mainWindow->getMainIView();
 
+    View* mainView = mainWindow->getMainIView();
     mainView->addRenderable(
         LineRenderable::create(Vertex{{0, 0, 0}, 0xffffffffu},
                                Vertex{{1, 0, 0}, 0xffffffffu}));
@@ -21,10 +21,8 @@ int main()
                                     Vertex{{0, 2, 0}, 0xffffffffu},
                                     Vertex{{0, 0, 0}, 0xffffffffu},
                                     Vertex{{0, 0, 3}, 0xffffffffu}};
-
     mainView->addRenderable(LineRenderable::create(std::move(vertices)));
 
     app.run();
-
     return 0;
 }

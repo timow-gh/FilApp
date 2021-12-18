@@ -27,7 +27,8 @@ class View
     virtual auto addRenderable(PointRenderable&& renderable) -> RenderableId = 0;
     virtual auto addRenderable(LineRenderable&& renderable) -> RenderableId = 0;
     [[nodiscard]] virtual auto getRenderableIdentifiers() const -> std::vector<RenderableId> = 0;
-    virtual void removeRenderable(RenderableId renderableIdentifier) = 0;
+    virtual void removeRenderable(RenderableId renderableId) = 0;
+    virtual void updatePosition(RenderableId renderableId, const Vec3& position) = 0;
     virtual void clearRenderables() = 0;
     // clang-format on
 

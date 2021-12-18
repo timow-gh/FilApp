@@ -40,13 +40,13 @@ class FilAppView : public View {
     filament::Viewport m_viewport;
     utils::Entity m_globalTrafoComponent;
 
-    FilAppRenderableCreator m_renderableCreator;
     std::map<RenderableId, std::unique_ptr<PointRenderable>> m_pointRenderables;
     std::map<RenderableId, std::unique_ptr<LineRenderable>> m_lineRenderables;
     std::map<RenderableId, std::unique_ptr<TriangleRenderable>>
         m_triangleRenderables;
 
-    std::vector<FilAppRenderable> m_renderables;
+    FilAppRenderableCreator m_renderableCreator;
+    std::vector<FilAppRenderable> m_filAppRenderables;
 
     float_t m_near{0.1f};
     float_t m_far{100.0f};
@@ -64,6 +64,7 @@ class FilAppView : public View {
     [[nodiscard]] auto addRenderable(LineRenderable && renderable) -> RenderableId override;
     [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableId> override;
     void removeRenderable(RenderableId id) override;
+    void updatePosition(RenderableId renderableId, const Vec3 & position) override;
     void clearRenderables() override;
     // clang-format on
 
@@ -106,6 +107,38 @@ class FilAppView : public View {
         auto idIter = map.find(id);
         if (idIter != map.end())
             map.erase(idIter);
+    }
+
+    void eraseRenderable(RenderableId id)
+    {
+        eraseFromMap(m_pointRenderables, id);
+        eraseFromMap(m_lineRenderables, id);
+        eraseFromMap(m_triangleRenderables, id);
+    }
+
+    FilAppRenderable* findFilAppRenderable(RenderableId id)
+    {
+        if (!std::is_sorted(m_filAppRenderables.begin(),
+                            m_filAppRenderables.end()))
+            std::sort(m_filAppRenderables.begin(), m_filAppRenderables.end());
+
+        utils::Entity entity = utils::Entity::import(id.getId());
+        auto iter = std::lower_bound(
+            m_filAppRenderables.begin(),
+            m_filAppRenderables.end(),
+            entity,
+            [](const FilAppRenderable& filAppRenderable, utils::Entity entity)
+            {
+                return filAppRenderable.renderableEntity < entity;
+            });
+        if (iter != m_filAppRenderables.cend())
+            return &(*iter);
+        return nullptr;
+    }
+
+    void translateRenderable(RenderableId id,
+                             const filament::math::float3 translation)
+    {
     }
 
     [[nodiscard]] PickRayEvent

@@ -28,10 +28,11 @@ class FlowMeshModel {
     void add(const FlowMeshSegments& flowMeshSegments);
 
     void remove(const FGuid& fGuid);
+    void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
 
   private:
     template <typename T>
-    void addAndUpdateView(const T& geometryElement)
+    void addToView(const T& geometryElement)
     {
         if (m_geometryElements.add(geometryElement))
             m_flowMeshPresenter->add(geometryElement);

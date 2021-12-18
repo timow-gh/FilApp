@@ -11,16 +11,14 @@ int main()
 {
     FilApplication::init(AppConfig(), WindowConfig());
     auto& app = FilApplication::get();
+    Window* window = app.getWindow();
 
     std::vector<Vertex> vertices = {
         Vertex{{0, 0, 0}, 0xffff0000u},
         Vertex{{1, 0, 0}, 0xffff0000u},
         Vertex{{0, 0, 2}, 0xffff0000u},
     };
-
-    Window* window = app.getWindow();
     View* mainView = window->getMainIView();
-
     mainView->addRenderable(
         PointRenderable::create(std::move(vertices), {3.0, 3.0, 3.0}));
     mainView->addRenderable(

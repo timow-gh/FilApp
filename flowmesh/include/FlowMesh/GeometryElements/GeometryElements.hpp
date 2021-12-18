@@ -2,6 +2,7 @@
 #define FILAPP_GEOMETRYELEMENTS_HPP
 
 #include <Core/Types/TMap.hpp>
+#include <Core/Utils/Compiler.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
@@ -23,9 +24,10 @@ class GeometryElements {
     bool add(const FlowMeshCone& cone);
     bool add(const FlowMeshCylinder& cylinder);
 
-    void remove(const FGuid& fGuid);
+    bool remove(const FGuid& fGuid);
+    bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
 
-    [[nodiscard]] std::vector<FGuid> getFGuidsFromMaps() const;
+    CORE_NODISCARD std::vector<FGuid> getFGuidsFromMaps() const;
 };
 } // namespace FlowMesh
 

@@ -1,8 +1,10 @@
 #ifndef FILAPP_FILAPPRENDERABLE_HPP
 #define FILAPP_FILAPPRENDERABLE_HPP
 
+#include <Core/Utils/Compiler.hpp>
 #include <FilAppInterfaces/Renderables/LineRenderable.hpp>
 #include <FilAppInterfaces/Renderables/PointRenderable.hpp>
+#include <FilAppInterfaces/Renderables/RendereableId.hpp>
 #include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
 #include <filament/Engine.h>
@@ -25,6 +27,20 @@ struct FilAppRenderable
     filament::Material* mat = nullptr;
     filament::MaterialInstance* matInstance = nullptr;
     utils::Entity renderableEntity;
+
+    bool operator<(const FilAppRenderable& rhs) const
+    {
+        return renderableEntity < rhs.renderableEntity;
+    }
+    bool operator>(const FilAppRenderable& rhs) const { return rhs < *this; }
+    bool operator<=(const FilAppRenderable& rhs) const
+    {
+        return !(rhs < *this);
+    }
+    bool operator>=(const FilAppRenderable& rhs) const
+    {
+        return !(*this < rhs);
+    }
 
     void destroy() const
     {

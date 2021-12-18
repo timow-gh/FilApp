@@ -32,6 +32,7 @@ class FlowMeshPresenter {
     void add(const FlowMeshSegments& flowMeshSegments);
 
     void remove(const FGuid& fGuid);
+    void updatePosition(const FGuid& fGuid, const LinAl::Vec3d& position);
 
     void setIdleAnimation(const FilApp::Vec3& rotationAxis);
 
@@ -40,8 +41,6 @@ class FlowMeshPresenter {
         const Geometry::HalfedgeMesh<double_t>& halfedgeMesh);
     static FilApp::LineRenderable
     createLineRenderables(const FlowMeshSegments& flowMeshSegments);
-
-    LinAl::Matrix3d m_mathLcsToFilamentLcs;
 };
 } // namespace FlowMesh
 

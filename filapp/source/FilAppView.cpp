@@ -1,5 +1,6 @@
 #include "FilApp/FilAppView.hpp"
 #include "FilApp/FilAppConversion.hpp"
+#include <Core/Utils/Assert.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
@@ -88,23 +89,28 @@ FilAppView::~FilAppView()
     auto& tcm = utils::EntityManager::get();
     tcm.destroy(m_globalTrafoComponent);
 }
+
 void FilAppView::animate(double deltaT)
 {
     for (const auto& animationCallBack: m_animationCallbacks)
         animationCallBack(deltaT);
 }
+
 filament::View* FilAppView::getFilamentView()
 {
     return m_filamentView;
 }
+
 filament::Camera* FilAppView::getCamera()
 {
     return m_camera;
 }
+
 FilAppView::CameraManipulator* FilAppView::getCameraManipulator()
 {
     return m_cameraManipulator.get();
 }
+
 void FilAppView::configureOrthogonalProjection(float_t near,
                                                float_t far,
                                                float zoom)
@@ -118,6 +124,7 @@ void FilAppView::configureOrthogonalProjection(float_t near,
                             near,
                             far);
 }
+
 RenderableId FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 {
     auto renderable =
@@ -132,6 +139,7 @@ RenderableId FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 
     return id;
 }
+
 RenderableId FilAppView::addRenderable(PointRenderable&& pointRenderable)
 {
     auto renderable =
@@ -146,6 +154,7 @@ RenderableId FilAppView::addRenderable(PointRenderable&& pointRenderable)
 
     return id;
 }
+
 RenderableId FilAppView::addRenderable(LineRenderable&& lineREnderable)
 {
     auto renderable =
@@ -159,21 +168,21 @@ RenderableId FilAppView::addRenderable(LineRenderable&& lineREnderable)
     m_lineRenderables.emplace(id, std::move(renderable));
     return id;
 }
+
 std::vector<RenderableId> FilAppView::getRenderableIdentifiers() const
 {
     std::vector<RenderableId> result;
-    for (const auto& filAppRenderable: m_renderables)
+    for (const auto& filAppRenderable: m_filAppRenderables)
         result.emplace_back(filAppRenderable.renderableEntity.getId());
     return result;
 }
+
 void FilAppView::removeRenderable(RenderableId id)
 {
-    eraseFromMap(m_pointRenderables, id);
-    eraseFromMap(m_lineRenderables, id);
-    eraseFromMap(m_triangleRenderables, id);
+    eraseRenderable(id);
     auto iter =
-        std::remove_if(m_renderables.begin(),
-                       m_renderables.end(),
+        std::remove_if(m_filAppRenderables.begin(),
+                       m_filAppRenderables.end(),
                        [id = id, scene = m_scene](const FilAppRenderable& item)
                        {
                            if (item.renderableEntity.getId() == id.getId())
@@ -184,16 +193,33 @@ void FilAppView::removeRenderable(RenderableId id)
                            }
                            return false;
                        });
-    m_renderables.erase(iter, m_renderables.end());
+    m_filAppRenderables.erase(iter, m_filAppRenderables.end());
 }
+
+void FilAppView::updatePosition(RenderableId renderableId, const Vec3& position)
+{
+    FilAppRenderable* renderable = findFilAppRenderable(renderableId);
+
+    CORE_POSTCONDITION_DEBUG_ASSERT(renderable, "FilAppRenderable not found.");
+    if (!renderable)
+        return;
+
+    auto& tcm = m_engine->getTransformManager();
+    tcm.setTransform(
+        tcm.getInstance(renderable->renderableEntity),
+        filament::math::mat4f::translation(filament::math::float3{0, 1, 0}));
+}
+
 void FilAppView::clearRenderables()
 {
     clearFilAppRenderables();
 }
+
 void FilAppView::setUsePostprocessing(bool usePostProcessing)
 {
     m_filamentView->setPostProcessingEnabled(usePostProcessing);
 }
+
 void FilAppView::addRotationAnimation(RenderableId renderableIdentifier,
                                       const Vec3& rotationAxis)
 {
@@ -209,6 +235,7 @@ void FilAppView::addRotationAnimation(RenderableId renderableIdentifier,
                     filament::math::float3{0, 1, 0}));
         });
 }
+
 Viewport FilAppView::getViewport() const
 {
     return {m_viewport.left,
@@ -216,6 +243,7 @@ Viewport FilAppView::getViewport() const
             m_viewport.width,
             m_viewport.height};
 }
+
 void FilAppView::setViewport(const Viewport& viewport)
 {
     m_viewport = calcViewport(viewport);
@@ -225,14 +253,17 @@ void FilAppView::setViewport(const Viewport& viewport)
         m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
                                          static_cast<int>(viewport.height));
 }
+
 void FilAppView::setCamera(filament::Camera* camera)
 {
     m_filamentView->setCamera(camera);
 }
+
 void FilAppView::resize(const Viewport& viewport)
 {
     setViewport(viewport);
 }
+
 void FilAppView::event(const MouseDownEvent& mouseDownEvent)
 {
     if (m_cameraManipulator)
@@ -242,6 +273,7 @@ void FilAppView::event(const MouseDownEvent& mouseDownEvent)
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseDownEvent);
 }
+
 void FilAppView::event(const MouseUpEvent& mouseUpEvent)
 {
     if (m_cameraManipulator)
@@ -273,6 +305,7 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
                                          pickRayEvent.direction,
                                          pickRayEvent.time));
 }
+
 void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 {
     if (m_cameraManipulator)
@@ -296,6 +329,7 @@ void FilAppView::event(const KeyDownEvent& keyDownEvent)
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(keyDownEvent);
 }
+
 void FilAppView::event(const KeyUpEvent& keyUpEvent)
 {
     if (m_cameraManipulator)
@@ -309,6 +343,7 @@ void FilAppView::event(const KeyUpEvent& keyUpEvent)
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(keyUpEvent);
 }
+
 bool FilAppView::manipulatorKeyFromKeycode(
     SDL_Scancode scancode,
     filament::camutils::Manipulator<float_t>::Key& key)
@@ -324,10 +359,11 @@ bool FilAppView::manipulatorKeyFromKeycode(
     default: return false;
     }
 }
+
 RenderableId FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
 {
-    m_renderables.emplace_back(filAppRenderable);
-    auto entity = m_renderables.back().renderableEntity;
+    m_filAppRenderables.emplace_back(filAppRenderable);
+    auto entity = m_filAppRenderables.back().renderableEntity;
     m_scene->addEntity(entity);
 
     auto& tcm = m_engine->getTransformManager();
@@ -335,15 +371,17 @@ RenderableId FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
     auto renderableInstance = tcm.getInstance(entity);
     tcm.setParent(renderableInstance, globalInstance);
 
-    return m_renderables.back().renderableEntity.getId();
+    return RenderableId(m_filAppRenderables.back().renderableEntity.getId());
 }
+
 void FilAppView::clearFilAppRenderables()
 {
-    for (auto& renderable: m_renderables)
+    for (auto& renderable: m_filAppRenderables)
     {
         m_scene->remove(renderable.renderableEntity);
         renderable.destroy();
     }
-    m_renderables.clear();
+    m_filAppRenderables.clear();
 }
+
 } // namespace FilApp

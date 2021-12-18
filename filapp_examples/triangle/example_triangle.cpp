@@ -8,9 +8,9 @@ int main()
     FilApplication::init(AppConfig(), WindowConfig());
 
     Window* window = FilApplication::get().getWindow();
+
     auto mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
-
     mainView->addRenderable(TriangleRenderable(
         {
             Vertex{{0, 0, 0}, 0xffff0000u},
