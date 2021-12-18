@@ -1,18 +1,33 @@
-#ifndef FILAPP_FGUIDBASE_HPP
-#define FILAPP_FGUIDBASE_HPP
+#ifndef FILAPP_GEOMETRYELEMENTBASE_HPP
+#define FILAPP_GEOMETRYELEMENTBASE_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh
 {
 template <typename Derived>
-class FGuidBase {
+class GeometryElementBase {
   protected:
-    explicit FGuidBase(FGuid guid) : m_fGuid(guid) {}
+    explicit GeometryElementBase(FGuid guid)
+        : m_fGuid(guid)
+        , m_transformation(LinAl::createIdentityHMatrix<double_t>())
+    {
+    }
     FGuid m_fGuid;
+    LinAl::HMatrixd m_transformation;
 
   public:
     [[nodiscard]] const FGuid& getFGuid() const { return m_fGuid; }
+    [[nodiscard]] const LinAl::HMatrixd& getTransformation() const
+    {
+        return m_transformation;
+    }
+
+    void setTransformation(const LinAl::HMatrixd& transformation)
+    {
+        m_transformation = transformation;
+    }
 
     friend bool operator<(const Derived& lhs, const Derived& rhs)
     {
@@ -33,4 +48,4 @@ class FGuidBase {
 };
 } // namespace FlowMesh
 
-#endif // FILAPP_FGUIDBASE_HPP
+#endif // FILAPP_GEOMETRYELEMENTBASE_HPP

@@ -3,12 +3,12 @@
 
 namespace FlowMesh
 {
-FlowMeshSegments::FlowMeshSegments() : FGuidBase<FlowMeshSegments>(FGuid())
+FlowMeshSegments::FlowMeshSegments() : GeometryElementBase<FlowMeshSegments>(FGuid())
 {
 }
 FlowMeshSegments::FlowMeshSegments(Core::TVector<Geometry::Segment3d> segments,
                                    const FGuid& guid)
-    : FGuidBase<FlowMeshSegments>(guid), m_segments(std::move(segments))
+    : GeometryElementBase<FlowMeshSegments>(guid), m_segments(std::move(segments))
 {
 }
 const Core::TVector<Geometry::Segment3d>& FlowMeshSegments::getSegments() const

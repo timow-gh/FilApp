@@ -3,12 +3,12 @@
 
 #include <Core/Types/TVector.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/GeometryElements/FGuidBase.hpp>
+#include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Segment.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshSegments : public FGuidBase<FlowMeshSegments> {
+class FlowMeshSegments : public GeometryElementBase<FlowMeshSegments> {
     Core::TVector<Geometry::Segment3d> m_segments;
 
   public:

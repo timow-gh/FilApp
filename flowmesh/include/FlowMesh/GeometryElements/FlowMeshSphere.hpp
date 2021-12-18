@@ -2,13 +2,13 @@
 #define FILAPP_FLOWMESHSPHERE_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/GeometryElements/FGuidBase.hpp>
+#include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshSphere : public FGuidBase<FlowMeshSphere> {
+class FlowMeshSphere : public GeometryElementBase<FlowMeshSphere> {
     Geometry::Sphere<double_t> m_sphere;
 
   public:

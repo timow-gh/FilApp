@@ -8,12 +8,12 @@ using namespace LinAl;
 namespace FlowMesh
 {
 FlowMeshCone::FlowMeshCone()
-    : FGuidBase<FlowMeshCone>(FGuid())
+    : GeometryElementBase<FlowMeshCone>(FGuid())
     , m_cone(Cone<double_t>(Segment3d{ZERO_VEC3D, Z_VEC3D}, 1.0))
 {
 }
 FlowMeshCone::FlowMeshCone(const Cone<double_t>& cone, const FGuid& fGuid)
-    : FGuidBase<FlowMeshCone>(fGuid), m_cone(cone)
+    : GeometryElementBase<FlowMeshCone>(fGuid), m_cone(cone)
 {
 }
 const Cone<double_t>& FlowMeshCone::getCone() const

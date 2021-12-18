@@ -2,13 +2,13 @@
 #define FILAPP_FLOWMESHCYLINDER_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/GeometryElements/FGuidBase.hpp>
+#include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cylinder.hpp>
 #include <Geometry/Segment.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshCylinder : public FGuidBase<FlowMeshCylinder> {
+class FlowMeshCylinder : public GeometryElementBase<FlowMeshCylinder> {
     Geometry::Cylinder<double_t> m_cylinder;
 
   public:

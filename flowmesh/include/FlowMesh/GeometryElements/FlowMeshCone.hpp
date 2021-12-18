@@ -2,12 +2,12 @@
 #define FILAPP_FLOWMESHCONE_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/GeometryElements/FGuidBase.hpp>
+#include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cone.hpp>
 
 namespace FlowMesh
 {
-class FlowMeshCone : public FGuidBase<FlowMeshCone> {
+class FlowMeshCone : public GeometryElementBase<FlowMeshCone> {
     Geometry::Cone<double_t> m_cone;
 
   public:
