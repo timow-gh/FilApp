@@ -17,12 +17,21 @@ namespace FlowMesh
 {
 class PlacingInteractor : public Interactor {
     FlowMesh::FlowMeshModel* m_model;
-    std::optional<FGuid> m_tmpPointGuid;
+    std::optional<FGuid> m_sphereGuid;
 
   public:
     explicit PlacingInteractor(FlowMeshModel* model) : m_model(model) {}
 
   private:
+    void createSphere(const LinAl::Vec3d& origin)
+    {
+        constexpr double_t radius = 0.2;
+        auto sphere = Geometry::Sphere<double_t>{origin, radius};
+        FlowMeshSphere flowMeshSphere{sphere, newFGuid()};
+        m_model->add(flowMeshSphere);
+        m_sphereGuid = flowMeshSphere.getFGuid();
+    }
+
     void event(const FilApp::PickRayEvent& pickRayEvent) override
     {
         const FilApp::Vec3& pickOrigin = pickRayEvent.origin;
@@ -33,17 +42,16 @@ class PlacingInteractor : public Interactor {
         const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
         if (auto intersection = plane.intersection(ray))
         {
-            constexpr double_t radius = 0.2;
-            auto sphere = Geometry::Sphere<double_t>{*intersection, radius};
-            FlowMeshSphere flowMeshSphere{sphere, newFGuid()};
-            m_tmpPointGuid = flowMeshSphere.getFGuid();
-            m_model->add(flowMeshSphere);
+            if (!m_sphereGuid)
+            {
+                createSphere(*intersection);
+                return;
+            }
+            m_model->setPosition(*m_sphereGuid, *intersection);
         }
     }
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
-        if (m_tmpPointGuid)
-            m_model->remove(*m_tmpPointGuid);
         const FilApp::Vec3& pickOrigin = pickRayMoveEvent.origin;
         const FilApp::Vec3& pickDirection = pickRayMoveEvent.direction;
         const Geometry::Ray3<double_t> ray{
@@ -52,12 +60,12 @@ class PlacingInteractor : public Interactor {
         const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
         if (auto intersection = plane.intersection(ray))
         {
-            std::cout << "intersection: \n" << *intersection << "\n";
-            constexpr double_t radius = 0.2;
-            auto sphere = Geometry::Sphere<double_t>{*intersection, radius};
-            FlowMeshSphere flowMeshSphere{sphere, newFGuid()};
-            m_tmpPointGuid = flowMeshSphere.getFGuid();
-            m_model->add(flowMeshSphere);
+            if (!m_sphereGuid)
+            {
+                createSphere(*intersection);
+                return;
+            }
+            m_model->setPosition(*m_sphereGuid, *intersection);
         }
     }
 };

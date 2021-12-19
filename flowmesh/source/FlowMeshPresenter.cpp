@@ -1,3 +1,4 @@
+#include <Core/Utils/Assert.hpp>
 #include <FilAppInterfaces/Vec.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
@@ -9,6 +10,7 @@
 
 namespace FlowMesh
 {
+
 FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
     const Geometry::HalfedgeMesh<double_t>& halfedgeMesh)
 {
@@ -26,6 +28,7 @@ FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
             Geometry::calcTriangleIndices<double_t, uint16_t>(
                 halfedgeMesh.getFacets())};
 }
+
 FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
     const FlowMeshSegments& flowMeshSegments)
 {
@@ -93,6 +96,7 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
         flowMeshSphere.getFGuid(),
         std::vector<FilApp::RenderableId>{verticesId, sphereId});
 }
+
 void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
 {
     auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
@@ -114,6 +118,7 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
         flowMeshCone.getFGuid(),
         std::vector<FilApp::RenderableId>{verticesId, coneId});
 }
+
 void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
 {
     auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
@@ -135,6 +140,7 @@ void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
         flowMeshCylinder.getFGuid(),
         std::vector<FilApp::RenderableId>{verticesId, coneId});
 }
+
 void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
 {
     auto segmentsId =
@@ -143,10 +149,16 @@ void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
         flowMeshSegments.getFGuid(),
         std::vector<FilApp::RenderableId>{segmentsId});
 }
+
 void FlowMeshPresenter::updatePosition(const FGuid& fGuid,
                                        const LinAl::Vec3d& position)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
+    CORE_POSTCONDITION_DEBUG_ASSERT((iter != m_fGuidRenderableMapping.end()),
+                                    "Renderable not found.");
+    CORE_POSTCONDITION_DEBUG_ASSERT(!iter->second.empty(),
+                                    "Renderable mapping is empty.");
+
     if (iter != m_fGuidRenderableMapping.cend())
         for (const FilApp::RenderableId& id: iter->second)
             m_mainView->updatePosition(
@@ -155,6 +167,7 @@ void FlowMeshPresenter::updatePosition(const FGuid& fGuid,
                              static_cast<float_t>(position[1]),
                              static_cast<float_t>(position[2])));
 }
+
 void FlowMeshPresenter::remove(const FGuid& fGuid)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
@@ -162,6 +175,7 @@ void FlowMeshPresenter::remove(const FGuid& fGuid)
         for (const FilApp::RenderableId id: iter->second)
             m_mainView->removeRenderable(id);
 }
+
 void FlowMeshPresenter::setIdleAnimation(const FilApp::Vec3& rotationAxis)
 {
     for (const auto id: m_mainView->getRenderableIdentifiers())

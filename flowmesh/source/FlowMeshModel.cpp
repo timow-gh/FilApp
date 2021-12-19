@@ -15,23 +15,22 @@ std::vector<FGuid> FlowMeshModel::calcFGuids() const
 
 void FlowMeshModel::add(const FlowMeshSegments& flowMeshSegments)
 {
-    addToView(flowMeshSegments);
+    addImpl(flowMeshSegments);
 }
 
 void FlowMeshModel::add(const FlowMeshSphere& sphere)
 {
-    addToView(sphere);
+    addImpl(sphere);
 }
 
 void FlowMeshModel::add(const FlowMeshCone& flowMeshCone)
 {
-    addToView(flowMeshCone);
+    addImpl(flowMeshCone);
 }
 
 void FlowMeshModel::add(const FlowMeshCylinder& cylinder)
 {
-    if (m_geometryElements.add(cylinder))
-        m_flowMeshPresenter->add(cylinder);
+    addImpl(cylinder);
 }
 
 void FlowMeshModel::remove(const FGuid& fGuid)

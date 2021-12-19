@@ -207,7 +207,8 @@ void FilAppView::updatePosition(RenderableId renderableId, const Vec3& position)
     auto& tcm = m_engine->getTransformManager();
     tcm.setTransform(
         tcm.getInstance(renderable->renderableEntity),
-        filament::math::mat4f::translation(filament::math::float3{0, 1, 0}));
+        filament::math::mat4f::translation(
+            filament::math::float3{position[0], position[1], position[2]}));
 }
 
 void FilAppView::clearRenderables()

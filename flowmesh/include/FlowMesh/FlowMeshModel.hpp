@@ -32,7 +32,7 @@ class FlowMeshModel {
 
   private:
     template <typename T>
-    void addToView(const T& geometryElement)
+    void addImpl(const T& geometryElement)
     {
         if (m_geometryElements.add(geometryElement))
             m_flowMeshPresenter->add(geometryElement);
