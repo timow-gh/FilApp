@@ -6,6 +6,14 @@
 
 namespace FilApp
 {
+/*
+ * The global filament coordinate system his defined with an y-Axis that points
+ * upwards.
+ *
+ * The following functions provide transformations to and from the global
+ * coordinate system, with the z-Axis pointing updward.
+ */
+
 // Rotationmatrix that transforms a vector given in the filament coordinates
 // into a vector given in global coordiantes
 inline filament::math::mat3f filCSToGlobalCS3()
