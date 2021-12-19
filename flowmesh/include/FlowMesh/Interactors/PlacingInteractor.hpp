@@ -1,8 +1,8 @@
 #ifndef FILAPP_PLACINGINTERACTOR_HPP
 #define FILAPP_PLACINGINTERACTOR_HPP
 
-#include "Geometry/Ray.hpp"
 #include <Core/Types/TVector.hpp>
+#include <Core/Utils/Assert.hpp>
 #include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
 #include <FilAppInterfaces/InputEvents/PickRayEvent.hpp>
 #include <FilAppInterfaces/InputEvents/PickRayMoveEvent.hpp>
@@ -11,6 +11,7 @@
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <Geometry/Plane.hpp>
+#include <Geometry/Ray.hpp>
 #include <optional>
 
 namespace FlowMesh
@@ -23,13 +24,11 @@ class PlacingInteractor : public Interactor {
     explicit PlacingInteractor(FlowMeshModel* model) : m_model(model) {}
 
   private:
-    void createSphere(const LinAl::Vec3d& origin)
+    FlowMeshSphere createSphere(const LinAl::Vec3d& origin)
     {
         constexpr double_t radius = 0.2;
         auto sphere = Geometry::Sphere<double_t>{origin, radius};
-        FlowMeshSphere flowMeshSphere{sphere, newFGuid()};
-        m_model->add(flowMeshSphere);
-        m_sphereGuid = flowMeshSphere.getFGuid();
+        return FlowMeshSphere{sphere, newFGuid()};
     }
 
     void event(const FilApp::PickRayEvent& pickRayEvent) override
@@ -42,12 +41,8 @@ class PlacingInteractor : public Interactor {
         const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
         if (auto intersection = plane.intersection(ray))
         {
-            if (!m_sphereGuid)
-            {
-                createSphere(*intersection);
-                return;
-            }
-            m_model->setPosition(*m_sphereGuid, *intersection);
+            FlowMeshSphere flowMeshSphere = createSphere(*intersection);
+            m_model->add(flowMeshSphere);
         }
     }
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
@@ -62,7 +57,9 @@ class PlacingInteractor : public Interactor {
         {
             if (!m_sphereGuid)
             {
-                createSphere(*intersection);
+                FlowMeshSphere flowMeshSphere = createSphere(LinAl::ZERO_VEC3D);
+                m_model->add(flowMeshSphere);
+                m_sphereGuid = flowMeshSphere.getFGuid();
                 return;
             }
             m_model->setPosition(*m_sphereGuid, *intersection);
