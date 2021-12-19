@@ -24,14 +24,15 @@ class PlacingInteractor : public Interactor {
     explicit PlacingInteractor(FlowMeshModel* model) : m_model(model) {}
 
   private:
-    FlowMeshSphere createSphere(const LinAl::Vec3d& origin)
+    CORE_NODISCARD FlowMeshSphere createSphere(const LinAl::Vec3d& origin) const
     {
         constexpr double_t radius = 0.2;
         auto sphere = Geometry::Sphere<double_t>{origin, radius};
         return FlowMeshSphere{sphere, newFGuid()};
     }
 
-    void event(const FilApp::PickRayEvent& pickRayEvent) override
+    CORE_NODISCARD std::optional<LinAl::Vec3d>
+    calcIntersection(const FilApp::PickRayEvent& pickRayEvent) const
     {
         const FilApp::Vec3& pickOrigin = pickRayEvent.origin;
         const FilApp::Vec3& pickDirection = pickRayEvent.direction;
@@ -39,7 +40,12 @@ class PlacingInteractor : public Interactor {
             LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
             LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
         const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
-        if (auto intersection = plane.intersection(ray))
+        return plane.intersection(ray);
+    }
+
+    void event(const FilApp::PickRayEvent& pickRayEvent) override
+    {
+        if (auto intersection = calcIntersection(pickRayEvent))
         {
             FlowMeshSphere flowMeshSphere = createSphere(*intersection);
             m_model->add(flowMeshSphere);
@@ -47,13 +53,7 @@ class PlacingInteractor : public Interactor {
     }
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
-        const FilApp::Vec3& pickOrigin = pickRayMoveEvent.origin;
-        const FilApp::Vec3& pickDirection = pickRayMoveEvent.direction;
-        const Geometry::Ray3<double_t> ray{
-            LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
-            LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
-        const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
-        if (auto intersection = plane.intersection(ray))
+        if (auto intersection = calcIntersection(pickRayMoveEvent))
         {
             if (!m_sphereGuid)
             {
