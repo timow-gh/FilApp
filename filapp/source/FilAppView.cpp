@@ -29,7 +29,7 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_filamentView->setScene(m_scene);
 
     m_skybox = filament::Skybox::Builder()
-                   .color(vec4ToFilamentVec4(viewConfig.skyBoxColor))
+                   .color(vec4ToFloat4(viewConfig.skyBoxColor))
                    .build(*m_engine);
     m_scene->setSkybox(m_skybox);
 
@@ -37,10 +37,9 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_cameraEntity = entityManager.create();
     m_camera = m_engine->createCamera(m_cameraEntity);
 
-    const filament::math::float3 eye = transformToFilamentCS(viewConfig.eye);
-    const filament::math::float3 center =
-        transformToFilamentCS(viewConfig.center);
-    const filament::math::float3 up = transformToFilamentCS(viewConfig.up);
+    const filament::math::float3 eye = toFilamentCS(viewConfig.eye);
+    const filament::math::float3 center = toFilamentCS(viewConfig.center);
+    const filament::math::float3 up = toFilamentCS(viewConfig.up);
 
     m_camera->lookAt(eye, center, up);
     m_filamentView->setCamera(m_camera);

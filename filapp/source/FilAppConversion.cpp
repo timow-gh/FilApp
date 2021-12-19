@@ -29,36 +29,36 @@ filament::Viewport calcViewport(const Viewport& viewport)
 {
     return {viewport.left, viewport.bottom, viewport.width, viewport.height};
 }
-filament::math::float4 vec4ToFilamentVec4(const Vec4& vec4)
+filament::math::float4 vec4ToFloat4(const Vec4& vec4)
 {
     return {vec4[0], vec4[1], vec4[2], vec4[3]};
 }
-filament::math::float3 vec3ToFilamentVec3(const Vec3& vec3)
+filament::math::float3 vec3ToFloat3(const Vec3& vec3)
 {
     return {vec3[0], vec3[1], vec3[2]};
 }
-Vec3 filamentVec3ToVec3(const filament::math::float3& float3Vec)
+Vec3 float3ToVec3(const filament::math::float3& float3Vec)
 {
     return {float3Vec[0], float3Vec[1], float3Vec[2]};
 }
-Vec4 filamentVec4ToVec4(const filament::math::float4& float4Vec)
+Vec4 float4ToVec4(const filament::math::float4& float4Vec)
 {
     return {float4Vec[0], float4Vec[1], float4Vec[2], float4Vec[3]};
 }
-filament::math::float3 transformToFilamentCS(const Vec3& vec3)
+filament::math::float3 toFilamentCS(const Vec3& vec3)
 {
-    return globalCSToFilCS3() * vec3ToFilamentVec3(vec3);
+    return globalCSToFilCS3() * vec3ToFloat3(vec3);
 }
-filament::math::float4 transformToFilamentCS(const Vec4& vec4)
+filament::math::float4 toFilamentCS(const Vec4& vec4)
 {
-    return globalCSToFilCS4() * vec4ToFilamentVec4(vec4);
+    return globalCSToFilCS4() * vec4ToFloat4(vec4);
 }
-Vec3 transformToGlobalCS(const filament::math::float3& floatVec)
+Vec3 toGlobalCS(const filament::math::float3& floatVec)
 {
-    return filamentVec3ToVec3(filCSToGlobalCS3() * floatVec);
+    return float3ToVec3(filCSToGlobalCS3() * floatVec);
 }
-Vec4 transformToGlobalCS(const filament::math::float4& floatVec)
+Vec4 toGlobalCS(const filament::math::float4& floatVec)
 {
-    return filamentVec4ToVec4(filCSToGlobalCS4() * floatVec);
+    return float4ToVec4(filCSToGlobalCS4() * floatVec);
 }
 } // namespace FilApp

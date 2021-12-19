@@ -150,8 +150,7 @@ class FilAppView : public View {
                                     static_cast<int>(y),
                                     &origin,
                                     &direction);
-        return {transformToGlobalCS(origin),
-                transformToGlobalCS(direction),
+        return {toGlobalCS(origin), toGlobalCS(direction),
                 time};
     }
 };
