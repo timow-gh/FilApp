@@ -1,7 +1,8 @@
-#include "FilApp/FilAppRenderableCreator.hpp"
-#include "generated/resources/filapp_resources.h"
-#include "math/vec3.h"
+#include <Core/Utils/Assert.hpp>
+#include <FilApp/FilAppRenderableCreator.hpp>
 #include <FilAppRenderableBuffers.hpp>
+#include <generated/resources/filapp_resources.h>
+#include <math/vec3.h>
 
 namespace FilApp
 {
@@ -12,6 +13,7 @@ FilAppRenderableCreator::create(filament::Engine* engine)
     result.createMaterials();
     return result;
 }
+
 FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
     : m_engine(engine)
 {
@@ -20,6 +22,7 @@ FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
 
 filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
 {
+    CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
     filament::math::float3 minVec(std::numeric_limits<float>::max());
     filament::math::float3 maxVec(std::numeric_limits<float>::lowest());
     for (const auto& vertex: vertices)
@@ -39,6 +42,9 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     PrimitiveType primitiveType)
 
 {
+    CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
+    CORE_PRECONDITION_DEBUG_ASSERT(!indices.empty(), "Indices are empty.");
+
     FilAppRenderable filAppRenderable;
     filAppRenderable.engine = m_engine;
 
@@ -102,6 +108,8 @@ const FilAppRenderableCreator::MatPair& FilAppRenderableCreator::getMaterial(
     FilAppRenderableCreator::FilAppMaterialType filAppMaterialType) const
 {
     auto iter = m_filAppMaterials.find(filAppMaterialType);
+    CORE_POSTCONDITION_DEBUG_ASSERT((iter != m_filAppMaterials.end()),
+                                    "Material not found.");
     return iter->second;
 }
 void FilAppRenderableCreator::destroyMaterials()

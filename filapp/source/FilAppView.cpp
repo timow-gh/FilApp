@@ -5,7 +5,6 @@
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
 #include <filament/TransformManager.h>
-#include <iostream>
 #include <math/mat4.h>
 #include <math/mathfwd.h>
 #include <math/vec3.h>
@@ -62,9 +61,7 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
                 .flightMoveDamping(15.0)
                 .build(cameraMode));
     else
-        assert(false &&
-               "Camera manipulator not "
-               "implemented.");
+        CORE_POSTCONDITION_ASSERT(false, "Camera not implemented.");
 
     m_renderableCreator = FilAppRenderableCreator::create(m_engine);
 
@@ -113,9 +110,11 @@ FilAppView::CameraManipulator* FilAppView::getCameraManipulator()
 
 void FilAppView::configureOrthogonalProjection(float_t near,
                                                float_t far,
-                                               float zoom)
+                                               float_t zoom)
 {
-    const float aspect = (float)m_viewport.width / (float)m_viewport.height;
+    CORE_PRECONDITION_DEBUG_ASSERT(near < far, "Invalid near and far plane.");
+    const float_t aspect =
+        (float_t)m_viewport.width / (float_t)m_viewport.height;
     m_camera->setProjection(filament::Camera::Projection::ORTHO,
                             -aspect * zoom,
                             aspect * zoom,
@@ -199,7 +198,6 @@ void FilAppView::removeRenderable(RenderableId id)
 void FilAppView::updatePosition(RenderableId renderableId, const Vec3& position)
 {
     FilAppRenderable* renderable = findFilAppRenderable(renderableId);
-
     CORE_POSTCONDITION_DEBUG_ASSERT(renderable, "FilAppRenderable not found.");
     if (!renderable)
         return;
