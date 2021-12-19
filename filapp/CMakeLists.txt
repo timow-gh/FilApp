@@ -7,6 +7,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
         include/FilApp/FilAppConversion.hpp
+        include/FilApp/IOHelper.hpp
         )
 
 set(FILAPP_SOURCES

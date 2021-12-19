@@ -48,8 +48,8 @@ class FilAppView : public View {
     FilAppRenderableCreator m_renderableCreator;
     std::vector<FilAppRenderable> m_filAppRenderables;
 
-    float_t m_near{0.1f};
-    float_t m_far{100.0f};
+    float_t m_near{1.0f};
+    float_t m_far{5000.0f};
     float_t m_orthogonalCameraZoom{3.0f};
 
     std::vector<AnimationCallBack> m_animationCallbacks;
@@ -144,14 +144,13 @@ class FilAppView : public View {
     [[nodiscard]] PickRayEvent
     getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const
     {
-        filament::math::float3 origin;
+        filament::math::float3 origin = m_camera->getPosition();
         filament::math::float3 direction;
         m_cameraManipulator->getRay(static_cast<int>(x),
                                     static_cast<int>(y),
                                     &origin,
                                     &direction);
-        return {toGlobalCS(origin), toGlobalCS(direction),
-                time};
+        return {toGlobalCS(origin), toGlobalCS(direction), time};
     }
 };
 } // namespace FilApp

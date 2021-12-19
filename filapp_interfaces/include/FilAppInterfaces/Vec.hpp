@@ -25,8 +25,7 @@ struct Vec
 
     friend std::ostream& operator<<(std::ostream& os, const Vec<SIZE>& vec)
     {
-        os << vec[0] << ", " << vec[1] << ", " << vec[2] << std::endl;
-        return os;
+        return os << vec[0] << ", " << vec[1] << ", " << vec[2];
     }
 };
 

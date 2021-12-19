@@ -51,6 +51,7 @@ class PlacingInteractor : public Interactor {
             m_model->add(flowMeshSphere);
         }
     }
+
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
         if (auto intersection = calcIntersection(pickRayMoveEvent))

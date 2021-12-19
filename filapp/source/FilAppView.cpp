@@ -45,14 +45,21 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_filamentView->setCamera(m_camera);
 
     filament::camutils::Mode cameraMode = calcCameraMode(viewConfig.cameraMode);
+    const Viewport& vport = viewConfig.viewport;
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
+                // TODO Settings
+                .fovDegrees(90)
+                .fovDirection(filament::camutils::Fov::HORIZONTAL)
+                .farPlane(m_far)
                 .orbitHomePosition(eye[0], eye[1], eye[2])
                 .targetPosition(center[0], center[1], center[2])
                 .upVector(up[0], up[1], up[2])
-                .zoomSpeed(1.0)
-                .build(cameraMode));
+                .zoomSpeed(0.01)
+                // TODO mapExtent
+                // .mapExtent()
+                .build(filament::camutils::Mode::ORBIT));
     else if (cameraMode == filament::camutils::Mode::FREE_FLIGHT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
@@ -70,7 +77,7 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
     tcm.setTransform(globalInstance, filCSToGlobalCS4());
 
-    setViewport(viewConfig.viewport);
+    setViewport(vport);
 }
 
 FilAppView::~FilAppView()
@@ -201,11 +208,13 @@ void FilAppView::updatePosition(RenderableId renderableId, const Vec3& position)
     if (!renderable)
         return;
 
+    filament::math::float3 filPos = vec3ToFloat3(position);
     auto& tcm = m_engine->getTransformManager();
-    tcm.setTransform(
-        tcm.getInstance(renderable->renderableEntity),
-        filament::math::mat4f::translation(
-            filament::math::float3{position[0], position[1], position[2]}));
+    auto instance = tcm.getInstance(renderable->renderableEntity);
+    auto trafo = tcm.getTransform(instance);
+    filament::math::float4& matTranslation = trafo[3];
+    matTranslation = filament::math::float4{filPos, 1};
+    tcm.setTransform(instance, trafo);
 }
 
 void FilAppView::clearRenderables()
