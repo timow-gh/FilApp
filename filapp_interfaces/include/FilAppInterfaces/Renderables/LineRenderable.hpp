@@ -1,15 +1,15 @@
 #ifndef FILAPP_LINERENDERABLE_HPP
 #define FILAPP_LINERENDERABLE_HPP
 
+#include <Core/Utils/Assert.hpp>
 #include <FilAppInterfaces/Vertex.hpp>
+#include <cassert>
 #include <utility>
 #include <vector>
-#include <cassert>
 
 namespace FilApp
 {
-class  LineRenderable
-{
+class LineRenderable {
   public:
     LineRenderable(std::vector<Vertex> vertices, std::vector<uint16_t> indices)
         : m_vertices(std::move(vertices)), m_indices(std::move(indices))
@@ -41,7 +41,8 @@ inline LineRenderable LineRenderable::create(const Vertex& start,
 
 inline LineRenderable LineRenderable::create(std::vector<Vertex> vertices)
 {
-    assert(vertices.size() % 2 == 0);
+    CORE_PRECONDITION_ASSERT((vertices.size() % 2 == 0),
+                             "Invalid vertices count.");
     std::vector<uint16_t> indices;
     indices.reserve((vertices.size()));
     const std::size_t SIZE = vertices.size();
