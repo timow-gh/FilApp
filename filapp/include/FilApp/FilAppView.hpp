@@ -61,7 +61,7 @@ class FilAppView : public View {
     // clang-format off
     [[nodiscard]] auto addRenderable(TriangleRenderable&& renderable) -> RenderableId override;
     [[nodiscard]] auto addRenderable(PointRenderable && renderable) -> RenderableId override;
-    [[nodiscard]] auto addRenderable(LineRenderable && renderable) -> RenderableId override;
+    [[nodiscard]] auto addRenderable(LineRenderable && lineRenderable) -> RenderableId override;
     [[nodiscard]] auto getRenderableIdentifiers() const -> std::vector<RenderableId> override;
     void removeRenderable(RenderableId id) override;
     void updatePosition(RenderableId renderableId, const Vec3 & position) override;
@@ -96,6 +96,7 @@ class FilAppView : public View {
     manipulatorKeyFromKeycode(SDL_Scancode scancode,
                               CameraManipulator::Key& key);
 
+    //! Adds the global to filament transformation to all renderables.
     [[nodiscard]] RenderableId
     addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();

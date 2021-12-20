@@ -160,10 +160,10 @@ RenderableId FilAppView::addRenderable(PointRenderable&& pointRenderable)
     return id;
 }
 
-RenderableId FilAppView::addRenderable(LineRenderable&& lineREnderable)
+RenderableId FilAppView::addRenderable(LineRenderable&& lineRenderable)
 {
     auto renderable =
-        std::make_unique<LineRenderable>(std::move(lineREnderable));
+        std::make_unique<LineRenderable>(std::move(lineRenderable));
 
     auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
@@ -373,6 +373,8 @@ RenderableId FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
     auto entity = m_filAppRenderables.back().renderableEntity;
     m_scene->addEntity(entity);
 
+    // Setting the global to filament coordinate system transformation for all
+    // renderables.
     auto& tcm = m_engine->getTransformManager();
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
     auto renderableInstance = tcm.getInstance(entity);

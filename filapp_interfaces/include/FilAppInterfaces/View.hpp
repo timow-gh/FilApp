@@ -32,12 +32,14 @@ class View
     virtual void clearRenderables() = 0;
     // clang-format on
 
+    // Prototype. Filament specific, will be removed
     virtual void setUsePostprocessing(bool usePostProcessing) = 0;
 
+    // Animation prototype
     virtual void addRotationAnimation(RenderableId renderableIdentifier,
                                       const Vec3& rotationAxis) = 0;
-
     virtual void animate(double deltaT) = 0;
+
     [[nodiscard]] virtual Viewport getViewport() const = 0;
     virtual void resize(const Viewport& viewport) = 0;
 };
