@@ -10,6 +10,14 @@
 #include <math/vec3.h>
 #include <utility>
 
+#ifndef NDEBUG
+#define DEBUG_CHECK_CAMERA_MANIP()                                             \
+    CORE_PRECONDITION_DEBUG_ASSERT(m_cameraManipulator,                        \
+                                   "Camera manipulator not set.");
+#else
+#define DEBUG_CHECK_CAMERA_MANIP()
+#endif
+
 namespace FilApp
 {
 FilAppView::FilAppView(const ViewConfig& viewConfig,
@@ -265,18 +273,21 @@ Viewport FilAppView::getViewport() const
 
 void FilAppView::updateViewPort(const Viewport& viewport)
 {
+    CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
+    DEBUG_CHECK_CAMERA_MANIP();
+
     m_viewConfig.viewport = viewport;
     m_filamentViewport = toFilamentViewport(viewport);
     m_filamentView->setViewport(m_filamentViewport);
     configureCameraProjection();
-
-    if (m_cameraManipulator)
-        m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
-                                         static_cast<int>(viewport.height));
+    m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
+                                     static_cast<int>(viewport.height));
 }
 
 void FilAppView::setCamera(filament::Camera* camera)
 {
+    CORE_PRECONDITION_DEBUG_ASSERT(camera, "camera not set.");
+    CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
     m_filamentView->setCamera(camera);
 }
 
@@ -287,18 +298,19 @@ void FilAppView::resize(const Viewport& viewport)
 
 void FilAppView::event(const MouseDownEvent& mouseDownEvent)
 {
-    if (m_cameraManipulator)
-        m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
-                                       static_cast<int>(mouseDownEvent.pos.y),
-                                       mouseDownEvent.button == 3);
+    DEBUG_CHECK_CAMERA_MANIP();
+    m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
+                                   static_cast<int>(mouseDownEvent.pos.y),
+                                   mouseDownEvent.button == 3);
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseDownEvent);
 }
 
 void FilAppView::event(const MouseUpEvent& mouseUpEvent)
 {
-    if (m_cameraManipulator)
-        m_cameraManipulator->grabEnd();
+    DEBUG_CHECK_CAMERA_MANIP();
+
+    m_cameraManipulator->grabEnd();
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseUpEvent);
 
@@ -329,26 +341,25 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
 
 void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 {
-    if (m_cameraManipulator)
+    DEBUG_CHECK_CAMERA_MANIP();
+
+    if (m_viewConfig.cameraProjection ==
+        ViewConfig::CameraProjection::ORTHOGRAPHIC)
     {
-        if (m_viewConfig.cameraProjection ==
-            ViewConfig::CameraProjection::ORTHOGRAPHIC)
-        {
-            m_viewConfig.orthogonalCameraZoom +=
-                mouseWheelEvent.x * m_viewConfig.scrollMultiplierOrthographic;
-            configureCameraProjection();
-        }
-        else
-        {
-            float_t scrollValue =
-                mouseWheelEvent.x * m_viewConfig.scrollMultiplierPerspective;
-            m_cameraManipulator->scroll(0, 0, scrollValue);
-            filament::math::float3 eye;
-            filament::math::float3 target;
-            filament::math::float3 up;
-            m_cameraManipulator->getLookAt(&eye, &target, &up);
-            m_camera->lookAt(eye, target, up);
-        }
+        m_viewConfig.orthogonalCameraZoom +=
+            mouseWheelEvent.x * m_viewConfig.scrollMultiplierOrthographic;
+        configureCameraProjection();
+    }
+    else
+    {
+        float_t scrollValue =
+            mouseWheelEvent.x * m_viewConfig.scrollMultiplierPerspective;
+        m_cameraManipulator->scroll(0, 0, scrollValue);
+        filament::math::float3 eye;
+        filament::math::float3 target;
+        filament::math::float3 up;
+        m_cameraManipulator->getLookAt(&eye, &target, &up);
+        m_camera->lookAt(eye, target, up);
     }
 
     for (auto listener: InputEventDispatcher::m_listener)
@@ -356,26 +367,25 @@ void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 }
 void FilAppView::event(const KeyDownEvent& keyDownEvent)
 {
-    if (m_cameraManipulator)
-    {
-        CameraManipulator::Key key;
-        if (manipulatorKeyFromKeycode(keyDownEvent.sdlScancode, key))
-            m_cameraManipulator->keyDown(key);
-    }
+    DEBUG_CHECK_CAMERA_MANIP();
+
+    CameraManipulator::Key key;
+    if (manipulatorKeyFromKeycode(keyDownEvent.sdlScancode, key))
+        m_cameraManipulator->keyDown(key);
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(keyDownEvent);
 }
 
 void FilAppView::event(const KeyUpEvent& keyUpEvent)
 {
-    if (m_cameraManipulator)
+    DEBUG_CHECK_CAMERA_MANIP();
+
+    CameraManipulator::Key key;
+    if (manipulatorKeyFromKeycode(keyUpEvent.sdlScancode, key))
     {
-        CameraManipulator::Key key;
-        if (manipulatorKeyFromKeycode(keyUpEvent.sdlScancode, key))
-        {
-            m_cameraManipulator->keyDown(key);
-        }
+        m_cameraManipulator->keyDown(key);
     }
+
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(keyUpEvent);
 }
@@ -402,8 +412,8 @@ RenderableId FilAppView::addRenderable(const FilAppRenderable& filAppRenderable)
     auto entity = m_filAppRenderables.back().renderableEntity;
     m_scene->addEntity(entity);
 
-    // Setting the global to filament coordinate system transformation for all
-    // renderables.
+    // Setting the global to filament coordinate system transformation for
+    // all renderables.
     auto& tcm = m_engine->getTransformManager();
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
     auto renderableInstance = tcm.getInstance(entity);

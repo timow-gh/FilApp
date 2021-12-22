@@ -56,7 +56,9 @@ class PlacingInteractor : public Interactor {
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
         std::cout << "Ray origin: \n" << pickRayMoveEvent.origin << std::endl;
-        std::cout << "Ray direction: \n" << pickRayMoveEvent.direction << std::endl << std::endl;
+        std::cout << "Ray direction: \n"
+                  << pickRayMoveEvent.direction << std::endl
+                  << std::endl;
         if (auto intersection = calcIntersection(pickRayMoveEvent))
         {
             if (!m_sphereGuid)
