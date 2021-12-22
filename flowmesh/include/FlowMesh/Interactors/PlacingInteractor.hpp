@@ -19,7 +19,6 @@ namespace FlowMesh
 class PlacingInteractor : public Interactor {
     FlowMesh::FlowMeshModel* m_model;
     std::optional<FGuid> m_sphereGuid;
-    std::optional<FGuid> m_rayGuid;
 
   public:
     explicit PlacingInteractor(FlowMeshModel* model) : m_model(model) {}
@@ -40,7 +39,7 @@ class PlacingInteractor : public Interactor {
         const Geometry::Ray3<double_t> ray{
             LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
             LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
-        const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Y_VEC3D};
+        const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
         return plane.intersection(ray);
     }
 
@@ -55,10 +54,6 @@ class PlacingInteractor : public Interactor {
 
     void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
     {
-        std::cout << "Ray origin: \n" << pickRayMoveEvent.origin << std::endl;
-        std::cout << "Ray direction: \n"
-                  << pickRayMoveEvent.direction << std::endl
-                  << std::endl;
         if (auto intersection = calcIntersection(pickRayMoveEvent))
         {
             if (!m_sphereGuid)
@@ -69,23 +64,6 @@ class PlacingInteractor : public Interactor {
                 return;
             }
             m_model->setPosition(*m_sphereGuid, *intersection);
-            std::cout << "Intersection: \n" << *intersection << std::endl;
-
-            //            if (m_rayGuid)
-            //                m_model->remove(*m_rayGuid);
-            //            LinAl::Vec3d source{pickRayMoveEvent.origin[0],
-            //                                pickRayMoveEvent.origin[1],
-            //                                pickRayMoveEvent.origin[2]};
-            //            LinAl::Vec3d direction{pickRayMoveEvent.direction[0],
-            //                                   pickRayMoveEvent.direction[1],
-            //                                   pickRayMoveEvent.direction[2]};
-            //            std::cout << source << std::endl;
-            //            std::cout << direction << std::endl;
-            //            FlowMeshSegments segments{
-            //                Geometry::Segment3d{source, *intersection},
-            //                newFGuid()};
-            //            m_model->add(segments);
-            //            m_rayGuid = segments.getFGuid();
         }
     }
 };

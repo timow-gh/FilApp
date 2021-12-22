@@ -42,7 +42,7 @@ struct ViewConfig
     float_t far{5000.0f};
     float_t orthogonalCameraZoom{10.0f};
     CameraMode cameraMode = CameraMode::ORBIT;
-    CameraProjection cameraProjection = CameraProjection::ORTHOGRAPHIC;
+    CameraProjection cameraProjection = CameraProjection::PERSPECTIVE;
     float_t scrollMultiplierOrthographic{0.1};
     float_t scrollMultiplierPerspective{50};
     FieldOfViewDirection fovDirection = FieldOfViewDirection::HORIZONTAL;

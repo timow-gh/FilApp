@@ -286,7 +286,7 @@ void FilAppView::updateViewPort(const Viewport& viewport)
 
 void FilAppView::setCamera(filament::Camera* camera)
 {
-    CORE_PRECONDITION_DEBUG_ASSERT(camera, "camera not set.");
+    CORE_PRECONDITION_DEBUG_ASSERT(camera, "Camera not set.");
     CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
     m_filamentView->setCamera(camera);
 }
@@ -430,5 +430,80 @@ void FilAppView::clearFilAppRenderables()
         renderable.destroy();
     }
     m_filAppRenderables.clear();
+}
+
+void FilAppView::eraseRenderable(RenderableId id)
+{
+    eraseFromMap(m_pointRenderables, id);
+    eraseFromMap(m_lineRenderables, id);
+    eraseFromMap(m_triangleRenderables, id);
+}
+
+FilAppRenderable* FilAppView::findFilAppRenderable(RenderableId id)
+
+{
+    if (!std::is_sorted(m_filAppRenderables.begin(),
+                        m_filAppRenderables.end()))
+        std::sort(m_filAppRenderables.begin(), m_filAppRenderables.end());
+
+    utils::Entity entity = utils::Entity::import(id.getId());
+    auto iter = std::lower_bound(
+        m_filAppRenderables.begin(),
+        m_filAppRenderables.end(),
+        entity,
+        [](const FilAppRenderable& filAppRenderable, utils::Entity entity)
+        {
+            return filAppRenderable.renderableEntity < entity;
+        });
+    if (iter != m_filAppRenderables.cend())
+        return &(*iter);
+    return nullptr;
+}
+
+PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x,
+                                             std::size_t y,
+                                             double_t time) const
+{
+    const float_t width = static_cast<float_t>(m_viewConfig.viewport.width);
+    const float_t height = static_cast<float_t>(m_viewConfig.viewport.height);
+
+    // Viewport coordinates to normalized device coordinates
+    const float_t u = 2.0f * (0.5f + x) / width - 1.0f;
+    const float_t v = 2.0f * (0.5f + y) / height - 1.0f;
+
+    const filament::math::float3 cameraForward = m_camera->getForwardVector();
+    const filament::math::float3 right =
+        normalize(cross(cameraForward, m_camera->getUpVector()));
+    const filament::math::float3 upward = cross(right, cameraForward);
+    const float_t aspect = width / height;
+    const float_t fov = static_cast<float_t>(m_viewConfig.fieldOfViewInDegree) *
+                        filament::math::f::PI / 180.0f;
+
+    filament::math::float3 origin = m_camera->getPosition();
+    filament::math::float3 direction = cameraForward;
+    if (m_viewConfig.cameraProjection ==
+        ViewConfig::CameraProjection::PERSPECTIVE)
+    {
+        const float_t tangent = std::tan(fov / 2.0f);
+        if (toFilamentFovDirection(m_viewConfig.fovDirection,
+                                   FilamentCameraTag()) ==
+            filament::Camera::Fov::VERTICAL)
+        {
+            direction += right * tangent * u * aspect;
+            direction += upward * tangent * v;
+        }
+        else
+        {
+            direction += right * tangent * u;
+            direction += upward * tangent * v / aspect;
+        }
+    }
+    else
+        CORE_POSTCONDITION_DEBUG_ASSERT(
+            false,
+            "Picking for this camera projetion not implemented.");
+
+    direction = normalize(direction);
+    return PickRayEvent{toGlobalCS(origin), toGlobalCS(direction), time};
 }
 } // namespace FilApp
