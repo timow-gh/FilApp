@@ -18,7 +18,7 @@ void FilApplication::init(const AppConfig& appConfig,
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
     m_app = std::make_unique<FilApplication>();
     m_app->m_engine =
-        filament::Engine::create(calcFilamentBackend(appConfig.backendMode));
+        filament::Engine::create(toFilamentBackend(appConfig.backendMode));
     m_app->m_window =
         std::make_unique<FilAppWindow>(windowConfig, &FilApplication::get());
     m_app->m_appConfig = appConfig;
@@ -53,7 +53,6 @@ void FilApplication::run()
                      (double_t)SDL_GetPerformanceFrequency();
 
     EventPollingMode eventPollingMode = m_appConfig.eventPollingMode;
-    double_t prevDeltaT{FilApplication::getDeltaT()};
     while (!m_closeApp)
     {
         double_t deltaT = FilApplication::getDeltaT();

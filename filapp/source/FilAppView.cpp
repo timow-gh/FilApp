@@ -14,7 +14,9 @@ namespace FilApp
 {
 FilAppView::FilAppView(const ViewConfig& viewConfig,
                        filament::Renderer& renderer)
-    : m_engine(renderer.getEngine()), m_name(viewConfig.name)
+    : m_engine(renderer.getEngine())
+    , m_name(viewConfig.name)
+    , m_viewConfig(viewConfig)
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
@@ -40,32 +42,27 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     const filament::math::float3 eye = toFilamentCS(viewConfig.eye);
     const filament::math::float3 center = toFilamentCS(viewConfig.center);
     const filament::math::float3 up = toFilamentCS(viewConfig.up);
-
     m_camera->lookAt(eye, center, up);
     m_filamentView->setCamera(m_camera);
 
-    filament::camutils::Mode cameraMode = calcCameraMode(viewConfig.cameraMode);
+    filament::camutils::Mode cameraMode =
+        toFilamentCameraMode(viewConfig.cameraMode);
     const Viewport& vport = viewConfig.viewport;
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
                 // TODO Settings
-                .fovDegrees(90)
-                .fovDirection(filament::camutils::Fov::HORIZONTAL)
-                .farPlane(m_far)
+                .fovDegrees(m_viewConfig.fieldOfViewInDegree)
+                .fovDirection(toFilamentFovDirection(m_viewConfig.fovDirection,
+                                                     FilamentCamUtilsTag()))
+                .farPlane(m_viewConfig.far)
                 .orbitHomePosition(eye[0], eye[1], eye[2])
                 .targetPosition(center[0], center[1], center[2])
                 .upVector(up[0], up[1], up[2])
                 .zoomSpeed(0.01)
                 // TODO mapExtent
                 // .mapExtent()
-                .build(filament::camutils::Mode::ORBIT));
-    else if (cameraMode == filament::camutils::Mode::FREE_FLIGHT)
-        m_cameraManipulator = std::unique_ptr<CameraManipulator>(
-            CameraManipulator::Builder()
-                .flightStartPosition(eye[0], eye[1], eye[2])
-                .flightMoveDamping(15.0)
-                .build(cameraMode));
+                .build(toFilamentCameraMode(m_viewConfig.cameraMode)));
     else
         CORE_POSTCONDITION_ASSERT(false, "Camera not implemented.");
 
@@ -77,7 +74,7 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
     tcm.setTransform(globalInstance, filCSToGlobalCS4());
 
-    setViewport(vport);
+    updateViewPort(m_viewConfig.viewport);
 }
 
 FilAppView::~FilAppView()
@@ -114,20 +111,35 @@ FilAppView::CameraManipulator* FilAppView::getCameraManipulator()
     return m_cameraManipulator.get();
 }
 
-void FilAppView::configureOrthogonalProjection(float_t near,
-                                               float_t far,
-                                               float_t zoom)
+void FilAppView::configureCameraProjection()
 {
-    CORE_PRECONDITION_DEBUG_ASSERT(near < far, "Invalid near and far plane.");
+    CORE_PRECONDITION_DEBUG_ASSERT(m_viewConfig.near < m_viewConfig.far,
+                                   "Invalid near and far plane.");
     const float_t aspect =
-        (float_t)m_viewport.width / (float_t)m_viewport.height;
-    m_camera->setProjection(filament::Camera::Projection::ORTHO,
-                            -aspect * zoom,
-                            aspect * zoom,
-                            -zoom,
-                            zoom,
-                            near,
-                            far);
+        (float_t)m_filamentViewport.width / (float_t)m_filamentViewport.height;
+
+    switch (m_viewConfig.cameraProjection)
+    {
+    case ViewConfig::CameraProjection::ORTHOGRAPHIC:
+        m_camera->setProjection(
+            toFilamentProjection(m_viewConfig.cameraProjection),
+            -aspect * m_viewConfig.orthogonalCameraZoom,
+            aspect * m_viewConfig.orthogonalCameraZoom,
+            -m_viewConfig.orthogonalCameraZoom,
+            m_viewConfig.orthogonalCameraZoom,
+            m_viewConfig.near,
+            m_viewConfig.far);
+        break;
+    case ViewConfig::CameraProjection::PERSPECTIVE:
+        m_camera->setProjection(
+            m_viewConfig.fieldOfViewInDegree,
+            aspect,
+            m_viewConfig.near,
+            m_viewConfig.far,
+            toFilamentFovDirection(m_viewConfig.fovDirection,
+                                   FilamentCameraTag()));
+        break;
+    }
 }
 
 RenderableId FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
@@ -245,17 +257,19 @@ void FilAppView::addRotationAnimation(RenderableId renderableIdentifier,
 
 Viewport FilAppView::getViewport() const
 {
-    return {m_viewport.left,
-            m_viewport.bottom,
-            m_viewport.width,
-            m_viewport.height};
+    return {m_filamentViewport.left,
+            m_filamentViewport.bottom,
+            m_filamentViewport.width,
+            m_filamentViewport.height};
 }
 
-void FilAppView::setViewport(const Viewport& viewport)
+void FilAppView::updateViewPort(const Viewport& viewport)
 {
-    m_viewport = calcViewport(viewport);
-    m_filamentView->setViewport(m_viewport);
-    configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
+    m_viewConfig.viewport = viewport;
+    m_filamentViewport = toFilamentViewport(viewport);
+    m_filamentView->setViewport(m_filamentViewport);
+    configureCameraProjection();
+
     if (m_cameraManipulator)
         m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
                                          static_cast<int>(viewport.height));
@@ -268,7 +282,7 @@ void FilAppView::setCamera(filament::Camera* camera)
 
 void FilAppView::resize(const Viewport& viewport)
 {
-    setViewport(viewport);
+    updateViewPort(viewport);
 }
 
 void FilAppView::event(const MouseDownEvent& mouseDownEvent)
@@ -317,9 +331,24 @@ void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 {
     if (m_cameraManipulator)
     {
-        m_cameraManipulator->scroll(0, 0, mouseWheelEvent.x);
-        m_orthogonalCameraZoom -= mouseWheelEvent.x * 1.5;
-        configureOrthogonalProjection(m_near, m_far, m_orthogonalCameraZoom);
+        if (m_viewConfig.cameraProjection ==
+            ViewConfig::CameraProjection::ORTHOGRAPHIC)
+        {
+            m_viewConfig.orthogonalCameraZoom +=
+                mouseWheelEvent.x * m_viewConfig.scrollMultiplierOrthographic;
+            configureCameraProjection();
+        }
+        else
+        {
+            float_t scrollValue =
+                mouseWheelEvent.x * m_viewConfig.scrollMultiplierPerspective;
+            m_cameraManipulator->scroll(0, 0, scrollValue);
+            filament::math::float3 eye;
+            filament::math::float3 target;
+            filament::math::float3 up;
+            m_cameraManipulator->getLookAt(&eye, &target, &up);
+            m_camera->lookAt(eye, target, up);
+        }
     }
 
     for (auto listener: InputEventDispatcher::m_listener)
@@ -392,5 +421,4 @@ void FilAppView::clearFilAppRenderables()
     }
     m_filAppRenderables.clear();
 }
-
 } // namespace FilApp

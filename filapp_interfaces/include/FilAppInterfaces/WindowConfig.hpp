@@ -5,11 +5,6 @@
 
 namespace FilApp
 {
-enum class CameraMode
-{
-    ORBIT
-};
-
 struct  WindowConfig
 {
     std::string windowName = "MainWindow";
@@ -17,7 +12,6 @@ struct  WindowConfig
     bool isResizable = true;
     uint32_t width = 1024;
     uint32_t height = 640;
-    CameraMode cameraMode = CameraMode::ORBIT;
 };
 } // namespace FilApp
 

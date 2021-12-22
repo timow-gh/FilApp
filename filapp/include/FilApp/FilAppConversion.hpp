@@ -3,9 +3,12 @@
 
 #include <FilAppInterfaces/AppConfig.hpp>
 #include <FilAppInterfaces/Vec.hpp>
+#include <FilAppInterfaces/ViewConfig.hpp>
 #include <FilAppInterfaces/Viewport.hpp>
 #include <FilAppInterfaces/WindowConfig.hpp>
 #include <camutils/Bookmark.h>
+#include <camutils/Manipulator.h>
+#include <filament/Camera.h>
 #include <filament/Engine.h>
 #include <filament/Viewport.h>
 #include <math/vec3.h>
@@ -18,9 +21,31 @@ namespace FilApp
  * data types.
  */
 
-filament::Engine::Backend calcFilamentBackend(BackendMode backendMode);
-filament::camutils::Mode calcCameraMode(CameraMode cameraMode);
-filament::Viewport calcViewport(const Viewport& viewport);
+filament::Engine::Backend toFilamentBackend(BackendMode backendMode);
+
+filament::camutils::Mode
+toFilamentCameraMode(ViewConfig::CameraMode cameraMode);
+
+filament::Camera::Projection
+toFilamentProjection(ViewConfig::CameraProjection cameraProjection);
+
+/*
+ * Fov is declared in filament::Camera and filament::camutils.
+ * Use tag dispatch to differentiate the two conversion functions.
+ */
+// clang-format off
+struct FilamentCameraTag{};
+struct FilamentCamUtilsTag{};
+// clang-format on
+
+filament::camutils::Fov
+toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
+                       FilamentCamUtilsTag);
+filament::Camera::Fov
+toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
+                       FilamentCameraTag);
+
+filament::Viewport toFilamentViewport(const Viewport& viewport);
 
 filament::math::float4 vec4ToFloat4(const Vec4& vec4);
 filament::math::float3 vec3ToFloat3(const Vec3& vec3);
