@@ -296,43 +296,56 @@ void FilAppView::resize(const Viewport& viewport)
     updateViewPort(viewport);
 }
 
-void FilAppView::event(const MouseDownEvent& mouseDownEvent)
+void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
 {
     DEBUG_CHECK_CAMERA_MANIP();
-    m_cameraManipulator->grabBegin(static_cast<int>(mouseDownEvent.pos.x),
-                                   static_cast<int>(mouseDownEvent.pos.y),
-                                   mouseDownEvent.button == 3);
+    switch (mouseButtonEvent.type)
+    {
+    case MouseButtonEvent::Type::PUSH:
+    {
+        if (mouseButtonEvent.buttonIndex == 2 ||
+            mouseButtonEvent.buttonIndex == 3)
+        {
+            m_cameraManipulator->grabBegin(static_cast<int>(mouseButtonEvent.x),
+                                           static_cast<int>(mouseButtonEvent.y),
+                                           mouseButtonEvent.buttonIndex == 2);
+        }
+        break;
+    }
+    case MouseButtonEvent::Type::REPEAT: break;
+    case MouseButtonEvent::Type::RELEASE:
+    {
+        if (mouseButtonEvent.buttonIndex == 1)
+        {
+            PickRayEvent pickRayEvent =
+                getPickRayMoveEvent(mouseButtonEvent.x,
+                                    mouseButtonEvent.y,
+                                    mouseButtonEvent.deltaT);
+            for (RayPickEventListener* listener:
+                 RayPickEventDispatcher::m_listener)
+                listener->event(pickRayEvent);
+        }
+        m_cameraManipulator->grabEnd();
+        break;
+    }
+    }
+
     for (auto listener: InputEventDispatcher::m_listener)
-        listener->event(mouseDownEvent);
-}
-
-void FilAppView::event(const MouseUpEvent& mouseUpEvent)
-{
-    DEBUG_CHECK_CAMERA_MANIP();
-
-    m_cameraManipulator->grabEnd();
-    for (auto listener: InputEventDispatcher::m_listener)
-        listener->event(mouseUpEvent);
-
-    PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseUpEvent.pos.x,
-                                                    mouseUpEvent.pos.y,
-                                                    mouseUpEvent.time);
-    for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
-        listener->event(pickRayEvent);
+        listener->event(mouseButtonEvent);
 }
 
 void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
 {
-    const int x = static_cast<int>(mouseMoveEvent.pos.x);
-    const int y = static_cast<int>(mouseMoveEvent.pos.y);
+    const int x = static_cast<int>(mouseMoveEvent.x);
+    const int y = static_cast<int>(mouseMoveEvent.y);
     if (m_cameraManipulator)
         m_cameraManipulator->grabUpdate(x, y);
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseMoveEvent);
 
-    PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseMoveEvent.pos.x,
-                                                    mouseMoveEvent.pos.y,
-                                                    mouseMoveEvent.time);
+    PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseMoveEvent.x,
+                                                    mouseMoveEvent.y,
+                                                    mouseMoveEvent.deltaT);
     for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
         listener->event(PickRayMoveEvent(pickRayEvent.origin,
                                          pickRayEvent.direction,
@@ -442,8 +455,7 @@ void FilAppView::eraseRenderable(RenderableId id)
 FilAppRenderable* FilAppView::findFilAppRenderable(RenderableId id)
 
 {
-    if (!std::is_sorted(m_filAppRenderables.begin(),
-                        m_filAppRenderables.end()))
+    if (!std::is_sorted(m_filAppRenderables.begin(), m_filAppRenderables.end()))
         std::sort(m_filAppRenderables.begin(), m_filAppRenderables.end());
 
     utils::Entity entity = utils::Entity::import(id.getId());

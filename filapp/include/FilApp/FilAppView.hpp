@@ -2,6 +2,7 @@
 #define FILAPP_FILAPPVIEW_HPP
 
 #include "FilAppConversion.hpp"
+#include "FilAppInterfaces/InputEvents/KeyDownEvent.hpp"
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <FilAppInterfaces/View.hpp>
@@ -77,12 +78,11 @@ class FilAppView : public View {
     void setCamera(filament::Camera* camera);
     void resize(const Viewport& viewport) override;
 
-    void event(const MouseDownEvent& mouseDownEvent) override;
-    void event(const MouseUpEvent& mouseUpEvent) override;
+    void event(const MouseButtonEvent& mouseButtonEvent) override;
     void event(const MouseMoveEvent& mouseMoveEvent) override;
     void event(const MouseWheelEvent& mouseWheelEvent) override;
-    void event(const KeyDownEvent& keyDownEvent) override;
     void event(const KeyUpEvent& keyUpEvent) override;
+    void event(const KeyDownEvent& keyUpEvent) override;
 
     void animate(double deltaT) override;
 

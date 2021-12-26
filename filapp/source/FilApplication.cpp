@@ -1,6 +1,6 @@
 #include "FilApp/FilApplication.hpp"
-#include "FilApp/FilAppWindow.hpp"
 #include "FilApp/FilAppConversion.hpp"
+#include "FilApp/FilAppWindow.hpp"
 #include <SDL.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
@@ -70,28 +70,62 @@ void FilApplication::run()
         {
         case SDL_QUIT: m_closeApp = true; break;
         case SDL_KEYDOWN:
+        {
             if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                 m_closeApp = true;
-            m_window->keyDown(event.key.keysym.scancode, deltaT);
+            m_window->event(KeyDownEvent(event.key.keysym.scancode, deltaT));
             break;
+        }
         case SDL_KEYUP:
-            m_window->keyUp(event.key.keysym.scancode, deltaT);
+        {
+            m_window->event(KeyUpEvent(event.key.keysym.scancode, deltaT));
             break;
+        }
         case SDL_MOUSEWHEEL:
             m_window->mouseWheel(static_cast<float_t>(event.wheel.y), deltaT);
             break;
         case SDL_MOUSEBUTTONDOWN:
-            m_window->mouseDown(event.button.button,
-                                event.button.x,
-                                event.button.y,
-                                deltaT);
+        {
+            filament::math::int2 pos =
+                m_window->fixupMouseCoordinatesForHdpi(event.button.x,
+                                                       event.button.y);
+            m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
+                                             event.button.button,
+                                             event.button.timestamp,
+                                             event.button.windowID,
+                                             event.button.clicks,
+                                             pos.x,
+                                             pos.y,
+                                             deltaT));
             break;
+        }
         case SDL_MOUSEBUTTONUP:
-            m_window->mouseUp(event.button.x, event.button.y, deltaT);
+        {
+            filament::math::int2 pos =
+                m_window->fixupMouseCoordinatesForHdpi(event.button.x,
+                                                       event.button.y);
+            m_window->event(MouseButtonEvent(MouseButtonEvent::Type::RELEASE,
+                                             event.button.button,
+                                             event.button.timestamp,
+                                             event.button.windowID,
+                                             event.button.clicks,
+                                             pos.x,
+                                             pos.y,
+                                             deltaT));
             break;
+        }
         case SDL_MOUSEMOTION:
-            m_window->mouseMove(event.motion.x, event.motion.y, deltaT);
+        {
+            filament::math::int2 pos =
+                m_window->fixupMouseCoordinatesForHdpi(event.button.x,
+                                                       event.button.y);
+            m_window->event(MouseMoveEvent(event.button.timestamp,
+                                           event.button.windowID,
+                                           pos.x,
+                                           pos.y,
+                                           deltaT));
             break;
+        }
         case SDL_WINDOWEVENT:
             switch (event.window.event)
             {

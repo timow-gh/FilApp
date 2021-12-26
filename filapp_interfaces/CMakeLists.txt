@@ -18,13 +18,14 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterfaces/InputEvents/MouseUpEvent.hpp
         include/FilAppInterfaces/InputEvents/MouseMoveEvent.hpp
         include/FilAppInterfaces/InputEvents/MouseWheelEvent.hpp
-        include/FilAppInterfaces/InputEvents/KeyDownEvent.hpp
         include/FilAppInterfaces/InputEvents/KeyUpEvent.hpp
+        include/FilAppInterfaces/InputEvents/KeyDownEvent.hpp
         include/FilAppInterfaces/InputEvents/PickRayEvent.hpp
         include/FilAppInterfaces/InputEvents/RayPickEventListener.hpp
         include/FilAppInterfaces/InputEvents/PickRayMoveEvent.hpp
         include/FilAppInterfaces/InputEvents/RayPickEventDispatcher.hpp
         include/FilAppInterfaces/InputEvents/DispatcherBase.hpp
+        include/FilAppInterfaces/InputEvents/MouseButtonEvent.hpp
         )
 
 add_library(filapp::interfaces ALIAS filapp_interfaces)

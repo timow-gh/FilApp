@@ -9,10 +9,10 @@ namespace FilApp
 struct KeyUpEvent
 {
     SDL_Scancode sdlScancode;
-    double_t time;
+    double_t deltaT;
 
-    KeyUpEvent(SDL_Scancode sdlScancode, double_t time)
-        : sdlScancode(sdlScancode), time(time)
+    KeyUpEvent(SDL_Scancode sdlScancode, double_t deltaT)
+        : sdlScancode(sdlScancode), deltaT(deltaT)
     {
     }
 };

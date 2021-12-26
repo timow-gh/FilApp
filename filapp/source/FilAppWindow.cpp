@@ -1,11 +1,13 @@
-#include "FilApp/FilAppWindow.hpp"
-#include "FilApp/FilAppConversion.hpp"
-#include "NativeWindowHelper.hpp"
+#include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppWindow.hpp>
+#include <FilAppInterfaces/InputEvents/KeyUpEvent.hpp>
+#include <NativeWindowHelper.hpp>
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
 
 namespace FilApp
 {
+
 FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
                            FilApplication* application)
 {
@@ -53,35 +55,70 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
     m_views.emplace_back(std::make_unique<FilAppView>(viewConfig, *m_renderer));
     m_mainView = m_views.back().get();
 }
-void FilAppWindow::mouseDown(int button, size_t x, size_t y, double_t deltaT)
+
+void FilAppWindow::event(const MouseButtonEvent& evt)
 {
-    fixupMouseCoordinatesForHdpi(x, y);
-    y = m_height - y;
-    m_mainView->event(MouseDownEvent(button, x, y, deltaT));
+    m_mainView->event(evt);
     for (const auto& view: m_views)
     {
-        if (intersects(view->getViewport(), x, y))
+        if (intersects(view->getViewport(), evt.x, evt.y))
         {
-
-            view->event(MouseDownEvent(button, x, y, deltaT));
+            view->event(evt);
             break;
         }
     }
 }
-void FilAppWindow::mouseUp(size_t x, size_t y, double_t deltaT)
+
+void FilAppWindow::event(const MouseMoveEvent& evt)
 {
-    fixupMouseCoordinatesForHdpi(x, y);
-    y = m_height - y;
-    m_mainView->event(MouseUpEvent(x, y, deltaT));
+    m_mainView->event(evt);
+    for (const auto& view: m_views)
+    {
+        if (intersects(view->getViewport(), evt.x, evt.y))
+        {
+            view->event(evt);
+            break;
+        }
+    }
+    m_lastX = evt.x;
+    m_lastY = evt.y;
 }
-void FilAppWindow::mouseMove(size_t x, size_t y, double_t deltaT)
+
+void FilAppWindow::event(const KeyUpEvent& keyUpEvent)
 {
-    fixupMouseCoordinatesForHdpi(x, y);
-    y = m_height - y;
-    m_mainView->event(MouseMoveEvent(x, y, deltaT));
-    m_lastX = x;
-    m_lastY = y;
+    auto& eventTargetView = m_keyEventTarget[keyUpEvent.sdlScancode];
+    if (!eventTargetView)
+        return;
+    eventTargetView->event(
+        KeyUpEvent(keyUpEvent.sdlScancode, keyUpEvent.deltaT));
+    eventTargetView = nullptr;
 }
+
+void FilAppWindow::event(const KeyDownEvent& keyDownEvent)
+{
+    auto& eventTarget = m_keyEventTarget[keyDownEvent.sdlScancode];
+
+    // event events can be sent multiple times per key (for key repeat)
+    // If this key is already down, do nothing.
+    if (eventTarget)
+        return;
+
+    // Decide which view will get this key's corresponding event event.
+    // If we're currently in a mouse grap session, it should be the mouse grab's
+    // target view. Otherwise, it should be whichever view we're currently
+    // hovering over.
+    m_mainView->event(keyDownEvent);
+
+    for (auto const& view: m_views)
+    {
+        if (intersects(view->getViewport(), m_lastX, m_lastY))
+        {
+            view->event(keyDownEvent);
+            break;
+        }
+    }
+}
+
 void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
     m_mainView->event(MouseWheelEvent(x, deltaT));
@@ -94,42 +131,12 @@ void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
         }
     }
 }
-void FilAppWindow::keyDown(SDL_Scancode scancode, double_t deltaT)
-{
-    auto& eventTarget = m_keyEventTarget[scancode];
 
-    // event events can be sent multiple times per key (for key repeat)
-    // If this key is already down, do nothing.
-    if (eventTarget)
-        return;
-
-    // Decide which view will get this key's corresponding event event.
-    // If we're currently in a mouse grap session, it should be the mouse grab's
-    // target view. Otherwise, it should be whichever view we're currently
-    // hovering over.
-    m_mainView->event(KeyDownEvent(scancode, deltaT));
-
-    for (auto const& view: m_views)
-    {
-        if (intersects(view->getViewport(), m_lastX, m_lastY))
-        {
-            view->event(KeyDownEvent(scancode, deltaT));
-            break;
-        }
-    }
-}
-void FilAppWindow::keyUp(SDL_Scancode scancode, double_t deltaT)
-{
-    auto& eventTargetView = m_keyEventTarget[scancode];
-    if (!eventTargetView)
-        return;
-    eventTargetView->event(KeyUpEvent(scancode, deltaT));
-    eventTargetView = nullptr;
-}
 FilAppWindow::~FilAppWindow()
 {
     SDL_DestroyWindow(m_sdlWindow);
 }
+
 std::vector<View*> FilAppWindow::getIViews()
 {
     std::vector<View*> views;
@@ -137,39 +144,66 @@ std::vector<View*> FilAppWindow::getIViews()
         views.push_back(filappview.get());
     return views;
 }
+
 Window::WindowId FilAppWindow::getIWindowId()
 {
     return m_windowId;
 }
+
+SDL_Window* FilAppWindow::getSdlWindow() const
+{
+    return m_sdlWindow;
+}
+
 uint32_t FilAppWindow::getWidth() const
 {
     return m_width;
 }
+
 uint32_t FilAppWindow::getHeight() const
 {
     return m_height;
 }
+
 FilAppView* FilAppWindow::getMainFilAppView()
 {
     return m_mainView;
 }
+
 filament::Renderer* FilAppWindow::getRenderer()
 {
     return m_renderer;
 }
+
 filament::SwapChain* FilAppWindow::getSwapChain()
 {
     return m_swapChain;
 }
+
+filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x,
+                                                                uint32_t y) const
+
+{
+    int dw, dh, ww, wh;
+    SDL_GL_GetDrawableSize(m_sdlWindow, &dw, &dh);
+    SDL_GetWindowSize(m_sdlWindow, &ww, &wh);
+    x = x * dw / ww;
+    y = y * dh / wh;
+    y = m_height - y;
+    return filament::math::int2{x, y};
+}
+
 void FilAppWindow::resize()
 {
     if (m_sdlWindow)
         m_mainView->resize(calcWindowViewport());
 }
+
 View* FilAppWindow::getMainIView()
 {
     return m_mainView;
 }
+
 void FilAppWindow::render()
 {
     if (m_renderer->beginFrame(getSwapChain()))
@@ -179,6 +213,7 @@ void FilAppWindow::render()
         m_renderer->endFrame();
     }
 }
+
 void FilAppWindow::animate(double_t deltaT)
 {
     if (auto mainViewManip = m_mainView->getCameraManipulator())
@@ -194,6 +229,7 @@ void FilAppWindow::animate(double_t deltaT)
     for (auto& filappview: m_views)
         filappview->animate(deltaT);
 }
+
 bool intersects(const Viewport& viewport, size_t x, size_t y)
 {
     if (x >= viewport.left && x < viewport.left + viewport.width)
@@ -201,14 +237,7 @@ bool intersects(const Viewport& viewport, size_t x, size_t y)
             return true;
     return false;
 }
-void FilAppWindow::fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const
-{
-    int dw, dh, ww, wh;
-    SDL_GL_GetDrawableSize(m_sdlWindow, &dw, &dh);
-    SDL_GetWindowSize(m_sdlWindow, &ww, &wh);
-    x = x * dw / ww;
-    y = y * dh / wh;
-}
+
 Viewport FilAppWindow::calcWindowViewport()
 {
     SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);

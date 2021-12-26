@@ -1,6 +1,8 @@
 #ifndef FILAPP_FILAPPWINDOW_HPP
 #define FILAPP_FILAPPWINDOW_HPP
 
+#include "FilAppInterfaces/InputEvents/KeyDownEvent.hpp"
+#include "FilAppInterfaces/InputEvents/MouseButtonEvent.hpp"
 #include "FilAppInterfaces/Window.hpp"
 #include "FilAppInterfaces/WindowConfig.hpp"
 #include "FilAppView.hpp"
@@ -15,8 +17,7 @@
 namespace FilApp
 {
 
-class FilAppWindow
-    : public Window {
+class FilAppWindow : public Window {
     SDL_Window* m_sdlWindow = nullptr;
     Window::WindowId m_windowId{0};
     FilApplication* m_application = nullptr;
@@ -41,32 +42,34 @@ class FilAppWindow
     FilAppWindow& operator=(FilAppWindow&& window) = default;
     ~FilAppWindow() override;
 
-    void mouseDown(int button, size_t x, size_t y, double_t deltaT);
-    void mouseUp(size_t x, size_t y, double_t deltaT);
-    void mouseMove(size_t x, size_t y, double_t deltaT);
+    void event(const MouseButtonEvent& mouseButtonEvent);
+    void event(const MouseMoveEvent& mouseMoveEvent);
+    void event(const KeyUpEvent& keyUpEvent);
+    void event(const KeyDownEvent& keyDownEvent);
     void mouseWheel(float_t x, double_t deltaT);
-    void keyDown(SDL_Scancode scancode, double_t deltaT);
-    void keyUp(SDL_Scancode scancode, double_t deltaT);
 
     void resize();
     void animate(double_t deltaT);
     void render();
 
-    [[nodiscard]] View* getMainIView() override;
-    [[nodiscard]] std::vector<View*> getIViews() override;
+    CORE_NODISCARD View* getMainIView() override;
+    CORE_NODISCARD std::vector<View*> getIViews() override;
 
     WindowId getIWindowId() override;
 
-    [[nodiscard]] uint32_t getWidth() const;
-    [[nodiscard]] uint32_t getHeight() const;
+    CORE_NODISCARD SDL_Window* getSdlWindow() const;
+    CORE_NODISCARD uint32_t getWidth() const;
+    CORE_NODISCARD uint32_t getHeight() const;
 
-    [[nodiscard]] FilAppView* getMainFilAppView();
-    [[nodiscard]] filament::Renderer* getRenderer();
-    [[nodiscard]] filament::SwapChain* getSwapChain();
+    CORE_NODISCARD FilAppView* getMainFilAppView();
+    CORE_NODISCARD filament::Renderer* getRenderer();
+    CORE_NODISCARD filament::SwapChain* getSwapChain();
+
+    filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x,
+                                                      uint32_t y) const;
 
   private:
-    void fixupMouseCoordinatesForHdpi(size_t& x, size_t& y) const;
-    [[nodiscard]] Viewport calcWindowViewport();
+    CORE_NODISCARD Viewport calcWindowViewport();
 };
 
 bool intersects(const Viewport& viewport, size_t x, size_t y);

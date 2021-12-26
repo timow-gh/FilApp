@@ -1,21 +1,29 @@
 #ifndef FILAPP_MOUSEMOVEEVENT_HPP
 #define FILAPP_MOUSEMOVEEVENT_HPP
 
-#include <FilAppInterfaces/InputEvents/EvtPos.hpp>
 #include <cmath>
 
 namespace FilApp
 {
+
 struct MouseMoveEvent
 {
-    EvtPos pos;
-    double_t time;
+    std::uint32_t timestamp; // in milliseconds
+    std::uint32_t windowId;
+    std::uint32_t x;
+    std::uint32_t y;
+    double_t deltaT;
 
-    MouseMoveEvent(size_t x, size_t y, double_t time)
-        : pos(EvtPos(x, y)), time(time)
+    MouseMoveEvent(uint32_t timestamp,
+                   uint32_t windowId,
+                   uint32_t x,
+                   uint32_t y,
+                   double_t deltaT)
+        : timestamp(timestamp), windowId(windowId), x(x), y(y), deltaT(deltaT)
     {
     }
 };
+
 } // namespace FilApp
 
 #endif // FILAPP_MOUSEMOVEEVENT_HPP
