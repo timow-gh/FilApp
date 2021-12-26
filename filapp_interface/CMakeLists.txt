@@ -1,18 +1,6 @@
 add_library(filapp_interfaces INTERFACE
-        include/FilAppInterface/Renderables/RendereableId.hpp
-        include/FilAppInterface/Renderables/PointRenderable.hpp
-        include/FilAppInterface/Renderables/LineRenderable.hpp
-        include/FilAppInterface/Renderables/TriangleRenderable.hpp
         include/FilAppInterface/InputEvents/InputEventListener.hpp
         include/FilAppInterface/InputEvents/InputEventDispatcher.hpp
-        include/FilAppInterface/View.hpp
-        include/FilAppInterface/Viewport.hpp
-        include/FilAppInterface/Window.hpp
-        include/FilAppInterface/Application.hpp
-        include/FilAppInterface/WindowConfig.hpp
-        include/FilAppInterface/AppConfig.hpp
-        include/FilAppInterface/Vertex.hpp
-        include/FilAppInterface/Vec.hpp
         include/FilAppInterface/InputEvents/MouseMoveEvent.hpp
         include/FilAppInterface/InputEvents/MouseWheelEvent.hpp
         include/FilAppInterface/InputEvents/KeyUpEvent.hpp
@@ -23,6 +11,19 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterface/InputEvents/RayPickEventDispatcher.hpp
         include/FilAppInterface/InputEvents/DispatcherBase.hpp
         include/FilAppInterface/InputEvents/MouseButtonEvent.hpp
+        include/FilAppInterface/Renderables/RendereableId.hpp
+        include/FilAppInterface/Renderables/PointRenderable.hpp
+        include/FilAppInterface/Renderables/LineRenderable.hpp
+        include/FilAppInterface/Renderables/TriangleRenderable.hpp
+        include/FilAppInterface/View.hpp
+        include/FilAppInterface/Viewport.hpp
+        include/FilAppInterface/Window.hpp
+        include/FilAppInterface/Application.hpp
+        include/FilAppInterface/WindowConfig.hpp
+        include/FilAppInterface/AppConfig.hpp
+        include/FilAppInterface/Vertex.hpp
+        include/FilAppInterface/Vec.hpp
+
         )
 
 add_library(filapp::interfaces ALIAS filapp_interfaces)
