@@ -1,10 +1,11 @@
 #ifndef FILAPP_FILAPPLICATION_HPP
 #define FILAPP_FILAPPLICATION_HPP
 
-#include "FilAppInterfaces/AppConfig.hpp"
-#include "FilAppInterfaces/Application.hpp"
-#include "FilAppInterfaces/Window.hpp"
-#include "FilAppInterfaces/WindowConfig.hpp"
+#include <Core/Utils/Compiler.hpp>
+#include <FilAppInterfaces/AppConfig.hpp>
+#include <FilAppInterfaces/Application.hpp>
+#include <FilAppInterfaces/Window.hpp>
+#include <FilAppInterfaces/WindowConfig.hpp>
 #include <cmath>
 #include <filapp_export.h>
 #include <memory>
@@ -18,12 +19,11 @@ namespace FilApp
 {
 class FilAppWindow;
 
-class FILAPP_EXPORT FilApplication
-    : public Application {
+class FILAPP_EXPORT FilApplication : public Application {
   public:
     static void init(const AppConfig& appConfig,
                      const WindowConfig& windowConfig);
-    static FilApplication& get();
+    CORE_NODISCARD static FilApplication& get();
 
     FilApplication() = default;
     ~FilApplication() override;
@@ -32,10 +32,10 @@ class FILAPP_EXPORT FilApplication
     FilApplication& operator=(const FilApplication& application) = delete;
     FilApplication& operator=(FilApplication&& application) = delete;
 
-    [[nodiscard]] filament::Engine* getEngine();
-    [[nodiscard]] Window* getWindow() override;
+    CORE_NODISCARD filament::Engine* getEngine();
+    CORE_NODISCARD Window* getWindow() override;
 
-    static double_t getDeltaT();
+    CORE_NODISCARD static double_t getDeltaT();
 
     void run();
 
