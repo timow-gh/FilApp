@@ -5,7 +5,6 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/GeometryElementBase.hpp
-        include/FlowMesh/Interactors/Selection/OneWayToSelectMany.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshController.hpp
@@ -52,5 +51,5 @@ include(GenerateExportHeader)
 generate_export_header(flow_mesh BASE_NAME FlewMesh)
 
 
-add_executable(FLowMesh main.cpp)
+add_executable(FLowMesh flowMesh.cpp)
 target_link_libraries(FLowMesh PRIVATE flowmesh::flowmesh)
