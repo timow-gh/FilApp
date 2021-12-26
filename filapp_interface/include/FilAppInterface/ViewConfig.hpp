@@ -1,9 +1,9 @@
 #ifndef FILAPP_VIEWCONFIG_HPP
 #define FILAPP_VIEWCONFIG_HPP
 
-#include <FilAppInterfaces/Vec.hpp>
-#include <FilAppInterfaces/Viewport.hpp>
-#include <FilAppInterfaces/WindowConfig.hpp>
+#include <FilAppInterface/Vec.hpp>
+#include <FilAppInterface/Viewport.hpp>
+#include <FilAppInterface/WindowConfig.hpp>
 #include <string>
 
 namespace FilApp

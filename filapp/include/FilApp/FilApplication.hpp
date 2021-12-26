@@ -2,10 +2,10 @@
 #define FILAPP_FILAPPLICATION_HPP
 
 #include <Core/Utils/Compiler.hpp>
-#include <FilAppInterfaces/AppConfig.hpp>
-#include <FilAppInterfaces/Application.hpp>
-#include <FilAppInterfaces/Window.hpp>
-#include <FilAppInterfaces/WindowConfig.hpp>
+#include <FilAppInterface/AppConfig.hpp>
+#include <FilAppInterface/Application.hpp>
+#include <FilAppInterface/Window.hpp>
+#include <FilAppInterface/WindowConfig.hpp>
 #include <cmath>
 #include <filapp_export.h>
 #include <memory>

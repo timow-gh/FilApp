@@ -1,8 +1,8 @@
-#include "FilAppInterfaces/View.hpp"
-#include "FilAppInterfaces/Window.hpp"
+#include "FilAppInterface/View.hpp"
+#include "FilAppInterface/Window.hpp"
 #include <FilApp/FilApplication.hpp>
-#include <FilAppInterfaces/Renderables/LineRenderable.hpp>
-#include <FilAppInterfaces/Vertex.hpp>
+#include <FilAppInterface/Renderables/LineRenderable.hpp>
+#include <FilAppInterface/Vertex.hpp>
 
 using namespace FilApp;
 

@@ -1,10 +1,10 @@
 #ifndef FILAPP_FILAPPWINDOW_HPP
 #define FILAPP_FILAPPWINDOW_HPP
 
-#include "FilAppInterfaces/InputEvents/KeyDownEvent.hpp"
-#include "FilAppInterfaces/InputEvents/MouseButtonEvent.hpp"
-#include "FilAppInterfaces/Window.hpp"
-#include "FilAppInterfaces/WindowConfig.hpp"
+#include "FilAppInterface/InputEvents/KeyDownEvent.hpp"
+#include "FilAppInterface/InputEvents/MouseButtonEvent.hpp"
+#include "FilAppInterface/Window.hpp"
+#include "FilAppInterface/WindowConfig.hpp"
 #include "FilAppView.hpp"
 #include "FilApplication.hpp"
 #include <SDL_video.h>

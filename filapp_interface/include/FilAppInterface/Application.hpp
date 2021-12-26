@@ -1,7 +1,7 @@
 #ifndef FILAPP_APPLICATION_HPP
 #define FILAPP_APPLICATION_HPP
 
-#include <FilAppInterfaces/Window.hpp>
+#include <FilAppInterface/Window.hpp>
 
 namespace FilApp
 {

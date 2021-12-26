@@ -1,7 +1,7 @@
 #ifndef FILAPP_TRIANGLERENDERABLE_HPP
 #define FILAPP_TRIANGLERENDERABLE_HPP
 
-#include "FilAppInterfaces/Vertex.hpp"
+#include "FilAppInterface/Vertex.hpp"
 #include <utility>
 #include <vector>
 

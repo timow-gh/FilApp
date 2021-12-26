@@ -55,7 +55,7 @@ endif ()
 
 add_subdirectory(dependencies)
 
-add_subdirectory(filapp_interfaces)
+add_subdirectory(filapp_interface)
 add_subdirectory(filapp)
 
 add_subdirectory(flowmesh)

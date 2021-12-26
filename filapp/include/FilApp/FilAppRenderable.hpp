@@ -2,11 +2,11 @@
 #define FILAPP_FILAPPRENDERABLE_HPP
 
 #include <Core/Utils/Compiler.hpp>
-#include <FilAppInterfaces/Renderables/LineRenderable.hpp>
-#include <FilAppInterfaces/Renderables/PointRenderable.hpp>
-#include <FilAppInterfaces/Renderables/RendereableId.hpp>
-#include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
-#include <FilAppInterfaces/Vertex.hpp>
+#include <FilAppInterface/Renderables/LineRenderable.hpp>
+#include <FilAppInterface/Renderables/PointRenderable.hpp>
+#include <FilAppInterface/Renderables/RendereableId.hpp>
+#include <FilAppInterface/Renderables/TriangleRenderable.hpp>
+#include <FilAppInterface/Vertex.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>

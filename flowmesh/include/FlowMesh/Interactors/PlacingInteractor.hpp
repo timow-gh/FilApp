@@ -3,10 +3,10 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Assert.hpp>
-#include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
-#include <FilAppInterfaces/InputEvents/PickRayEvent.hpp>
-#include <FilAppInterfaces/InputEvents/PickRayMoveEvent.hpp>
-#include <FilAppInterfaces/InputEvents/RayPickEventListener.hpp>
+#include <FilAppInterface/InputEvents/InputEventListener.hpp>
+#include <FilAppInterface/InputEvents/PickRayEvent.hpp>
+#include <FilAppInterface/InputEvents/PickRayMoveEvent.hpp>
+#include <FilAppInterface/InputEvents/RayPickEventListener.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>

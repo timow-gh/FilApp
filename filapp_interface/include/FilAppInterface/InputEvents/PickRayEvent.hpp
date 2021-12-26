@@ -1,7 +1,7 @@
 #ifndef FILAPP_PICKRAYEVENT_HPP
 #define FILAPP_PICKRAYEVENT_HPP
 
-#include <FilAppInterfaces/Vec.hpp>
+#include <FilAppInterface/Vec.hpp>
 #include <cmath>
 
 namespace FilApp

@@ -1,8 +1,8 @@
 #ifndef FILAPP_FLOWMESHCONTROLLER_HPP
 #define FILAPP_FLOWMESHCONTROLLER_HPP
 
-#include <FilAppInterfaces/InputEvents/InputEventDispatcher.hpp>
-#include <FilAppInterfaces/InputEvents/RayPickEventDispatcher.hpp>
+#include <FilAppInterface/InputEvents/InputEventDispatcher.hpp>
+#include <FilAppInterface/InputEvents/RayPickEventDispatcher.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <memory>

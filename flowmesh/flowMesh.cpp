@@ -1,7 +1,7 @@
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
-#include <FilAppInterfaces/View.hpp>
-#include <FilAppInterfaces/Window.hpp>
+#include <FilAppInterface/View.hpp>
+#include <FilAppInterface/Window.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>

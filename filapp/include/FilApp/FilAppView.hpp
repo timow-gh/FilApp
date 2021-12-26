@@ -2,11 +2,11 @@
 #define FILAPP_FILAPPVIEW_HPP
 
 #include "FilAppConversion.hpp"
-#include "FilAppInterfaces/InputEvents/KeyDownEvent.hpp"
+#include "FilAppInterface/InputEvents/KeyDownEvent.hpp"
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
-#include <FilAppInterfaces/View.hpp>
-#include <FilAppInterfaces/ViewConfig.hpp>
+#include <FilAppInterface/View.hpp>
+#include <FilAppInterface/ViewConfig.hpp>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>

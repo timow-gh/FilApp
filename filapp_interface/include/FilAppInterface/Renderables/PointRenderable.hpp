@@ -1,7 +1,7 @@
 #ifndef FILAPP_POINTRENDERABLE_HPP
 #define FILAPP_POINTRENDERABLE_HPP
 
-#include <FilAppInterfaces/Vertex.hpp>
+#include <FilAppInterface/Vertex.hpp>
 #include <numeric>
 #include <utility>
 #include <vector>

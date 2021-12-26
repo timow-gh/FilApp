@@ -1,7 +1,7 @@
 #ifndef FILAPP_INPUTEVENTDISPATCHER_HPP
 #define FILAPP_INPUTEVENTDISPATCHER_HPP
 
-#include <FilAppInterfaces/InputEvents/DispatcherBase.hpp>
+#include <FilAppInterface/InputEvents/DispatcherBase.hpp>
 
 namespace FilApp
 {

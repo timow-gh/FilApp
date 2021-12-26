@@ -1,16 +1,16 @@
 #ifndef FILAPP_VIEW_HPP
 #define FILAPP_VIEW_HPP
 
-#include <FilAppInterfaces/InputEvents/InputEventDispatcher.hpp>
-#include <FilAppInterfaces/InputEvents/InputEventListener.hpp>
-#include <FilAppInterfaces/InputEvents/RayPickEventDispatcher.hpp>
-#include <FilAppInterfaces/InputEvents/RayPickEventListener.hpp>
-#include <FilAppInterfaces/Renderables/LineRenderable.hpp>
-#include <FilAppInterfaces/Renderables/PointRenderable.hpp>
-#include <FilAppInterfaces/Renderables/RendereableId.hpp>
-#include <FilAppInterfaces/Renderables/TriangleRenderable.hpp>
-#include <FilAppInterfaces/Vec.hpp>
-#include <FilAppInterfaces/Viewport.hpp>
+#include <FilAppInterface/InputEvents/InputEventDispatcher.hpp>
+#include <FilAppInterface/InputEvents/InputEventListener.hpp>
+#include <FilAppInterface/InputEvents/RayPickEventDispatcher.hpp>
+#include <FilAppInterface/InputEvents/RayPickEventListener.hpp>
+#include <FilAppInterface/Renderables/LineRenderable.hpp>
+#include <FilAppInterface/Renderables/PointRenderable.hpp>
+#include <FilAppInterface/Renderables/RendereableId.hpp>
+#include <FilAppInterface/Renderables/TriangleRenderable.hpp>
+#include <FilAppInterface/Vec.hpp>
+#include <FilAppInterface/Viewport.hpp>
 
 namespace FilApp
 {

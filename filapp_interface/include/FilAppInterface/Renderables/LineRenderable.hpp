@@ -2,7 +2,7 @@
 #define FILAPP_LINERENDERABLE_HPP
 
 #include <Core/Utils/Assert.hpp>
-#include <FilAppInterfaces/Vertex.hpp>
+#include <FilAppInterface/Vertex.hpp>
 #include <cassert>
 #include <utility>
 #include <vector>
