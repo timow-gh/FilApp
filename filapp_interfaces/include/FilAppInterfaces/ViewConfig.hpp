@@ -37,7 +37,7 @@ struct ViewConfig
     Vec3 eye = Vec3(15.0f, 15.0f, 15.0f);
     Vec3 center = Vec3(0.0f, 0.0f, 0.0f);
     Vec3 up = Vec3(0.0f, 0.0f, 1.0f);
-    float_t fieldOfViewInDegree{90.0f};
+    float_t fieldOfViewInDegree{60.0f};
     float_t near{0.1f};
     float_t far{5000.0f};
     float_t orthogonalCameraZoom{10.0f};
