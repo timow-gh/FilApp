@@ -65,6 +65,10 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
     if (primitiveType == PrimitiveType::LINES)
         filAppRenderable.matInstance->setPolygonOffset(3.0f, 3.0f);
 
+    bool useCulling = true;
+    if (primitiveType == PrimitiveType::POINTS)
+        useCulling = false;
+
     const std::size_t OFFSET = 0;
     filament::RenderableManager::Builder(1)
         .boundingBox(calcFilamentBbox(vertices))
@@ -75,7 +79,7 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
                   filAppRenderable.ib,
                   OFFSET,
                   filAppRenderable.ib->getIndexCount())
-        .culling(true)
+        .culling(useCulling)
         .receiveShadows(false)
         .castShadows(false)
         .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
