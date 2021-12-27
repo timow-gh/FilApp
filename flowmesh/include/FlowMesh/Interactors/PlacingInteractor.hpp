@@ -16,7 +16,9 @@
 
 namespace FlowMesh
 {
-class PlacingInteractor : public Interactor {
+class PlacingInteractor
+    : public Interactor
+    , public Graphics::RayPickEventListener {
     FlowMesh::FlowMeshModel* m_model;
     std::optional<FGuid> m_sphereGuid;
 

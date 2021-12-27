@@ -1,10 +1,11 @@
 #ifndef FILAPP_FLOWMESHCONTROLLER_HPP
 #define FILAPP_FLOWMESHCONTROLLER_HPP
 
+#include <FlowMesh/FlowMeshModel.hpp>
+#include <FlowMesh/Interactors/CameraInteractor.hpp>
+#include <FlowMesh/Interactors/Interactor.hpp>
 #include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
-#include <FlowMesh/FlowMeshModel.hpp>
-#include <FlowMesh/Interactors/Interactor.hpp>
 #include <memory>
 
 namespace Graphics
@@ -20,23 +21,35 @@ class FlowMeshController {
 
     FlowMeshModel* m_model{nullptr};
 
+    std::unique_ptr<CameraInteractor> m_cameraInteractor{nullptr};
     std::unique_ptr<Interactor> m_interactor{nullptr};
 
   public:
-    FlowMeshController(Graphics::View* mainView,
+    FlowMeshController(Graphics::InputEventDispatcher* inputEventDispatcher,
+                       Graphics::RayPickEventDispatcher* rayPickDispatcher,
                        FlowMeshModel* model,
-                       std::unique_ptr<Interactor>&& interactor)
-        : m_inputEventDispatcher(mainView)
-        , m_rayPickDispatcher(mainView)
+                       std::unique_ptr<Interactor>&& defaultInteractor)
+        : m_inputEventDispatcher(inputEventDispatcher)
+        , m_rayPickDispatcher(rayPickDispatcher)
         , m_model(model)
-        , m_interactor(std::move(interactor))
+        , m_interactor(std::move(defaultInteractor))
     {
-        m_inputEventDispatcher->registerListener(m_interactor.get());
-        m_rayPickDispatcher->registerListener(m_interactor.get());
+    }
+    FlowMeshController(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
+    FlowMeshController&
+    operator=(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
+
+    CORE_NODISCARD Graphics::InputEventDispatcher*
+    getInputEventDispatcher() const
+    {
+        return m_inputEventDispatcher;
     }
 
-    FlowMeshController(FlowMeshController&& rhs) noexcept = default;
-    FlowMeshController& operator=(FlowMeshController&& rhs) noexcept = default;
+    CORE_NODISCARD Graphics::RayPickEventDispatcher*
+    getRayPickDispatcher() const
+    {
+        return m_rayPickDispatcher;
+    }
 };
 } // namespace FlowMesh
 

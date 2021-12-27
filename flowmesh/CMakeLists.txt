@@ -6,6 +6,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/GeometryElementBase.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
+        include/FlowMesh/Interactors/CameraInteractor.hpp
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp

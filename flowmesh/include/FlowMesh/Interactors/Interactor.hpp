@@ -3,10 +3,7 @@
 
 namespace FlowMesh
 {
-class Interactor
-    : public Graphics::InputEventListener
-    , public Graphics::RayPickEventListener {
-};
+class Interactor {};
 } // namespace FlowMesh
 
 #endif // FILAPP_INTERACTOR_HPP
