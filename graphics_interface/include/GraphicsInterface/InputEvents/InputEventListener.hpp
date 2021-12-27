@@ -1,11 +1,11 @@
 #ifndef FILAPP_INPUTEVENTLISTENER_HPP
 #define FILAPP_INPUTEVENTLISTENER_HPP
 
-#include <FilAppInterface/InputEvents/KeyDownEvent.hpp>
-#include <FilAppInterface/InputEvents/KeyUpEvent.hpp>
-#include <FilAppInterface/InputEvents/MouseButtonEvent.hpp>
-#include <FilAppInterface/InputEvents/MouseMoveEvent.hpp>
-#include <FilAppInterface/InputEvents/MouseWheelEvent.hpp>
+#include <GraphicsInterface/InputEvents/KeyDownEvent.hpp>
+#include <GraphicsInterface/InputEvents/KeyUpEvent.hpp>
+#include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
+#include <GraphicsInterface/InputEvents/MouseMoveEvent.hpp>
+#include <GraphicsInterface/InputEvents/MouseWheelEvent.hpp>
 
 namespace FilApp
 {

@@ -1,7 +1,7 @@
-#include "FilApp/FilApplication.hpp"
-#include "FilAppInterface/Renderables/TriangleRenderable.hpp"
-#include "FilAppInterface/View.hpp"
-#include <FilAppInterface/Vec.hpp>
+#include <FilApp/FilApplication.hpp>
+#include <GraphicsInterface/Renderables/TriangleRenderable.hpp>
+#include <GraphicsInterface/Vec.hpp>
+#include <GraphicsInterface/View.hpp>
 
 using namespace FilApp;
 

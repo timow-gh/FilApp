@@ -1,6 +1,6 @@
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppWindow.hpp>
-#include <FilAppInterface/InputEvents/KeyUpEvent.hpp>
+#include <GraphicsInterface/InputEvents/KeyUpEvent.hpp>
 #include <NativeWindowHelper.hpp>
 #include <SDL_video.h>
 #include <utils/EntityManager.h>

@@ -1,7 +1,7 @@
 #ifndef FILAPP_RAYPICKEVENTDISPATCHER_HPP
 #define FILAPP_RAYPICKEVENTDISPATCHER_HPP
 
-#include <FilAppInterface/InputEvents/DispatcherBase.hpp>
+#include <GraphicsInterface/InputEvents/DispatcherBase.hpp>
 
 namespace FilApp
 {

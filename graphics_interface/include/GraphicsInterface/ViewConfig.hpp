@@ -1,10 +1,10 @@
 #ifndef FILAPP_VIEWCONFIG_HPP
 #define FILAPP_VIEWCONFIG_HPP
 
-#include <FilAppInterface/RGBAColor.hpp>
-#include <FilAppInterface/Vec.hpp>
-#include <FilAppInterface/Viewport.hpp>
-#include <FilAppInterface/WindowConfig.hpp>
+#include <GraphicsInterface/RGBAColor.hpp>
+#include <GraphicsInterface/Vec.hpp>
+#include <GraphicsInterface/Viewport.hpp>
+#include <GraphicsInterface/WindowConfig.hpp>
 #include <string>
 
 namespace FilApp

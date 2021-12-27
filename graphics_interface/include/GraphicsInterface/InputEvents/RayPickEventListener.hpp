@@ -1,8 +1,8 @@
 #ifndef FILAPP_RAYPICKEVENTLISTENER_HPP
 #define FILAPP_RAYPICKEVENTLISTENER_HPP
 
-#include <FilAppInterface/InputEvents/PickRayEvent.hpp>
-#include <FilAppInterface/InputEvents/PickRayMoveEvent.hpp>
+#include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
+#include <GraphicsInterface/InputEvents/PickRayMoveEvent.hpp>
 
 namespace FilApp
 {

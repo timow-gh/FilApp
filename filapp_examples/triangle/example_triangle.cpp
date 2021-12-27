@@ -1,5 +1,5 @@
-#include "FilAppInterface/View.hpp"
-#include "FilApp/FilApplication.hpp"
+#include <FilApp/FilApplication.hpp>
+#include <GraphicsInterface/View.hpp>
 
 using namespace FilApp;
 

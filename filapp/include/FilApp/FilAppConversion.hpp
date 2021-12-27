@@ -1,11 +1,11 @@
 #ifndef FILAPP_FILAPPCONVERSION_HPP
 #define FILAPP_FILAPPCONVERSION_HPP
 
-#include <FilAppInterface/AppConfig.hpp>
-#include <FilAppInterface/Vec.hpp>
-#include <FilAppInterface/ViewConfig.hpp>
-#include <FilAppInterface/Viewport.hpp>
-#include <FilAppInterface/WindowConfig.hpp>
+#include <GraphicsInterface/AppConfig.hpp>
+#include <GraphicsInterface/Vec.hpp>
+#include <GraphicsInterface/ViewConfig.hpp>
+#include <GraphicsInterface/Viewport.hpp>
+#include <GraphicsInterface/WindowConfig.hpp>
 #include <camutils/Bookmark.h>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>

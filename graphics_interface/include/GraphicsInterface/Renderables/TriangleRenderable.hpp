@@ -1,14 +1,13 @@
 #ifndef FILAPP_TRIANGLERENDERABLE_HPP
 #define FILAPP_TRIANGLERENDERABLE_HPP
 
-#include "FilAppInterface/Vertex.hpp"
+#include <GraphicsInterface/Vertex.hpp>
 #include <utility>
 #include <vector>
 
 namespace FilApp
 {
-class TriangleRenderable
-{
+class TriangleRenderable {
   public:
     TriangleRenderable() = default;
     TriangleRenderable(std::vector<Vertex>&& vertices,

@@ -43,7 +43,7 @@ target_link_libraries(fil_app
         Core::Utils
         filament
         fil_app_sources
-        filapp_interfaces
+        graphics_interface
         sdl2
         math
         utils
@@ -64,7 +64,7 @@ install(DIRECTORY "include/FilApp" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 install(TARGETS
         fil_app
         fil_app_sources
-        filapp_interfaces
+        graphics_interface
         filament
         sdl2
         math
