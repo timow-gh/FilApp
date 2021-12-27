@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace FilApp
+namespace Graphics
 {
 template <typename TListener>
 class DispatcherBase {

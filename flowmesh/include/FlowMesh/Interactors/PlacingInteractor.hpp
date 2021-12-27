@@ -32,10 +32,10 @@ class PlacingInteractor : public Interactor {
     }
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
-    calcIntersection(const FilApp::PickRayEvent& pickRayEvent) const
+    calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const
     {
-        const FilApp::Vec3& pickOrigin = pickRayEvent.origin;
-        const FilApp::Vec3& pickDirection = pickRayEvent.direction;
+        const Graphics::Vec3& pickOrigin = pickRayEvent.origin;
+        const Graphics::Vec3& pickDirection = pickRayEvent.direction;
         const Geometry::Ray3<double_t> ray{
             LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
             LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
@@ -43,7 +43,7 @@ class PlacingInteractor : public Interactor {
         return plane.intersection(ray);
     }
 
-    void event(const FilApp::PickRayEvent& pickRayEvent) override
+    void event(const Graphics::PickRayEvent& pickRayEvent) override
     {
         if (auto intersection = calcIntersection(pickRayEvent))
         {
@@ -52,7 +52,7 @@ class PlacingInteractor : public Interactor {
         }
     }
 
-    void event(const FilApp::PickRayMoveEvent& pickRayMoveEvent) override
+    void event(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override
     {
         if (auto intersection = calcIntersection(pickRayMoveEvent))
         {

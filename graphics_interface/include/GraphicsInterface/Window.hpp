@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace FilApp
+namespace Graphics
 {
 class View;
 

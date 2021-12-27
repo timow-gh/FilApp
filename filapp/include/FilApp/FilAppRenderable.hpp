@@ -17,7 +17,7 @@
 #include <memory>
 #include <utils/EntityManager.h>
 
-namespace FilApp
+namespace Graphics
 {
 struct FilAppRenderable
 {

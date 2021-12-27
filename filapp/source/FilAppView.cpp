@@ -1,6 +1,6 @@
-#include "FilApp/FilAppView.hpp"
-#include "FilApp/FilAppConversion.hpp"
 #include <Core/Utils/Assert.hpp>
+#include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppView.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
@@ -18,7 +18,7 @@
 #define DEBUG_CHECK_CAMERA_MANIP()
 #endif
 
-namespace FilApp
+namespace Graphics
 {
 FilAppView::FilAppView(const ViewConfig& viewConfig,
                        filament::Renderer& renderer)
@@ -522,4 +522,4 @@ PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x,
     direction = normalize(direction);
     return PickRayEvent{toGlobalCS(origin), toGlobalCS(direction), time};
 }
-} // namespace FilApp
+} // namespace Graphics

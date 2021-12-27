@@ -12,7 +12,7 @@
 #include <GraphicsInterface/Vec.hpp>
 #include <GraphicsInterface/Viewport.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 
 class View

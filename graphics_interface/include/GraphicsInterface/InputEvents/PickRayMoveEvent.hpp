@@ -3,7 +3,7 @@
 
 #include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 struct PickRayMoveEvent : public PickRayEvent
 {

@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace FilApp
+namespace Graphics
 {
 struct Viewport
 {

@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <array>
 
-namespace FilApp
+namespace Graphics
 {
 
 template <typename T>

@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-namespace FilApp
+namespace Graphics
 {
 
 struct MouseMoveEvent

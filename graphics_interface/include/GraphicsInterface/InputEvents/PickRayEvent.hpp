@@ -4,7 +4,7 @@
 #include <GraphicsInterface/Vec.hpp>
 #include <cmath>
 
-namespace FilApp
+namespace Graphics
 {
 struct PickRayEvent
 {

@@ -7,7 +7,7 @@
 #include <GraphicsInterface/InputEvents/MouseMoveEvent.hpp>
 #include <GraphicsInterface/InputEvents/MouseWheelEvent.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 class InputEventListener {
   public:

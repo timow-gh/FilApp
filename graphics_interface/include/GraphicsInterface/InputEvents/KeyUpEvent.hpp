@@ -4,7 +4,7 @@
 #include <SDL_scancode.h>
 #include <cmath>
 
-namespace FilApp
+namespace Graphics
 {
 struct KeyUpEvent
 {

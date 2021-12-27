@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iostream>
 
-namespace FilApp
+namespace Graphics
 {
 template <std::size_t SIZE>
 struct Vec

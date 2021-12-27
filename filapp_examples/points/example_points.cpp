@@ -5,7 +5,7 @@
 #include <GraphicsInterface/Window.hpp>
 #include <vector>
 
-using namespace FilApp;
+using namespace Graphics;
 
 int main()
 {

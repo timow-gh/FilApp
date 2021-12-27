@@ -15,7 +15,7 @@ namespace filament
 class Engine;
 }
 
-namespace FilApp
+namespace Graphics
 {
 class FilAppWindow;
 

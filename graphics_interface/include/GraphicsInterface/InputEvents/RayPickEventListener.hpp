@@ -4,7 +4,7 @@
 #include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
 #include <GraphicsInterface/InputEvents/PickRayMoveEvent.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 
 class RayPickEventListener {

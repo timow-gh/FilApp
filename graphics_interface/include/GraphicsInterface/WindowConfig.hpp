@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace FilApp
+namespace Graphics
 {
 struct WindowConfig
 {

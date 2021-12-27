@@ -11,7 +11,7 @@
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 class View;
 }
@@ -19,12 +19,12 @@ class View;
 namespace FlowMesh
 {
 class FlowMeshPresenter {
-    FilApp::View* m_mainView{nullptr};
+    Graphics::View* m_mainView{nullptr};
 
-    std::map<FGuid, std::vector<FilApp::RenderableId>> m_fGuidRenderableMapping;
+    std::map<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
-    void setMainView(FilApp::View* mainView) { m_mainView = mainView; }
+    void setMainView(Graphics::View* mainView) { m_mainView = mainView; }
 
     void add(const FlowMeshSphere& flowMeshSphere);
     void add(const FlowMeshCone& flowMeshCone);
@@ -34,12 +34,12 @@ class FlowMeshPresenter {
     void remove(const FGuid& fGuid);
     void updatePosition(const FGuid& fGuid, const LinAl::Vec3d& position);
 
-    void setIdleAnimation(const FilApp::Vec3& rotationAxis);
+    void setIdleAnimation(const Graphics::Vec3& rotationAxis);
 
   private:
-    static FilApp::TriangleRenderable createTriangleRenderable(
+    static Graphics::TriangleRenderable createTriangleRenderable(
         const Geometry::HalfedgeMesh<double_t>& halfedgeMesh);
-    static FilApp::LineRenderable
+    static Graphics::LineRenderable
     createLineRenderables(const FlowMeshSegments& flowMeshSegments);
 };
 } // namespace FlowMesh

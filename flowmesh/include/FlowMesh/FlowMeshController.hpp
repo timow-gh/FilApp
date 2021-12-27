@@ -7,7 +7,7 @@
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <memory>
 
-namespace FilApp
+namespace Graphics
 {
 class InputEventListener;
 }
@@ -15,15 +15,15 @@ class InputEventListener;
 namespace FlowMesh
 {
 class FlowMeshController {
-    FilApp::InputEventDispatcher* m_inputEventDispatcher{nullptr};
-    FilApp::RayPickEventDispatcher* m_rayPickDispatcher{nullptr};
+    Graphics::InputEventDispatcher* m_inputEventDispatcher{nullptr};
+    Graphics::RayPickEventDispatcher* m_rayPickDispatcher{nullptr};
 
     FlowMeshModel* m_model{nullptr};
 
     std::unique_ptr<Interactor> m_interactor{nullptr};
 
   public:
-    FlowMeshController(FilApp::View* mainView,
+    FlowMeshController(Graphics::View* mainView,
                        FlowMeshModel* model,
                        std::unique_ptr<Interactor>&& interactor)
         : m_inputEventDispatcher(mainView)

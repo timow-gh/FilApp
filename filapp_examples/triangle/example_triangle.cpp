@@ -1,7 +1,7 @@
 #include <FilApp/FilApplication.hpp>
 #include <GraphicsInterface/View.hpp>
 
-using namespace FilApp;
+using namespace Graphics;
 
 int main()
 {

@@ -1,8 +1,8 @@
-#include "FilApp/FilAppConversion.hpp"
+#include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <utils/Panic.h>
 
-namespace FilApp
+namespace Graphics
 {
 filament::Engine::Backend toFilamentBackend(BackendMode backendMode)
 {
@@ -110,4 +110,4 @@ Vec4 toGlobalCS(const filament::math::float4& floatVec)
     return float4ToVec4(filCSToGlobalCS4() * floatVec);
 }
 
-} // namespace FilApp
+} // namespace Graphics

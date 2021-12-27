@@ -1,13 +1,13 @@
-#include "FilApp/FilApplication.hpp"
-#include "FilApp/FilAppConversion.hpp"
-#include "FilApp/FilAppWindow.hpp"
+#include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppWindow.hpp>
+#include <FilApp/FilApplication.hpp>
 #include <SDL.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
 #include <memory>
 #include <utils/Panic.h>
 
-namespace FilApp
+namespace Graphics
 {
 std::unique_ptr<FilApplication> FilApplication::m_app;
 double_t FilApplication::m_prevTimeStep = 0;
@@ -141,4 +141,4 @@ void FilApplication::run()
     }
 }
 
-} // namespace FilApp
+} // namespace Graphics

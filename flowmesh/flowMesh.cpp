@@ -12,7 +12,7 @@
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-using namespace FilApp;
+using namespace Graphics;
 using namespace FlowMesh;
 using namespace Geometry;
 using namespace LinAl;

@@ -14,7 +14,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace FilApp
+namespace Graphics
 {
 
 class FilAppWindow : public Window {

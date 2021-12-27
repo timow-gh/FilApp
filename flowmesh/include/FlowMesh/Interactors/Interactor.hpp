@@ -4,8 +4,8 @@
 namespace FlowMesh
 {
 class Interactor
-    : public FilApp::InputEventListener
-    , public FilApp::RayPickEventListener {
+    : public Graphics::InputEventListener
+    , public Graphics::RayPickEventListener {
 };
 } // namespace FlowMesh
 

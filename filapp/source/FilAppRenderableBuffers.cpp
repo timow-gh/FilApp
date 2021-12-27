@@ -1,6 +1,6 @@
 #include "FilAppRenderableBuffers.hpp"
 
-namespace FilApp
+namespace Graphics
 {
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
                         const std::vector<Vertex>& vertices)

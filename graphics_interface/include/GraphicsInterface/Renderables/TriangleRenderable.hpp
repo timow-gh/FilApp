@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-namespace FilApp
+namespace Graphics
 {
 class TriangleRenderable {
   public:

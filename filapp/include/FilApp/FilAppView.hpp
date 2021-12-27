@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPVIEW_HPP
 #define FILAPP_FILAPPVIEW_HPP
 
-#include "FilAppConversion.hpp"
+#include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <GraphicsInterface/InputEvents/KeyDownEvent.hpp>
@@ -21,7 +21,7 @@
 #include <utils/Entity.h>
 #include <vector>
 
-namespace FilApp
+namespace Graphics
 {
 using AnimationCallBack = std::function<void(double now)>;
 
@@ -115,6 +115,6 @@ class FilAppView : public View {
                                                     std::size_t y,
                                                     double_t time) const;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_FILAPPVIEW_HPP

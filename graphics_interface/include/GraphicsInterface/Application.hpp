@@ -3,7 +3,7 @@
 
 #include <GraphicsInterface/Window.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 class Application {
   public:

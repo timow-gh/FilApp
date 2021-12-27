@@ -4,7 +4,7 @@
 #include <GraphicsInterface/View.hpp>
 #include <GraphicsInterface/Window.hpp>
 
-using namespace FilApp;
+using namespace Graphics;
 
 int main()
 {

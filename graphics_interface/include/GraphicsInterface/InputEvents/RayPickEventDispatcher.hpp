@@ -3,7 +3,7 @@
 
 #include <GraphicsInterface/InputEvents/DispatcherBase.hpp>
 
-namespace FilApp
+namespace Graphics
 {
 class RayPickEventListener;
 

@@ -1,7 +1,7 @@
 #ifndef FILAPP_RENDEREABLEID_HPP
 #define FILAPP_RENDEREABLEID_HPP
 
-namespace FilApp
+namespace Graphics
 {
 class RenderableId {
   public:
@@ -56,9 +56,9 @@ namespace std
 {
 
 template <>
-struct hash<FilApp::RenderableId>
+struct hash<Graphics::RenderableId>
 {
-    std::size_t operator()(FilApp::RenderableId id) { return id.getId(); }
+    std::size_t operator()(Graphics::RenderableId id) { return id.getId(); }
 };
 
 } // namespace std

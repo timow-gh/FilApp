@@ -3,7 +3,7 @@
 
 #include <SDL_scancode.h>
 
-namespace FilApp
+namespace Graphics
 {
 struct KeyDownEvent
 {

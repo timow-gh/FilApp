@@ -4,7 +4,7 @@
 #include <cmath>
 #include <cstdint>
 
-namespace FilApp
+namespace Graphics
 {
 
 struct MouseButtonEvent

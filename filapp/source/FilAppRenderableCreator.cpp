@@ -4,7 +4,7 @@
 #include <generated/resources/filapp_resources.h>
 #include <math/vec3.h>
 
-namespace FilApp
+namespace Graphics
 {
 FilAppRenderableCreator
 FilAppRenderableCreator::create(filament::Engine* engine)

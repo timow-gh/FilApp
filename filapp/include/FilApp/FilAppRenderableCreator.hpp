@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-namespace FilApp
+namespace Graphics
 {
 class FilAppRenderableCreator
 {

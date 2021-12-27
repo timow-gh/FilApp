@@ -7,7 +7,7 @@
 #include <GraphicsInterface/WindowConfig.hpp>
 #include <string>
 
-namespace FilApp
+namespace Graphics
 {
 
 struct ViewConfig

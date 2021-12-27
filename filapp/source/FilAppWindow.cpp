@@ -5,7 +5,7 @@
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
 
-namespace FilApp
+namespace Graphics
 {
 
 FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,

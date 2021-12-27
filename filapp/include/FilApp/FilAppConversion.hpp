@@ -14,7 +14,7 @@
 #include <math/vec3.h>
 #include <math/vec4.h>
 
-namespace FilApp
+namespace Graphics
 {
 /*
  * Convenience functions to convert from filament data types to the interface
