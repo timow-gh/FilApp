@@ -73,12 +73,14 @@ void FilApplication::run()
         {
             if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                 m_closeApp = true;
-            m_window->event(KeyDownEvent(event.key.keysym.scancode, deltaT));
+            m_window->event(
+                KeyDownEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
             break;
         }
         case SDL_KEYUP:
         {
-            m_window->event(KeyUpEvent(event.key.keysym.scancode, deltaT));
+            m_window->event(
+                KeyUpEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
             break;
         }
         case SDL_MOUSEWHEEL:

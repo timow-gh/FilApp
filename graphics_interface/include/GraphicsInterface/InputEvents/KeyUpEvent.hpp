@@ -1,21 +1,21 @@
 #ifndef FILAPP_KEYUPEVENT_HPP
 #define FILAPP_KEYUPEVENT_HPP
 
-#include <SDL_scancode.h>
+#include <GraphicsInterface/InputEvents/KeyScancode.hpp>
 #include <cmath>
 
 namespace Graphics
 {
 struct KeyUpEvent
 {
-    SDL_Scancode sdlScancode;
+    KeyScancode keyScancode;
     double_t deltaT;
 
-    KeyUpEvent(SDL_Scancode sdlScancode, double_t deltaT)
-        : sdlScancode(sdlScancode), deltaT(deltaT)
+    KeyUpEvent(KeyScancode keyScancode, double_t deltaT)
+        : keyScancode(keyScancode), deltaT(deltaT)
     {
     }
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_KEYUPEVENT_HPP

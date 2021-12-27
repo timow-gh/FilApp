@@ -41,7 +41,7 @@ set_target_properties(flow_mesh
         )
 target_link_libraries(flow_mesh
         PUBLIC
-        filapp::filapp
+        graphics::interface
         LinAl::LinAl
         Geometry::Geometry
         CrossGuid::CrossGuid
@@ -52,4 +52,4 @@ generate_export_header(flow_mesh BASE_NAME FlewMesh)
 
 
 add_executable(FLowMesh flowMesh.cpp)
-target_link_libraries(FLowMesh PRIVATE flowmesh::flowmesh)
+target_link_libraries(FLowMesh PRIVATE flowmesh::flowmesh filapp::filapp)

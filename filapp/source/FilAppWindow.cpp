@@ -86,17 +86,19 @@ void FilAppWindow::event(const MouseMoveEvent& evt)
 
 void FilAppWindow::event(const KeyUpEvent& keyUpEvent)
 {
-    auto& eventTargetView = m_keyEventTarget[keyUpEvent.sdlScancode];
+    auto& eventTargetView =
+        m_keyEventTarget[toSDLScancode(keyUpEvent.keyScancode)];
     if (!eventTargetView)
         return;
     eventTargetView->event(
-        KeyUpEvent(keyUpEvent.sdlScancode, keyUpEvent.deltaT));
+        KeyUpEvent(keyUpEvent.keyScancode, keyUpEvent.deltaT));
     eventTargetView = nullptr;
 }
 
 void FilAppWindow::event(const KeyDownEvent& keyDownEvent)
 {
-    auto& eventTarget = m_keyEventTarget[keyDownEvent.sdlScancode];
+    auto& eventTarget =
+        m_keyEventTarget[toSDLScancode(keyDownEvent.keyScanCode)];
 
     // event events can be sent multiple times per key (for key repeat)
     // If this key is already down, do nothing.
@@ -180,8 +182,8 @@ filament::SwapChain* FilAppWindow::getSwapChain()
     return m_swapChain;
 }
 
-filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x,
-                                                                uint32_t y) const
+filament::math::int2
+FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const
 
 {
     int dw, dh, ww, wh;
@@ -246,4 +248,4 @@ Viewport FilAppWindow::calcWindowViewport()
             static_cast<uint32_t>(m_width),
             static_cast<uint32_t>(m_height)};
 }
-} // namespace FilApp
+} // namespace Graphics

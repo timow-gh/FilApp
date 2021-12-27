@@ -24,12 +24,8 @@ add_library(graphics_interface INTERFACE
         include/GraphicsInterface/AppConfig.hpp
         include/GraphicsInterface/Vertex.hpp
         include/GraphicsInterface/Vec.hpp
-
         )
 
 add_library(graphics::interface ALIAS graphics_interface)
-target_include_directories(graphics_interface
-        INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
-        )
+target_include_directories(graphics_interface INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 target_compile_features(graphics_interface INTERFACE cxx_std_17)

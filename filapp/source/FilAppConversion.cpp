@@ -1,3 +1,4 @@
+#include <Core/Utils/Assert.hpp>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <utils/Panic.h>
@@ -108,6 +109,79 @@ Vec3 toGlobalCS(const filament::math::float3& floatVec)
 Vec4 toGlobalCS(const filament::math::float4& floatVec)
 {
     return float4ToVec4(filCSToGlobalCS4() * floatVec);
+}
+
+SDL_Scancode toSDLScancode(KeyScancode scancode)
+{
+    switch (scancode)
+    {
+    case KeyScancode::SCANCODE_UNKNOWN: return SDL_SCANCODE_UNKNOWN;
+    case KeyScancode::SCANCODE_A: return SDL_SCANCODE_A;
+    case KeyScancode::SCANCODE_B: return SDL_SCANCODE_B;
+    case KeyScancode::SCANCODE_C: return SDL_SCANCODE_C;
+    case KeyScancode::SCANCODE_D: return SDL_SCANCODE_D;
+    case KeyScancode::SCANCODE_E: return SDL_SCANCODE_E;
+    case KeyScancode::SCANCODE_F: return SDL_SCANCODE_F;
+    case KeyScancode::SCANCODE_G: return SDL_SCANCODE_G;
+    case KeyScancode::SCANCODE_H: return SDL_SCANCODE_H;
+    case KeyScancode::SCANCODE_I: return SDL_SCANCODE_I;
+    case KeyScancode::SCANCODE_J: return SDL_SCANCODE_J;
+    case KeyScancode::SCANCODE_K: return SDL_SCANCODE_K;
+    case KeyScancode::SCANCODE_L: return SDL_SCANCODE_L;
+    case KeyScancode::SCANCODE_M: return SDL_SCANCODE_M;
+    case KeyScancode::SCANCODE_N: return SDL_SCANCODE_N;
+    case KeyScancode::SCANCODE_O: return SDL_SCANCODE_O;
+    case KeyScancode::SCANCODE_P: return SDL_SCANCODE_P;
+    case KeyScancode::SCANCODE_Q: return SDL_SCANCODE_Q;
+    case KeyScancode::SCANCODE_R: return SDL_SCANCODE_R;
+    case KeyScancode::SCANCODE_S: return SDL_SCANCODE_S;
+    case KeyScancode::SCANCODE_T: return SDL_SCANCODE_T;
+    case KeyScancode::SCANCODE_U: return SDL_SCANCODE_U;
+    case KeyScancode::SCANCODE_V: return SDL_SCANCODE_V;
+    case KeyScancode::SCANCODE_W: return SDL_SCANCODE_W;
+    case KeyScancode::SCANCODE_X: return SDL_SCANCODE_X;
+    case KeyScancode::SCANCODE_Y: return SDL_SCANCODE_Y;
+    case KeyScancode::SCANCODE_Z: return SDL_SCANCODE_Z;
+    default:
+        CORE_POSTCONDITION_DEBUG_ASSERT(false, "KeyScancode not known.");
+        return SDL_SCANCODE_UNKNOWN;
+    }
+}
+KeyScancode toKeyScancode(SDL_Scancode sdlScancode)
+{
+    switch (sdlScancode)
+    {
+    case SDL_SCANCODE_UNKNOWN: return KeyScancode::SCANCODE_UNKNOWN;
+    case SDL_SCANCODE_A: return KeyScancode::SCANCODE_A;
+    case SDL_SCANCODE_B: return KeyScancode::SCANCODE_B;
+    case SDL_SCANCODE_C: return KeyScancode::SCANCODE_C;
+    case SDL_SCANCODE_D: return KeyScancode::SCANCODE_D;
+    case SDL_SCANCODE_E: return KeyScancode::SCANCODE_E;
+    case SDL_SCANCODE_F: return KeyScancode::SCANCODE_F;
+    case SDL_SCANCODE_G: return KeyScancode::SCANCODE_G;
+    case SDL_SCANCODE_H: return KeyScancode::SCANCODE_H;
+    case SDL_SCANCODE_I: return KeyScancode::SCANCODE_I;
+    case SDL_SCANCODE_J: return KeyScancode::SCANCODE_J;
+    case SDL_SCANCODE_K: return KeyScancode::SCANCODE_K;
+    case SDL_SCANCODE_L: return KeyScancode::SCANCODE_L;
+    case SDL_SCANCODE_M: return KeyScancode::SCANCODE_M;
+    case SDL_SCANCODE_N: return KeyScancode::SCANCODE_N;
+    case SDL_SCANCODE_O: return KeyScancode::SCANCODE_O;
+    case SDL_SCANCODE_P: return KeyScancode::SCANCODE_P;
+    case SDL_SCANCODE_Q: return KeyScancode::SCANCODE_Q;
+    case SDL_SCANCODE_R: return KeyScancode::SCANCODE_R;
+    case SDL_SCANCODE_S: return KeyScancode::SCANCODE_S;
+    case SDL_SCANCODE_T: return KeyScancode::SCANCODE_T;
+    case SDL_SCANCODE_U: return KeyScancode::SCANCODE_U;
+    case SDL_SCANCODE_V: return KeyScancode::SCANCODE_V;
+    case SDL_SCANCODE_W: return KeyScancode::SCANCODE_W;
+    case SDL_SCANCODE_X: return KeyScancode::SCANCODE_X;
+    case SDL_SCANCODE_Y: return KeyScancode::SCANCODE_Y;
+    case SDL_SCANCODE_Z: return KeyScancode::SCANCODE_Z;
+    default:
+        CORE_POSTCONDITION_DEBUG_ASSERT(false, "SDL_Scancode not known.");
+        return KeyScancode::SCANCODE_UNKNOWN;
+    }
 }
 
 } // namespace Graphics

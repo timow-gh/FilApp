@@ -2,10 +2,12 @@
 #define FILAPP_FILAPPCONVERSION_HPP
 
 #include <GraphicsInterface/AppConfig.hpp>
+#include <GraphicsInterface/InputEvents/KeyScancode.hpp>
 #include <GraphicsInterface/Vec.hpp>
 #include <GraphicsInterface/ViewConfig.hpp>
 #include <GraphicsInterface/Viewport.hpp>
 #include <GraphicsInterface/WindowConfig.hpp>
+#include <SDL_scancode.h>
 #include <camutils/Bookmark.h>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
@@ -57,6 +59,9 @@ filament::math::float4 toFilamentCS(const Vec4& vec4);
 Vec3 toGlobalCS(const filament::math::float3& floatVec);
 Vec4 toGlobalCS(const filament::math::float4& floatVec);
 
-} // namespace FilApp
+SDL_Scancode toSDLScancode(KeyScancode keyScancode);
+KeyScancode toKeyScancode(SDL_Scancode sdlScancode);
+
+} // namespace Graphics
 
 #endif // FILAPP_FILAPPCONVERSION_HPP

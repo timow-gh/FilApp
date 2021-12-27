@@ -1,6 +1,6 @@
-#include "FlowMesh/GeometryElements/FlowMeshCone.hpp"
-#include "_deps/geometry-src/src/include/Geometry/Segment.hpp"
-#include "_deps/linal-src/src/include/LinAl/LinearAlgebra.hpp"
+#include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
+#include <Geometry/Segment.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 
 using namespace Geometry;
 using namespace LinAl;

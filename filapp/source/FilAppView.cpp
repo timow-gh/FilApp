@@ -387,7 +387,7 @@ void FilAppView::event(const KeyDownEvent& keyDownEvent)
     DEBUG_CHECK_CAMERA_MANIP();
 
     CameraManipulator::Key key;
-    if (manipulatorKeyFromKeycode(keyDownEvent.sdlScancode, key))
+    if (manipulatorKeyFromKeycode(toSDLScancode(keyDownEvent.keyScanCode), key))
         m_cameraManipulator->keyDown(key);
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(keyDownEvent);
@@ -398,7 +398,7 @@ void FilAppView::event(const KeyUpEvent& keyUpEvent)
     DEBUG_CHECK_CAMERA_MANIP();
 
     CameraManipulator::Key key;
-    if (manipulatorKeyFromKeycode(keyUpEvent.sdlScancode, key))
+    if (manipulatorKeyFromKeycode(toSDLScancode(keyUpEvent.keyScancode), key))
     {
         m_cameraManipulator->keyDown(key);
     }
