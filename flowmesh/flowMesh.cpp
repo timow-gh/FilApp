@@ -21,8 +21,8 @@ void createGridSegments(FlowMeshModel& fMModel)
 {
     Core::TVector<Geometry::Segment3d> xSegs;
     Core::TVector<Geometry::Segment3d> ySegs;
-    constexpr int32_t MIN = -8;
-    constexpr int32_t MAX = 8;
+    constexpr int32_t MIN = -5;
+    constexpr int32_t MAX = 5;
     constexpr std::size_t SEG_COUNT = MAX - MIN + 1;
     constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
     for (int32_t i = 0; i < SEG_COUNT; ++i)
@@ -44,7 +44,7 @@ void createSpheres(FlowMeshModel& fMModel)
 
     constexpr int32_t MINMAX = 1;
     constexpr double_t RADIUS = 0.5;
-    constexpr double_t DIST = 1.5;
+    constexpr double_t DIST = 2.0;
     for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
     {
         for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
@@ -132,15 +132,15 @@ int main()
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 
-    constexpr double_t radius = 0.5;
-    constexpr Vec3d connectVec = LinAl::Vec3d{0, 0, 4};
-    constexpr Segment3d cylinderSeg = {LinAl::Vec3d{0, 0, 1}, connectVec};
-    constexpr Segment3d coneSeg = {connectVec, LinAl::Vec3d{0, 0, 6}};
-    flowMeshModel.add(
-        FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg, radius),
-                         newFGuid()));
-    flowMeshModel.add(
-        FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius), newFGuid()));
+//    constexpr double_t radius = 0.5;
+//    constexpr Vec3d connectVec = LinAl::Vec3d{0, 0, 4};
+//    constexpr Segment3d cylinderSeg = {LinAl::Vec3d{0, 0, 1}, connectVec};
+//    constexpr Segment3d coneSeg = {connectVec, LinAl::Vec3d{0, 0, 6}};
+//    flowMeshModel.add(
+//        FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg, radius),
+//                         newFGuid()));
+//    flowMeshModel.add(
+//        FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius), newFGuid()));
 
     app.run();
 }

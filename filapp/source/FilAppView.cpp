@@ -38,8 +38,12 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_scene = m_engine->createScene();
     m_filamentView->setScene(m_scene);
 
+    auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),
+                         viewConfig.skyBoxColor.getGreen(),
+                         viewConfig.skyBoxColor.getBlue(),
+                         viewConfig.skyBoxColor.getAlpha()};
     m_skybox = filament::Skybox::Builder()
-                   .color(vec4ToFloat4(viewConfig.skyBoxColor))
+                   .color(vec4ToFloat4(colorVec))
                    .build(*m_engine);
     m_scene->setSkybox(m_skybox);
 

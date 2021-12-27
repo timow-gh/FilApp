@@ -10,19 +10,18 @@
 
 namespace FlowMesh
 {
+static std::uint32_t faceColor = 0xFFc0bfbb;
+static std::uint32_t lineColor = 0xFF000000;
 
 FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
     const Geometry::HalfedgeMesh<double_t>& halfedgeMesh)
 {
-    // TODO Color
-    constexpr uint32_t COLOR = 0xff00aaffu;
-
     std::vector<FilApp::Vertex> vertices;
     for (const auto& vec: halfedgeMesh.getVertexPoints())
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(vec[0]),
                                            static_cast<float_t>(vec[1]),
                                            static_cast<float_t>(vec[2])},
-                                          COLOR});
+                                          faceColor});
 
     return {std::move(vertices),
             Geometry::calcTriangleIndices<double_t, uint16_t>(
@@ -32,9 +31,6 @@ FilApp::TriangleRenderable FlowMeshPresenter::createTriangleRenderable(
 FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
     const FlowMeshSegments& flowMeshSegments)
 {
-    // TODO Color
-    constexpr uint32_t COLOR = 0xff00aaffu;
-
     Core::TVector<FilApp::Vertex> vertices;
     for (const auto& segment: flowMeshSegments.getSegments())
     {
@@ -43,11 +39,11 @@ FilApp::LineRenderable FlowMeshPresenter::createLineRenderables(
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(source[0]),
                                            static_cast<float_t>(source[1]),
                                            static_cast<float_t>(source[2])},
-                                          COLOR});
+                                          lineColor});
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(target[0]),
                                            static_cast<float_t>(target[1]),
                                            static_cast<float_t>(target[2])},
-                                          COLOR});
+                                          lineColor});
     }
 
     return FilApp::LineRenderable::create(vertices);
@@ -65,11 +61,11 @@ segmentFilAppVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(sPoint[0]),
                                            static_cast<float_t>(sPoint[1]),
                                            static_cast<float_t>(sPoint[2])},
-                                          0xff000000u});
+                                          lineColor});
         vertices.push_back(FilApp::Vertex{{static_cast<float_t>(tPoint[0]),
                                            static_cast<float_t>(tPoint[1]),
                                            static_cast<float_t>(tPoint[2])},
-                                          0xff000000u});
+                                          lineColor});
     }
 }
 

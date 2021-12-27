@@ -5,7 +5,7 @@
 
 namespace FilApp
 {
-struct  WindowConfig
+struct WindowConfig
 {
     std::string windowName = "MainWindow";
     bool isHeadless = false;

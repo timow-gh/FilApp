@@ -55,15 +55,15 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
 
     MatPair matPair;
     if (primitiveType == PrimitiveType::POINTS)
-        matPair = getMaterial(FilAppMaterialType::BAKEDFRAGCOLOR);
-    else
         matPair = getMaterial(FilAppMaterialType::BAKEDVERTEXCOLOR);
+    else
+        matPair = getMaterial(FilAppMaterialType::BAKEDFRAGCOLOR);
 
     filAppRenderable.mat = matPair.material;
     filAppRenderable.matInstance = matPair.matInstance;
 
     if (primitiveType == PrimitiveType::LINES)
-        filAppRenderable.matInstance->setPolygonOffset(1.0f, 1.0f);
+        filAppRenderable.matInstance->setPolygonOffset(3.0f, 3.0f);
 
     const std::size_t OFFSET = 0;
     filament::RenderableManager::Builder(1)
@@ -75,7 +75,7 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
                   filAppRenderable.ib,
                   OFFSET,
                   filAppRenderable.ib->getIndexCount())
-        .culling(false)
+        .culling(true)
         .receiveShadows(false)
         .castShadows(false)
         .build(*filAppRenderable.engine, filAppRenderable.renderableEntity);
@@ -97,11 +97,11 @@ void FilAppRenderableCreator::createMaterials()
                               MatPair(mat, matInstance));
 
     mat = filament::Material::Builder()
-              .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA,
+              .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
                        FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
               .build(*m_engine);
     matInstance = mat->createInstance();
-    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDVERTEXCOLOR,
+    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDFRAGCOLOR,
                               MatPair(mat, matInstance));
 }
 const FilAppRenderableCreator::MatPair& FilAppRenderableCreator::getMaterial(

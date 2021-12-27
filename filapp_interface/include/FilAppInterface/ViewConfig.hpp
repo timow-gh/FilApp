@@ -1,6 +1,7 @@
 #ifndef FILAPP_VIEWCONFIG_HPP
 #define FILAPP_VIEWCONFIG_HPP
 
+#include <FilAppInterface/RGBAColor.hpp>
 #include <FilAppInterface/Vec.hpp>
 #include <FilAppInterface/Viewport.hpp>
 #include <FilAppInterface/WindowConfig.hpp>
@@ -8,6 +9,7 @@
 
 namespace FilApp
 {
+
 struct ViewConfig
 {
     enum class CameraMode
@@ -29,12 +31,12 @@ struct ViewConfig
 
     std::string name{};
     bool useFXAA = true;
-    uint8_t fxaaSampleCount{8};
+    uint8_t fxaaSampleCount{4};
 
-    Vec4 skyBoxColor = Vec4(0.1f, 0.125f, 0.25f, 1.0f);
+    RGBAColor<float_t> skyBoxColor = RGBAColor<float_t>(0.19, 0.19, 0.19, 0.55);
 
     Viewport viewport;
-    Vec3 eye = Vec3(15.0f, 15.0f, 15.0f);
+    Vec3 eye = Vec3(10.0f, 10.0f, 7.0f);
     Vec3 center = Vec3(0.0f, 0.0f, 0.0f);
     Vec3 up = Vec3(0.0f, 0.0f, 1.0f);
     float_t fieldOfViewInDegree{60.0f};

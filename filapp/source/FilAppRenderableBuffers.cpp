@@ -63,7 +63,7 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
                        1,
                        filament::VertexBuffer::AttributeType::FLOAT,
                        0,
-                       sizeof(float))
+                       sizeof(float_t))
             .build(*filAppRenderable->engine);
 
     const std::size_t VERTICES_BUFFER_SIZE = VERTEX_COUNT * VERTEX_SIZE;
@@ -79,7 +79,7 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
         1,
         filament::VertexBuffer::BufferDescriptor(
             pointRenderable->getPointSizes().data(),
-            VERTEX_COUNT * sizeof(float),
+            VERTEX_COUNT * sizeof(float_t),
             nullptr));
 }
 

@@ -19,6 +19,7 @@ add_library(filapp_interfaces INTERFACE
         include/FilAppInterface/Viewport.hpp
         include/FilAppInterface/Window.hpp
         include/FilAppInterface/Application.hpp
+        include/FilAppInterface/RGBAColor.hpp
         include/FilAppInterface/WindowConfig.hpp
         include/FilAppInterface/AppConfig.hpp
         include/FilAppInterface/Vertex.hpp
