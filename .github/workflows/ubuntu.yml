@@ -36,7 +36,7 @@ jobs:
           cmake -B ${{ github.workspace }}/build -G "${{ matrix.config.generators }}" -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCXX_STANDARD=C++20
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config.build_type }} --target fil_app
+        run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config.build_type }} --target flow_mesh
 
       - name: Test
         working-directory: ${{github.workspace}}/build
