@@ -9,6 +9,7 @@ namespace FlowMesh
 class CameraInteractor
     : public Interactor
     , public Graphics::InputEventListener {
+    asdf
 };
 } // namespace FlowMesh
 
