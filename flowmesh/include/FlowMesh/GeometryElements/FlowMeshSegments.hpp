@@ -13,8 +13,7 @@ class FlowMeshSegments : public GeometryElementBase<FlowMeshSegments> {
 
   public:
     FlowMeshSegments();
-    FlowMeshSegments(Core::TVector<Geometry::Segment3d> segments,
-                     const FGuid& guid);
+    FlowMeshSegments(Core::TVector<Geometry::Segment3d> segments, const FGuid& guid);
     FlowMeshSegments(const Geometry::Segment3d& segment, const FGuid& guid);
 
     [[nodiscard]] const Core::TVector<Geometry::Segment3d>& getSegments() const;

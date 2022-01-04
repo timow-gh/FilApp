@@ -11,6 +11,6 @@ class RayPickEventDispatcher : public DispatcherBase<RayPickEventListener> {
   public:
     using DispatcherBase<RayPickEventListener>::DispatcherBase;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_RAYPICKEVENTDISPATCHER_HPP

@@ -1,9 +1,9 @@
 #ifndef FILAPP_RGBACOLOR_HPP
 #define FILAPP_RGBACOLOR_HPP
 
+#include <array>
 #include <cmath>
 #include <cstdint>
-#include <array>
 
 namespace Graphics
 {
@@ -24,15 +24,12 @@ class RGBAColor {
     {
     }
 
-    static RGBAColor<float_t> create(std::uint32_t red,
-                                     std::uint32_t green,
-                                     std::uint32_t blue,
-                                     float_t alpha)
+    static RGBAColor<float_t>
+    create(std::uint32_t red, std::uint32_t green, std::uint32_t blue, float_t alpha)
     {
         auto sRGB_to_linear = [](float color) -> float_t
         {
-            return color <= 0.04045 ? color / 12.92
-                                    : std::pow((color + 0.055) / 1.055, 2.4);
+            return color <= 0.04045 ? color / 12.92 : std::pow((color + 0.055) / 1.055, 2.4);
         };
         float_t sum = 255.0f; // red + green + blue; //
         return {sRGB_to_linear(static_cast<float_t>(red) / sum) * alpha,
@@ -41,8 +38,7 @@ class RGBAColor {
                 alpha};
     }
 
-    static RGBAColor<float_t>
-    create(std::uint32_t red, std::uint32_t green, std::uint32_t blue)
+    static RGBAColor<float_t> create(std::uint32_t red, std::uint32_t green, std::uint32_t blue)
     {
         float_t alpha = 1.0f;
         return RGBAColor<float_t>::create(red, green, blue, alpha);
@@ -54,6 +50,6 @@ class RGBAColor {
     [[nodiscard]] T getAlpha() const { return m_values[3]; }
 };
 
-}
+} // namespace Graphics
 
 #endif // FILAPP_RGBACOLOR_HPP

@@ -27,8 +27,7 @@ class PlacingInteractor
     void ~PlacingInteractor() CORE_NOEXCEPT;
 
   private:
-    CORE_NODISCARD FlowMeshSphere
-    createSphere(const LinAl::Vec3d& origin) const;
+    CORE_NODISCARD FlowMeshSphere createSphere(const LinAl::Vec3d& origin) const;
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const;

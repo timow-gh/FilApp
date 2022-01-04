@@ -13,8 +13,7 @@ class FlowMeshCylinder : public GeometryElementBase<FlowMeshCylinder> {
 
   public:
     FlowMeshCylinder();
-    FlowMeshCylinder(const Geometry::Cylinder<double_t>& cylinder,
-                     const FGuid& fGuid);
+    FlowMeshCylinder(const Geometry::Cylinder<double_t>& cylinder, const FGuid& fGuid);
 
     [[nodiscard]] const Geometry::Cylinder<double_t>& getCylinder() const;
 };

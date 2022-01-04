@@ -18,6 +18,6 @@ struct Viewport
     {
     }
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_VIEWPORT_HPP

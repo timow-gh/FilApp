@@ -15,6 +15,6 @@ class RayPickEventListener {
     virtual void event(const PickRayMoveEvent& pickRayMoveEvent){};
 };
 
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_RAYPICKEVENTLISTENER_HPP

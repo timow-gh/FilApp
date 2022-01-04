@@ -2,8 +2,7 @@
 
 namespace FlowMesh
 {
-PlacingInteractor::PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT
-    : m_model(model)
+PlacingInteractor::PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT : m_model(model)
 {
 }
 
@@ -20,8 +19,8 @@ FlowMeshSphere PlacingInteractor::createSphere(const LinAl::Vec3d& origin) const
     return FlowMeshSphere{sphere, newFGuid()};
 }
 
-std::optional<LinAl::Vec3d> PlacingInteractor::calcIntersection(
-    const Graphics::PickRayEvent& pickRayEvent) const
+std::optional<LinAl::Vec3d>
+PlacingInteractor::calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const
 {
     const Graphics::Vec3& pickOrigin = pickRayEvent.origin;
     const Graphics::Vec3& pickDirection = pickRayEvent.direction;
@@ -41,8 +40,7 @@ void PlacingInteractor::event(const Graphics::PickRayEvent& pickRayEvent)
     }
 }
 
-void PlacingInteractor::event(
-    const Graphics::PickRayMoveEvent& pickRayMoveEvent)
+void PlacingInteractor::event(const Graphics::PickRayMoveEvent& pickRayMoveEvent)
 {
     if (auto intersection = calcIntersection(pickRayMoveEvent))
     {

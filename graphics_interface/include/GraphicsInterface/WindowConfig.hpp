@@ -13,6 +13,6 @@ struct WindowConfig
     uint32_t width = 1024;
     uint32_t height = 640;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_WINDOWCONFIG_HPP

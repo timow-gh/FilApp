@@ -11,6 +11,6 @@ struct Vertex
     float_t position[3];
     uint32_t color;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_VERTEX_HPP

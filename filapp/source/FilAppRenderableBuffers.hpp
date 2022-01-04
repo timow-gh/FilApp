@@ -5,15 +5,13 @@
 
 namespace Graphics
 {
-void createVertexBuffer(FilAppRenderable* filAppRenderable,
-                        const std::vector<Vertex>& vertices);
+void createVertexBuffer(FilAppRenderable* filAppRenderable, const std::vector<Vertex>& vertices);
 
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
                         PointRenderable* pointRenderable,
                         std::size_t VERTEX_SIZE);
 
-void createIndicesBuffer(FilAppRenderable* filAppRenderable,
-                         const std::vector<uint16_t>& indices);
+void createIndicesBuffer(FilAppRenderable* filAppRenderable, const std::vector<uint16_t>& indices);
 } // namespace Graphics
 
 #endif // FILAPP_FILAPPRENDERABLEBUFFERS_HPP

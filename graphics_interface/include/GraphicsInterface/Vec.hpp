@@ -17,10 +17,7 @@ struct Vec
     }
 
     [[nodiscard]] inline std::size_t size() const noexcept { return SIZE; }
-    [[nodiscard]] inline float_t operator[](std::size_t i) const noexcept
-    {
-        return values[i];
-    }
+    [[nodiscard]] inline float_t operator[](std::size_t i) const noexcept { return values[i]; }
     inline float_t& operator[](std::size_t i) noexcept { return values[i]; }
 
     friend std::ostream& operator<<(std::ostream& os, const Vec<SIZE>& vec)
@@ -33,6 +30,6 @@ struct Vec
 struct Vec3 : public Vec<3>{using Vec<3>::Vec;};
 struct Vec4 : public Vec<4>{using Vec<4>::Vec;};
 // clang-format on
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_VEC_HPP

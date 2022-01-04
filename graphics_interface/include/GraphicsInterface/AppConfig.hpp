@@ -20,6 +20,6 @@ struct AppConfig
     BackendMode backendMode = BackendMode::VULKAN;
     EventPollingMode eventPollingMode = EventPollingMode::WAIT_EVENTS;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_APPCONFIG_HPP

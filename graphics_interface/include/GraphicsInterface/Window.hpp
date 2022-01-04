@@ -18,6 +18,6 @@ class Window {
 
     virtual WindowId getIWindowId() = 0;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_WINDOW_HPP

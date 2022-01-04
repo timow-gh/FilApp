@@ -12,6 +12,6 @@ struct MouseWheelEvent
 
     MouseWheelEvent(float_t x, double_t time) : x(x), time(time) {}
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_MOUSEWHEELEVENT_HPP

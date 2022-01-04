@@ -18,8 +18,7 @@ int main()
     };
     View* mainView = window->getMainIView();
     mainView->setUsePostprocessing(false);
-    auto renderableId = mainView->addRenderable(
-        TriangleRenderable(std::move(vertices), {0, 1, 2}));
+    auto renderableId = mainView->addRenderable(TriangleRenderable(std::move(vertices), {0, 1, 2}));
     mainView->addRotationAnimation(renderableId, Vec3{0.0f, 1.0f, 0.0f});
 
     FilApplication::get().run();

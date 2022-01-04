@@ -3,7 +3,8 @@
 
 namespace FlowMesh
 {
-class Interactor {};
+class Interactor {
+};
 } // namespace FlowMesh
 
 #endif // FILAPP_INTERACTOR_HPP

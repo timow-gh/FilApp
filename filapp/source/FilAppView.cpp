@@ -11,20 +11,16 @@
 #include <utility>
 
 #ifndef NDEBUG
-#define DEBUG_CHECK_CAMERA_MANIP()                                             \
-    CORE_PRECONDITION_DEBUG_ASSERT(m_cameraManipulator,                        \
-                                   "Camera manipulator not set.");
+#define DEBUG_CHECK_CAMERA_MANIP()                                                                 \
+    CORE_PRECONDITION_DEBUG_ASSERT(m_cameraManipulator, "Camera manipulator not set.");
 #else
 #define DEBUG_CHECK_CAMERA_MANIP()
 #endif
 
 namespace Graphics
 {
-FilAppView::FilAppView(const ViewConfig& viewConfig,
-                       filament::Renderer& renderer)
-    : m_engine(renderer.getEngine())
-    , m_name(viewConfig.name)
-    , m_viewConfig(viewConfig)
+FilAppView::FilAppView(const ViewConfig& viewConfig, filament::Renderer& renderer)
+    : m_engine(renderer.getEngine()), m_name(viewConfig.name), m_viewConfig(viewConfig)
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
@@ -42,9 +38,7 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
                          viewConfig.skyBoxColor.getGreen(),
                          viewConfig.skyBoxColor.getBlue(),
                          viewConfig.skyBoxColor.getAlpha()};
-    m_skybox = filament::Skybox::Builder()
-                   .color(vec4ToFloat4(colorVec))
-                   .build(*m_engine);
+    m_skybox = filament::Skybox::Builder().color(vec4ToFloat4(colorVec)).build(*m_engine);
     m_scene->setSkybox(m_skybox);
 
     utils::EntityManager& entityManager = utils::EntityManager::get();
@@ -57,16 +51,15 @@ FilAppView::FilAppView(const ViewConfig& viewConfig,
     m_camera->lookAt(eye, center, up);
     m_filamentView->setCamera(m_camera);
 
-    filament::camutils::Mode cameraMode =
-        toFilamentCameraMode(viewConfig.cameraMode);
+    filament::camutils::Mode cameraMode = toFilamentCameraMode(viewConfig.cameraMode);
     const Viewport& vport = viewConfig.viewport;
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
                 // TODO Settings
                 .fovDegrees(m_viewConfig.fieldOfViewInDegree)
-                .fovDirection(toFilamentFovDirection(m_viewConfig.fovDirection,
-                                                     FilamentCamUtilsTag()))
+                .fovDirection(
+                    toFilamentFovDirection(m_viewConfig.fovDirection, FilamentCamUtilsTag()))
                 .farPlane(m_viewConfig.far)
                 .orbitHomePosition(eye[0], eye[1], eye[2])
                 .targetPosition(center[0], center[1], center[2])
@@ -127,20 +120,18 @@ void FilAppView::configureCameraProjection()
 {
     CORE_PRECONDITION_DEBUG_ASSERT(m_viewConfig.near < m_viewConfig.far,
                                    "Invalid near and far plane.");
-    const float_t aspect =
-        (float_t)m_filamentViewport.width / (float_t)m_filamentViewport.height;
+    const float_t aspect = (float_t)m_filamentViewport.width / (float_t)m_filamentViewport.height;
 
     switch (m_viewConfig.cameraProjection)
     {
     case ViewConfig::CameraProjection::ORTHOGRAPHIC:
-        m_camera->setProjection(
-            toFilamentProjection(m_viewConfig.cameraProjection),
-            -aspect * m_viewConfig.orthogonalCameraZoom,
-            aspect * m_viewConfig.orthogonalCameraZoom,
-            -m_viewConfig.orthogonalCameraZoom,
-            m_viewConfig.orthogonalCameraZoom,
-            m_viewConfig.near,
-            m_viewConfig.far);
+        m_camera->setProjection(toFilamentProjection(m_viewConfig.cameraProjection),
+                                -aspect * m_viewConfig.orthogonalCameraZoom,
+                                aspect * m_viewConfig.orthogonalCameraZoom,
+                                -m_viewConfig.orthogonalCameraZoom,
+                                m_viewConfig.orthogonalCameraZoom,
+                                m_viewConfig.near,
+                                m_viewConfig.far);
         break;
     case ViewConfig::CameraProjection::PERSPECTIVE:
         m_camera->setProjection(
@@ -148,16 +139,14 @@ void FilAppView::configureCameraProjection()
             aspect,
             m_viewConfig.near,
             m_viewConfig.far,
-            toFilamentFovDirection(m_viewConfig.fovDirection,
-                                   FilamentCameraTag()));
+            toFilamentFovDirection(m_viewConfig.fovDirection, FilamentCameraTag()));
         break;
     }
 }
 
 RenderableId FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 {
-    auto renderable =
-        std::make_unique<TriangleRenderable>(std::move(triangleRenderable));
+    auto renderable = std::make_unique<TriangleRenderable>(std::move(triangleRenderable));
 
     auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
@@ -171,8 +160,7 @@ RenderableId FilAppView::addRenderable(TriangleRenderable&& triangleRenderable)
 
 RenderableId FilAppView::addRenderable(PointRenderable&& pointRenderable)
 {
-    auto renderable =
-        std::make_unique<PointRenderable>(std::move(pointRenderable));
+    auto renderable = std::make_unique<PointRenderable>(std::move(pointRenderable));
 
     auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
@@ -186,8 +174,7 @@ RenderableId FilAppView::addRenderable(PointRenderable&& pointRenderable)
 
 RenderableId FilAppView::addRenderable(LineRenderable&& lineRenderable)
 {
-    auto renderable =
-        std::make_unique<LineRenderable>(std::move(lineRenderable));
+    auto renderable = std::make_unique<LineRenderable>(std::move(lineRenderable));
 
     auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
         renderable->getVertices(),
@@ -209,19 +196,18 @@ std::vector<RenderableId> FilAppView::getRenderableIdentifiers() const
 void FilAppView::removeRenderable(RenderableId id)
 {
     eraseRenderable(id);
-    auto iter =
-        std::remove_if(m_filAppRenderables.begin(),
-                       m_filAppRenderables.end(),
-                       [id = id, scene = m_scene](const FilAppRenderable& item)
-                       {
-                           if (item.renderableEntity.getId() == id.getId())
-                           {
-                               scene->remove(item.renderableEntity);
-                               item.destroy();
-                               return true;
-                           }
-                           return false;
-                       });
+    auto iter = std::remove_if(m_filAppRenderables.begin(),
+                               m_filAppRenderables.end(),
+                               [id = id, scene = m_scene](const FilAppRenderable& item)
+                               {
+                                   if (item.renderableEntity.getId() == id.getId())
+                                   {
+                                       scene->remove(item.renderableEntity);
+                                       item.destroy();
+                                       return true;
+                                   }
+                                   return false;
+                               });
     m_filAppRenderables.erase(iter, m_filAppRenderables.end());
 }
 
@@ -251,19 +237,16 @@ void FilAppView::setUsePostprocessing(bool usePostProcessing)
     m_filamentView->setPostProcessingEnabled(usePostProcessing);
 }
 
-void FilAppView::addRotationAnimation(RenderableId renderableIdentifier,
-                                      const Vec3& rotationAxis)
+void FilAppView::addRotationAnimation(RenderableId renderableIdentifier, const Vec3& rotationAxis)
 {
     m_animationCallbacks.emplace_back(
         [renderableIdentifier, engine = m_engine](double deltaT)
         {
             auto& tcm = engine->getTransformManager();
             tcm.setTransform(
-                tcm.getInstance(utils::Entity::import(
-                    static_cast<int>(renderableIdentifier.getId()))),
-                filament::math::mat4f::rotation(
-                    deltaT * 0.4,
-                    filament::math::float3{0, 1, 0}));
+                tcm.getInstance(
+                    utils::Entity::import(static_cast<int>(renderableIdentifier.getId()))),
+                filament::math::mat4f::rotation(deltaT * 0.4, filament::math::float3{0, 1, 0}));
         });
 }
 
@@ -307,8 +290,7 @@ void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
     {
     case MouseButtonEvent::Type::PUSH:
     {
-        if (mouseButtonEvent.buttonIndex == 2 ||
-            mouseButtonEvent.buttonIndex == 3)
+        if (mouseButtonEvent.buttonIndex == 2 || mouseButtonEvent.buttonIndex == 3)
         {
             m_cameraManipulator->grabBegin(static_cast<int>(mouseButtonEvent.x),
                                            static_cast<int>(mouseButtonEvent.y),
@@ -321,12 +303,10 @@ void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
     {
         if (mouseButtonEvent.buttonIndex == 1)
         {
-            PickRayEvent pickRayEvent =
-                getPickRayMoveEvent(mouseButtonEvent.x,
-                                    mouseButtonEvent.y,
-                                    mouseButtonEvent.deltaT);
-            for (RayPickEventListener* listener:
-                 RayPickEventDispatcher::m_listener)
+            PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseButtonEvent.x,
+                                                            mouseButtonEvent.y,
+                                                            mouseButtonEvent.deltaT);
+            for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
                 listener->event(pickRayEvent);
         }
         m_cameraManipulator->grabEnd();
@@ -347,21 +327,18 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
     for (auto listener: InputEventDispatcher::m_listener)
         listener->event(mouseMoveEvent);
 
-    PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseMoveEvent.x,
-                                                    mouseMoveEvent.y,
-                                                    mouseMoveEvent.deltaT);
+    PickRayEvent pickRayEvent =
+        getPickRayMoveEvent(mouseMoveEvent.x, mouseMoveEvent.y, mouseMoveEvent.deltaT);
     for (RayPickEventListener* listener: RayPickEventDispatcher::m_listener)
-        listener->event(PickRayMoveEvent(pickRayEvent.origin,
-                                         pickRayEvent.direction,
-                                         pickRayEvent.time));
+        listener->event(
+            PickRayMoveEvent(pickRayEvent.origin, pickRayEvent.direction, pickRayEvent.time));
 }
 
 void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 {
     DEBUG_CHECK_CAMERA_MANIP();
 
-    if (m_viewConfig.cameraProjection ==
-        ViewConfig::CameraProjection::ORTHOGRAPHIC)
+    if (m_viewConfig.cameraProjection == ViewConfig::CameraProjection::ORTHOGRAPHIC)
     {
         m_viewConfig.orthogonalCameraZoom +=
             mouseWheelEvent.x * m_viewConfig.scrollMultiplierOrthographic;
@@ -369,8 +346,7 @@ void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
     }
     else
     {
-        float_t scrollValue =
-            mouseWheelEvent.x * m_viewConfig.scrollMultiplierPerspective;
+        float_t scrollValue = mouseWheelEvent.x * m_viewConfig.scrollMultiplierPerspective;
         m_cameraManipulator->scroll(0, 0, scrollValue);
         filament::math::float3 eye;
         filament::math::float3 target;
@@ -407,9 +383,8 @@ void FilAppView::event(const KeyUpEvent& keyUpEvent)
         listener->event(keyUpEvent);
 }
 
-bool FilAppView::manipulatorKeyFromKeycode(
-    SDL_Scancode scancode,
-    filament::camutils::Manipulator<float_t>::Key& key)
+bool FilAppView::manipulatorKeyFromKeycode(SDL_Scancode scancode,
+                                           filament::camutils::Manipulator<float_t>::Key& key)
 {
     switch (scancode)
     {
@@ -463,22 +438,19 @@ FilAppRenderable* FilAppView::findFilAppRenderable(RenderableId id)
         std::sort(m_filAppRenderables.begin(), m_filAppRenderables.end());
 
     utils::Entity entity = utils::Entity::import(id.getId());
-    auto iter = std::lower_bound(
-        m_filAppRenderables.begin(),
-        m_filAppRenderables.end(),
-        entity,
-        [](const FilAppRenderable& filAppRenderable, utils::Entity entity)
-        {
-            return filAppRenderable.renderableEntity < entity;
-        });
+    auto iter = std::lower_bound(m_filAppRenderables.begin(),
+                                 m_filAppRenderables.end(),
+                                 entity,
+                                 [](const FilAppRenderable& filAppRenderable, utils::Entity entity)
+                                 {
+                                     return filAppRenderable.renderableEntity < entity;
+                                 });
     if (iter != m_filAppRenderables.cend())
         return &(*iter);
     return nullptr;
 }
 
-PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x,
-                                             std::size_t y,
-                                             double_t time) const
+PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const
 {
     const float_t width = static_cast<float_t>(m_viewConfig.viewport.width);
     const float_t height = static_cast<float_t>(m_viewConfig.viewport.height);
@@ -488,21 +460,18 @@ PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x,
     const float_t v = 2.0f * (0.5f + y) / height - 1.0f;
 
     const filament::math::float3 cameraForward = m_camera->getForwardVector();
-    const filament::math::float3 right =
-        normalize(cross(cameraForward, m_camera->getUpVector()));
+    const filament::math::float3 right = normalize(cross(cameraForward, m_camera->getUpVector()));
     const filament::math::float3 upward = cross(right, cameraForward);
     const float_t aspect = width / height;
-    const float_t fov = static_cast<float_t>(m_viewConfig.fieldOfViewInDegree) *
-                        filament::math::f::PI / 180.0f;
+    const float_t fov =
+        static_cast<float_t>(m_viewConfig.fieldOfViewInDegree) * filament::math::f::PI / 180.0f;
 
     filament::math::float3 origin = m_camera->getPosition();
     filament::math::float3 direction = cameraForward;
-    if (m_viewConfig.cameraProjection ==
-        ViewConfig::CameraProjection::PERSPECTIVE)
+    if (m_viewConfig.cameraProjection == ViewConfig::CameraProjection::PERSPECTIVE)
     {
         const float_t tangent = std::tan(fov / 2.0f);
-        if (toFilamentFovDirection(m_viewConfig.fovDirection,
-                                   FilamentCameraTag()) ==
+        if (toFilamentFovDirection(m_viewConfig.fovDirection, FilamentCameraTag()) ==
             filament::Camera::Fov::VERTICAL)
         {
             direction += right * tangent * u * aspect;
@@ -515,9 +484,8 @@ PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x,
         }
     }
     else
-        CORE_POSTCONDITION_DEBUG_ASSERT(
-            false,
-            "Picking for this camera projetion not implemented.");
+        CORE_POSTCONDITION_DEBUG_ASSERT(false,
+                                        "Picking for this camera projetion not implemented.");
 
     direction = normalize(direction);
     return PickRayEvent{toGlobalCS(origin), toGlobalCS(direction), time};

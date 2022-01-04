@@ -20,23 +20,12 @@ class PointRenderable {
     }
 
     static PointRenderable create(const Vertex& vertex, float_t pointSize);
-    static PointRenderable create(std::vector<Vertex> vertices,
-                                  float_t pointSize);
-    static PointRenderable create(std::vector<Vertex> vertices,
-                                  std::vector<float_t> pointSizes);
+    static PointRenderable create(std::vector<Vertex> vertices, float_t pointSize);
+    static PointRenderable create(std::vector<Vertex> vertices, std::vector<float_t> pointSizes);
 
-    [[nodiscard]] const std::vector<Vertex>& getVertices() const
-    {
-        return m_vertices;
-    }
-    [[nodiscard]] const std::vector<uint16_t>& getIndices() const
-    {
-        return m_indices;
-    }
-    [[nodiscard]] const std::vector<float_t>& getPointSizes() const
-    {
-        return m_pointSizes;
-    }
+    [[nodiscard]] const std::vector<Vertex>& getVertices() const { return m_vertices; }
+    [[nodiscard]] const std::vector<uint16_t>& getIndices() const { return m_indices; }
+    [[nodiscard]] const std::vector<float_t>& getPointSizes() const { return m_pointSizes; }
 
   private:
     std::vector<Vertex> m_vertices;
@@ -44,14 +33,12 @@ class PointRenderable {
     std::vector<float_t> m_pointSizes;
 };
 
-inline PointRenderable PointRenderable::create(const Vertex& vertex,
-                                               float_t pointSize)
+inline PointRenderable PointRenderable::create(const Vertex& vertex, float_t pointSize)
 {
     return create(std::vector<Vertex>{vertex}, pointSize);
 }
 
-inline PointRenderable PointRenderable::create(std::vector<Vertex> vertices,
-                                               float_t pointSize)
+inline PointRenderable PointRenderable::create(std::vector<Vertex> vertices, float_t pointSize)
 {
     const std::size_t SIZE = vertices.size();
     std::vector<uint16_t> indices(SIZE);
@@ -69,6 +56,6 @@ inline PointRenderable PointRenderable::create(std::vector<Vertex> vertices,
     return {std::move(vertices), std::move(indices), std::move(pointSizes)};
 }
 
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_POINTRENDERABLE_HPP

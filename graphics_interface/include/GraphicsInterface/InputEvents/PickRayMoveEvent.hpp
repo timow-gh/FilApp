@@ -12,6 +12,6 @@ struct PickRayMoveEvent : public PickRayEvent
     {
     }
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_PICKRAYMOVEEVENT_HPP

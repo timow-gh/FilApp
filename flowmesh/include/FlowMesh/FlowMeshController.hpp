@@ -36,17 +36,14 @@ class FlowMeshController {
     {
     }
     FlowMeshController(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
-    FlowMeshController&
-    operator=(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
+    FlowMeshController& operator=(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
 
-    CORE_NODISCARD Graphics::InputEventDispatcher*
-    getInputEventDispatcher() const
+    CORE_NODISCARD Graphics::InputEventDispatcher* getInputEventDispatcher() const
     {
         return m_inputEventDispatcher;
     }
 
-    CORE_NODISCARD Graphics::RayPickEventDispatcher*
-    getRayPickDispatcher() const
+    CORE_NODISCARD Graphics::RayPickEventDispatcher* getRayPickDispatcher() const
     {
         return m_rayPickDispatcher;
     }

@@ -17,6 +17,6 @@ struct PickRayEvent
     {
     }
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_PICKRAYEVENT_HPP

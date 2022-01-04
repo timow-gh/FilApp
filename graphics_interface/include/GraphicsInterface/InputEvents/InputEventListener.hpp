@@ -19,6 +19,6 @@ class InputEventListener {
     virtual void event(const KeyUpEvent& keyUpEvent){};
     virtual void event(const KeyDownEvent& keyUpEvent){};
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_INPUTEVENTLISTENER_HPP

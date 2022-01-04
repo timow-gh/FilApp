@@ -11,8 +11,7 @@ template <typename Derived>
 class GeometryElementBase {
   protected:
     explicit GeometryElementBase(FGuid guid)
-        : m_fGuid(guid)
-        , m_transformation(LinAl::createIdentityHMatrix<double_t>())
+        : m_fGuid(guid), m_transformation(LinAl::createIdentityHMatrix<double_t>())
     {
     }
     FGuid m_fGuid;
@@ -20,10 +19,7 @@ class GeometryElementBase {
 
   public:
     [[nodiscard]] const FGuid& getFGuid() const { return m_fGuid; }
-    [[nodiscard]] const LinAl::HMatrixd& getTransformation() const
-    {
-        return m_transformation;
-    }
+    [[nodiscard]] const LinAl::HMatrixd& getTransformation() const { return m_transformation; }
 
     void setTransformation(const LinAl::HMatrixd& transformation)
     {
@@ -46,18 +42,9 @@ class GeometryElementBase {
     {
         return lhs.m_fGuid < rhs.m_fGuid;
     }
-    friend bool operator>(const Derived& lhs, const Derived& rhs)
-    {
-        return rhs < lhs;
-    }
-    friend bool operator<=(const Derived& lhs, const Derived& rhs)
-    {
-        return !(rhs < lhs);
-    }
-    friend bool operator>=(const Derived& lhs, const Derived& rhs)
-    {
-        return !(lhs < rhs);
-    }
+    friend bool operator>(const Derived& lhs, const Derived& rhs) { return rhs < lhs; }
+    friend bool operator<=(const Derived& lhs, const Derived& rhs) { return !(rhs < lhs); }
+    friend bool operator>=(const Derived& lhs, const Derived& rhs) { return !(lhs < rhs); }
 };
 } // namespace FlowMesh
 

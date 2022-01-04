@@ -17,40 +17,17 @@ class RenderableId {
 
     [[nodiscard]] Type getId() const noexcept { return m_id; }
 
-    bool operator==(const RenderableId& rhs) const noexcept
-    {
-        return m_id == rhs.m_id;
-    }
-
-    bool operator!=(const RenderableId& rhs) const noexcept
-    {
-        return !(rhs == *this);
-    }
-
-    bool operator<(const RenderableId& rhs) const noexcept
-    {
-        return m_id < rhs.m_id;
-    }
-
-    bool operator>(const RenderableId& rhs) const noexcept
-    {
-        return rhs < *this;
-    }
-
-    bool operator<=(const RenderableId& rhs) const noexcept
-    {
-        return !(rhs < *this);
-    }
-
-    bool operator>=(const RenderableId& rhs) const noexcept
-    {
-        return !(*this < rhs);
-    }
+    bool operator==(const RenderableId& rhs) const noexcept { return m_id == rhs.m_id; }
+    bool operator!=(const RenderableId& rhs) const noexcept { return !(rhs == *this); }
+    bool operator<(const RenderableId& rhs) const noexcept { return m_id < rhs.m_id; }
+    bool operator>(const RenderableId& rhs) const noexcept { return rhs < *this; }
+    bool operator<=(const RenderableId& rhs) const noexcept { return !(rhs < *this); }
+    bool operator>=(const RenderableId& rhs) const noexcept { return !(*this < rhs); }
 
   private:
     Type m_id{0};
 };
-} // namespace FilApp
+} // namespace Graphics
 
 namespace std
 {

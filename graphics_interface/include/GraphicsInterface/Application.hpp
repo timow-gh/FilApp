@@ -11,6 +11,6 @@ class Application {
 
     virtual Window* getWindow() = 0;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_APPLICATION_HPP

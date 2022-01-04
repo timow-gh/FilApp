@@ -7,8 +7,7 @@
 
 namespace Graphics
 {
-class FilAppRenderableCreator
-{
+class FilAppRenderableCreator {
     enum class FilAppMaterialType
     {
         BAKEDFRAGCOLOR,
@@ -21,8 +20,7 @@ class FilAppRenderableCreator
         filament::MaterialInstance* matInstance{nullptr};
 
         MatPair() = default;
-        MatPair(filament::Material* material,
-                filament::MaterialInstance* matInstance)
+        MatPair(filament::Material* material, filament::MaterialInstance* matInstance)
             : material(material), matInstance(matInstance)
         {
         }
@@ -37,19 +35,17 @@ class FilAppRenderableCreator
 
     FilAppRenderableCreator() = default;
 
-    FilAppRenderable
-    createBakedColorRenderable(const std::vector<Vertex>& vertices,
-                               const std::vector<uint16_t>& indices,
-                               PrimitiveType primitiveType);
+    FilAppRenderable createBakedColorRenderable(const std::vector<Vertex>& vertices,
+                                                const std::vector<uint16_t>& indices,
+                                                PrimitiveType primitiveType);
 
     void destroyMaterials();
 
   private:
     explicit FilAppRenderableCreator(filament::Engine* engine);
     void createMaterials();
-    [[nodiscard]] const MatPair&
-    getMaterial(FilAppMaterialType filAppMaterialType) const;
+    [[nodiscard]] const MatPair& getMaterial(FilAppMaterialType filAppMaterialType) const;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_FILAPPRENDERABLECREATOR_HPP

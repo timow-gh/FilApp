@@ -11,9 +11,7 @@ filament::Engine::Backend toFilamentBackend(BackendMode backendMode)
     {
     case BackendMode::VULKAN: return filament::Engine::Backend::VULKAN;
     case BackendMode::OPENGL: return filament::Engine::Backend ::OPENGL;
-    default:
-        PANIC_LOG("BackendMode not implemented.");
-        return filament::Engine::Backend::DEFAULT;
+    default: PANIC_LOG("BackendMode not implemented."); return filament::Engine::Backend::DEFAULT;
     }
 }
 
@@ -22,19 +20,15 @@ filament::camutils::Mode toFilamentCameraMode(ViewConfig::CameraMode cameraMode)
     switch (cameraMode)
     {
     case ViewConfig::CameraMode::ORBIT: return filament::camutils::Mode::ORBIT;
-    default:
-        PANIC_LOG("CameraMode not implemented.");
-        return filament::camutils::Mode::FREE_FLIGHT;
+    default: PANIC_LOG("CameraMode not implemented."); return filament::camutils::Mode::FREE_FLIGHT;
     }
 }
 
-filament::Camera::Projection
-toFilamentProjection(ViewConfig::CameraProjection cameraProjection)
+filament::Camera::Projection toFilamentProjection(ViewConfig::CameraProjection cameraProjection)
 {
     switch (cameraProjection)
     {
-    case ViewConfig::CameraProjection::ORTHOGRAPHIC:
-        return filament::Camera::Projection::ORTHO;
+    case ViewConfig::CameraProjection::ORTHOGRAPHIC: return filament::Camera::Projection::ORTHO;
     case ViewConfig::CameraProjection::PERSPECTIVE:
         return filament::Camera::Projection::PERSPECTIVE;
     }
@@ -42,28 +36,22 @@ toFilamentProjection(ViewConfig::CameraProjection cameraProjection)
 }
 
 filament::camutils::Fov
-toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
-                       FilamentCamUtilsTag)
+toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection, FilamentCamUtilsTag)
 {
     switch (fieldOfViewDirection)
     {
-    case ViewConfig::FieldOfViewDirection::HORIZONTAL:
-        return filament::camutils::Fov::HORIZONTAL;
-    case ViewConfig::FieldOfViewDirection::VERTICAL:
-        return filament::camutils::Fov::VERTICAL;
+    case ViewConfig::FieldOfViewDirection::HORIZONTAL: return filament::camutils::Fov::HORIZONTAL;
+    case ViewConfig::FieldOfViewDirection::VERTICAL: return filament::camutils::Fov::VERTICAL;
     }
 }
 
-filament::Camera::Fov
-toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
-                       FilamentCameraTag)
+filament::Camera::Fov toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
+                                             FilamentCameraTag)
 {
     switch (fieldOfViewDirection)
     {
-    case ViewConfig::FieldOfViewDirection::HORIZONTAL:
-        return filament::Camera::Fov::HORIZONTAL;
-    case ViewConfig::FieldOfViewDirection::VERTICAL:
-        return filament::Camera::Fov::VERTICAL;
+    case ViewConfig::FieldOfViewDirection::HORIZONTAL: return filament::Camera::Fov::HORIZONTAL;
+    case ViewConfig::FieldOfViewDirection::VERTICAL: return filament::Camera::Fov::VERTICAL;
     }
 }
 

@@ -11,10 +11,7 @@ class DispatcherBase {
     std::vector<TListener*> m_listener;
 
   public:
-    void registerListener(TListener* listener)
-    {
-        m_listener.push_back(listener);
-    }
+    void registerListener(TListener* listener) { m_listener.push_back(listener); }
 
     void removeListener(TListener* listener)
     {
@@ -23,6 +20,6 @@ class DispatcherBase {
             m_listener.erase(iter, m_listener.end());
     }
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_DISPATCHERBASE_HPP

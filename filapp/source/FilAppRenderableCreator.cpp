@@ -6,16 +6,14 @@
 
 namespace Graphics
 {
-FilAppRenderableCreator
-FilAppRenderableCreator::create(filament::Engine* engine)
+FilAppRenderableCreator FilAppRenderableCreator::create(filament::Engine* engine)
 {
     FilAppRenderableCreator result = FilAppRenderableCreator(engine);
     result.createMaterials();
     return result;
 }
 
-FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
-    : m_engine(engine)
+FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine) : m_engine(engine)
 {
     createMaterials();
 }
@@ -27,19 +25,17 @@ filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
     filament::math::float3 maxVec(std::numeric_limits<float>::lowest());
     for (const auto& vertex: vertices)
     {
-        filament::math::float3 vec{vertex.position[0],
-                                   vertex.position[1],
-                                   vertex.position[2]};
+        filament::math::float3 vec{vertex.position[0], vertex.position[1], vertex.position[2]};
         minVec = min(minVec, vec);
         maxVec = max(maxVec, vec);
     }
     return filament::Box().set(minVec, maxVec);
 }
 
-FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(
-    const std::vector<Vertex>& vertices,
-    const std::vector<uint16_t>& indices,
-    PrimitiveType primitiveType)
+FilAppRenderable
+FilAppRenderableCreator::createBakedColorRenderable(const std::vector<Vertex>& vertices,
+                                                    const std::vector<uint16_t>& indices,
+                                                    PrimitiveType primitiveType)
 
 {
     CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
@@ -92,28 +88,24 @@ void FilAppRenderableCreator::createMaterials()
     filament::Material* mat = nullptr;
     filament::MaterialInstance* matInstance = nullptr;
 
-    mat = filament::Material::Builder()
-              .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA,
-                       FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE)
-              .build(*m_engine);
+    mat =
+        filament::Material::Builder()
+            .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA, FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE)
+            .build(*m_engine);
     matInstance = mat->createInstance();
-    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDVERTEXCOLOR,
-                              MatPair(mat, matInstance));
+    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDVERTEXCOLOR, MatPair(mat, matInstance));
 
     mat = filament::Material::Builder()
-              .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
-                       FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
+              .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA, FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
               .build(*m_engine);
     matInstance = mat->createInstance();
-    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDFRAGCOLOR,
-                              MatPair(mat, matInstance));
+    m_filAppMaterials.emplace(FilAppMaterialType::BAKEDFRAGCOLOR, MatPair(mat, matInstance));
 }
 const FilAppRenderableCreator::MatPair& FilAppRenderableCreator::getMaterial(
     FilAppRenderableCreator::FilAppMaterialType filAppMaterialType) const
 {
     auto iter = m_filAppMaterials.find(filAppMaterialType);
-    CORE_POSTCONDITION_DEBUG_ASSERT((iter != m_filAppMaterials.end()),
-                                    "Material not found.");
+    CORE_POSTCONDITION_DEBUG_ASSERT((iter != m_filAppMaterials.end()), "Material not found.");
     return iter->second;
 }
 void FilAppRenderableCreator::destroyMaterials()
@@ -125,4 +117,4 @@ void FilAppRenderableCreator::destroyMaterials()
     }
 }
 
-} // namespace FilApp
+} // namespace Graphics

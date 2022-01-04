@@ -12,10 +12,7 @@ struct KeyDownEvent
     KeyScancode keyScanCode;
     double_t time;
 
-    KeyDownEvent(KeyScancode scanCode, double_t time)
-        : keyScanCode(scanCode), time(time)
-    {
-    }
+    KeyDownEvent(KeyScancode scanCode, double_t time) : keyScanCode(scanCode), time(time) {}
 };
 
 } // namespace Graphics

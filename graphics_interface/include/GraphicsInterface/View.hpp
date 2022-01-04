@@ -43,6 +43,6 @@ class View
     [[nodiscard]] virtual Viewport getViewport() const = 0;
     virtual void resize(const Viewport& viewport) = 0;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_VIEW_HPP

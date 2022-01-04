@@ -45,6 +45,6 @@ struct MouseButtonEvent
     }
 };
 
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_MOUSEBUTTONEVENT_HPP

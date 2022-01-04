@@ -10,8 +10,7 @@ FlowMeshCylinder::FlowMeshCylinder()
     , m_cylinder(Cylinder<double_t>(Segment3d{ZERO_VEC3D, Z_VEC3D}, 1.0))
 {
 }
-FlowMeshCylinder::FlowMeshCylinder(const Cylinder<double_t>& cylinder,
-                                   const FGuid& fGuid)
+FlowMeshCylinder::FlowMeshCylinder(const Cylinder<double_t>& cylinder, const FGuid& fGuid)
     : GeometryElementBase<FlowMeshCylinder>(fGuid), m_cylinder(cylinder)
 {
 }

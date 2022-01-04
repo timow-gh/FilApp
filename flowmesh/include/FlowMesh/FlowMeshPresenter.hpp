@@ -21,8 +21,7 @@ namespace FlowMesh
 class FlowMeshPresenter {
     Graphics::View* m_mainView{nullptr};
 
-    std::map<FGuid, std::vector<Graphics::RenderableId>>
-        m_fGuidRenderableMapping;
+    std::map<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
     void setMainView(Graphics::View* mainView) { m_mainView = mainView; }
@@ -38,10 +37,9 @@ class FlowMeshPresenter {
     void setIdleAnimation(const Graphics::Vec3& rotationAxis);
 
   private:
-    static Graphics::TriangleRenderable createTriangleRenderable(
-        const Geometry::HalfedgeMesh<double_t>& halfedgeMesh);
-    static Graphics::LineRenderable
-    createLineRenderables(const FlowMeshSegments& flowMeshSegments);
+    static Graphics::TriangleRenderable
+    createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh);
+    static Graphics::LineRenderable createLineRenderables(const FlowMeshSegments& flowMeshSegments);
 };
 } // namespace FlowMesh
 

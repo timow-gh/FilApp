@@ -46,8 +46,7 @@ class FilAppView : public View {
 
     std::map<RenderableId, std::unique_ptr<PointRenderable>> m_pointRenderables;
     std::map<RenderableId, std::unique_ptr<LineRenderable>> m_lineRenderables;
-    std::map<RenderableId, std::unique_ptr<TriangleRenderable>>
-        m_triangleRenderables;
+    std::map<RenderableId, std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
 
     FilAppRenderableCreator m_renderableCreator;
     std::vector<FilAppRenderable> m_filAppRenderables;
@@ -70,8 +69,7 @@ class FilAppView : public View {
 
     void setUsePostprocessing(bool usePostProcessing) override;
 
-    void addRotationAnimation(RenderableId renderableIdentifier,
-                              const Vec3& rotationAxis) override;
+    void addRotationAnimation(RenderableId renderableIdentifier, const Vec3& rotationAxis) override;
 
     CORE_NODISCARD Viewport getViewport() const override;
     void updateViewPort(const Viewport& viewport);
@@ -91,13 +89,11 @@ class FilAppView : public View {
     CORE_NODISCARD CameraManipulator* getCameraManipulator();
 
   private:
-    CORE_NODISCARD static bool
-    manipulatorKeyFromKeycode(SDL_Scancode scancode,
-                              CameraManipulator::Key& key);
+    CORE_NODISCARD static bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
+                                                         CameraManipulator::Key& key);
 
     //! Adds the global to filament transformation to all renderables.
-    CORE_NODISCARD RenderableId
-    addRenderable(const FilAppRenderable& filAppRenderable);
+    CORE_NODISCARD RenderableId addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
     void configureCameraProjection();
 

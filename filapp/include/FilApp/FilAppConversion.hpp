@@ -24,12 +24,8 @@ namespace Graphics
  */
 
 filament::Engine::Backend toFilamentBackend(BackendMode backendMode);
-
-filament::camutils::Mode
-toFilamentCameraMode(ViewConfig::CameraMode cameraMode);
-
-filament::Camera::Projection
-toFilamentProjection(ViewConfig::CameraProjection cameraProjection);
+filament::camutils::Mode toFilamentCameraMode(ViewConfig::CameraMode cameraMode);
+filament::Camera::Projection toFilamentProjection(ViewConfig::CameraProjection cameraProjection);
 
 /*
  * Fov is declared in filament::Camera and filament::camutils.
@@ -41,11 +37,9 @@ struct FilamentCamUtilsTag{};
 // clang-format on
 
 filament::camutils::Fov
-toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
-                       FilamentCamUtilsTag);
-filament::Camera::Fov
-toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
-                       FilamentCameraTag);
+toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection, FilamentCamUtilsTag);
+filament::Camera::Fov toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
+                                             FilamentCameraTag);
 
 filament::Viewport toFilamentViewport(const Viewport& viewport);
 

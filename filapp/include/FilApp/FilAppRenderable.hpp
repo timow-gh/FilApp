@@ -33,14 +33,8 @@ struct FilAppRenderable
         return renderableEntity < rhs.renderableEntity;
     }
     bool operator>(const FilAppRenderable& rhs) const { return rhs < *this; }
-    bool operator<=(const FilAppRenderable& rhs) const
-    {
-        return !(rhs < *this);
-    }
-    bool operator>=(const FilAppRenderable& rhs) const
-    {
-        return !(*this < rhs);
-    }
+    bool operator<=(const FilAppRenderable& rhs) const { return !(rhs < *this); }
+    bool operator>=(const FilAppRenderable& rhs) const { return !(*this < rhs); }
 
     void destroy() const
     {
@@ -51,6 +45,6 @@ struct FilAppRenderable
     }
 };
 
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_FILAPPRENDERABLE_HPP

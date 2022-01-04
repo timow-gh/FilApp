@@ -7,8 +7,7 @@ FlowMeshSphere::FlowMeshSphere()
     , m_sphere(Geometry::Sphere<double_t>(LinAl::ZERO_VEC3D, 1.0))
 {
 }
-FlowMeshSphere::FlowMeshSphere(Geometry::Sphere<double_t> sphere,
-                               const FGuid& guid)
+FlowMeshSphere::FlowMeshSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid)
     : GeometryElementBase<FlowMeshSphere>(guid), m_sphere(std::move(sphere))
 {
 }

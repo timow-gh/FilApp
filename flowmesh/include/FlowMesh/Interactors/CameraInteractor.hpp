@@ -1,8 +1,8 @@
 #ifndef FILAPP_CAMERAINTERACTOR_HPP
 #define FILAPP_CAMERAINTERACTOR_HPP
 
-#include "Interactor.hpp"
 #include "GraphicsInterface/InputEvents/InputEventListener.hpp"
+#include "Interactor.hpp"
 
 namespace FlowMesh
 {

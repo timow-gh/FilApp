@@ -8,8 +8,7 @@ template <typename TGeometryElement,
                     typename Compare = std::less<K>,
                     typename Alloc = std::allocator<std::pair<const K, V>>>
           class Map>
-bool addImpl(const TGeometryElement& geometryElement,
-             Map<FGuid, TGeometryElement>& map)
+bool addImpl(const TGeometryElement& geometryElement, Map<FGuid, TGeometryElement>& map)
 {
     auto iter = map.emplace(geometryElement.getFGuid(), geometryElement);
     return iter.second;
@@ -38,8 +37,7 @@ template <typename TGeometryElement,
                     typename Compare = std::less<K>,
                     typename Alloc = std::allocator<std::pair<const K, V>>>
           class Map>
-void aggregateGuids(std::vector<FGuid>& guids,
-                    const Map<FGuid, TGeometryElement>& map)
+void aggregateGuids(std::vector<FGuid>& guids, const Map<FGuid, TGeometryElement>& map)
 {
     for (const auto& pair: map)
         guids.push_back(pair.first);
@@ -91,8 +89,7 @@ bool GeometryElements::remove(const FGuid& fGuid)
     return removedSegment || removedSphere || removedCone || removedCylinder;
 }
 
-bool GeometryElements::setPosition(const FGuid& fGuid,
-                                   const LinAl::Vec3d& position)
+bool GeometryElements::setPosition(const FGuid& fGuid, const LinAl::Vec3d& position)
 {
     bool updatedSeg = updatePosition(position, fGuid, m_segments);
     bool updatedSphere = updatePosition(position, fGuid, m_spheres);

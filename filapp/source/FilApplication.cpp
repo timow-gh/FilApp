@@ -12,15 +12,12 @@ namespace Graphics
 std::unique_ptr<FilApplication> FilApplication::m_app;
 double_t FilApplication::m_prevTimeStep = 0;
 
-void FilApplication::init(const AppConfig& appConfig,
-                          const WindowConfig& windowConfig)
+void FilApplication::init(const AppConfig& appConfig, const WindowConfig& windowConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
     m_app = std::make_unique<FilApplication>();
-    m_app->m_engine =
-        filament::Engine::create(toFilamentBackend(appConfig.backendMode));
-    m_app->m_window =
-        std::make_unique<FilAppWindow>(windowConfig, &FilApplication::get());
+    m_app->m_engine = filament::Engine::create(toFilamentBackend(appConfig.backendMode));
+    m_app->m_window = std::make_unique<FilAppWindow>(windowConfig, &FilApplication::get());
     m_app->m_appConfig = appConfig;
 }
 FilApplication::~FilApplication()
@@ -43,14 +40,13 @@ Window* FilApplication::getWindow()
 }
 double_t FilApplication::getDeltaT()
 {
-    return (double_t)SDL_GetPerformanceCounter() /
-               (double_t)SDL_GetPerformanceFrequency() -
+    return (double_t)SDL_GetPerformanceCounter() / (double_t)SDL_GetPerformanceFrequency() -
            m_prevTimeStep;
 }
 void FilApplication::run()
 {
-    m_prevTimeStep = (double_t)SDL_GetPerformanceCounter() /
-                     (double_t)SDL_GetPerformanceFrequency();
+    m_prevTimeStep =
+        (double_t)SDL_GetPerformanceCounter() / (double_t)SDL_GetPerformanceFrequency();
 
     EventPollingMode eventPollingMode = m_appConfig.eventPollingMode;
     while (!m_closeApp)
@@ -73,14 +69,12 @@ void FilApplication::run()
         {
             if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                 m_closeApp = true;
-            m_window->event(
-                KeyDownEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
+            m_window->event(KeyDownEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
             break;
         }
         case SDL_KEYUP:
         {
-            m_window->event(
-                KeyUpEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
+            m_window->event(KeyUpEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
             break;
         }
         case SDL_MOUSEWHEEL:
@@ -89,8 +83,7 @@ void FilApplication::run()
         case SDL_MOUSEBUTTONDOWN:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(event.button.x,
-                                                       event.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(event.button.x, event.button.y);
             m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
                                              event.button.button,
                                              event.button.timestamp,
@@ -104,8 +97,7 @@ void FilApplication::run()
         case SDL_MOUSEBUTTONUP:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(event.button.x,
-                                                       event.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(event.button.x, event.button.y);
             m_window->event(MouseButtonEvent(MouseButtonEvent::Type::RELEASE,
                                              event.button.button,
                                              event.button.timestamp,
@@ -119,8 +111,7 @@ void FilApplication::run()
         case SDL_MOUSEMOTION:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(event.button.x,
-                                                       event.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(event.button.x, event.button.y);
             m_window->event(MouseMoveEvent(event.button.timestamp,
                                            event.button.windowID,
                                            pos.x,

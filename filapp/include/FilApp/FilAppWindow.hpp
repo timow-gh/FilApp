@@ -65,14 +65,13 @@ class FilAppWindow : public Window {
     CORE_NODISCARD filament::Renderer* getRenderer();
     CORE_NODISCARD filament::SwapChain* getSwapChain();
 
-    filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x,
-                                                      uint32_t y) const;
+    filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const;
 
   private:
     CORE_NODISCARD Viewport calcWindowViewport();
 };
 
 bool intersects(const Viewport& viewport, size_t x, size_t y);
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_FILAPPWINDOW_HPP

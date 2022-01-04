@@ -25,10 +25,8 @@ int main()
 
     constexpr float_t POINT_SIZE = 15;
     mainView->addRenderable(
-        PointRenderable::create(std::move(vertices),
-                                {POINT_SIZE, POINT_SIZE, POINT_SIZE}));
-    mainView->addRenderable(
-        PointRenderable::create(Vertex{{2, 0, 0}, hexColor}, POINT_SIZE));
+        PointRenderable::create(std::move(vertices), {POINT_SIZE, POINT_SIZE, POINT_SIZE}));
+    mainView->addRenderable(PointRenderable::create(Vertex{{2, 0, 0}, hexColor}, POINT_SIZE));
 
     app.run();
 }

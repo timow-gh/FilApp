@@ -21,8 +21,7 @@ class FilAppWindow;
 
 class FILAPP_EXPORT FilApplication : public Application {
   public:
-    static void init(const AppConfig& appConfig,
-                     const WindowConfig& windowConfig);
+    static void init(const AppConfig& appConfig, const WindowConfig& windowConfig);
     CORE_NODISCARD static FilApplication& get();
 
     FilApplication() = default;
@@ -50,6 +49,6 @@ class FILAPP_EXPORT FilApplication : public Application {
     bool m_closeApp = false;
     AppConfig m_appConfig;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_FILAPPLICATION_HPP

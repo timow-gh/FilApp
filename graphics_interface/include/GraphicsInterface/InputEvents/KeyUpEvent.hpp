@@ -11,8 +11,7 @@ struct KeyUpEvent
     KeyScancode keyScancode;
     double_t deltaT;
 
-    KeyUpEvent(KeyScancode keyScancode, double_t deltaT)
-        : keyScancode(keyScancode), deltaT(deltaT)
+    KeyUpEvent(KeyScancode keyScancode, double_t deltaT) : keyScancode(keyScancode), deltaT(deltaT)
     {
     }
 };

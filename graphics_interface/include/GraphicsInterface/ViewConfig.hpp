@@ -49,6 +49,6 @@ struct ViewConfig
     float_t scrollMultiplierPerspective{50};
     FieldOfViewDirection fovDirection = FieldOfViewDirection::HORIZONTAL;
 };
-} // namespace FilApp
+} // namespace Graphics
 
 #endif // FILAPP_VIEWCONFIG_HPP

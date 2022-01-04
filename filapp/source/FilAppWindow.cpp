@@ -8,8 +8,7 @@
 namespace Graphics
 {
 
-FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
-                           FilApplication* application)
+FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilApplication* application)
 {
     m_application = application;
 
@@ -34,8 +33,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
     {
         m_width = windowConfig.width;
         m_height = windowConfig.height;
-        m_swapChain =
-            m_application->getEngine()->createSwapChain(m_width, m_height);
+        m_swapChain = m_application->getEngine()->createSwapChain(m_width, m_height);
     }
     else
     {
@@ -43,8 +41,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
 
         void* nativeWindow = ::getNativeWindow(m_sdlWindow);
         void* nativeSwapChain = nativeWindow;
-        m_swapChain =
-            m_application->getEngine()->createSwapChain(nativeSwapChain);
+        m_swapChain = m_application->getEngine()->createSwapChain(nativeSwapChain);
     }
 
     m_renderer = m_application->getEngine()->createRenderer();
@@ -86,19 +83,16 @@ void FilAppWindow::event(const MouseMoveEvent& evt)
 
 void FilAppWindow::event(const KeyUpEvent& keyUpEvent)
 {
-    auto& eventTargetView =
-        m_keyEventTarget[toSDLScancode(keyUpEvent.keyScancode)];
+    auto& eventTargetView = m_keyEventTarget[toSDLScancode(keyUpEvent.keyScancode)];
     if (!eventTargetView)
         return;
-    eventTargetView->event(
-        KeyUpEvent(keyUpEvent.keyScancode, keyUpEvent.deltaT));
+    eventTargetView->event(KeyUpEvent(keyUpEvent.keyScancode, keyUpEvent.deltaT));
     eventTargetView = nullptr;
 }
 
 void FilAppWindow::event(const KeyDownEvent& keyDownEvent)
 {
-    auto& eventTarget =
-        m_keyEventTarget[toSDLScancode(keyDownEvent.keyScanCode)];
+    auto& eventTarget = m_keyEventTarget[toSDLScancode(keyDownEvent.keyScanCode)];
 
     // event events can be sent multiple times per key (for key repeat)
     // If this key is already down, do nothing.
@@ -182,8 +176,7 @@ filament::SwapChain* FilAppWindow::getSwapChain()
     return m_swapChain;
 }
 
-filament::math::int2
-FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const
+filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const
 
 {
     int dw, dh, ww, wh;
@@ -243,9 +236,6 @@ bool intersects(const Viewport& viewport, size_t x, size_t y)
 Viewport FilAppWindow::calcWindowViewport()
 {
     SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);
-    return {0,
-            0,
-            static_cast<uint32_t>(m_width),
-            static_cast<uint32_t>(m_height)};
+    return {0, 0, static_cast<uint32_t>(m_width), static_cast<uint32_t>(m_height)};
 }
 } // namespace Graphics
