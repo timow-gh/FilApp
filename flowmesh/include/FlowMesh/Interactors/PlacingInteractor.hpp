@@ -24,7 +24,7 @@ class PlacingInteractor
 
   public:
     explicit PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT;
-    void ~PlacingInteractor() CORE_NOEXCEPT;
+    ~PlacingInteractor() CORE_NOEXCEPT override;
 
   private:
     CORE_NODISCARD FlowMeshSphere createSphere(const LinAl::Vec3d& origin) const;

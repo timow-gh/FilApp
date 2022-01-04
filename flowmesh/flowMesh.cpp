@@ -103,10 +103,10 @@ int main()
 
     FlowMeshModel flowMeshModel;
 
-    FlowMeshController meshController =
-        FlowMeshController(mainView,
-                           &flowMeshModel,
-                           std::make_unique<PlacingInteractor>(&flowMeshModel));
+    InputEventDispatcher* inputEventDispatcher = mainView->getInputEventDispatcher();
+    RayPickEventDispatcher* pickEventDispatcher = mainView->getRayPickEventDispatcher();
+
+    FlowMeshController meshController{inputEventDispatcher, pickEventDispatcher, &flowMeshModel};
 
     FlowMeshPresenter flowMeshPresenter;
     flowMeshPresenter.setMainView(mainView);
@@ -122,10 +122,12 @@ int main()
     //    constexpr Segment3d cylinderSeg = {LinAl::Vec3d{0, 0, 1}, connectVec};
     //    constexpr Segment3d coneSeg = {connectVec, LinAl::Vec3d{0, 0, 6}};
     //    flowMeshModel.add(
-    //        FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg, radius),
+    //        FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg,
+    //        radius),
     //                         newFGuid()));
     //    flowMeshModel.add(
-    //        FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius), newFGuid()));
+    //        FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius),
+    //        newFGuid()));
 
     app.run();
 }

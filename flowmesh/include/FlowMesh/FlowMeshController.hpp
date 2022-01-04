@@ -27,8 +27,7 @@ class FlowMeshController {
   public:
     FlowMeshController(Graphics::InputEventDispatcher* inputEventDispatcher,
                        Graphics::RayPickEventDispatcher* rayPickDispatcher,
-                       FlowMeshModel* model,
-                       std::unique_ptr<Interactor>&& defaultInteractor)
+                       FlowMeshModel* model)
         : m_inputEventDispatcher(inputEventDispatcher)
         , m_rayPickDispatcher(rayPickDispatcher)
         , m_model(model)

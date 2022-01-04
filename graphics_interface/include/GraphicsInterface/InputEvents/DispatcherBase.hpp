@@ -11,6 +11,12 @@ class DispatcherBase {
     std::vector<TListener*> m_listener;
 
   public:
+    DispatcherBase() = delete;
+    DispatcherBase(const DispatcherBase& dispatcherBase) = delete;
+    DispatcherBase(DispatcherBase&& dispatcherBase) noexcept = delete;
+    DispatcherBase& operator=(const DispatcherBase& dispatcherBase) = default;
+    DispatcherBase& operator=(DispatcherBase&& dispatcherBase) noexcept = default;
+
     void registerListener(TListener* listener) { m_listener.push_back(listener); }
 
     void removeListener(TListener* listener)

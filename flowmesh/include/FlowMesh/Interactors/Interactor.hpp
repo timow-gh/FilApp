@@ -4,6 +4,8 @@
 namespace FlowMesh
 {
 class Interactor {
+  public:
+    virtual ~Interactor() = default;
 };
 } // namespace FlowMesh
 

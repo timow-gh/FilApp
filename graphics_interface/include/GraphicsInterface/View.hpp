@@ -15,12 +15,12 @@
 namespace Graphics
 {
 
-class View
-    : public InputEventListener
-    , public InputEventDispatcher
-    , public RayPickEventDispatcher {
+class View : public InputEventListener {
   public:
     ~View() override = default;
+
+    virtual InputEventDispatcher* getInputEventDispatcher() = 0;
+    virtual RayPickEventDispatcher* getRayPickEventDispatcher() = 0;
 
     // clang-format off
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;
