@@ -67,6 +67,10 @@ static void segmentFilAppVertices(const Geometry::HalfedgeMesh<double_t>& heMesh
     }
 }
 
+FlowMeshPresenter::FlowMeshPresenter(Graphics::View* mainView) : m_mainView(mainView)
+{
+}
+
 void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
@@ -161,4 +165,5 @@ void FlowMeshPresenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)
     for (const auto id: m_mainView->getRenderableIdentifiers())
         m_mainView->addRotationAnimation(id, rotationAxis);
 }
+
 } // namespace FlowMesh

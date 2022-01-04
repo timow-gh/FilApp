@@ -5,7 +5,6 @@
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
-#include <FlowMesh/Interactors/PlacingInteractor.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <GraphicsInterface/View.hpp>
@@ -102,32 +101,15 @@ int main()
     View* mainView = mainWindow->getMainIView();
 
     FlowMeshModel flowMeshModel;
-
-    InputEventDispatcher* inputEventDispatcher = mainView->getInputEventDispatcher();
-    RayPickEventDispatcher* pickEventDispatcher = mainView->getRayPickEventDispatcher();
-
-    FlowMeshController meshController{inputEventDispatcher, pickEventDispatcher, &flowMeshModel};
-
-    FlowMeshPresenter flowMeshPresenter;
-    flowMeshPresenter.setMainView(mainView);
-
+    FlowMeshController meshController{mainView->getInputEventDispatcher(),
+                                      mainView->getRayPickEventDispatcher(),
+                                      &flowMeshModel};
+    FlowMeshPresenter flowMeshPresenter{mainView};
     flowMeshModel.setFlowMeshPresenter(&flowMeshPresenter);
 
     createGridSegments(flowMeshModel);
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
-
-    //    constexpr double_t radius = 0.5;
-    //    constexpr Vec3d connectVec = LinAl::Vec3d{0, 0, 4};
-    //    constexpr Segment3d cylinderSeg = {LinAl::Vec3d{0, 0, 1}, connectVec};
-    //    constexpr Segment3d coneSeg = {connectVec, LinAl::Vec3d{0, 0, 6}};
-    //    flowMeshModel.add(
-    //        FlowMeshCylinder(Geometry::Cylinder<double_t>(cylinderSeg,
-    //        radius),
-    //                         newFGuid()));
-    //    flowMeshModel.add(
-    //        FlowMeshCone(Geometry::Cone<double_t>(coneSeg, radius),
-    //        newFGuid()));
 
     app.run();
 }

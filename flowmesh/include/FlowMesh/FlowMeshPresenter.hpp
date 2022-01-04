@@ -24,7 +24,7 @@ class FlowMeshPresenter {
     std::map<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
-    void setMainView(Graphics::View* mainView) { m_mainView = mainView; }
+    explicit FlowMeshPresenter(Graphics::View* mainView);
 
     void add(const FlowMeshSphere& flowMeshSphere);
     void add(const FlowMeshCone& flowMeshCone);
