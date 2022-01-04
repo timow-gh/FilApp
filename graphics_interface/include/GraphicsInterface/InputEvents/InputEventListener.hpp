@@ -3,16 +3,15 @@
 
 #include <GraphicsInterface/InputEvents/KeyDownEvent.hpp>
 #include <GraphicsInterface/InputEvents/KeyUpEvent.hpp>
+#include <GraphicsInterface/InputEvents/ListenerBase.hpp>
 #include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
 #include <GraphicsInterface/InputEvents/MouseMoveEvent.hpp>
 #include <GraphicsInterface/InputEvents/MouseWheelEvent.hpp>
 
 namespace Graphics
 {
-class InputEventListener {
+class InputEventListener : public ListenerBase {
   public:
-    virtual ~InputEventListener() = default;
-
     virtual void event(const MouseButtonEvent& mouseButtonEvent){};
     virtual void event(const MouseMoveEvent& mouseMovedEvent){};
     virtual void event(const MouseWheelEvent& mouseWheelEvent){};
