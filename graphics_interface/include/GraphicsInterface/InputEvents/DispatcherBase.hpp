@@ -10,8 +10,15 @@ class DispatcherBase {
   protected:
     std::vector<TListener*> m_listener;
 
+    template <typename TMessage>
+    void dispatchImpl(const TMessage& message)
+    {
+        for (TListener* listener: DispatcherBase<TListener>::m_listener)
+            listener->event(message);
+    }
+
   public:
-    DispatcherBase() = delete;
+    DispatcherBase() = default;
     DispatcherBase(const DispatcherBase& dispatcherBase) = delete;
     DispatcherBase(DispatcherBase&& dispatcherBase) noexcept = delete;
     DispatcherBase& operator=(const DispatcherBase& dispatcherBase) = default;

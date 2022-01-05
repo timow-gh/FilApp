@@ -4,6 +4,7 @@
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/Interactors/CameraInteractor.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
+#include <FlowMesh/Interactors/PlacingInteractor.hpp>
 #include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
 #include <memory>
@@ -25,13 +26,13 @@ class FlowMeshController {
     std::unique_ptr<Interactor> m_interactor{nullptr};
 
   public:
-    FlowMeshController(Graphics::InputEventDispatcher* inputEventDispatcher,
-                       Graphics::RayPickEventDispatcher* rayPickDispatcher,
+    FlowMeshController(Graphics::InputEventDispatcher& inputEventDispatcher,
+                       Graphics::RayPickEventDispatcher& rayPickDispatcher,
                        FlowMeshModel* model)
-        : m_inputEventDispatcher(inputEventDispatcher)
-        , m_rayPickDispatcher(rayPickDispatcher)
+        : m_inputEventDispatcher(&inputEventDispatcher)
+        , m_rayPickDispatcher(&rayPickDispatcher)
         , m_model(model)
-        , m_interactor(std::move(defaultInteractor))
+        , m_interactor(std::make_unique<PlacingInteractor>(model))
     {
     }
     FlowMeshController(FlowMeshController&& rhs) CORE_NOEXCEPT = default;

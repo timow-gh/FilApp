@@ -7,6 +7,7 @@ class ListenerBase {
   public:
     virtual ~ListenerBase() = default;
 
+    ListenerBase() = default;
     ListenerBase(const ListenerBase& listener) = delete;
     ListenerBase& operator=(const ListenerBase& listener) = delete;
     ListenerBase(ListenerBase&& listener) = default;

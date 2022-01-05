@@ -20,14 +20,6 @@ class InputEventDispatcher : public DispatcherBase<InputEventListener> {
     void dispatch(const MouseWheelEvent& mouseWheelEvent) { dispatchImpl(mouseWheelEvent); };
     void dispatch(const KeyUpEvent& keyUpEvent) { dispatchImpl(keyUpEvent); };
     void dispatch(const KeyDownEvent& keyUpEvent) { dispatchImpl(keyUpEvent); };
-
-  private:
-    template <typename TMessage>
-    void dispatchImpl(const TMessage& message)
-    {
-        for (InputEventListener* listener: DispatcherBase<InputEventListener>::m_listener)
-            listener->event(message);
-    }
 };
 } // namespace Graphics
 

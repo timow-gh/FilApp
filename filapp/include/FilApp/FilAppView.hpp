@@ -53,9 +53,16 @@ class FilAppView : public View {
 
     std::vector<AnimationCallBack> m_animationCallbacks;
 
+    InputEventDispatcher m_inputEventDispatcher;
+    RayPickEventDispatcher m_rayPickEventDispatcher;
+
   public:
+    FilAppView() = default;
     FilAppView(const ViewConfig& viewConfig, filament::Renderer& renderer);
     ~FilAppView() override;
+
+    CORE_NODISCARD InputEventDispatcher& getInputEventDispatcher() override;
+    CORE_NODISCARD RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
     // clang-format off
     CORE_NODISCARD auto addRenderable(TriangleRenderable&& renderable) -> RenderableId override;

@@ -91,8 +91,6 @@ void createCones(FlowMeshModel& fmModel)
 int main()
 {
     AppConfig appConfig{};
-    appConfig.backendMode = BackendMode::VULKAN;
-    appConfig.eventPollingMode = EventPollingMode::WAIT_EVENTS;
 
     FilApplication::init(appConfig, WindowConfig());
     FilApplication& app = FilApplication::get();
