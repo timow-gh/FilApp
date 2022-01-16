@@ -3,6 +3,7 @@
 
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/Interactors/CameraInteractor.hpp>
+#include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
 #include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
@@ -16,6 +17,7 @@ class InputEventListener;
 
 namespace FlowMesh
 {
+
 class FlowMeshController {
     Graphics::InputEventDispatcher* m_inputEventDispatcher{nullptr};
     Graphics::RayPickEventDispatcher* m_rayPickDispatcher{nullptr};
@@ -23,7 +25,9 @@ class FlowMeshController {
     FlowMeshModel* m_model{nullptr};
 
     std::unique_ptr<CameraInteractor> m_cameraInteractor{nullptr};
-    std::unique_ptr<Interactor> m_interactor{nullptr};
+    std::unique_ptr<KeyboardInteractor> m_keyboardInteractor{
+        nullptr}; // Contains the current mapping of the keyboard keys
+    std::unique_ptr<Interactor> m_currentInteractor{nullptr};
 
   public:
     FlowMeshController(Graphics::InputEventDispatcher& inputEventDispatcher,
@@ -32,7 +36,7 @@ class FlowMeshController {
         : m_inputEventDispatcher(&inputEventDispatcher)
         , m_rayPickDispatcher(&rayPickDispatcher)
         , m_model(model)
-        , m_interactor(std::make_unique<PlacingInteractor>(model))
+        , m_currentInteractor(std::make_unique<PlacingInteractor>(model))
     {
     }
     FlowMeshController(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
@@ -47,7 +51,20 @@ class FlowMeshController {
     {
         return m_rayPickDispatcher;
     }
+
+    void onInteractorCommand(const InteractorCommand& command)
+    {
+        switch (command.getId())
+        {
+        case COMMANDS::PLACING_INTERACTOR:
+        {
+            m_currentInteractor = std::make_unique<PlacingInteractor>(m_model);
+            break;
+        }
+        }
+    }
 };
+
 } // namespace FlowMesh
 
 #endif // FILAPP_FLOWMESHCONTROLLER_HPP

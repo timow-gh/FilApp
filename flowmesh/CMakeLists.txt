@@ -5,8 +5,10 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/GeometryElementBase.hpp
+        include/FlowMesh/Interactors/Interactor.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/CameraInteractor.hpp
+        include/FlowMesh/Interactors/InteractorCommands.hpp
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
