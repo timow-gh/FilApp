@@ -1,6 +1,6 @@
+#include <Core/Utils/Assert.hpp>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppWindow.hpp>
-#include <GraphicsInterface/InputEvents/KeyUpEvent.hpp>
 #include <NativeWindowHelper.hpp>
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
@@ -81,37 +81,45 @@ void FilAppWindow::event(const MouseMoveEvent& evt)
     m_lastY = evt.y;
 }
 
-void FilAppWindow::event(const KeyUpEvent& keyUpEvent)
+void FilAppWindow::event(const KeyEvent& keyEvent)
 {
-    auto& eventTargetView = m_keyEventTarget[toSDLScancode(keyUpEvent.keyScancode)];
-    if (!eventTargetView)
-        return;
-    eventTargetView->event(KeyUpEvent(keyUpEvent.keyScancode, keyUpEvent.deltaT));
-    eventTargetView = nullptr;
-}
-
-void FilAppWindow::event(const KeyDownEvent& keyDownEvent)
-{
-    auto& eventTarget = m_keyEventTarget[toSDLScancode(keyDownEvent.keyScanCode)];
-
-    // event events can be sent multiple times per key (for key repeat)
-    // If this key is already down, do nothing.
-    if (eventTarget)
-        return;
-
-    // Decide which view will get this key's corresponding event event.
-    // If we're currently in a mouse grap session, it should be the mouse grab's
-    // target view. Otherwise, it should be whichever view we're currently
-    // hovering over.
-    m_mainView->event(keyDownEvent);
-
-    for (auto const& view: m_views)
+    switch (keyEvent.type)
     {
-        if (intersects(view->getViewport(), m_lastX, m_lastY))
+    case KeyEvent::Type::PUSH:
+    {
+        auto& eventTarget = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
+
+        // event events can be sent multiple times per key (for key repeat)
+        // If this key is already down, do nothing.
+        if (eventTarget)
+            return;
+
+        // Decide which view will get this key's corresponding event event.
+        // If we're currently in a mouse grap session, it should be the mouse grab's
+        // target view. Otherwise, it should be whichever view we're currently
+        // hovering over.
+        m_mainView->event(keyEvent);
+
+        for (auto const& view: m_views)
         {
-            view->event(keyDownEvent);
-            break;
+            if (intersects(view->getViewport(), m_lastX, m_lastY))
+            {
+                view->event(keyEvent);
+                break;
+            }
         }
+        break;
+    }
+    case KeyEvent::Type::RELEASE:
+    {
+        auto& eventTargetView = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
+        if (!eventTargetView)
+            return;
+        eventTargetView->event(keyEvent);
+        eventTargetView = nullptr;
+        break;
+    }
+    default: CORE_POSTCONDITION_DEBUG_ASSERT(false, "Key type not implemented.");
     }
 }
 

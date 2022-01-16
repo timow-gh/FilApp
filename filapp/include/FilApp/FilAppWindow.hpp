@@ -3,7 +3,6 @@
 
 #include <FilApp/FilAppView.hpp>
 #include <FilApp/FilApplication.hpp>
-#include <GraphicsInterface/InputEvents/KeyDownEvent.hpp>
 #include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
 #include <GraphicsInterface/Window.hpp>
 #include <GraphicsInterface/WindowConfig.hpp>
@@ -44,8 +43,7 @@ class FilAppWindow : public Window {
 
     void event(const MouseButtonEvent& mouseButtonEvent);
     void event(const MouseMoveEvent& mouseMoveEvent);
-    void event(const KeyUpEvent& keyUpEvent);
-    void event(const KeyDownEvent& keyDownEvent);
+    void event(const KeyEvent& keyEvent);
     void mouseWheel(float_t x, double_t deltaT);
 
     void resize();

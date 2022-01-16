@@ -361,39 +361,27 @@ void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
 
     m_inputEventDispatcher.dispatch(mouseWheelEvent);
 }
-void FilAppView::event(const KeyDownEvent& keyDownEvent)
+
+void FilAppView::event(const KeyEvent& keyEvent)
 {
     DEBUG_CHECK_CAMERA_MANIP();
-
     CameraManipulator::Key key;
-    if (manipulatorKeyFromKeycode(toSDLScancode(keyDownEvent.keyScanCode), key))
+    if (manipulatorKeyFromKeycode(keyEvent.keyScancode, key))
         m_cameraManipulator->keyDown(key);
-    m_inputEventDispatcher.dispatch(keyDownEvent);
-
+    m_inputEventDispatcher.dispatch(keyEvent);
 }
 
-void FilAppView::event(const KeyUpEvent& keyUpEvent)
-{
-    DEBUG_CHECK_CAMERA_MANIP();
-
-    CameraManipulator::Key key;
-    if (manipulatorKeyFromKeycode(toSDLScancode(keyUpEvent.keyScancode), key))
-        m_cameraManipulator->keyDown(key);
-    m_inputEventDispatcher.dispatch(keyUpEvent);
-
-}
-
-bool FilAppView::manipulatorKeyFromKeycode(SDL_Scancode scancode,
+bool FilAppView::manipulatorKeyFromKeycode(Graphics::KeyScancode scancode,
                                            filament::camutils::Manipulator<float_t>::Key& key)
 {
     switch (scancode)
     {
-    case SDL_SCANCODE_W: key = CameraManipulator::Key::FORWARD; return true;
-    case SDL_SCANCODE_A: key = CameraManipulator::Key::LEFT; return true;
-    case SDL_SCANCODE_S: key = CameraManipulator::Key::BACKWARD; return true;
-    case SDL_SCANCODE_D: key = CameraManipulator::Key::RIGHT; return true;
-    case SDL_SCANCODE_E: key = CameraManipulator::Key::UP; return true;
-    case SDL_SCANCODE_Q: key = CameraManipulator::Key::DOWN; return true;
+    case Graphics::KeyScancode::SCANCODE_W: key = CameraManipulator::Key::FORWARD; return true;
+    case Graphics::KeyScancode::SCANCODE_A: key = CameraManipulator::Key::LEFT; return true;
+    case Graphics::KeyScancode::SCANCODE_S: key = CameraManipulator::Key::BACKWARD; return true;
+    case Graphics::KeyScancode::SCANCODE_D: key = CameraManipulator::Key::RIGHT; return true;
+    case Graphics::KeyScancode::SCANCODE_E: key = CameraManipulator::Key::UP; return true;
+    case Graphics::KeyScancode::SCANCODE_Q: key = CameraManipulator::Key::DOWN; return true;
     default: return false;
     }
 }

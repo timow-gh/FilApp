@@ -25,8 +25,6 @@ class FlowMeshController {
     FlowMeshModel* m_model{nullptr};
 
     std::unique_ptr<CameraInteractor> m_cameraInteractor{nullptr};
-    std::unique_ptr<KeyboardInteractor> m_keyboardInteractor{
-        nullptr}; // Contains the current mapping of the keyboard keys
     std::unique_ptr<Interactor> m_currentInteractor{nullptr};
 
   public:

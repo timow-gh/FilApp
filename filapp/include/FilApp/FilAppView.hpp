@@ -4,7 +4,6 @@
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
-#include <GraphicsInterface/InputEvents/KeyDownEvent.hpp>
 #include <GraphicsInterface/View.hpp>
 #include <GraphicsInterface/ViewConfig.hpp>
 #include <camutils/Manipulator.h>
@@ -86,8 +85,7 @@ class FilAppView : public View {
     void event(const MouseButtonEvent& mouseButtonEvent) override;
     void event(const MouseMoveEvent& mouseMoveEvent) override;
     void event(const MouseWheelEvent& mouseWheelEvent) override;
-    void event(const KeyUpEvent& keyUpEvent) override;
-    void event(const KeyDownEvent& keyUpEvent) override;
+    void event(const KeyEvent& keyEvent) override;
 
     void animate(double deltaT) override;
 
@@ -96,7 +94,7 @@ class FilAppView : public View {
     CORE_NODISCARD CameraManipulator* getCameraManipulator();
 
   private:
-    CORE_NODISCARD static bool manipulatorKeyFromKeycode(SDL_Scancode scancode,
+    CORE_NODISCARD static bool manipulatorKeyFromKeycode(Graphics::KeyScancode scancode,
                                                          CameraManipulator::Key& key);
 
     //! Adds the global to filament transformation to all renderables.

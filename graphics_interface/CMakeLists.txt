@@ -3,8 +3,6 @@ add_library(graphics_interface INTERFACE
         include/GraphicsInterface/InputEvents/InputEventDispatcher.hpp
         include/GraphicsInterface/InputEvents/MouseMoveEvent.hpp
         include/GraphicsInterface/InputEvents/MouseWheelEvent.hpp
-        include/GraphicsInterface/InputEvents/KeyUpEvent.hpp
-        include/GraphicsInterface/InputEvents/KeyDownEvent.hpp
         include/GraphicsInterface/InputEvents/PickRayEvent.hpp
         include/GraphicsInterface/InputEvents/RayPickEventListener.hpp
         include/GraphicsInterface/InputEvents/PickRayMoveEvent.hpp

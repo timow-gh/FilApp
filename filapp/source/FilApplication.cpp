@@ -53,42 +53,50 @@ void FilApplication::run()
     {
         double_t deltaT = FilApplication::getDeltaT();
 
-        SDL_Event event;
+        SDL_Event sdlEvent;
         switch (eventPollingMode)
         {
-        case EventPollingMode::POLL_EVENTS: SDL_PollEvent(&event); break;
-        case EventPollingMode::WAIT_EVENTS: SDL_WaitEvent(&event); break;
+        case EventPollingMode::POLL_EVENTS: SDL_PollEvent(&sdlEvent); break;
+        case EventPollingMode::WAIT_EVENTS: SDL_WaitEvent(&sdlEvent); break;
         }
 
         // TODO Support for multiple windows. Use Window::WindowId
 
-        switch (event.type)
+        switch (sdlEvent.type)
         {
         case SDL_QUIT: m_closeApp = true; break;
         case SDL_KEYDOWN:
         {
-            if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+            if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                 m_closeApp = true;
-            m_window->event(KeyDownEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
+            m_window->event(KeyEvent(KeyEvent::Type::PUSH,
+                                     toKeyScancode(sdlEvent.key.keysym.scancode),
+                                     sdlEvent.key.timestamp,
+                                     sdlEvent.key.windowID,
+                                     deltaT));
             break;
         }
         case SDL_KEYUP:
         {
-            m_window->event(KeyUpEvent(toKeyScancode(event.key.keysym.scancode), deltaT));
+            m_window->event(KeyEvent(KeyEvent::Type::RELEASE,
+                                     toKeyScancode(sdlEvent.key.keysym.scancode),
+                                     sdlEvent.key.timestamp,
+                                     sdlEvent.key.windowID,
+                                     deltaT));
             break;
         }
         case SDL_MOUSEWHEEL:
-            m_window->mouseWheel(static_cast<float_t>(event.wheel.y), deltaT);
+            m_window->mouseWheel(static_cast<float_t>(sdlEvent.wheel.y), deltaT);
             break;
         case SDL_MOUSEBUTTONDOWN:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(event.button.x, event.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
             m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
-                                             event.button.button,
-                                             event.button.timestamp,
-                                             event.button.windowID,
-                                             event.button.clicks,
+                                             sdlEvent.button.button,
+                                             sdlEvent.button.timestamp,
+                                             sdlEvent.button.windowID,
+                                             sdlEvent.button.clicks,
                                              pos.x,
                                              pos.y,
                                              deltaT));
@@ -97,12 +105,12 @@ void FilApplication::run()
         case SDL_MOUSEBUTTONUP:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(event.button.x, event.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
             m_window->event(MouseButtonEvent(MouseButtonEvent::Type::RELEASE,
-                                             event.button.button,
-                                             event.button.timestamp,
-                                             event.button.windowID,
-                                             event.button.clicks,
+                                             sdlEvent.button.button,
+                                             sdlEvent.button.timestamp,
+                                             sdlEvent.button.windowID,
+                                             sdlEvent.button.clicks,
                                              pos.x,
                                              pos.y,
                                              deltaT));
@@ -111,16 +119,16 @@ void FilApplication::run()
         case SDL_MOUSEMOTION:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(event.button.x, event.button.y);
-            m_window->event(MouseMoveEvent(event.button.timestamp,
-                                           event.button.windowID,
+                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
+            m_window->event(MouseMoveEvent(sdlEvent.button.timestamp,
+                                           sdlEvent.button.windowID,
                                            pos.x,
                                            pos.y,
                                            deltaT));
             break;
         }
         case SDL_WINDOWEVENT:
-            switch (event.window.event)
+            switch (sdlEvent.window.event)
             {
             case SDL_WINDOWEVENT_RESIZED: m_window->resize(); break;
             default: break;
