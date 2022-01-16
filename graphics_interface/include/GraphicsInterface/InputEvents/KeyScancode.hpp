@@ -34,7 +34,17 @@ enum class KeyScancode : std::uint32_t
     SCANCODE_W = 26,
     SCANCODE_X = 27,
     SCANCODE_Y = 28,
-    SCANCODE_Z = 29
+    SCANCODE_Z = 29,
+    SCANCODE_1 = 30,
+    SCANCODE_2 = 31,
+    SCANCODE_3 = 32,
+    SCANCODE_4 = 33,
+    SCANCODE_5 = 34,
+    SCANCODE_6 = 35,
+    SCANCODE_7 = 36,
+    SCANCODE_8 = 37,
+    SCANCODE_9 = 38,
+    SCANCODE_0 = 39
 };
 
 } // namespace Graphics

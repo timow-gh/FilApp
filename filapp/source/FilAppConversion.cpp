@@ -129,7 +129,16 @@ SDL_Scancode toSDLScancode(KeyScancode scancode)
     case KeyScancode::SCANCODE_W: return SDL_SCANCODE_W;
     case KeyScancode::SCANCODE_X: return SDL_SCANCODE_X;
     case KeyScancode::SCANCODE_Y: return SDL_SCANCODE_Y;
-    case KeyScancode::SCANCODE_Z: return SDL_SCANCODE_Z;
+    case KeyScancode::SCANCODE_1: return SDL_SCANCODE_1;
+    case KeyScancode::SCANCODE_2: return SDL_SCANCODE_2;
+    case KeyScancode::SCANCODE_3: return SDL_SCANCODE_3;
+    case KeyScancode::SCANCODE_4: return SDL_SCANCODE_4;
+    case KeyScancode::SCANCODE_5: return SDL_SCANCODE_5;
+    case KeyScancode::SCANCODE_6: return SDL_SCANCODE_6;
+    case KeyScancode::SCANCODE_7: return SDL_SCANCODE_7;
+    case KeyScancode::SCANCODE_8: return SDL_SCANCODE_8;
+    case KeyScancode::SCANCODE_9: return SDL_SCANCODE_9;
+    case KeyScancode::SCANCODE_0: return SDL_SCANCODE_0;
     default:
         CORE_POSTCONDITION_DEBUG_ASSERT(false, "KeyScancode not known.");
         return SDL_SCANCODE_UNKNOWN;
@@ -166,6 +175,16 @@ KeyScancode toKeyScancode(SDL_Scancode sdlScancode)
     case SDL_SCANCODE_X: return KeyScancode::SCANCODE_X;
     case SDL_SCANCODE_Y: return KeyScancode::SCANCODE_Y;
     case SDL_SCANCODE_Z: return KeyScancode::SCANCODE_Z;
+    case SDL_SCANCODE_1: return KeyScancode::SCANCODE_1;
+    case SDL_SCANCODE_2: return KeyScancode::SCANCODE_2;
+    case SDL_SCANCODE_3: return KeyScancode::SCANCODE_3;
+    case SDL_SCANCODE_4: return KeyScancode::SCANCODE_4;
+    case SDL_SCANCODE_5: return KeyScancode::SCANCODE_5;
+    case SDL_SCANCODE_6: return KeyScancode::SCANCODE_6;
+    case SDL_SCANCODE_7: return KeyScancode::SCANCODE_7;
+    case SDL_SCANCODE_8: return KeyScancode::SCANCODE_8;
+    case SDL_SCANCODE_9: return KeyScancode::SCANCODE_9;
+    case SDL_SCANCODE_0: return KeyScancode::SCANCODE_0;
     default:
         CORE_POSTCONDITION_DEBUG_ASSERT(false, "SDL_Scancode not known.");
         return KeyScancode::SCANCODE_UNKNOWN;
