@@ -2,7 +2,10 @@
 
 namespace FlowMesh
 {
-PlacingInteractor::PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT : m_model(model)
+
+PlacingInteractor::PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT
+    : m_model(model)
+    , m_groundPlane({LinAl::ZERO_VEC3D, LinAl::Z_VEC3D})
 {
 }
 
@@ -12,7 +15,7 @@ PlacingInteractor::~PlacingInteractor() CORE_NOEXCEPT
         m_model->remove(*m_sphereGuid);
 }
 
-FlowMeshSphere PlacingInteractor::createSphere(const LinAl::Vec3d& origin) const
+FlowMeshSphere PlacingInteractor::createSphere(const LinAl::Vec3d& origin)
 {
     constexpr double_t radius = 0.2;
     auto sphere = Geometry::Sphere<double_t>{origin, radius};
@@ -27,8 +30,7 @@ PlacingInteractor::calcIntersection(const Graphics::PickRayEvent& pickRayEvent) 
     const Geometry::Ray3<double_t> ray{
         LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
         LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
-    const Geometry::Plane plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
-    return plane.intersection(ray);
+    return m_groundPlane.intersection(ray);
 }
 
 void PlacingInteractor::event(const Graphics::PickRayEvent& pickRayEvent)

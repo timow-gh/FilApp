@@ -21,13 +21,14 @@ class PlacingInteractor
     , public Graphics::RayPickEventListener {
     FlowMesh::FlowMeshModel* m_model;
     std::optional<FGuid> m_sphereGuid;
+    Geometry::Plane<double_t> m_groundPlane;
 
   public:
     explicit PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT;
     ~PlacingInteractor() CORE_NOEXCEPT override;
 
   private:
-    CORE_NODISCARD FlowMeshSphere createSphere(const LinAl::Vec3d& origin) const;
+    CORE_NODISCARD static FlowMeshSphere createSphere(const LinAl::Vec3d& origin) ;
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const;
