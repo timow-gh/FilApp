@@ -17,7 +17,7 @@ Graphics::TriangleRenderable
 FlowMeshPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh)
 {
     std::vector<Graphics::Vertex> vertices;
-    for (const auto& vec: halfedgeMesh.getVertexPoints())
+    for (const auto& vec : halfedgeMesh.getVertexPoints())
         vertices.push_back(Graphics::Vertex{{static_cast<float_t>(vec[0]),
                                              static_cast<float_t>(vec[1]),
                                              static_cast<float_t>(vec[2])},
