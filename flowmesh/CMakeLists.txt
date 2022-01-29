@@ -12,6 +12,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
+        include/FlowMesh/PresenterConfig.hpp
         include/FlowMesh/FlowMeshGuid.hpp)
 
 set(FLOWMESH_SOURCES
