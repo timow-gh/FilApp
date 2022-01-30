@@ -4,7 +4,7 @@
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Assert.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/FlowMeshModel.hpp>
+#include <FlowMesh/Model.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
@@ -19,12 +19,12 @@ namespace FlowMesh
 class PlacingInteractor
     : public Interactor
     , public Graphics::RayPickEventListener {
-    FlowMesh::FlowMeshModel* m_model;
+    FlowMesh::Model* m_model;
     std::optional<FGuid> m_sphereGuid;
     Geometry::Plane<double_t> m_groundPlane;
 
   public:
-    explicit PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT;
+    explicit PlacingInteractor(Model* model) CORE_NOEXCEPT;
     ~PlacingInteractor() CORE_NOEXCEPT override;
 
   private:

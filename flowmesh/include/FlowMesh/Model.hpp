@@ -1,8 +1,8 @@
-#ifndef FILAPP_FLOWMESHMODEL_HPP
-#define FILAPP_FLOWMESHMODEL_HPP
+#ifndef FILAPP_MODEL_HPP
+#define FILAPP_MODEL_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/FlowMeshPresenter.hpp>
+#include <FlowMesh/Presenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
@@ -13,12 +13,13 @@
 
 namespace FlowMesh
 {
-class FlowMeshModel {
+
+class Model {
     GeometryElements m_geometryElements;
-    FlowMeshPresenter* m_flowMeshPresenter{nullptr};
+    Presenter* m_flowMeshPresenter{nullptr};
 
   public:
-    void setFlowMeshPresenter(FlowMeshPresenter* flowMeshPresenter);
+    void setFlowMeshPresenter(Presenter* flowMeshPresenter);
 
     [[nodiscard]] std::vector<FGuid> calcFGuids() const;
 
@@ -38,6 +39,7 @@ class FlowMeshModel {
             m_flowMeshPresenter->add(geometryElement);
     }
 };
+
 } // namespace FlowMesh
 
-#endif // FILAPP_FLOWMESHMODEL_HPP
+#endif // FILAPP_MODEL_HPP

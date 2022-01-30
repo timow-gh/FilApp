@@ -1,8 +1,8 @@
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
-#include <FlowMesh/FlowMeshController.hpp>
-#include <FlowMesh/FlowMeshModel.hpp>
-#include <FlowMesh/FlowMeshPresenter.hpp>
+#include <FlowMesh/Controller.hpp>
+#include <FlowMesh/Model.hpp>
+#include <FlowMesh/Presenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <Geometry/Segment.hpp>
@@ -16,7 +16,7 @@ using namespace FlowMesh;
 using namespace Geometry;
 using namespace LinAl;
 
-void createGridSegments(FlowMeshModel& fMModel)
+void createGridSegments(Model& fMModel)
 {
     Core::TVector<Geometry::Segment3d> xSegs;
     Core::TVector<Geometry::Segment3d> ySegs;
@@ -35,7 +35,7 @@ void createGridSegments(FlowMeshModel& fMModel)
     fMModel.add(FlowMeshSegments(ySegs, newFGuid()));
 }
 
-void createSpheres(FlowMeshModel& fMModel)
+void createSpheres(Model& fMModel)
 {
     FGuid sphereToRemove;
 
@@ -61,7 +61,7 @@ void createSpheres(FlowMeshModel& fMModel)
     fMModel.remove(sphereToRemove);
 }
 
-void createCones(FlowMeshModel& fmModel)
+void createCones(Model& fmModel)
 {
     // x
     fmModel.add(FlowMeshCone(
@@ -98,11 +98,11 @@ int main()
     Window* mainWindow = app.getWindow();
     View* mainView = mainWindow->getMainIView();
 
-    FlowMeshModel flowMeshModel;
-    FlowMeshController meshController{mainView->getInputEventDispatcher(),
-                                      mainView->getRayPickEventDispatcher(),
-                                      &flowMeshModel};
-    FlowMeshPresenter flowMeshPresenter{mainView};
+    Model flowMeshModel;
+    Controller meshController{mainView->getInputEventDispatcher(),
+                              mainView->getRayPickEventDispatcher(),
+                              &flowMeshModel};
+    Presenter flowMeshPresenter{mainView};
     flowMeshModel.setFlowMeshPresenter(&flowMeshPresenter);
 
     createGridSegments(flowMeshModel);

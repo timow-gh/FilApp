@@ -1,11 +1,11 @@
-#ifndef FILAPP_FLOWMESHCONTROLLER_HPP
-#define FILAPP_FLOWMESHCONTROLLER_HPP
+#ifndef FILAPP_CONTROLLER_HPP
+#define FILAPP_CONTROLLER_HPP
 
-#include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/Interactors/CameraInteractor.hpp>
-#include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
+#include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
+#include <FlowMesh/Model.hpp>
 #include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
 #include <memory>
@@ -18,27 +18,29 @@ class InputEventListener;
 namespace FlowMesh
 {
 
-class FlowMeshController {
+class Controller {
     Graphics::InputEventDispatcher* m_inputEventDispatcher{nullptr};
     Graphics::RayPickEventDispatcher* m_rayPickDispatcher{nullptr};
 
-    FlowMeshModel* m_model{nullptr};
+    Model* m_model{nullptr};
 
     std::unique_ptr<CameraInteractor> m_cameraInteractor{nullptr};
     std::unique_ptr<Interactor> m_currentInteractor{nullptr};
+    std::unique_ptr<Interactor> m_nextInteractor{nullptr};
 
   public:
-    FlowMeshController(Graphics::InputEventDispatcher& inputEventDispatcher,
-                       Graphics::RayPickEventDispatcher& rayPickDispatcher,
-                       FlowMeshModel* model)
+    Controller(Graphics::InputEventDispatcher& inputEventDispatcher,
+               Graphics::RayPickEventDispatcher& rayPickDispatcher,
+               Model* model)
         : m_inputEventDispatcher(&inputEventDispatcher)
         , m_rayPickDispatcher(&rayPickDispatcher)
         , m_model(model)
         , m_currentInteractor(std::make_unique<PlacingInteractor>(model))
     {
     }
-    FlowMeshController(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
-    FlowMeshController& operator=(FlowMeshController&& rhs) CORE_NOEXCEPT = default;
+
+    Controller(Controller&& rhs) CORE_NOEXCEPT = default;
+    Controller& operator=(Controller&& rhs) CORE_NOEXCEPT = default;
 
     CORE_NODISCARD Graphics::InputEventDispatcher* getInputEventDispatcher() const
     {
@@ -54,7 +56,7 @@ class FlowMeshController {
     {
         switch (command.getId())
         {
-        case COMMANDS::PLACING_INTERACTOR:
+        case Commands::PLACING_INTERACTOR:
         {
             m_currentInteractor = std::make_unique<PlacingInteractor>(m_model);
             break;
@@ -65,4 +67,4 @@ class FlowMeshController {
 
 } // namespace FlowMesh
 
-#endif // FILAPP_FLOWMESHCONTROLLER_HPP
+#endif // FILAPP_CONTROLLER_HPP

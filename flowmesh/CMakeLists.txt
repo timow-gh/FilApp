@@ -9,9 +9,9 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/CameraInteractor.hpp
         include/FlowMesh/Interactors/InteractorCommands.hpp
-        include/FlowMesh/FlowMeshModel.hpp
-        include/FlowMesh/FlowMeshController.hpp
-        include/FlowMesh/FlowMeshPresenter.hpp
+        include/FlowMesh/Model.hpp
+        include/FlowMesh/Controller.hpp
+        include/FlowMesh/Presenter.hpp
         include/FlowMesh/FlowMeshGuid.hpp)
 
 set(FLOWMESH_SOURCES
@@ -21,9 +21,9 @@ set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshCone.cpp
         source/GeometryElements/GeometryElements.cpp
         source/Interactors/PlacingInteractor.cpp
-        source/FlowMeshPresenter.cpp
-        source/FlowMeshController.cpp
-        source/FlowMeshModel.cpp)
+        source/Presenter.cpp
+        source/Controller.cpp
+        source/Model.cpp)
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})
 add_library(flowmesh::flowmesh ALIAS flow_mesh)

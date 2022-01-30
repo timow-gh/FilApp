@@ -1,5 +1,5 @@
 #include <Core/Utils/Assert.hpp>
-#include <FlowMesh/FlowMeshPresenter.hpp>
+#include <FlowMesh/Presenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
@@ -14,7 +14,7 @@ static std::uint32_t faceColor = 0xFFc0bfbb;
 static std::uint32_t lineColor = 0xFF000000;
 
 Graphics::TriangleRenderable
-FlowMeshPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh)
+Presenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh)
 {
     std::vector<Graphics::Vertex> vertices;
     for (const auto& vec : halfedgeMesh.getVertexPoints())
@@ -27,8 +27,7 @@ FlowMeshPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_
             Geometry::calcTriangleIndices<double_t, uint16_t>(halfedgeMesh.getFacets())};
 }
 
-Graphics::LineRenderable
-FlowMeshPresenter::createLineRenderables(const FlowMeshSegments& flowMeshSegments)
+Graphics::LineRenderable Presenter::createLineRenderables(const FlowMeshSegments& flowMeshSegments)
 {
     Core::TVector<Graphics::Vertex> vertices;
     for (const auto& segment: flowMeshSegments.getSegments())
@@ -67,11 +66,11 @@ static void segmentFilAppVertices(const Geometry::HalfedgeMesh<double_t>& heMesh
     }
 }
 
-FlowMeshPresenter::FlowMeshPresenter(Graphics::View* mainView) : m_mainView(mainView)
+Presenter::Presenter(Graphics::View* mainView) : m_mainView(mainView)
 {
 }
 
-void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
+void Presenter::add(const FlowMeshSphere& flowMeshSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
         Geometry::SphereMeshBuilder<double_t>()
@@ -92,7 +91,7 @@ void FlowMeshPresenter::add(const FlowMeshSphere& flowMeshSphere)
                                      std::vector<Graphics::RenderableId>{verticesId, sphereId});
 }
 
-void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
+void Presenter::add(const FlowMeshCone& flowMeshCone)
 {
     auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
                         .setCone((flowMeshCone.getCone()))
@@ -111,7 +110,7 @@ void FlowMeshPresenter::add(const FlowMeshCone& flowMeshCone)
                                      std::vector<Graphics::RenderableId>{verticesId, coneId});
 }
 
-void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
+void Presenter::add(const FlowMeshCylinder& flowMeshCylinder)
 {
     auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
                             .setCylinder(flowMeshCylinder.getCylinder())
@@ -130,14 +129,14 @@ void FlowMeshPresenter::add(const FlowMeshCylinder& flowMeshCylinder)
                                      std::vector<Graphics::RenderableId>{verticesId, coneId});
 }
 
-void FlowMeshPresenter::add(const FlowMeshSegments& flowMeshSegments)
+void Presenter::add(const FlowMeshSegments& flowMeshSegments)
 {
     auto segmentsId = m_mainView->addRenderable(createLineRenderables(flowMeshSegments));
     m_fGuidRenderableMapping.emplace(flowMeshSegments.getFGuid(),
                                      std::vector<Graphics::RenderableId>{segmentsId});
 }
 
-void FlowMeshPresenter::updatePosition(const FGuid& fGuid, const LinAl::Vec3d& position)
+void Presenter::updatePosition(const FGuid& fGuid, const LinAl::Vec3d& position)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
     CORE_POSTCONDITION_DEBUG_ASSERT((iter != m_fGuidRenderableMapping.end()),
@@ -152,7 +151,7 @@ void FlowMeshPresenter::updatePosition(const FGuid& fGuid, const LinAl::Vec3d& p
                                                       static_cast<float_t>(position[2])));
 }
 
-void FlowMeshPresenter::remove(const FGuid& fGuid)
+void Presenter::remove(const FGuid& fGuid)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
     if (iter != m_fGuidRenderableMapping.end())
@@ -160,7 +159,7 @@ void FlowMeshPresenter::remove(const FGuid& fGuid)
             m_mainView->removeRenderable(id);
 }
 
-void FlowMeshPresenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)
+void Presenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)
 {
     for (const auto id: m_mainView->getRenderableIdentifiers())
         m_mainView->addRotationAnimation(id, rotationAxis);

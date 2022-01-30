@@ -1,5 +1,5 @@
-#ifndef FILAPP_FLOWMESHPRESENTER_HPP
-#define FILAPP_FLOWMESHPRESENTER_HPP
+#ifndef FILAPP_PRESENTER_HPP
+#define FILAPP_PRESENTER_HPP
 
 #include <Core/Types/TMap.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
@@ -18,13 +18,13 @@ class View;
 
 namespace FlowMesh
 {
-class FlowMeshPresenter {
+class Presenter {
     Graphics::View* m_mainView{nullptr};
 
     std::map<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
-    explicit FlowMeshPresenter(Graphics::View* mainView);
+    explicit Presenter(Graphics::View* mainView);
 
     void add(const FlowMeshSphere& flowMeshSphere);
     void add(const FlowMeshCone& flowMeshCone);
@@ -43,4 +43,4 @@ class FlowMeshPresenter {
 };
 } // namespace FlowMesh
 
-#endif // FILAPP_FLOWMESHPRESENTER_HPP
+#endif // FILAPP_PRESENTER_HPP

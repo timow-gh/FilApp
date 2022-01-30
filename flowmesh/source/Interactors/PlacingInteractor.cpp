@@ -3,7 +3,7 @@
 namespace FlowMesh
 {
 
-PlacingInteractor::PlacingInteractor(FlowMeshModel* model) CORE_NOEXCEPT
+PlacingInteractor::PlacingInteractor(Model* model) CORE_NOEXCEPT
     : m_model(model)
     , m_groundPlane({LinAl::ZERO_VEC3D, LinAl::Z_VEC3D})
 {

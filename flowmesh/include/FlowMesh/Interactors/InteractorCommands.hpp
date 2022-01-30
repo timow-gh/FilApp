@@ -10,24 +10,24 @@
 namespace FlowMesh
 {
 
-enum class COMMANDS : std::uint32_t
+enum class Commands : std::uint32_t
 {
     PLACING_INTERACTOR = 0
 };
 
 class InteractorCommand {
-    COMMANDS m_id;
+    Commands m_id;
 
   public:
-    InteractorCommand() : m_id(COMMANDS::PLACING_INTERACTOR) {}
-    explicit InteractorCommand(COMMANDS id) : m_id(id) {}
+    InteractorCommand() : m_id(Commands::PLACING_INTERACTOR) {}
+    explicit InteractorCommand(Commands id) : m_id(id) {}
 
     bool operator<(const InteractorCommand& rhs) const { return m_id < rhs.m_id; }
     bool operator>(const InteractorCommand& rhs) const { return rhs < *this; }
     bool operator<=(const InteractorCommand& rhs) const { return !(rhs < *this); }
     bool operator>=(const InteractorCommand& rhs) const { return !(*this < rhs); }
 
-    CORE_NODISCARD COMMANDS getId() const { return m_id; }
+    CORE_NODISCARD Commands getId() const { return m_id; }
 };
 
 } // namespace FlowMesh
