@@ -37,6 +37,8 @@ class Controller {
         , m_model(model)
         , m_currentInteractor(std::make_unique<PlacingInteractor>(model))
     {
+        m_rayPickDispatcher->registerListener(
+            dynamic_cast<PlacingInteractor*>(m_currentInteractor.get()));
     }
 
     Controller(Controller&& rhs) CORE_NOEXCEPT = default;
@@ -58,7 +60,9 @@ class Controller {
         {
         case Commands::PLACING_INTERACTOR:
         {
-            m_currentInteractor = std::make_unique<PlacingInteractor>(m_model);
+            m_nextInteractor = std::make_unique<PlacingInteractor>(m_model);
+            m_rayPickDispatcher->registerListener(
+                dynamic_cast<PlacingInteractor*>(m_nextInteractor.get()));
             break;
         }
         }
