@@ -9,7 +9,7 @@ namespace Graphics
 struct Vertex
 {
     float_t position[3];
-    uint32_t color;
+    std::uint32_t color;
 };
 } // namespace Graphics
 
