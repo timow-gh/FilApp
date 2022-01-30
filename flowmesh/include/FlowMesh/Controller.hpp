@@ -52,7 +52,7 @@ class Controller {
         return m_rayPickDispatcher;
     }
 
-    void onInteractorCommand(const InteractorCommand& command)
+    void setNextInteractor(const InteractorCommand& command)
     {
         switch (command.getId())
         {
