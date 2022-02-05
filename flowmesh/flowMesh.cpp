@@ -26,10 +26,10 @@ void createGridSegments(Model& fMModel)
     constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
     for (int32_t i = 0; i < SEG_COUNT; ++i)
     {
-        xSegs.push_back(Geometry::Segment3d{{static_cast<double>(MIN + i), -LENGTH_HALF, 0},
-                                            {static_cast<double>(MIN + i), LENGTH_HALF, 0}});
-        ySegs.push_back(Geometry::Segment3d{{-LENGTH_HALF, static_cast<double>(MIN + i), 0},
-                                            {LENGTH_HALF, static_cast<double>(MIN + i), 0}});
+        xSegs.push_back(Geometry::Segment3d{{static_cast<double_t>(MIN + i), -LENGTH_HALF, 0},
+                                            {static_cast<double_t>(MIN + i), LENGTH_HALF, 0}});
+        ySegs.push_back(Geometry::Segment3d{{-LENGTH_HALF, static_cast<double_t>(MIN + i), 0},
+                                            {LENGTH_HALF, static_cast<double_t>(MIN + i), 0}});
     }
     fMModel.add(FlowMeshSegments(xSegs, newFGuid()));
     fMModel.add(FlowMeshSegments(ySegs, newFGuid()));
@@ -52,7 +52,7 @@ void createSpheres(Model& fMModel)
 
             fMModel.add(FlowMeshSphere(
                 Sphere<double_t>(
-                    Vec3d{static_cast<double>(i) * DIST, static_cast<double>(j) * DIST, 0},
+                    Vec3d{static_cast<double_t>(i) * DIST, static_cast<double_t>(j) * DIST, 0},
                     RADIUS),
                 id));
         }

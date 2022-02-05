@@ -21,8 +21,8 @@ FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine) : m_e
 filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
 {
     CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
-    filament::math::float3 minVec(std::numeric_limits<float>::max());
-    filament::math::float3 maxVec(std::numeric_limits<float>::lowest());
+    filament::math::float3 minVec(std::numeric_limits<float_t>::max());
+    filament::math::float3 maxVec(std::numeric_limits<float_t>::lowest());
     for (const auto& vertex: vertices)
     {
         filament::math::float3 vec{vertex.position[0], vertex.position[1], vertex.position[2]};

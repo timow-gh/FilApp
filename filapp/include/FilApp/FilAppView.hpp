@@ -22,7 +22,7 @@
 
 namespace Graphics
 {
-using AnimationCallBack = std::function<void(double now)>;
+using AnimationCallBack = std::function<void(double_t now)>;
 
 class FilAppView : public View {
   public:
@@ -87,7 +87,7 @@ class FilAppView : public View {
     void event(const MouseWheelEvent& mouseWheelEvent) override;
     void event(const KeyEvent& keyEvent) override;
 
-    void animate(double deltaT) override;
+    void animate(double_t deltaT) override;
 
     CORE_NODISCARD filament::View* getFilamentView();
     CORE_NODISCARD filament::Camera* getCamera();

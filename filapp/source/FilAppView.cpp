@@ -105,7 +105,7 @@ FilAppView::~FilAppView()
     tcm.destroy(m_globalTrafoComponent);
 }
 
-void FilAppView::animate(double deltaT)
+void FilAppView::animate(double_t deltaT)
 {
     for (const auto& animationCallBack: m_animationCallbacks)
         animationCallBack(deltaT);
@@ -250,7 +250,7 @@ void FilAppView::setUsePostprocessing(bool usePostProcessing)
 void FilAppView::addRotationAnimation(RenderableId renderableIdentifier, const Vec3& rotationAxis)
 {
     m_animationCallbacks.emplace_back(
-        [renderableIdentifier, engine = m_engine](double deltaT)
+        [renderableIdentifier, engine = m_engine](double_t deltaT)
         {
             auto& tcm = engine->getTransformManager();
             tcm.setTransform(
