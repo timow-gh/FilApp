@@ -19,7 +19,7 @@ class Model {
     Presenter* m_flowMeshPresenter{nullptr};
 
   public:
-    void setFlowMeshPresenter(Presenter* flowMeshPresenter);
+    explicit Model( Presenter* presenter);
 
     [[nodiscard]] std::vector<FGuid> calcFGuids() const;
 

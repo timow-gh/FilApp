@@ -1,7 +1,6 @@
 #ifndef FILAPP_CONTROLLER_HPP
 #define FILAPP_CONTROLLER_HPP
 
-#include <FlowMesh/Interactors/CameraInteractor.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
@@ -24,7 +23,6 @@ class Controller {
 
     Model* m_model{nullptr};
 
-    std::unique_ptr<CameraInteractor> m_cameraInteractor{nullptr};
     std::unique_ptr<Interactor> m_currentInteractor{nullptr};
     std::unique_ptr<Interactor> m_nextInteractor{nullptr};
 

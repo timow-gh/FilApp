@@ -1,6 +1,6 @@
 #include <Core/Utils/Assert.hpp>
-#include <FlowMesh/Presenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/Presenter.hpp>
 #include <FlowMesh/PresenterConfig.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>

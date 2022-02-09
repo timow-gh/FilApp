@@ -3,9 +3,9 @@
 
 namespace FlowMesh
 {
-void Model::setFlowMeshPresenter(Presenter* flowMeshPresenter)
+Model::Model(Presenter* presenter)
 {
-    m_flowMeshPresenter = flowMeshPresenter;
+    m_flowMeshPresenter = presenter;
 }
 
 std::vector<FGuid> Model::calcFGuids() const
@@ -44,4 +44,5 @@ void Model::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
     if (m_geometryElements.setPosition(fGuid, position))
         m_flowMeshPresenter->updatePosition(fGuid, position);
 }
+
 } // namespace FlowMesh

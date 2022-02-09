@@ -1,10 +1,10 @@
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <FlowMesh/Controller.hpp>
-#include <FlowMesh/Model.hpp>
-#include <FlowMesh/Presenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
+#include <FlowMesh/Model.hpp>
+#include <FlowMesh/Presenter.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <GraphicsInterface/View.hpp>
@@ -95,15 +95,13 @@ int main()
     FilApplication::init(appConfig, WindowConfig());
     FilApplication& app = FilApplication::get();
 
-    Window* mainWindow = app.getWindow();
-    View* mainView = mainWindow->getMainIView();
+    View* mainView = app.getWindow()->getMainIView();
 
-    Model flowMeshModel;
+    Presenter flowMeshPresenter{mainView};
+    Model flowMeshModel{&flowMeshPresenter};
     Controller meshController{mainView->getInputEventDispatcher(),
                               mainView->getRayPickEventDispatcher(),
                               &flowMeshModel};
-    Presenter flowMeshPresenter{mainView};
-    flowMeshModel.setFlowMeshPresenter(&flowMeshPresenter);
 
     createGridSegments(flowMeshModel);
     createSpheres(flowMeshModel);
