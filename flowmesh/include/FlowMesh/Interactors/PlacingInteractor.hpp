@@ -17,6 +17,7 @@
 
 namespace FlowMesh
 {
+
 class PlacingInteractor
     : public Interactor
     , public Graphics::RayPickEventListener {
@@ -26,7 +27,7 @@ class PlacingInteractor
 
   public:
     explicit PlacingInteractor(Model* model);
-    ~PlacingInteractor() CORE_NOEXCEPT override;
+    ~PlacingInteractor() override;
 
   private:
     CORE_NODISCARD static FlowMeshSphere createSphere(const LinAl::Vec3d& origin);

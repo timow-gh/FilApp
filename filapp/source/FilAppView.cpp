@@ -306,15 +306,16 @@ void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
                                            static_cast<int>(mouseButtonEvent.y),
                                            mouseButtonEvent.buttonIndex == 2);
         }
+
+        if (mouseButtonEvent.buttonIndex == 1)
+            m_rayPickEventDispatcher.dispatch(getPickRayMoveEvent(mouseButtonEvent.x,
+                                                                  mouseButtonEvent.y,
+                                                                  mouseButtonEvent.deltaT));
         break;
     }
     case MouseButtonEvent::Type::REPEAT: break;
     case MouseButtonEvent::Type::RELEASE:
     {
-        if (mouseButtonEvent.buttonIndex == 1)
-            m_rayPickEventDispatcher.dispatch(getPickRayMoveEvent(mouseButtonEvent.x,
-                                                                  mouseButtonEvent.y,
-                                                                  mouseButtonEvent.deltaT));
         m_cameraManipulator->grabEnd();
         break;
     }

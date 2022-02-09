@@ -8,7 +8,7 @@ PlacingInteractor::PlacingInteractor(Model* model)
 {
 }
 
-PlacingInteractor::~PlacingInteractor() CORE_NOEXCEPT
+PlacingInteractor::~PlacingInteractor()
 {
     if (m_sphereGuid)
         m_model->remove(*m_sphereGuid);
@@ -38,7 +38,7 @@ void PlacingInteractor::event(const Graphics::PickRayEvent& pickRayEvent)
     {
         FlowMeshSphere flowMeshSphere = createSphere(*intersection);
         m_model->add(flowMeshSphere);
-        m_snapGeometries.add(getSnapPoints(flowMeshSphere.getSphere()));
+        m_snapGeometries.add(flowMeshSphere.getSphere());
     }
 }
 
@@ -56,4 +56,5 @@ void PlacingInteractor::event(const Graphics::PickRayMoveEvent& pickRayMoveEvent
         m_model->setPosition(*m_sphereGuid, *intersection);
     }
 }
+
 } // namespace FlowMesh

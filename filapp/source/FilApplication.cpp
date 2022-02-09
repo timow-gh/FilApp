@@ -20,29 +20,35 @@ void FilApplication::init(const AppConfig& appConfig, const WindowConfig& window
     m_app->m_window = std::make_unique<FilAppWindow>(windowConfig, &FilApplication::get());
     m_app->m_appConfig = appConfig;
 }
+
 FilApplication::~FilApplication()
 {
     m_window.reset();
     m_engine = nullptr;
     SDL_Quit();
 }
+
 FilApplication& FilApplication::get()
 {
     return *m_app;
 }
+
 filament::Engine* FilApplication::getEngine()
 {
     return m_engine;
 }
+
 Window* FilApplication::getWindow()
 {
     return m_window.get();
 }
+
 double_t FilApplication::getDeltaT()
 {
     return (double_t)SDL_GetPerformanceCounter() / (double_t)SDL_GetPerformanceFrequency() -
            m_prevTimeStep;
 }
+
 void FilApplication::run()
 {
     m_prevTimeStep =
