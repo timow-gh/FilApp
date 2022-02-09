@@ -24,7 +24,6 @@ class Controller {
     Model* m_model{nullptr};
 
     std::unique_ptr<Interactor> m_currentInteractor{nullptr};
-    std::unique_ptr<Interactor> m_nextInteractor{nullptr};
 
   public:
     Controller(Graphics::InputEventDispatcher& inputEventDispatcher,
@@ -33,10 +32,7 @@ class Controller {
         : m_inputEventDispatcher(&inputEventDispatcher)
         , m_rayPickDispatcher(&rayPickDispatcher)
         , m_model(model)
-        , m_currentInteractor(std::make_unique<PlacingInteractor>(model))
     {
-        m_rayPickDispatcher->registerListener(
-            dynamic_cast<PlacingInteractor*>(m_currentInteractor.get()));
     }
 
     Controller(Controller&& rhs) CORE_NOEXCEPT = default;
@@ -56,11 +52,11 @@ class Controller {
     {
         switch (command.getId())
         {
-        case Commands::PLACING_INTERACTOR:
+        case Command::PLACING_INTERACTOR:
         {
-            m_nextInteractor = std::make_unique<PlacingInteractor>(m_model);
+            m_currentInteractor = std::make_unique<PlacingInteractor>(m_model);
             m_rayPickDispatcher->registerListener(
-                dynamic_cast<PlacingInteractor*>(m_nextInteractor.get()));
+                dynamic_cast<PlacingInteractor*>(m_currentInteractor.get()));
             break;
         }
         }

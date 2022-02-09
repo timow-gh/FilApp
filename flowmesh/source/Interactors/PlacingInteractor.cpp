@@ -3,9 +3,8 @@
 namespace FlowMesh
 {
 
-PlacingInteractor::PlacingInteractor(Model* model) CORE_NOEXCEPT
-    : m_model(model)
-    , m_groundPlane({LinAl::ZERO_VEC3D, LinAl::Z_VEC3D})
+PlacingInteractor::PlacingInteractor(Model* model)
+    : m_model(model), m_snapGeometries(m_model->calcModelSnapGeometries())
 {
 }
 
@@ -30,7 +29,7 @@ PlacingInteractor::calcIntersection(const Graphics::PickRayEvent& pickRayEvent) 
     const Geometry::Ray3<double_t> ray{
         LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
         LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
-    return m_groundPlane.intersection(ray);
+    return m_snapGeometries.calcSnapPoint(ray);
 }
 
 void PlacingInteractor::event(const Graphics::PickRayEvent& pickRayEvent)
@@ -39,6 +38,7 @@ void PlacingInteractor::event(const Graphics::PickRayEvent& pickRayEvent)
     {
         FlowMeshSphere flowMeshSphere = createSphere(*intersection);
         m_model->add(flowMeshSphere);
+        m_snapGeometries.add(getSnapPoints(flowMeshSphere.getSphere()));
     }
 }
 
@@ -56,5 +56,4 @@ void PlacingInteractor::event(const Graphics::PickRayMoveEvent& pickRayMoveEvent
         m_model->setPosition(*m_sphereGuid, *intersection);
     }
 }
-
 } // namespace FlowMesh

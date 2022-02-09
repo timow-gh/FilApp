@@ -80,6 +80,28 @@ bool GeometryElements::add(const FlowMeshCylinder& cylinder)
     return addImpl(cylinder, m_cylinder);
 }
 
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSegments>&
+GeometryElements::getSegmentMap() const
+{
+    return m_segments;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSphere>& GeometryElements::getSphereMap() const
+{
+    return m_spheres;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshCone>& GeometryElements::getConeMap() const
+{
+    return m_cones;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshCylinder>&
+GeometryElements::getCylinderMap() const
+{
+    return m_cylinder;
+}
+
 bool GeometryElements::remove(const FGuid& fGuid)
 {
     bool removedSegment = removeElement(m_segments, fGuid);

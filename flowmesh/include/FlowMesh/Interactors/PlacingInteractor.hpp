@@ -4,8 +4,9 @@
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Assert.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <FlowMesh/Model.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
+#include <FlowMesh/Interactors/SnapGeometries.hpp>
+#include <FlowMesh/Model.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
 #include <GraphicsInterface/InputEvents/InputEventListener.hpp>
@@ -19,16 +20,16 @@ namespace FlowMesh
 class PlacingInteractor
     : public Interactor
     , public Graphics::RayPickEventListener {
-    FlowMesh::Model* m_model;
+    Model* m_model;
+    SnapGeometries m_snapGeometries;
     std::optional<FGuid> m_sphereGuid;
-    Geometry::Plane<double_t> m_groundPlane;
 
   public:
-    explicit PlacingInteractor(Model* model) CORE_NOEXCEPT;
+    explicit PlacingInteractor(Model* model);
     ~PlacingInteractor() CORE_NOEXCEPT override;
 
   private:
-    CORE_NODISCARD static FlowMeshSphere createSphere(const LinAl::Vec3d& origin) ;
+    CORE_NODISCARD static FlowMeshSphere createSphere(const LinAl::Vec3d& origin);
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const;

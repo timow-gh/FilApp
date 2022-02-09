@@ -45,4 +45,18 @@ void Model::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
         m_flowMeshPresenter->updatePosition(fGuid, position);
 }
 
+SnapGeometries Model::calcModelSnapGeometries() const
+{
+    SnapGeometries result{Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D}};
+    
+    for (const auto& pair: m_geometryElements.getSegmentMap())
+        for (const Geometry::Segment3d& segment: pair.second.getSegments())
+            result.add(getSnapPoints(segment));
+
+    for (const auto& pair: m_geometryElements.getSphereMap())
+        result.add(getSnapPoints(pair.second.getSphere()));
+
+    return result;
+}
+
 } // namespace FlowMesh
