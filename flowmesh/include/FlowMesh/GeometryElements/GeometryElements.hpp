@@ -24,6 +24,11 @@ class GeometryElements {
     bool add(const FlowMeshCone& cone);
     bool add(const FlowMeshCylinder& cylinder);
 
+    CORE_NODISCARD const Core::TMap<FGuid, FlowMeshSegments>& getSegmentMap() const;
+    CORE_NODISCARD const Core::TMap<FGuid, FlowMeshSphere>& getSphereMap() const;
+    CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCone>& getConeMap() const;
+    CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCylinder>& getCylinderMap() const;
+
     bool remove(const FGuid& fGuid);
     bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
 

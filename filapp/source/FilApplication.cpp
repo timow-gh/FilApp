@@ -48,6 +48,8 @@ void FilApplication::run()
     m_prevTimeStep =
         (double_t)SDL_GetPerformanceCounter() / (double_t)SDL_GetPerformanceFrequency();
 
+
+
     EventPollingMode eventPollingMode = m_appConfig.eventPollingMode;
     while (!m_closeApp)
     {

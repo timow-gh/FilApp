@@ -8,7 +8,6 @@
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <GraphicsInterface/View.hpp>
-#include <GraphicsInterface/Window.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 using namespace Graphics;
@@ -106,6 +105,8 @@ int main()
     createGridSegments(flowMeshModel);
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
+
+    meshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR));
 
     app.run();
 }
