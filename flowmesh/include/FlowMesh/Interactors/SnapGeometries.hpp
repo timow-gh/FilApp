@@ -32,10 +32,8 @@ class SnapGeometries {
     calcSnapPoint(const Geometry::Ray3d& placementRay) const;
 
   private:
-    CORE_NODISCARD void findSnapPoints(LinAl::Vec3dVector& snapPoints,
-                                       const Geometry::Ray3d& placementRay) const;
-    CORE_NODISCARD void findSnapPlane(LinAl::Vec3dVector& snapPoints,
-                                      const Geometry::Ray3d& placementRay) const;
+    void findSnapPoints(LinAl::Vec3dVector& snapPoints, const Geometry::Ray3d& placementRay) const;
+    void findSnapPlane(LinAl::Vec3dVector& snapPoints, const Geometry::Ray3d& placementRay) const;
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints,
                          const Geometry::Ray3d& placementRay) const;
