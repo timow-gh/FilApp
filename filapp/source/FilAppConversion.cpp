@@ -84,6 +84,7 @@ filament::math::float3 toFilamentCS(const Vec3& vec3)
 {
     return globalCSToFilCS3() * vec3ToFloat3(vec3);
 }
+
 filament::math::float4 toFilamentCS(const Vec4& vec4)
 {
     return globalCSToFilCS4() * vec4ToFloat4(vec4);

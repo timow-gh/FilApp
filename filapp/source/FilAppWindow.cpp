@@ -12,19 +12,19 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilApplication* app
 {
     m_application = application;
 
-    uint32_t windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
+    std::uint32_t windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
     if (windowConfig.isResizable)
         windowFlags |= SDL_WINDOW_RESIZABLE;
     if (windowConfig.isHeadless)
         windowFlags |= SDL_WINDOWEVENT_HIDDEN;
 
-    const int x = SDL_WINDOWPOS_CENTERED;
-    const int y = SDL_WINDOWPOS_CENTERED;
+    const std::int32_t x = SDL_WINDOWPOS_CENTERED;
+    const std::int32_t y = SDL_WINDOWPOS_CENTERED;
     m_sdlWindow = SDL_CreateWindow(windowConfig.windowName.c_str(),
                                    x,
                                    y,
-                                   static_cast<int>(windowConfig.width),
-                                   static_cast<int>(windowConfig.height),
+                                   static_cast<std::int32_t>(windowConfig.width),
+                                   static_cast<std::int32_t>(windowConfig.height),
                                    windowFlags);
 
     m_windowId = SDL_GetWindowID(m_sdlWindow);
@@ -49,8 +49,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilApplication* app
     ViewConfig viewConfig;
     viewConfig.name = "MainView";
     viewConfig.viewport = calcWindowViewport();
-    m_views.emplace_back(std::make_unique<FilAppView>(viewConfig, *m_renderer));
-    m_mainView = m_views.back().get();
+    m_mainView = std::make_unique<FilAppView>(viewConfig, *m_renderer);
 }
 
 void FilAppWindow::event(const MouseButtonEvent& evt)
@@ -169,11 +168,6 @@ uint32_t FilAppWindow::getHeight() const
     return m_height;
 }
 
-FilAppView* FilAppWindow::getMainFilAppView()
-{
-    return m_mainView;
-}
-
 filament::Renderer* FilAppWindow::getRenderer()
 {
     return m_renderer;
@@ -204,13 +198,14 @@ void FilAppWindow::resize()
 
 View* FilAppWindow::getMainIView()
 {
-    return m_mainView;
+    return m_mainView.get();
 }
 
 void FilAppWindow::render()
 {
     if (m_renderer->beginFrame(getSwapChain()))
     {
+        m_renderer->render(m_mainView->getFilamentView());
         for (auto const& view: m_views)
             m_renderer->render(view->getFilamentView());
         m_renderer->endFrame();

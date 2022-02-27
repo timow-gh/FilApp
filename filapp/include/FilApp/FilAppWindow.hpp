@@ -24,14 +24,13 @@ class FilAppWindow : public Window {
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
 
+    std::unique_ptr<FilAppView> m_mainView{nullptr};
     std::vector<std::unique_ptr<FilAppView>> m_views;
 
-    FilAppView* m_mainView{nullptr};
-
-    uint32_t m_width = 0;
-    uint32_t m_height = 0;
-    size_t m_lastX = 0;
-    size_t m_lastY = 0;
+    std::uint32_t m_width = 0;
+    std::uint32_t m_height = 0;
+    std::size_t m_lastX = 0;
+    std::size_t m_lastY = 0;
 
     std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
 
@@ -43,7 +42,7 @@ class FilAppWindow : public Window {
 
     void event(const MouseButtonEvent& mouseButtonEvent);
     void event(const MouseMoveEvent& mouseMoveEvent);
-    void event(const KeyEvent& keyEvent);
+    void event(const KeyEvent& keyEventr);
     void mouseWheel(float_t x, double_t deltaT);
 
     void resize();
@@ -59,7 +58,6 @@ class FilAppWindow : public Window {
     CORE_NODISCARD uint32_t getWidth() const;
     CORE_NODISCARD uint32_t getHeight() const;
 
-    CORE_NODISCARD FilAppView* getMainFilAppView();
     CORE_NODISCARD filament::Renderer* getRenderer();
     CORE_NODISCARD filament::SwapChain* getSwapChain();
 

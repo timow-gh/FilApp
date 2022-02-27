@@ -313,7 +313,9 @@ void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
                                                                   mouseButtonEvent.deltaT));
         break;
     }
-    case MouseButtonEvent::Type::REPEAT: break;
+    case MouseButtonEvent::Type::REPEAT:
+        CORE_PRECONDITION_DEBUG_ASSERT(false, "MouseButtonEvent::Type::REPEAT not implemented.");
+        return;
     case MouseButtonEvent::Type::RELEASE:
     {
         m_cameraManipulator->grabEnd();
