@@ -19,16 +19,14 @@ void createGridSegments(Model& fMModel)
 {
     Core::TVector<Geometry::Segment3d> xSegs;
     Core::TVector<Geometry::Segment3d> ySegs;
-    constexpr int32_t MIN = -5;
-    constexpr int32_t MAX = 5;
-    constexpr std::size_t SEG_COUNT = MAX - MIN + 1;
-    constexpr double_t LENGTH_HALF = static_cast<double_t>(MAX - MIN) / 2.0;
-    for (int32_t i = 0; i < SEG_COUNT; ++i)
+    constexpr double_t MIN = -5;
+    constexpr double_t MAX = 5;
+    constexpr std::size_t SEG_COUNT = static_cast<std::size_t>(MAX - MIN + 1);
+    constexpr double_t LENGTH_HALF = (MAX - MIN) / 2.0;
+    for (std::uint32_t i = 0; i < SEG_COUNT; ++i)
     {
-        xSegs.push_back(Geometry::Segment3d{{static_cast<double_t>(MIN + i), -LENGTH_HALF, 0},
-                                            {static_cast<double_t>(MIN + i), LENGTH_HALF, 0}});
-        ySegs.push_back(Geometry::Segment3d{{-LENGTH_HALF, static_cast<double_t>(MIN + i), 0},
-                                            {LENGTH_HALF, static_cast<double_t>(MIN + i), 0}});
+        xSegs.push_back(Geometry::Segment3d{{MIN + i, -LENGTH_HALF, 0}, {MIN + i, LENGTH_HALF, 0}});
+        ySegs.push_back(Geometry::Segment3d{{-LENGTH_HALF, MIN + i, 0}, {LENGTH_HALF, MIN + i, 0}});
     }
     fMModel.add(FlowMeshSegments(xSegs, newFGuid()));
     fMModel.add(FlowMeshSegments(ySegs, newFGuid()));
@@ -38,12 +36,12 @@ void createSpheres(Model& fMModel)
 {
     FGuid sphereToRemove;
 
-    constexpr int32_t MINMAX = 1;
+    constexpr std::int32_t MINMAX = 1;
     constexpr double_t RADIUS = 0.5;
     constexpr double_t DIST = 2.0;
-    for (int32_t i{-MINMAX}; i <= MINMAX; ++i)
+    for (std::int32_t i{-MINMAX}; i <= MINMAX; ++i)
     {
-        for (int32_t j{-MINMAX}; j <= MINMAX; ++j)
+        for (std::int32_t j{-MINMAX}; j <= MINMAX; ++j)
         {
             FGuid id = newFGuid();
             if (i == 0 && j == 0)
