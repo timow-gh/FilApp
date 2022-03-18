@@ -36,9 +36,10 @@ void SnapGeometries::add(const Geometry::Segment3d& segment)
         add(vec);
 }
 
-void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere)
+void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere,
+                         const LinAl::Vec3d& originTranslation)
 {
-    LinAl::Vec3d origin = sphere.getOrigin();
+    LinAl::Vec3d origin = sphere.getOrigin() + originTranslation;
     double_t radius = sphere.getRadius();
     for (const LinAl::Vec3d& vec: {origin + LinAl::Vec3d{1.0 * radius, 0.0, 0.0},
                                    origin + LinAl::Vec3d{0.0, 1.0 * radius, 0.0},

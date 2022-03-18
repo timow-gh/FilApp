@@ -56,7 +56,7 @@ void Presenter::add(const FlowMeshSphere& flowMeshSphere)
         Geometry::SphereMeshBuilder<double_t>()
             .setPolarCount(m_presenterConfig.spherePolarCount)
             .setAzimuthCount(m_presenterConfig.spherePolarCount)
-            .setSphere(flowMeshSphere.getSphere())
+            .setSphere(flowMeshSphere.getGeometryElement())
             .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*sphereMesh);

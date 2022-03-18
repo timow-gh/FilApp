@@ -1,6 +1,7 @@
 #ifndef FILAPP_CONTROLLER_HPP
 #define FILAPP_CONTROLLER_HPP
 
+#include <FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
@@ -52,11 +53,18 @@ class Controller {
     {
         switch (command.getId())
         {
-        case Command::PLACING_INTERACTOR:
+        case Command::PLACING_INTERACTOR_SPHERE:
         {
-            m_currentInteractor = std::make_unique<PlacingInteractor>(m_model);
+            SphereTraitsConfig<double_t> sphereTraitsConfig;
+            m_currentInteractor =
+                std::make_unique<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>>(
+                    m_model,
+                    m_model->calcModelSnapGeometries(),
+                    sphereTraitsConfig);
+
             m_rayPickDispatcher->registerListener(
-                dynamic_cast<PlacingInteractor*>(m_currentInteractor.get()));
+                dynamic_cast<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>*>(
+                    m_currentInteractor.get()));
             break;
         }
         }

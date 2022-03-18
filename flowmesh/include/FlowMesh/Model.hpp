@@ -24,23 +24,23 @@ class Model {
 
     CORE_NODISCARD Core::TVector<FGuid> calcFGuids() const;
 
-    void add(const FlowMeshSphere& sphere);
-    void add(const FlowMeshCone& flowMeshCone);
-    void add(const FlowMeshCylinder& cylinder);
-    void add(const FlowMeshSegments& flowMeshSegments);
+    template <typename T>
+    void add(const T& flowMeshGeometry)
+    {
+        if (m_geometryElements.add(flowMeshGeometry))
+            m_flowMeshPresenter->add(flowMeshGeometry);
+    }
+
+    template <typename TFlowMeshGeometry>
+    bool get(FGuid guid, TFlowMeshGeometry& result)
+    {
+        return m_geometryElements.get(guid, result);
+    }
 
     void remove(const FGuid& fGuid);
     void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
 
     CORE_NODISCARD SnapGeometries calcModelSnapGeometries() const;
-
-  private:
-    template <typename T>
-    void addImpl(const T& geometryElement)
-    {
-        if (m_geometryElements.add(geometryElement))
-            m_flowMeshPresenter->add(geometryElement);
-    }
 };
 
 } // namespace FlowMesh

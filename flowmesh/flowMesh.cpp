@@ -37,8 +37,8 @@ void createSpheres(Model& fMModel)
     FGuid sphereToRemove;
 
     constexpr std::int32_t MINMAX = 1;
-    constexpr double_t RADIUS = 0.5;
-    constexpr double_t DIST = 2.0;
+    constexpr double_t RADIUS = 1.0;
+    constexpr double_t DIST = 4.0;
     for (std::int32_t i{-MINMAX}; i <= MINMAX; ++i)
     {
         for (std::int32_t j{-MINMAX}; j <= MINMAX; ++j)
@@ -104,7 +104,7 @@ int main()
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 
-    meshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR));
+    meshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
 
     app.run();
 }

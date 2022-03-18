@@ -12,6 +12,23 @@
 
 namespace FlowMesh
 {
+template <typename TFlowMeshGeometry,
+          template <typename K,
+                    typename V,
+                    typename Compare = std::less<K>,
+                    typename Alloc = std::allocator<std::pair<const K, V>>>
+          class Map>
+bool getImpl(FGuid guid, Map<FGuid, TFlowMeshGeometry>& map, TFlowMeshGeometry& result)
+{
+    auto iter = map.find(guid);
+    if (iter != map.end())
+    {
+        result = iter->second;
+        return true;
+    }
+    return false;
+}
+
 class GeometryElements {
     Core::TMap<FGuid, FlowMeshSegments> m_segments;
     Core::TMap<FGuid, FlowMeshSphere> m_spheres;
@@ -24,6 +41,15 @@ class GeometryElements {
     bool add(const FlowMeshCone& cone);
     bool add(const FlowMeshCylinder& cylinder);
 
+    template <typename TFlowMeshGeometry,
+              typename = std::is_same<TFlowMeshGeometry, FlowMeshSphere>>
+    bool get(FGuid guid, TFlowMeshGeometry& result)
+    {
+        if (getImpl(guid, m_spheres, result))
+            return true;
+        return false;
+    }
+
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshSegments>& getSegmentMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshSphere>& getSphereMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCone>& getConeMap() const;
@@ -33,6 +59,8 @@ class GeometryElements {
     bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
 
     CORE_NODISCARD std::vector<FGuid> getFGuidsFromMaps() const;
+
+  private:
 };
 } // namespace FlowMesh
 

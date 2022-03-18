@@ -1,6 +1,7 @@
 #ifndef FILAPP_FLOWMESHSPHERE_HPP
 #define FILAPP_FLOWMESHSPHERE_HPP
 
+#include <Core/Utils/Compiler.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Sphere.hpp>
@@ -15,8 +16,8 @@ class FlowMeshSphere : public GeometryElementBase<FlowMeshSphere> {
     FlowMeshSphere();
     FlowMeshSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid);
 
-    [[nodiscard]] const Geometry::Sphere<double_t>& getSphere() const;
-    void setSphere(const Geometry::Sphere<double_t>& sphere);
+    CORE_NODISCARD const Geometry::Sphere<double_t>& getGeometryElement() const;
+    void setGeometryElement(const Geometry::Sphere<double_t>& sphere);
 };
 } // namespace FlowMesh
 

@@ -56,7 +56,6 @@ FilAppView::FilAppView(const ViewConfig& viewConfig, filament::Renderer& rendere
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
-                // TODO Settings
                 .fovDegrees(m_viewConfig.fieldOfViewInDegree)
                 .fovDirection(
                     toFilamentFovDirection(m_viewConfig.fovDirection, FilamentCamUtilsTag()))
@@ -65,8 +64,6 @@ FilAppView::FilAppView(const ViewConfig& viewConfig, filament::Renderer& rendere
                 .targetPosition(center[0], center[1], center[2])
                 .upVector(up[0], up[1], up[2])
                 .zoomSpeed(0.01)
-                // TODO mapExtent
-                // .mapExtent()
                 .build(toFilamentCameraMode(m_viewConfig.cameraMode)));
     else
         CORE_POSTCONDITION_ASSERT(false, "Camera not implemented.");

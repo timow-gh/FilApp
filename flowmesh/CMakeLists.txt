@@ -21,10 +21,8 @@ set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSphere.cpp
         source/GeometryElements/FlowMeshCone.cpp
         source/GeometryElements/GeometryElements.cpp
-        source/Interactors/PlacingInteractor.cpp
         source/Interactors/SnapGeometries.cpp
         source/Presenter.cpp
-        source/Controller.cpp
         source/Model.cpp)
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})

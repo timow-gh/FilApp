@@ -68,8 +68,6 @@ void FilApplication::run()
         case EventPollingMode::WAIT_EVENTS: SDL_WaitEvent(&sdlEvent); break;
         }
 
-        // TODO Support for multiple windows. Use Window::WindowId
-
         switch (sdlEvent.type)
         {
         case SDL_QUIT: m_closeApp = true; break;

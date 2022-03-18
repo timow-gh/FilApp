@@ -16,7 +16,7 @@ namespace FlowMesh
 class SnapGeometries {
     Geometry::Plane<double_t> m_snapPlane;
     LinAl::Vec3dVector m_snapPoints;
-    double_t m_snapDistance{0.1};
+    double_t m_snapDistance{0.3};
 
   public:
     explicit SnapGeometries(const Geometry::Plane<double_t>& snapPlane);
@@ -26,7 +26,7 @@ class SnapGeometries {
     void remove(const LinAl::Vec3d& snapPoint);
 
     void add(const Geometry::Segment3d& segment);
-    void add(const Geometry::Sphere<double_t>& sphere);
+    void add(const Geometry::Sphere<double_t>& sphere, const LinAl::Vec3d& originTranslation);
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcSnapPoint(const Geometry::Ray3d& placementRay) const;
