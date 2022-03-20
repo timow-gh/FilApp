@@ -41,6 +41,7 @@ class FilAppView : public View {
     utils::Entity m_globalTrafoComponent;
 
     ViewConfig m_viewConfig;
+    CameraManipulator::Bookmark m_cameraHomeBookMark;
     filament::Viewport m_filamentViewport;
 
     std::map<RenderableId, std::unique_ptr<PointRenderable>> m_pointRenderables;

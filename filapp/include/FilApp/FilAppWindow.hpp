@@ -61,7 +61,7 @@ class FilAppWindow : public Window {
     CORE_NODISCARD filament::Renderer* getRenderer();
     CORE_NODISCARD filament::SwapChain* getSwapChain();
 
-    filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const;
+    CORE_NODISCARD filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const;
 
   private:
     CORE_NODISCARD Viewport calcWindowViewport();

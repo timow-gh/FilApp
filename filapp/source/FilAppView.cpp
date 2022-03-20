@@ -76,6 +76,8 @@ FilAppView::FilAppView(const ViewConfig& viewConfig, filament::Renderer& rendere
     auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
     tcm.setTransform(globalInstance, filCSToGlobalCS4());
 
+    m_cameraHomeBookMark = m_cameraManipulator->getCurrentBookmark();
+
     updateViewPort(m_viewConfig.viewport);
 }
 
@@ -368,6 +370,13 @@ void FilAppView::event(const KeyEvent& keyEvent)
     CameraManipulator::Key key;
     if (manipulatorKeyFromKeycode(keyEvent.keyScancode, key))
         m_cameraManipulator->keyDown(key);
+
+    if (keyEvent.keyScancode == Graphics::KeyScancode::SCANCODE_HOME ||
+        keyEvent.keyScancode == Graphics::KeyScancode::SCANCODE_H)
+    {
+        m_cameraManipulator->jumpToBookmark(m_cameraHomeBookMark);
+    }
+
     m_inputEventDispatcher.dispatch(keyEvent);
 }
 
@@ -478,4 +487,5 @@ PickRayEvent FilAppView::getPickRayMoveEvent(std::size_t x, std::size_t y, doubl
     direction = normalize(direction);
     return PickRayEvent{toGlobalCS(origin), toGlobalCS(direction), time};
 }
+
 } // namespace Graphics
