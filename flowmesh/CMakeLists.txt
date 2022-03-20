@@ -1,8 +1,11 @@
 set(FLOWMESH_PUBLIC_HEADERS
-        include/FlowMesh/GeometryElements/FlowMeshSphere.hpp
         include/FlowMesh/GeometryElements/FlowMeshCone.hpp
-        include/FlowMesh/GeometryElements/FlowMeshSegments.hpp
+        include/FlowMesh/GeometryElements/FlowMeshConeTraits.hpp
         include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
+        include/FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp
+        include/FlowMesh/GeometryElements/FlowMeshSegments.hpp
+        include/FlowMesh/GeometryElements/FlowMeshSphere.hpp
+        include/FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/GeometryElementBase.hpp
         include/FlowMesh/Interactors/CommandInteractor.hpp
@@ -51,5 +54,5 @@ target_link_libraries(flow_mesh
 include(GenerateExportHeader)
 generate_export_header(flow_mesh BASE_NAME FlowMesh)
 
-add_executable(FlowMesh flowMesh.cpp)
+add_executable(FlowMesh flowMesh.cpp include/FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp)
 target_link_libraries(FlowMesh PRIVATE flowmesh::flowmesh filapp::filapp)

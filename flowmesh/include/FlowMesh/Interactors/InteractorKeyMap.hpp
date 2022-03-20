@@ -27,7 +27,9 @@ class InteractorKeyMap {
         m_keyMap = {{Graphics::KeyScancode::SCANCODE_1,
                      InteractorCommand(Command::PLACING_INTERACTOR_SPHERE)},
                     {Graphics::KeyScancode::SCANCODE_2,
-                     InteractorCommand(Command::PLACING_INTERACTOR_CONE)}};
+                     InteractorCommand(Command::PLACING_INTERACTOR_CONE)},
+                    {Graphics::KeyScancode::SCANCODE_3,
+                     InteractorCommand(Command::PLACING_INTERACTOR_CYLINDER)}};
     }
 };
 

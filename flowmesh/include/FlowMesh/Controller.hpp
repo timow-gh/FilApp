@@ -2,6 +2,7 @@
 #define FILAPP_CONTROLLER_HPP
 
 #include <FlowMesh/GeometryElements/FlowMeshConeTraits.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp>
 #include <FlowMesh/Interactors/CommandInteractor.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
@@ -64,24 +65,35 @@ class Controller {
         {
         case Command::PLACING_INTERACTOR_SPHERE:
         {
-            SphereTraitsConfig<double_t> sphereTraitsConfig;
             m_currentInteractor =
                 std::make_unique<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>>(
                     m_model,
                     m_model->calcModelSnapGeometries(),
-                    sphereTraitsConfig,
+                    SphereTraitsConfig<double_t>{},
                     m_rayPickDispatcher);
             break;
         }
         case Command::PLACING_INTERACTOR_CONE:
         {
-            ConeTraitsConfig<double_t> coneTraitsConfig;
             m_currentInteractor =
                 std::make_unique<PlacingInteractor<FlowMeshCone, double_t, ConeTraitsConfig>>(
                     m_model,
                     m_model->calcModelSnapGeometries(),
-                    coneTraitsConfig,
+                    ConeTraitsConfig<double_t>{},
                     m_rayPickDispatcher);
+
+            break;
+        }
+        case Command::PLACING_INTERACTOR_CYLINDER:
+        {
+            m_currentInteractor = std::make_unique<
+                PlacingInteractor<FlowMeshCylinder, double_t, CylinderTraitsConfig>>(
+                m_model,
+                m_model->calcModelSnapGeometries(),
+                CylinderTraitsConfig<double_t>{},
+                m_rayPickDispatcher);
+
+            break;
         }
         }
 
