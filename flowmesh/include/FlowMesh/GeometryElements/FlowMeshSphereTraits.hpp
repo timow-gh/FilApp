@@ -1,6 +1,7 @@
 #ifndef FILAPP_FLOWMESHSPHERETRAITS_HPP
 #define FILAPP_FLOWMESHSPHERETRAITS_HPP
 
+#include <Core/Utils/Compiler.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 
@@ -19,8 +20,7 @@ struct FlowMeshGeometryTraits<FlowMeshSphere, SphereTraitsConfig<T>>
 {
     CORE_NODISCARD static FlowMeshSphere create(const SphereTraitsConfig<T>& config)
     {
-        auto sphere = Geometry::Sphere<double_t>{config.origin, config.radius};
-        return FlowMeshSphere{sphere, newFGuid()};
+        return FlowMeshSphere{Geometry::Sphere<T>{config.origin, config.radius}, newFGuid()};
     }
 };
 

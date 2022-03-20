@@ -24,8 +24,8 @@ class Model {
 
     CORE_NODISCARD Core::TVector<FGuid> calcFGuids() const;
 
-    template <typename T>
-    void add(const T& flowMeshGeometry)
+    template <typename TFlowMeshGeometry>
+    void add(const TFlowMeshGeometry& flowMeshGeometry)
     {
         if (m_geometryElements.add(flowMeshGeometry))
             m_flowMeshPresenter->add(flowMeshGeometry);

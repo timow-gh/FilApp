@@ -1,7 +1,9 @@
 #ifndef FILAPP_CONTROLLER_HPP
 #define FILAPP_CONTROLLER_HPP
 
+#include <FlowMesh/GeometryElements/FlowMeshConeTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp>
+#include <FlowMesh/Interactors/CommandInteractor.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
@@ -24,6 +26,7 @@ class Controller {
 
     Model* m_model{nullptr};
 
+    std::unique_ptr<CommandInteractor> m_commandInteractor{nullptr};
     std::unique_ptr<Interactor> m_currentInteractor{nullptr};
 
   public:
@@ -34,6 +37,12 @@ class Controller {
         , m_rayPickDispatcher(&rayPickDispatcher)
         , m_model(model)
     {
+    }
+
+    void init()
+    {
+        m_commandInteractor = std::make_unique<CommandInteractor>(this, m_inputEventDispatcher);
+        m_inputEventDispatcher->registerListener(m_commandInteractor.get());
     }
 
     Controller(Controller&& rhs) CORE_NOEXCEPT = default;
@@ -60,14 +69,23 @@ class Controller {
                 std::make_unique<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>>(
                     m_model,
                     m_model->calcModelSnapGeometries(),
-                    sphereTraitsConfig);
-
-            m_rayPickDispatcher->registerListener(
-                dynamic_cast<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>*>(
-                    m_currentInteractor.get()));
+                    sphereTraitsConfig,
+                    m_rayPickDispatcher);
             break;
         }
+        case Command::PLACING_INTERACTOR_CONE:
+        {
+            ConeTraitsConfig<double_t> coneTraitsConfig;
+            m_currentInteractor =
+                std::make_unique<PlacingInteractor<FlowMeshCone, double_t, ConeTraitsConfig>>(
+                    m_model,
+                    m_model->calcModelSnapGeometries(),
+                    coneTraitsConfig,
+                    m_rayPickDispatcher);
         }
+        }
+
+        m_currentInteractor->initListeners();
     }
 };
 

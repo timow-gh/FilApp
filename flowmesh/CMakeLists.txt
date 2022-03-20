@@ -5,8 +5,10 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/GeometryElements/FlowMeshCylinder.hpp
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/GeometryElementBase.hpp
+        include/FlowMesh/Interactors/CommandInteractor.hpp
         include/FlowMesh/Interactors/Interactor.hpp
         include/FlowMesh/Interactors/InteractorCommands.hpp
+        include/FlowMesh/Interactors/InteractorKeyMap.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/SnapGeometries.hpp
         include/FlowMesh/Model.hpp
@@ -21,6 +23,7 @@ set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSphere.cpp
         source/GeometryElements/FlowMeshCone.cpp
         source/GeometryElements/GeometryElements.cpp
+        source/Interactors/CommandInteractor.cpp
         source/Interactors/SnapGeometries.cpp
         source/Presenter.cpp
         source/Model.cpp)

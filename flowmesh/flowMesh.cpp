@@ -99,6 +99,7 @@ int main()
     Controller meshController{mainView->getInputEventDispatcher(),
                               mainView->getRayPickEventDispatcher(),
                               &flowMeshModel};
+    meshController.init();
 
     createGridSegments(flowMeshModel);
     createSpheres(flowMeshModel);

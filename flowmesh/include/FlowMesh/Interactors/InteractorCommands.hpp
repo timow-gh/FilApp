@@ -12,7 +12,8 @@ namespace FlowMesh
 
 enum class Command : std::uint32_t
 {
-    PLACING_INTERACTOR_SPHERE = 0
+    PLACING_INTERACTOR_SPHERE = 0,
+    PLACING_INTERACTOR_CONE = 1
 };
 
 class InteractorCommand {
