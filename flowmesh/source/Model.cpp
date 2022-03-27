@@ -31,13 +31,18 @@ SnapGeometries Model::calcModelSnapGeometries() const
 
     for (const auto& pair: m_geometryElements.getSegmentMap())
         for (const Geometry::Segment3d& segment: pair.second.getSegments())
-            result.add(segment);
+            result.add(Geometry::transformation(segment, pair.second.getTransformation()));
 
     for (const auto& pair: m_geometryElements.getSphereMap())
-    {
-        auto& flowMeshGeom = pair.second;
-        result.add(flowMeshGeom.getGeometryElement(), pair.second.getPosition());
-    }
+        result.add(pair.second.getGeometryElement(), pair.second.getTransformation());
+
+    for (const auto& pair: m_geometryElements.getCylinderMap())
+        result.add(Geometry::transformation(pair.second.getGeometryElement(),
+                                            pair.second.getTransformation()));
+
+    for (const auto& pair: m_geometryElements.getConeMap())
+        result.add(Geometry::transformation(pair.second.getGeometryElement(),
+                                            pair.second.getTransformation()));
 
     return result;
 }

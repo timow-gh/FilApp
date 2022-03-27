@@ -8,6 +8,7 @@
 
 namespace FlowMesh
 {
+
 class FlowMeshCylinder : public GeometryElementBase<FlowMeshCylinder> {
     Geometry::Cylinder<double_t> m_cylinder;
 
@@ -15,8 +16,9 @@ class FlowMeshCylinder : public GeometryElementBase<FlowMeshCylinder> {
     FlowMeshCylinder();
     FlowMeshCylinder(const Geometry::Cylinder<double_t>& cylinder, const FGuid& fGuid);
 
-    [[nodiscard]] const Geometry::Cylinder<double_t>& getCylinder() const;
+    [[nodiscard]] const Geometry::Cylinder<double_t>& getGeometryElement() const;
 };
+
 } // namespace FlowMesh
 
 #endif // FILAPP_FLOWMESHCYLINDER_HPP

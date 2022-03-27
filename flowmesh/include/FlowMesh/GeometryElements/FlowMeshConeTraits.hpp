@@ -13,7 +13,7 @@ struct ConeTraitsConfig
 {
     LinAl::Vec3<T> circleMidPoint{0, 0, 0};
     T radius{1.0};
-    LinAl::Vec3<T> peak{0, 0, 1};
+    LinAl::Vec3<T> peak{0, 0, 2};
 };
 
 template <typename T>

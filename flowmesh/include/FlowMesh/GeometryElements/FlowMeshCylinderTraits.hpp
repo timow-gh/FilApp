@@ -10,7 +10,7 @@ namespace FlowMesh
 template <typename T>
 struct CylinderTraitsConfig
 {
-    T radius{0.5};
+    T radius{1.0};
     LinAl::Vec3<T> start{0, 0, 0};
     LinAl::Vec3<T> end{0, 0, 1.0};
 };

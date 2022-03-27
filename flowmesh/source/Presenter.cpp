@@ -75,7 +75,7 @@ void Presenter::add(const FlowMeshSphere& flowMeshSphere)
 void Presenter::add(const FlowMeshCone& flowMeshCone)
 {
     auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
-                        .setCone((flowMeshCone.getCone()))
+                        .setCone((flowMeshCone.getGeometryElement()))
                         .setAzimuthCount(m_presenterConfig.coneAzimuthCount)
                         .build();
 
@@ -95,7 +95,7 @@ void Presenter::add(const FlowMeshCone& flowMeshCone)
 void Presenter::add(const FlowMeshCylinder& flowMeshCylinder)
 {
     auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
-                            .setCylinder(flowMeshCylinder.getCylinder())
+                            .setCylinder(flowMeshCylinder.getGeometryElement())
                             .setAzimuthCount(m_presenterConfig.cylinderAzimuthCount)
                             .build();
 

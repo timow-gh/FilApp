@@ -1,7 +1,8 @@
-#include "FlowMesh/Interactors/SnapGeometries.hpp"
 #include <Core/Math/Eps.hpp>
 #include <Core/Utils/Assert.hpp>
+#include <FlowMesh/Interactors/SnapGeometries.hpp>
 #include <Geometry/Distance/DistanceRay.hpp>
+#include <Geometry/GeometryAssert.hpp>
 #include <algorithm>
 #include <limits>
 
@@ -36,24 +37,53 @@ void SnapGeometries::add(const Geometry::Segment3d& segment)
         add(vec);
 }
 
-void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere,
-                         const LinAl::Vec3d& originTranslation)
+void SnapGeometries::add(const Geometry::Circle3d& circle)
 {
-    LinAl::Vec3d origin = sphere.getOrigin() + originTranslation;
+    double_t radius = circle.getRadius();
+    LinAl::HMatrixd transformation = circle.calcTransformation();
+    for (const LinAl::HVecd& vec: {LinAl::HVecd{radius, 0.0, 0.0, 1.0},
+                                   LinAl::HVecd{0.0, radius, 0.0, 1.0},
+                                   LinAl::HVecd{-1.0 * radius, 0.0, 0.0, 1.0},
+                                   LinAl::HVecd{0.0, -1.0 * radius, 0.0, 1.0}})
+        add(LinAl::hVecToVec3(LinAl::HVecd{transformation * vec}));
+}
+
+void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere,
+                         const LinAl::HMatrixd& transformation)
+{
     double_t radius = sphere.getRadius();
-    for (const LinAl::Vec3d& vec: {origin + LinAl::Vec3d{1.0 * radius, 0.0, 0.0},
-                                   origin + LinAl::Vec3d{0.0, 1.0 * radius, 0.0},
-                                   origin + LinAl::Vec3d{0.0, 0.0, 1.0 * radius},
-                                   origin + LinAl::Vec3d{-1.0 * radius, 0.0, 0.0},
-                                   origin + LinAl::Vec3d{0.0, -1.0 * radius, 0.0},
-                                   origin + LinAl::Vec3d{0.0, 0.0, -1.0 * radius}})
-        add(vec);
+    add(Geometry::transformation(Geometry::Circle3d{sphere.getOrigin(), radius, LinAl::Z_VEC3D},
+                                 transformation));
+    for (const LinAl::HVecd& hVec:
+         {LinAl::HVecd{0.0, 0.0, 1.0 * radius, 1.0}, LinAl::HVecd{0.0, 0.0, -1.0 * radius, 1.0}})
+    {
+        LinAl::HVecd transformedVec = transformation * hVec;
+        transformedVec += LinAl::vec3ToHVec(sphere.getOrigin());
+        add(LinAl::hVecToVec3(transformedVec));
+    }
+}
+
+void SnapGeometries::add(const Geometry::Cylinder<double_t>& cylinder)
+{
+    const Geometry::Segment3d& seg = cylinder.getSegment();
+    double_t radius = cylinder.getRadius();
+    LinAl::Vec3d segDir = cylinder.getSegment().direction();
+
+    add(seg);
+    add(Geometry::Circle3d{seg.getSource(), radius, segDir});
+    add(Geometry::Circle3d{seg.getTarget(), radius, segDir});
+}
+
+void SnapGeometries::add(const Geometry::Cone<double_t>& cone)
+{
+    const Geometry::Segment3d& seg = cone.getSegment();
+    add(seg);
+    add(Geometry::Circle3d{seg.getSource(), cone.getRadius(), seg.direction()});
 }
 
 std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d& placementRay) const
 {
-    CORE_PRECONDITION_DEBUG_ASSERT(!Core::isZero(LinAl::norm2Squared(placementRay.getDirection())),
-                                   "Direction with zero length is not allowed.");
+    GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
 
     LinAl::Vec3dVector snapPoints;
     findSnapPoints(snapPoints, placementRay);
@@ -65,6 +95,8 @@ std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d&
 void SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
                                     const Geometry::Ray3d& placementRay) const
 {
+    GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
+
     for (const LinAl::Vec3d& vec: m_snapPoints)
         if (placementRay.distance(vec) < m_snapDistance)
             snapPoints.push_back(vec);

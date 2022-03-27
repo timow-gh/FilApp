@@ -14,7 +14,7 @@ class FlowMeshCone : public GeometryElementBase<FlowMeshCone> {
     FlowMeshCone();
     FlowMeshCone(const Geometry::Cone<double_t>& cone, const FGuid& fGuid);
 
-    [[nodiscard]] const Geometry::Cone<double_t>& getCone() const;
+    [[nodiscard]] const Geometry::Cone<double_t>& getGeometryElement() const;
 };
 } // namespace FlowMesh
 
