@@ -55,7 +55,7 @@ void Presenter::add(const FlowMeshSphere& flowMeshSphere)
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
         Geometry::SphereMeshBuilder<double_t>()
             .setPolarCount(m_presenterConfig.spherePolarCount)
-            .setAzimuthCount(m_presenterConfig.spherePolarCount)
+            .setAzimuthCount(m_presenterConfig.sphereAzimuthCount)
             .setSphere(flowMeshSphere.getGeometryElement())
             .build();
 
@@ -106,7 +106,7 @@ void Presenter::add(const FlowMeshCylinder& flowMeshCylinder)
 
     auto verticesId = m_mainView->addRenderable(Graphics::LineRenderable::create(filAppVertices));
     auto coneId = m_mainView->addRenderable(
-        createTriangleRenderable(*cylinderMesh, m_presenterConfig.lineColor));
+        createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
 
     m_fGuidRenderableMapping.emplace(flowMeshCylinder.getFGuid(),
                                      std::vector<Graphics::RenderableId>{verticesId, coneId});

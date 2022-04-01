@@ -11,7 +11,9 @@ struct PresenterConfig
     std::size_t cylinderAzimuthCount{20};
 
     std::uint32_t faceColor{0xFFc0bfbb};
+    std::uint32_t selectedFaceColor{0xFF129CF3};
     std::uint32_t lineColor{0xFF000000};
+    std::uint32_t selectedLineColor{0xFF000000};
 };
 } // namespace FlowMesh
 
