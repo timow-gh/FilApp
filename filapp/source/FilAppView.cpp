@@ -276,6 +276,7 @@ void FilAppView::updateViewPort(const Viewport& viewport)
     m_filamentViewport = toFilamentViewport(viewport);
     m_filamentView->setViewport(m_filamentViewport);
     configureCameraProjection();
+    m_filamentView->setCamera(m_camera);
     m_cameraManipulator->setViewport(static_cast<int>(viewport.width),
                                      static_cast<int>(viewport.height));
 }

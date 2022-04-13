@@ -87,7 +87,8 @@ void createCones(Model& fmModel)
 
 int main()
 {
-    AppConfig appConfig{};
+    AppConfig appConfig;
+    appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
     FilApplication::init(appConfig, WindowConfig());
     FilApplication& app = FilApplication::get();

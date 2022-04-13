@@ -60,6 +60,7 @@ void FilApplication::run()
         double_t deltaT = FilApplication::getDeltaT();
 
         SDL_Event sdlEvent;
+
         switch (eventPollingMode)
         {
         case EventPollingMode::POLL_EVENTS: SDL_PollEvent(&sdlEvent); break;
@@ -132,13 +133,15 @@ void FilApplication::run()
             break;
         }
         case SDL_WINDOWEVENT:
-            switch (sdlEvent.window.event)
-            {
-            case SDL_WINDOWEVENT_RESIZED: m_window->resize(); break;
-            default: break;
-            }
+        {
+            if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                m_window->resize();
             break;
-        default: break;
+        }
+        default:
+        {
+            break;
+        }
         }
 
         m_window->animate(deltaT);

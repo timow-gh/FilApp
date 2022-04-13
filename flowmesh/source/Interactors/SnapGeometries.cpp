@@ -3,6 +3,7 @@
 #include <FlowMesh/Interactors/SnapGeometries.hpp>
 #include <Geometry/Distance/DistanceRay.hpp>
 #include <Geometry/GeometryAssert.hpp>
+#include <Geometry/Intersection/IntersectionSphere.hpp>
 #include <algorithm>
 #include <limits>
 
@@ -51,9 +52,11 @@ void SnapGeometries::add(const Geometry::Circle3d& circle)
 void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere,
                          const LinAl::HMatrixd& transformation)
 {
-    double_t radius = sphere.getRadius();
-    add(Geometry::transformation(Geometry::Circle3d{sphere.getOrigin(), radius, LinAl::Z_VEC3D},
-                                 transformation));
+    auto transformedSphere = Geometry::transformation(sphere, transformation);
+    m_snapSpheres.push_back(transformedSphere);
+
+    double_t radius = transformedSphere.getRadius();
+    add(Geometry::Circle3d{transformedSphere.getOrigin(), radius, LinAl::Z_VEC3D});
     for (const LinAl::HVecd& hVec:
          {LinAl::HVecd{0.0, 0.0, 1.0 * radius, 1.0}, LinAl::HVecd{0.0, 0.0, -1.0 * radius, 1.0}})
     {
@@ -86,20 +89,24 @@ std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d&
     GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
 
     LinAl::Vec3dVector snapPoints;
-    findSnapPoints(snapPoints, placementRay);
+    if (!findSnapPoints(snapPoints, placementRay))
+        addSphereSurfaceSnapPoint(snapPoints, placementRay);
+
     if (snapPoints.empty())
         findSnapPlane(snapPoints, placementRay);
     return findClosestSnapPoint(snapPoints, placementRay);
 }
 
-void SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
+bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
                                     const Geometry::Ray3d& placementRay) const
 {
     GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
-
+    std::size_t size = snapPoints.size();
     for (const LinAl::Vec3d& vec: m_snapPoints)
         if (placementRay.distance(vec) < m_snapDistance)
             snapPoints.push_back(vec);
+
+    return size == snapPoints.size();
 }
 
 void SnapGeometries::findSnapPlane(LinAl::Vec3dVector& snapPoints,
@@ -129,6 +136,20 @@ SnapGeometries::findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints,
         }
     }
     return result;
+}
+
+void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& m_snapPoints,
+                                               const Geometry::Ray3d& placementRay) const
+{
+    for (const Geometry::Sphere<double_t>& sphere: m_snapSpheres)
+    {
+        Geometry::SphereIntersection<double_t> intersection =
+            Geometry::calcIntersection(sphere, placementRay);
+        if (intersection.first)
+            m_snapPoints.push_back(*intersection.first);
+        if (intersection.second)
+            m_snapPoints.push_back(*intersection.second);
+    }
 }
 
 } // namespace FlowMesh
