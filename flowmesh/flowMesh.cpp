@@ -1,9 +1,9 @@
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
+#include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
-#include <FlowMesh/Model.hpp>
 #include <FlowMesh/Presenter.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
@@ -15,7 +15,7 @@ using namespace FlowMesh;
 using namespace Geometry;
 using namespace LinAl;
 
-void createGridSegments(Model& fMModel)
+void createGridSegments(FlowMeshModel& fMModel)
 {
     Core::TVector<Geometry::Segment3d> xSegs;
     Core::TVector<Geometry::Segment3d> ySegs;
@@ -32,7 +32,7 @@ void createGridSegments(Model& fMModel)
     fMModel.add(FlowMeshSegments(ySegs, newFGuid()));
 }
 
-void createSpheres(Model& fMModel)
+void createSpheres(FlowMeshModel& fMModel)
 {
     FGuid sphereToRemove;
 
@@ -58,7 +58,7 @@ void createSpheres(Model& fMModel)
     fMModel.remove(sphereToRemove);
 }
 
-void createCones(Model& fmModel)
+void createCones(FlowMeshModel& fmModel)
 {
     // x
     fmModel.add(FlowMeshCone(
@@ -94,19 +94,16 @@ int main()
     FilApplication& app = FilApplication::get();
 
     View* mainView = app.getWindow()->getMainIView();
-
     Presenter flowMeshPresenter{mainView};
-    Model flowMeshModel{&flowMeshPresenter};
-    FlowMeshController meshController{mainView->getInputEventDispatcher(),
-                              mainView->getRayPickEventDispatcher(),
-                              &flowMeshModel};
-    meshController.init();
+    FlowMeshModel flowMeshModel{&flowMeshPresenter};
+    FlowMeshController flowMeshController{mainView, &flowMeshModel};
+    flowMeshController.init();
 
     createGridSegments(flowMeshModel);
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 
-    meshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
+    flowMeshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
 
     app.run();
 }

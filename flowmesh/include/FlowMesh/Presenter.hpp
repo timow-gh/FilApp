@@ -24,7 +24,7 @@ class Presenter {
     Graphics::View* m_mainView{nullptr};
     PresenterConfig m_presenterConfig{};
 
-    std::map<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
+    Core::TMap<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
     explicit Presenter(Graphics::View* mainView);

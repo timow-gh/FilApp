@@ -1,31 +1,31 @@
-#include "FlowMesh/Model.hpp"
+#include "FlowMesh/FlowMeshModel.hpp"
 #include "FlowMesh/Presenter.hpp"
 
 namespace FlowMesh
 {
-Model::Model(Presenter* presenter)
+FlowMeshModel::FlowMeshModel(Presenter* presenter)
 {
     m_flowMeshPresenter = presenter;
 }
 
-std::vector<FGuid> Model::calcFGuids() const
+std::vector<FGuid> FlowMeshModel::calcFGuids() const
 {
     return m_geometryElements.getFGuidsFromMaps();
 }
 
-void Model::remove(const FGuid& fGuid)
+void FlowMeshModel::remove(const FGuid& fGuid)
 {
     m_geometryElements.remove(fGuid);
     m_flowMeshPresenter->remove(fGuid);
 }
 
-void Model::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
+void FlowMeshModel::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
 {
     if (m_geometryElements.setPosition(fGuid, position))
         m_flowMeshPresenter->updatePosition(fGuid, position);
 }
 
-SnapGeometries Model::calcModelSnapGeometries() const
+SnapGeometries FlowMeshModel::calcModelSnapGeometries() const
 {
     SnapGeometries result{Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D}};
 

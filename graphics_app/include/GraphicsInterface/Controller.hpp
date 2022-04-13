@@ -11,7 +11,7 @@ class Controller
     : public InputEventListener
     , public RayPickEventListener {
   public:
-    virtual ~Controller() = 0;
+    virtual ~Controller() = default;
 };
 
 } // namespace Graphics

@@ -1,5 +1,5 @@
-#ifndef FILAPP_MODEL_HPP
-#define FILAPP_MODEL_HPP
+#ifndef FILAPP_FLOWMESHMODEL_HPP
+#define FILAPP_FLOWMESHMODEL_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
@@ -15,12 +15,12 @@
 namespace FlowMesh
 {
 
-class Model {
+class FlowMeshModel {
     GeometryElements m_geometryElements;
     Presenter* m_flowMeshPresenter{nullptr};
 
   public:
-    explicit Model(Presenter* presenter);
+    explicit FlowMeshModel(Presenter* presenter);
 
     CORE_NODISCARD Core::TVector<FGuid> calcFGuids() const;
 
@@ -45,4 +45,4 @@ class Model {
 
 } // namespace FlowMesh
 
-#endif // FILAPP_MODEL_HPP
+#endif // FILAPP_FLOWMESHMODEL_HPP
