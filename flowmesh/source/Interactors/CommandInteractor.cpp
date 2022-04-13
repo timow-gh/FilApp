@@ -1,10 +1,10 @@
 #include "FlowMesh/Interactors/CommandInteractor.hpp"
-#include "FlowMesh/Controller.hpp"
+#include "FlowMesh/FlowMeshController.hpp"
 
 namespace FlowMesh
 {
 
-CommandInteractor::CommandInteractor(Controller* controller,
+CommandInteractor::CommandInteractor(FlowMeshController* controller,
                                      Graphics::InputEventDispatcher* inputEventDispatcher)
     : m_controller(controller), m_inputEventDispatcher(inputEventDispatcher)
 {

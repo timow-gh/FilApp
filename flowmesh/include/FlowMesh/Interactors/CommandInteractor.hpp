@@ -9,18 +9,18 @@
 namespace FlowMesh
 {
 
-class Controller;
+class FlowMeshController;
 
 // Interactor that sets the currently active Interactor of the controller using the InteractorKeyMap
 class CommandInteractor
     : public Interactor
     , public Graphics::InputEventListener {
-    Controller* m_controller{nullptr};
+    FlowMeshController* m_controller{nullptr};
     InteractorKeyMap m_interactorKeyMap{};
     Graphics::InputEventDispatcher* m_inputEventDispatcher{nullptr};
 
   public:
-    explicit CommandInteractor(Controller* controller,
+    explicit CommandInteractor(FlowMeshController* controller,
                                Graphics::InputEventDispatcher* inputEventDispatcher);
 
     void initListeners() override;

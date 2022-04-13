@@ -1,6 +1,6 @@
 #include <Core/Types/TArray.hpp>
 #include <FilApp/FilApplication.hpp>
-#include <FlowMesh/Controller.hpp>
+#include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <FlowMesh/Model.hpp>
@@ -97,7 +97,7 @@ int main()
 
     Presenter flowMeshPresenter{mainView};
     Model flowMeshModel{&flowMeshPresenter};
-    Controller meshController{mainView->getInputEventDispatcher(),
+    FlowMeshController meshController{mainView->getInputEventDispatcher(),
                               mainView->getRayPickEventDispatcher(),
                               &flowMeshModel};
     meshController.init();

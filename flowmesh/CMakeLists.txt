@@ -15,7 +15,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/SnapGeometries.hpp
         include/FlowMesh/Model.hpp
-        include/FlowMesh/Controller.hpp
+        include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/Presenter.hpp
         include/FlowMesh/PresenterConfig.hpp
         include/FlowMesh/FlowMeshGuid.hpp)
