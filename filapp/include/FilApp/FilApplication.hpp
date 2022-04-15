@@ -3,7 +3,7 @@
 
 #include <Core/Utils/Compiler.hpp>
 #include <GraphicsInterface/AppConfig.hpp>
-#include <GraphicsInterface/Application.hpp>
+#include <GraphicsInterface/GraphicsApp.hpp>
 #include <GraphicsInterface/Window.hpp>
 #include <GraphicsInterface/WindowConfig.hpp>
 #include <cmath>
@@ -19,7 +19,7 @@ namespace Graphics
 {
 class FilAppWindow;
 
-class FILAPP_EXPORT FilApplication : public Application {
+class FILAPP_EXPORT FilApplication : public GraphicsApp {
   public:
     static void init(const AppConfig& appConfig, const WindowConfig& windowConfig);
     CORE_NODISCARD static FilApplication& get();

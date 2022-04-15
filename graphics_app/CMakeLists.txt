@@ -16,7 +16,7 @@ add_library(graphics_interface INTERFACE
         include/GraphicsInterface/View.hpp
         include/GraphicsInterface/Viewport.hpp
         include/GraphicsInterface/Window.hpp
-        include/GraphicsInterface/Application.hpp
+        include/GraphicsInterface/GraphicsApp.hpp
         include/GraphicsInterface/Controller.hpp
         include/GraphicsInterface/RGBAColor.hpp
         include/GraphicsInterface/WindowConfig.hpp
