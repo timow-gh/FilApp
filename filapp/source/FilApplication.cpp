@@ -9,16 +9,17 @@
 
 namespace Graphics
 {
-std::unique_ptr<FilApplication> FilApplication::m_app;
 double_t FilApplication::m_prevTimeStep = 0;
 
-void FilApplication::init(const AppConfig& appConfig, const WindowConfig& windowConfig)
+std::shared_ptr<Graphics::GraphicsApp> FilApplication::create(const AppConfig& appConfig,
+                                                              const WindowConfig& windowConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
-    m_app = std::make_unique<FilApplication>();
-    m_app->m_engine = filament::Engine::create(toFilamentBackend(appConfig.backendMode));
-    m_app->m_window = std::make_unique<FilAppWindow>(windowConfig, &FilApplication::get());
-    m_app->m_appConfig = appConfig;
+    std::shared_ptr<FilApplication> filApp = std::make_unique<FilApplication>();
+    filApp->m_engine = filament::Engine::create(toFilamentBackend(appConfig.backendMode));
+    filApp->m_window = std::make_unique<FilAppWindow>(windowConfig, filApp.get());
+    filApp->m_appConfig = appConfig;
+    return filApp;
 }
 
 FilApplication::~FilApplication()
@@ -26,11 +27,6 @@ FilApplication::~FilApplication()
     m_window.reset();
     m_engine = nullptr;
     SDL_Quit();
-}
-
-FilApplication& FilApplication::get()
-{
-    return *m_app;
 }
 
 filament::Engine* FilApplication::getEngine()

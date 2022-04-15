@@ -17,12 +17,13 @@ class Engine;
 
 namespace Graphics
 {
+
 class FilAppWindow;
 
 class FILAPP_EXPORT FilApplication : public GraphicsApp {
   public:
-    static void init(const AppConfig& appConfig, const WindowConfig& windowConfig);
-    CORE_NODISCARD static FilApplication& get();
+    CORE_NODISCARD static std::shared_ptr<Graphics::GraphicsApp>
+    create(const AppConfig& appConfig, const WindowConfig& windowConfig);
 
     FilApplication() = default;
     ~FilApplication() override;
@@ -32,11 +33,10 @@ class FILAPP_EXPORT FilApplication : public GraphicsApp {
     FilApplication& operator=(FilApplication&& application) = delete;
 
     CORE_NODISCARD filament::Engine* getEngine();
-    CORE_NODISCARD Window* getWindow() override;
-
     CORE_NODISCARD static double_t getDeltaT();
 
-    void run();
+    CORE_NODISCARD Window* getWindow() override;
+    void run() override;
 
   private:
     static std::unique_ptr<FilApplication> m_app;

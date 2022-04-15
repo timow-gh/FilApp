@@ -90,10 +90,10 @@ int main()
     AppConfig appConfig;
     appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
-    FilApplication::init(appConfig, WindowConfig());
-    FilApplication& app = FilApplication::get();
+    std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
+        FilApplication::create(appConfig, WindowConfig());
 
-    View* mainView = app.getWindow()->getMainIView();
+    View* mainView = graphicsApp->getWindow()->getMainIView();
     Presenter flowMeshPresenter{mainView};
     FlowMeshModel flowMeshModel{&flowMeshPresenter};
     FlowMeshController flowMeshController{mainView, &flowMeshModel};
@@ -105,5 +105,5 @@ int main()
 
     flowMeshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
 
-    app.run();
+    graphicsApp->run();
 }
