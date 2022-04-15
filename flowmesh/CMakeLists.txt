@@ -54,5 +54,5 @@ target_link_libraries(flow_mesh
 include(GenerateExportHeader)
 generate_export_header(flow_mesh BASE_NAME FlowMesh)
 
-add_executable(FlowMesh flowMesh.cpp include/FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp)
-target_link_libraries(FlowMesh PRIVATE flowmesh::flowmesh filapp::filapp)
+add_executable(FlowMeshApp flowMeshApp.cpp)
+target_link_libraries(FlowMeshApp PRIVATE flowmesh::flowmesh filapp::filapp)
