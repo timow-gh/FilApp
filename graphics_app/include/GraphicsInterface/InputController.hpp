@@ -1,5 +1,5 @@
-#ifndef FILAPP_CONTROLLER_HPP
-#define FILAPP_CONTROLLER_HPP
+#ifndef FILAPP_INPUTCONTROLLER_HPP
+#define FILAPP_INPUTCONTROLLER_HPP
 
 #include <GraphicsInterface/InputEvents/InputEventListener.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
@@ -7,11 +7,9 @@
 namespace Graphics
 {
 
-class Controller
-    : public InputEventListener
-    , public RayPickEventListener {
+class InputController : public InputEventListener {
   public:
-    ~Controller() override = default;
+    ~InputController() override = default;
 };
 
 } // namespace Graphics

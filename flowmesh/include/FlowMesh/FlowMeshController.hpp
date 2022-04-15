@@ -9,7 +9,7 @@
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
-#include <GraphicsInterface/Controller.hpp>
+#include <GraphicsInterface/InputController.hpp>
 #include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
 #include <memory>
@@ -17,7 +17,7 @@
 namespace FlowMesh
 {
 
-class FlowMeshController : public Graphics::Controller {
+class FlowMeshController : public Graphics::InputController {
     Graphics::View* m_view{nullptr};
     FlowMeshModel* m_flowMeshModel{nullptr};
 
