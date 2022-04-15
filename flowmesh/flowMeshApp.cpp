@@ -21,7 +21,7 @@ void createGridSegments(FlowMeshModel& fMModel)
     Core::TVector<Geometry::Segment3d> ySegs;
     constexpr double_t MIN = -5;
     constexpr double_t MAX = 5;
-    constexpr std::size_t SEG_COUNT = static_cast<std::size_t>(MAX - MIN + 1);
+    constexpr auto SEG_COUNT = static_cast<std::size_t>(MAX - MIN + 1);
     constexpr double_t LENGTH_HALF = (MAX - MIN) / 2.0;
     for (std::uint32_t i = 0; i < SEG_COUNT; ++i)
     {

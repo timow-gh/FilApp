@@ -14,7 +14,7 @@ class DispatcherBase {
     void dispatchImpl(const TMessage& message)
     {
         for (TListener* listener: DispatcherBase<TListener>::m_listener)
-            listener->event(message);
+            listener->onEvent(message);
     }
 
   public:

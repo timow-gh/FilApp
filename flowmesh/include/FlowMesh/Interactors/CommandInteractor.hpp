@@ -30,7 +30,7 @@ class CommandInteractor
 
     ~CommandInteractor() override { m_inputEventDispatcher->removeListener(this); }
 
-    void event(const Graphics::KeyEvent& keyEvent) override;
+    void onEvent(const Graphics::KeyEvent& keyEvent) override;
 };
 
 } // namespace FlowMesh

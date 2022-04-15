@@ -10,7 +10,7 @@ CommandInteractor::CommandInteractor(FlowMeshController* controller,
 {
 }
 
-void CommandInteractor::event(const Graphics::KeyEvent& keyEvent)
+void CommandInteractor::onEvent(const Graphics::KeyEvent& keyEvent)
 {
     if (auto nextInteractorCommand = m_interactorKeyMap.nextInteractor(keyEvent.keyScancode))
         m_controller->setNextInteractor(*nextInteractorCommand);

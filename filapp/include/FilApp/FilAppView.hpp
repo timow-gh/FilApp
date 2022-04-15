@@ -83,10 +83,10 @@ class FilAppView : public View {
     void setCamera(filament::Camera* camera);
     void resize(const Viewport& viewport) override;
 
-    void event(const MouseButtonEvent& mouseButtonEvent) override;
-    void event(const MouseMoveEvent& mouseMoveEvent) override;
-    void event(const MouseWheelEvent& mouseWheelEvent) override;
-    void event(const KeyEvent& keyEvent) override;
+    void onEvent(const MouseButtonEvent& mouseButtonEvent) override;
+    void onEvent(const MouseMoveEvent& mouseMoveEvent) override;
+    void onEvent(const MouseWheelEvent& mouseWheelEvent) override;
+    void onEvent(const KeyEvent& keyEvent) override;
 
     void animate(double_t deltaT) override;
 

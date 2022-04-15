@@ -293,7 +293,7 @@ void FilAppView::resize(const Viewport& viewport)
     updateViewPort(viewport);
 }
 
-void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
+void FilAppView::onEvent(const MouseButtonEvent& mouseButtonEvent)
 {
     DEBUG_CHECK_CAMERA_MANIP();
     switch (mouseButtonEvent.type)
@@ -326,7 +326,7 @@ void FilAppView::event(const MouseButtonEvent& mouseButtonEvent)
     m_inputEventDispatcher.dispatch(mouseButtonEvent);
 }
 
-void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
+void FilAppView::onEvent(const MouseMoveEvent& mouseMoveEvent)
 {
     const int x = static_cast<int>(mouseMoveEvent.x);
     const int y = static_cast<int>(mouseMoveEvent.y);
@@ -341,7 +341,7 @@ void FilAppView::event(const MouseMoveEvent& mouseMoveEvent)
         PickRayMoveEvent(pickRayEvent.origin, pickRayEvent.direction, pickRayEvent.time));
 }
 
-void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
+void FilAppView::onEvent(const MouseWheelEvent& mouseWheelEvent)
 {
     DEBUG_CHECK_CAMERA_MANIP();
 
@@ -365,7 +365,7 @@ void FilAppView::event(const MouseWheelEvent& mouseWheelEvent)
     m_inputEventDispatcher.dispatch(mouseWheelEvent);
 }
 
-void FilAppView::event(const KeyEvent& keyEvent)
+void FilAppView::onEvent(const KeyEvent& keyEvent)
 {
     DEBUG_CHECK_CAMERA_MANIP();
     CameraManipulator::Key key;

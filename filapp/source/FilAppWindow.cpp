@@ -54,12 +54,12 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilApplication* app
 
 void FilAppWindow::event(const MouseButtonEvent& evt)
 {
-    m_mainView->event(evt);
+    m_mainView->onEvent(evt);
     for (const auto& view: m_views)
     {
         if (intersects(view->getViewport(), evt.x, evt.y))
         {
-            view->event(evt);
+            view->onEvent(evt);
             break;
         }
     }
@@ -67,12 +67,12 @@ void FilAppWindow::event(const MouseButtonEvent& evt)
 
 void FilAppWindow::event(const MouseMoveEvent& evt)
 {
-    m_mainView->event(evt);
+    m_mainView->onEvent(evt);
     for (const auto& view: m_views)
     {
         if (intersects(view->getViewport(), evt.x, evt.y))
         {
-            view->event(evt);
+            view->onEvent(evt);
             break;
         }
     }
@@ -88,22 +88,22 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
     {
         auto& eventTarget = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
 
-        // event events can be sent multiple times per key (for key repeat)
+        // onEvent events can be sent multiple times per key (for key repeat)
         // If this key is already down, do nothing.
         if (eventTarget)
             return;
 
-        // Decide which view will get this key's corresponding event event.
+        // Decide which view will get this key's corresponding event onEvent.
         // If we're currently in a mouse grap session, it should be the mouse grab's
         // target view. Otherwise, it should be whichever view we're currently
         // hovering over.
-        m_mainView->event(keyEvent);
+        m_mainView->onEvent(keyEvent);
 
         for (auto const& view: m_views)
         {
             if (intersects(view->getViewport(), m_lastX, m_lastY))
             {
-                view->event(keyEvent);
+                view->onEvent(keyEvent);
                 break;
             }
         }
@@ -114,7 +114,7 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
         auto& eventTargetView = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
         if (!eventTargetView)
             return;
-        eventTargetView->event(keyEvent);
+        eventTargetView->onEvent(keyEvent);
         eventTargetView = nullptr;
         break;
     }
@@ -124,12 +124,12 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
 
 void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
-    m_mainView->event(MouseWheelEvent(x, deltaT));
+    m_mainView->onEvent(MouseWheelEvent(x, deltaT));
     for (auto const& view: m_views)
     {
         if (intersects(view->getViewport(), m_lastX, m_lastY))
         {
-            view->event(MouseWheelEvent(x, deltaT));
+            view->onEvent(MouseWheelEvent(x, deltaT));
             break;
         }
     }

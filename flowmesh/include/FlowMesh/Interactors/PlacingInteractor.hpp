@@ -55,8 +55,8 @@ class PlacingInteractor
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const;
 
-    void event(const Graphics::PickRayEvent& pickRayEvent) override;
-    void event(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
+    void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;
+    void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
 };
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
@@ -92,7 +92,7 @@ std::optional<LinAl::Vec3d> PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>
 }
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::event(
+void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
     const Graphics::PickRayEvent& pickRayEvent)
 {
     auto intersection = calcIntersection(pickRayEvent);
@@ -112,7 +112,7 @@ void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::event(
 }
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::event(
+void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
     const Graphics::PickRayMoveEvent& pickRayMoveEvent)
 {
     auto intersection = calcIntersection(pickRayMoveEvent);
