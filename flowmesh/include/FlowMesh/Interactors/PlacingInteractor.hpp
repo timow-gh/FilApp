@@ -37,7 +37,7 @@ class PlacingInteractor : public Graphics::GraphicsController {
     void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;
     void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
 
-    void onRemoveListener();
+    void onRemoveListener() override;
 };
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
