@@ -18,38 +18,24 @@ namespace FlowMesh
 {
 
 class FlowMeshController : public Graphics::InputController {
-    Graphics::View* m_view{nullptr};
+    FlowMeshPresenter* m_flowMeshPresenter{nullptr};
     FlowMeshModel* m_flowMeshModel{nullptr};
-
-    Graphics::InputEventDispatcher* m_inputEventDispatcher{nullptr};
-    Graphics::RayPickEventDispatcher* m_rayPickDispatcher{nullptr};
 
     std::unique_ptr<CommandInteractor> m_commandInteractor{nullptr};
     std::unique_ptr<Interactor> m_currentInteractor{nullptr};
 
   public:
-    FlowMeshController(Graphics::View* view, FlowMeshModel* flowMeshModel)
-        : m_view(view)
-        , m_flowMeshModel(flowMeshModel)
-        , m_inputEventDispatcher(&view->getInputEventDispatcher())
-        , m_rayPickDispatcher(&view->getRayPickEventDispatcher())
+    FlowMeshController(FlowMeshPresenter* flowMeshPresenter, FlowMeshModel* flowMeshModel)
+        : m_flowMeshPresenter(flowMeshPresenter), m_flowMeshModel(flowMeshModel)
     {
     }
 
     void init()
     {
-        m_commandInteractor = std::make_unique<CommandInteractor>(this, m_inputEventDispatcher);
-        m_inputEventDispatcher->registerListener(m_commandInteractor.get());
-    }
-
-    CORE_NODISCARD Graphics::InputEventDispatcher* getInputEventDispatcher() const
-    {
-        return m_inputEventDispatcher;
-    }
-
-    CORE_NODISCARD Graphics::RayPickEventDispatcher* getRayPickDispatcher() const
-    {
-        return m_rayPickDispatcher;
+        m_commandInteractor =
+            std::make_unique<CommandInteractor>(*this,
+                                                m_flowMeshPresenter->getInputEventDispatcher());
+        m_flowMeshPresenter->getInputEventDispatcher().registerListener(m_commandInteractor.get());
     }
 
     void setNextInteractor(const InteractorCommand& command)
@@ -60,20 +46,20 @@ class FlowMeshController : public Graphics::InputController {
         {
             m_currentInteractor =
                 std::make_unique<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>>(
-                    m_flowMeshModel,
+                    *m_flowMeshModel,
                     m_flowMeshModel->calcModelSnapGeometries(),
                     SphereTraitsConfig<double_t>{},
-                    m_rayPickDispatcher);
+                    m_flowMeshPresenter->getRayPickDispatcher());
             break;
         }
         case Command::PLACING_INTERACTOR_CONE:
         {
             m_currentInteractor =
                 std::make_unique<PlacingInteractor<FlowMeshCone, double_t, ConeTraitsConfig>>(
-                    m_flowMeshModel,
+                    *m_flowMeshModel,
                     m_flowMeshModel->calcModelSnapGeometries(),
                     ConeTraitsConfig<double_t>{},
-                    m_rayPickDispatcher);
+                    m_flowMeshPresenter->getRayPickDispatcher());
 
             break;
         }
@@ -81,10 +67,10 @@ class FlowMeshController : public Graphics::InputController {
         {
             m_currentInteractor = std::make_unique<
                 PlacingInteractor<FlowMeshCylinder, double_t, CylinderTraitsConfig>>(
-                m_flowMeshModel,
+                *m_flowMeshModel,
                 m_flowMeshModel->calcModelSnapGeometries(),
                 CylinderTraitsConfig<double_t>{},
-                m_rayPickDispatcher);
+                m_flowMeshPresenter->getRayPickDispatcher());
 
             break;
         }

@@ -2,12 +2,11 @@
 #include <FilApp/FilApplication.hpp>
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
+#include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
-#include <FlowMesh/Presenter.hpp>
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
-#include <GraphicsInterface/View.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 using namespace Graphics;
@@ -93,10 +92,12 @@ int main()
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
         FilApplication::getFilApp(appConfig, WindowConfig());
 
-    View* mainView = graphicsApp->getWindow()->getMainIView();
-    Presenter flowMeshPresenter{mainView};
-    FlowMeshModel flowMeshModel{&flowMeshPresenter};
-    FlowMeshController flowMeshController{mainView, &flowMeshModel};
+    FlowMeshPresenter flowMeshPresenter{graphicsApp->getWindow()->getMainIView()};
+
+    FlowMeshModel flowMeshModel;
+    flowMeshModel.registerListener(&flowMeshPresenter);
+
+    FlowMeshController flowMeshController{&flowMeshPresenter, &flowMeshModel};
     flowMeshController.init();
 
     createGridSegments(flowMeshModel);

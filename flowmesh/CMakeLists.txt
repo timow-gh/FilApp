@@ -14,11 +14,13 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/InteractorKeyMap.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/SnapGeometries.hpp
-        include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/FlowMeshController.hpp
-        include/FlowMesh/Presenter.hpp
+        include/FlowMesh/FlowMeshGuid.hpp
+        include/FlowMesh/FlowMeshModel.hpp
+        include/FlowMesh/ModelEventDispatcher.hpp
         include/FlowMesh/PresenterConfig.hpp
-        include/FlowMesh/FlowMeshGuid.hpp)
+        include/FlowMesh/FlowMeshPresenter.hpp
+        include/FlowMesh/ModelEventListener.hpp)
 
 set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSegments.cpp
@@ -28,8 +30,8 @@ set(FLOWMESH_SOURCES
         source/GeometryElements/GeometryElements.cpp
         source/Interactors/CommandInteractor.cpp
         source/Interactors/SnapGeometries.cpp
-        source/Presenter.cpp
-        source/Model.cpp)
+        source/FlowMeshPresenter.cpp
+        source/FlowMeshModel.cpp)
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})
 add_library(flowmesh::flowmesh ALIAS flow_mesh)

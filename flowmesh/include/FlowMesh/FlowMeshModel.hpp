@@ -2,13 +2,14 @@
 #define FILAPP_FLOWMESHMODEL_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <FlowMesh/GeometryElements/GeometryElements.hpp>
 #include <FlowMesh/Interactors/SnapGeometries.hpp>
-#include <FlowMesh/Presenter.hpp>
+#include <FlowMesh/ModelEventDispatcher.hpp>
 #include <Geometry/Segment.hpp>
 #include <map>
 
@@ -17,18 +18,27 @@ namespace FlowMesh
 
 class FlowMeshModel {
     GeometryElements m_geometryElements;
-    Presenter* m_flowMeshPresenter{nullptr};
+    ModelEventDispatcher m_modelEventDispatcher;
 
   public:
-    explicit FlowMeshModel(Presenter* presenter);
+    FlowMeshModel() = default;
+    explicit FlowMeshModel(ModelEventListener* modelEventListener);
 
-    CORE_NODISCARD Core::TVector<FGuid> calcFGuids() const;
+    void registerListener(ModelEventListener* modelEventListener)
+    {
+        m_modelEventDispatcher.registerListener(modelEventListener);
+    }
+
+    void removeListener(ModelEventListener* modelEventListener)
+    {
+        m_modelEventDispatcher.removeListener(modelEventListener);
+    }
 
     template <typename TFlowMeshGeometry>
     void add(const TFlowMeshGeometry& flowMeshGeometry)
     {
         if (m_geometryElements.add(flowMeshGeometry))
-            m_flowMeshPresenter->add(flowMeshGeometry);
+            m_modelEventDispatcher.dispatchAdd(flowMeshGeometry);
     }
 
     template <typename TFlowMeshGeometry>

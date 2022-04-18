@@ -4,10 +4,10 @@
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Assert.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
 #include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/SnapGeometries.hpp>
-#include <FlowMesh/FlowMeshModel.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
 #include <GraphicsInterface/InputEvents/InputEventListener.hpp>
@@ -31,10 +31,10 @@ class PlacingInteractor
     Graphics::RayPickEventDispatcher* m_rayPickEventDispatcher{nullptr};
 
   public:
-    PlacingInteractor(FlowMeshModel* model,
+    PlacingInteractor(FlowMeshModel& model,
                       SnapGeometries snapGeometries,
                       const TGeomConfig<T>& m_geomConfig,
-                      Graphics::RayPickEventDispatcher* rayPickEventDispatcher);
+                      Graphics::RayPickEventDispatcher& rayPickEventDispatcher);
 
     void initListeners() override;
 
@@ -61,14 +61,14 @@ class PlacingInteractor
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
 PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::PlacingInteractor(
-    FlowMeshModel* model,
+    FlowMeshModel& model,
     SnapGeometries snapGeometries,
     const TGeomConfig<T>& geomConfig,
-    Graphics::RayPickEventDispatcher* rayPickEventDispatcher)
-    : m_model(model)
+    Graphics::RayPickEventDispatcher& rayPickEventDispatcher)
+    : m_model(&model)
     , m_snapGeometries(std::move(snapGeometries))
     , m_geomConfig(geomConfig)
-    , m_rayPickEventDispatcher(rayPickEventDispatcher)
+    , m_rayPickEventDispatcher(&rayPickEventDispatcher)
 {
 }
 

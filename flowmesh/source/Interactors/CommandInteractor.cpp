@@ -4,9 +4,9 @@
 namespace FlowMesh
 {
 
-CommandInteractor::CommandInteractor(FlowMeshController* controller,
-                                     Graphics::InputEventDispatcher* inputEventDispatcher)
-    : m_controller(controller), m_inputEventDispatcher(inputEventDispatcher)
+CommandInteractor::CommandInteractor(FlowMeshController& controller,
+                                     Graphics::InputEventDispatcher& inputEventDispatcher)
+    : m_controller(&controller), m_inputEventDispatcher(&inputEventDispatcher)
 {
 }
 

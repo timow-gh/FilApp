@@ -20,8 +20,8 @@ class CommandInteractor
     Graphics::InputEventDispatcher* m_inputEventDispatcher{nullptr};
 
   public:
-    explicit CommandInteractor(FlowMeshController* controller,
-                               Graphics::InputEventDispatcher* inputEventDispatcher);
+    explicit CommandInteractor(FlowMeshController& controller,
+                               Graphics::InputEventDispatcher& inputEventDispatcher);
 
     void initListeners() override;
 

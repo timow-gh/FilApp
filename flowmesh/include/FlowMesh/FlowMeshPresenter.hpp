@@ -1,5 +1,5 @@
-#ifndef FILAPP_PRESENTER_HPP
-#define FILAPP_PRESENTER_HPP
+#ifndef FILAPP_FLOWMESHPRESENTER_HPP
+#define FILAPP_FLOWMESHPRESENTER_HPP
 
 #include "PresenterConfig.hpp"
 #include <Core/Types/TMap.hpp>
@@ -8,6 +8,7 @@
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
+#include <FlowMesh/ModelEventDispatcher.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
 #include <GraphicsInterface/Renderables/RendereableId.hpp>
@@ -20,25 +21,33 @@ class View;
 
 namespace FlowMesh
 {
-// TODO Presenter is actually doint the job a FilAppModel should do
-// TODO Create FilAppModel, FilAppModelEvents, FilAppModelEventListener, FilAppModelEventDispatcher?
-// TODO FilAppView only takes FilAppRenderables?
-class Presenter {
-    Graphics::View* m_mainView{nullptr};
+
+class FlowMeshPresenter : public ModelEventListener {
+    Graphics::View* m_view{nullptr};
     PresenterConfig m_presenterConfig{};
 
     Core::TMap<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
-    explicit Presenter(Graphics::View* mainView);
+    explicit FlowMeshPresenter(Graphics::View* mainView);
 
-    void add(const FlowMeshSphere& flowMeshSphere);
-    void add(const FlowMeshCone& flowMeshCone);
-    void add(const FlowMeshCylinder& flowMeshCylinder);
-    void add(const FlowMeshSegments& flowMeshSegments);
+    CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() const
+    {
+        return m_view->getInputEventDispatcher();
+    }
 
-    void remove(const FGuid& fGuid);
-    void updatePosition(const FGuid& fGuid, const LinAl::Vec3d& position);
+    CORE_NODISCARD Graphics::RayPickEventDispatcher& getRayPickDispatcher() const
+    {
+        return m_view->getRayPickEventDispatcher();
+    }
+
+    void onAdd(const FlowMeshSphere& flowMeshSphere) override;
+    void onAdd(const FlowMeshCone& flowMeshCone) override;
+    void onAdd(const FlowMeshCylinder& flowMeshCylinder) override;
+    void onAdd(const FlowMeshSegments& flowMeshSegments) override;
+
+    void onRemove(const FGuid& fGuid) override;
+    void onPositionChanged(const PositionEvent& positionEvent) override;
 
     void setIdleAnimation(const Graphics::Vec3& rotationAxis);
 
@@ -52,6 +61,7 @@ class Presenter {
                                const std::vector<Geometry::SegmentIndices>& segIndices,
                                std::vector<Graphics::Vertex>& vertices) const;
 };
+
 } // namespace FlowMesh
 
-#endif // FILAPP_PRESENTER_HPP
+#endif // FILAPP_FLOWMESHPRESENTER_HPP
