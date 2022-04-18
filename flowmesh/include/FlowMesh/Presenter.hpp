@@ -20,6 +20,9 @@ class View;
 
 namespace FlowMesh
 {
+// TODO Presenter is actually doint the job a FilAppModel should do
+// TODO Create FilAppModel, FilAppModelEvents, FilAppModelEventListener, FilAppModelEventDispatcher?
+// TODO FilAppView only takes FilAppRenderables?
 class Presenter {
     Graphics::View* m_mainView{nullptr};
     PresenterConfig m_presenterConfig{};

@@ -19,7 +19,7 @@ namespace Graphics
 class FilAppWindow : public Window {
     SDL_Window* m_sdlWindow = nullptr;
     Window::WindowId m_windowId{0};
-    FilApplication* m_application = nullptr;
+    filament::Engine* m_engine = nullptr;
     filament::Renderer* m_renderer = nullptr;
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
@@ -35,7 +35,7 @@ class FilAppWindow : public Window {
     std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
 
   public:
-    FilAppWindow(const WindowConfig& windowConfig, FilApplication* application);
+    FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine);
     FilAppWindow(FilAppWindow&& window) = default;
     FilAppWindow& operator=(FilAppWindow&& window) = default;
     ~FilAppWindow() override;

@@ -11,21 +11,19 @@ namespace Graphics
 {
 double_t FilApplication::m_prevTimeStep = 0;
 
-std::shared_ptr<Graphics::GraphicsApp> FilApplication::create(const AppConfig& appConfig,
-                                                              const WindowConfig& windowConfig)
+std::shared_ptr<Graphics::GraphicsApp> FilApplication::getFilApp(const AppConfig& appConfig,
+                                                                 const WindowConfig& windowConfig)
 {
     ASSERT_POSTCONDITION(SDL_Init(SDL_INIT_EVENTS) == 0, "SDL_Init Failure");
-    std::shared_ptr<FilApplication> filApp = std::make_unique<FilApplication>();
-    filApp->m_engine = filament::Engine::create(toFilamentBackend(appConfig.backendMode));
-    filApp->m_window = std::make_unique<FilAppWindow>(windowConfig, filApp.get());
-    filApp->m_appConfig = appConfig;
+
+    static std::shared_ptr<FilApplication> filApp =
+        std::make_unique<FilApplication>(appConfig, windowConfig);
     return filApp;
 }
 
 FilApplication::~FilApplication()
 {
     m_window.reset();
-    m_engine = nullptr;
     SDL_Quit();
 }
 
@@ -92,14 +90,14 @@ void FilApplication::run()
         case SDL_MOUSEBUTTONDOWN:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
-            m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
-                                             sdlEvent.button.button,
-                                             sdlEvent.button.timestamp,
-                                             sdlEvent.button.windowID,
-                                             sdlEvent.button.clicks,
-                                             pos.x,
-                                             pos.y,
+                                      m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
+                                  m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
+                                                                   sdlEvent.button.button,
+                                                                   sdlEvent.button.timestamp,
+                                                                   sdlEvent.button.windowID,
+                                                                   sdlEvent.button.clicks,
+                                                                   pos.x,
+                                                                   pos.y,
                                              deltaT));
             break;
         }
@@ -143,6 +141,14 @@ void FilApplication::run()
         m_window->animate(deltaT);
         m_window->render();
     }
+}
+
+FilApplication::FilApplication(const AppConfig& appConfig, const WindowConfig& windowConfig)
+    : m_appConfig(appConfig)
+{
+    m_engine = filament::Engine::create(toFilamentBackend(appConfig.backendMode));
+    m_window = std::make_unique<FilAppWindow>(windowConfig, m_engine);
+    m_appConfig = appConfig;
 }
 
 } // namespace Graphics

@@ -15,6 +15,7 @@ namespace filament
 class Engine;
 }
 
+// TODO Fix namespace
 namespace Graphics
 {
 
@@ -23,7 +24,7 @@ class FilAppWindow;
 class FILAPP_EXPORT FilApplication : public GraphicsApp {
   public:
     CORE_NODISCARD static std::shared_ptr<Graphics::GraphicsApp>
-    create(const AppConfig& appConfig, const WindowConfig& windowConfig);
+    getFilApp(const AppConfig& appConfig, const WindowConfig& windowConfig);
 
     FilApplication() = default;
     ~FilApplication() override;
@@ -42,6 +43,10 @@ class FILAPP_EXPORT FilApplication : public GraphicsApp {
     static std::unique_ptr<FilApplication> m_app;
     static double_t m_prevTimeStep;
 
+  public:
+    FilApplication(const AppConfig& appConfig, const WindowConfig& windowConfig);
+
+  private:
     filament::Engine* m_engine = nullptr;
 
     std::unique_ptr<FilAppWindow> m_window;

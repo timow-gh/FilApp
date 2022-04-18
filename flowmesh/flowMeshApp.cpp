@@ -91,7 +91,7 @@ int main()
     appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
-        FilApplication::create(appConfig, WindowConfig());
+        FilApplication::getFilApp(appConfig, WindowConfig());
 
     View* mainView = graphicsApp->getWindow()->getMainIView();
     Presenter flowMeshPresenter{mainView};

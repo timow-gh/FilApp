@@ -8,9 +8,9 @@
 namespace Graphics
 {
 
-FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilApplication* application)
+FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine)
 {
-    m_application = application;
+    m_engine = engine;
 
     std::uint32_t windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
     if (windowConfig.isResizable)
@@ -33,18 +33,18 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilApplication* app
     {
         m_width = windowConfig.width;
         m_height = windowConfig.height;
-        m_swapChain = m_application->getEngine()->createSwapChain(m_width, m_height);
+        m_swapChain = m_engine->createSwapChain(m_width, m_height);
     }
     else
     {
-        m_backend = m_application->getEngine()->getBackend();
+        m_backend = m_engine->getBackend();
 
         void* nativeWindow = ::getNativeWindow(m_sdlWindow);
         void* nativeSwapChain = nativeWindow;
-        m_swapChain = m_application->getEngine()->createSwapChain(nativeSwapChain);
+        m_swapChain = m_engine->createSwapChain(nativeSwapChain);
     }
 
-    m_renderer = m_application->getEngine()->createRenderer();
+    m_renderer = m_engine->createRenderer();
 
     ViewConfig viewConfig;
     viewConfig.name = "MainView";
