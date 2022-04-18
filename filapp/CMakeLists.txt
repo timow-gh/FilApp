@@ -2,7 +2,7 @@ build_resources()
 
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
-        include/FilApp/FilAppView.hpp
+        include/FilApp/FilAppCameraView.hpp
         include/FilApp/FilAppWindow.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
@@ -12,7 +12,7 @@ set(FILAPP_PUBLIC_HEADERS
 
 set(FILAPP_SOURCES
         source/FilApplication.cpp
-        source/FilAppView.cpp
+        source/FilAppCameraView.cpp
         source/FilAppWindow.cpp
         source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp

@@ -49,7 +49,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, filament::Engine* e
     ViewConfig viewConfig;
     viewConfig.name = "MainView";
     viewConfig.viewport = calcWindowViewport();
-    m_mainView = std::make_unique<FilAppView>(viewConfig, *m_renderer);
+    m_mainView = std::make_unique<FilAppCameraView>(viewConfig, *m_renderer);
 }
 
 void FilAppWindow::event(const MouseButtonEvent& evt)

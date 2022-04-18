@@ -1,5 +1,5 @@
-#ifndef FILAPP_FILAPPVIEW_HPP
-#define FILAPP_FILAPPVIEW_HPP
+#ifndef FILAPP_FILAPPCAMERAVIEW_HPP
+#define FILAPP_FILAPPCAMERAVIEW_HPP
 
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppRenderable.hpp>
@@ -24,7 +24,7 @@ namespace Graphics
 {
 using AnimationCallBack = std::function<void(double_t now)>;
 
-class FilAppView : public View {
+class FilAppCameraView : public View {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 
@@ -57,17 +57,17 @@ class FilAppView : public View {
     RayPickEventDispatcher m_rayPickEventDispatcher;
 
   public:
-    FilAppView() = default;
-    FilAppView(const ViewConfig& viewConfig, filament::Renderer& renderer);
-    ~FilAppView() override;
+    FilAppCameraView() = default;
+    FilAppCameraView(const ViewConfig& viewConfig, filament::Renderer& renderer);
+    ~FilAppCameraView() override;
 
     CORE_NODISCARD InputEventDispatcher& getInputEventDispatcher() override;
     CORE_NODISCARD RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
     // clang-format off
     CORE_NODISCARD auto addRenderable(TriangleRenderable&& renderable) -> RenderableId override;
-    CORE_NODISCARD auto addRenderable(PointRenderable && renderable) -> RenderableId override;
-    CORE_NODISCARD auto addRenderable(LineRenderable && lineRenderable) -> RenderableId override;
+    CORE_NODISCARD auto addRenderable(PointRenderable&& renderable) -> RenderableId override;
+    CORE_NODISCARD auto addRenderable(LineRenderable&& lineRenderable) -> RenderableId override;
     CORE_NODISCARD auto getRenderableIdentifiers() const -> std::vector<RenderableId> override;
     void removeRenderable(RenderableId id) override;
     void updatePosition(RenderableId renderableId, const Vec3 & position) override;
@@ -119,4 +119,4 @@ class FilAppView : public View {
 };
 } // namespace Graphics
 
-#endif // FILAPP_FILAPPVIEW_HPP
+#endif // FILAPP_FILAPPCAMERAVIEW_HPP

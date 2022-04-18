@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPWINDOW_HPP
 #define FILAPP_FILAPPWINDOW_HPP
 
-#include <FilApp/FilAppView.hpp>
+#include <FilApp/FilAppCameraView.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
 #include <GraphicsInterface/Window.hpp>
@@ -24,15 +24,15 @@ class FilAppWindow : public Window {
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
 
-    std::unique_ptr<FilAppView> m_mainView{nullptr};
-    std::vector<std::unique_ptr<FilAppView>> m_views;
+    std::unique_ptr<FilAppCameraView> m_mainView{nullptr};
+    std::vector<std::unique_ptr<FilAppCameraView>> m_views;
 
     std::uint32_t m_width = 0;
     std::uint32_t m_height = 0;
     std::size_t m_lastX = 0;
     std::size_t m_lastY = 0;
 
-    std::unordered_map<SDL_Scancode, FilAppView*> m_keyEventTarget;
+    std::unordered_map<SDL_Scancode, FilAppCameraView*> m_keyEventTarget;
 
   public:
     FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine);
