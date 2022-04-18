@@ -1,17 +1,17 @@
 #ifndef FILAPP_GRAPHICSCONTROLLER_HPP
 #define FILAPP_GRAPHICSCONTROLLER_HPP
 
-#include <GraphicsInterface/InputController.hpp>
+#include <GraphicsInterface/InputEvents/InputEventListener.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
 
 namespace Graphics
 {
 
 class GraphicsController
-    : public InputController
+    : public InputEventListener
     , public RayPickEventListener {
   public:
-    virtual ~GraphicsController() = default;
+    ~GraphicsController() override = default;
 };
 
 } // namespace Graphics

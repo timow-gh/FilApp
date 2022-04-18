@@ -9,6 +9,26 @@
 
 namespace FlowMesh
 {
+FlowMeshPresenter::FlowMeshPresenter(Graphics::View* mainView) : m_view(mainView)
+{
+}
+
+void FlowMeshPresenter::registerListener(Graphics::GraphicsController* flowMeshController)
+{
+    m_view->getInputEventDispatcher().registerListener(
+        dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
+    m_view->getRayPickEventDispatcher().registerListener(
+        dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+}
+
+void FlowMeshPresenter::removeListener(Graphics::GraphicsController* flowMeshController)
+{
+    m_view->getInputEventDispatcher().removeListener(
+        dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
+    m_view->getRayPickEventDispatcher().removeListener(
+        dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+}
+
 Graphics::TriangleRenderable
 FlowMeshPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh,
                                             std::uint32_t faceColor)
@@ -46,10 +66,6 @@ FlowMeshPresenter::createLineRenderables(const FlowMeshSegments& flowMeshSegment
     return Graphics::LineRenderable::create(vertices);
 }
 
-FlowMeshPresenter::FlowMeshPresenter(Graphics::View* mainView) : m_view(mainView)
-{
-}
-
 void FlowMeshPresenter::onAdd(const FlowMeshSphere& flowMeshSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
@@ -65,8 +81,8 @@ void FlowMeshPresenter::onAdd(const FlowMeshSphere& flowMeshSphere)
     segmentFilAppVertices(*sphereMesh, segIndices, filAppVertices);
 
     auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(filAppVertices));
-    auto sphereId = m_view->addRenderable(
-        createTriangleRenderable(*sphereMesh, m_presenterConfig.faceColor));
+    auto sphereId =
+        m_view->addRenderable(createTriangleRenderable(*sphereMesh, m_presenterConfig.faceColor));
 
     m_fGuidRenderableMapping.emplace(flowMeshSphere.getFGuid(),
                                      std::vector<Graphics::RenderableId>{verticesId, sphereId});
@@ -105,8 +121,8 @@ void FlowMeshPresenter::onAdd(const FlowMeshCylinder& flowMeshCylinder)
     segmentFilAppVertices(*cylinderMesh, segIndices, filAppVertices);
 
     auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(filAppVertices));
-    auto coneId = m_view->addRenderable(
-        createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
+    auto coneId =
+        m_view->addRenderable(createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
 
     m_fGuidRenderableMapping.emplace(flowMeshCylinder.getFGuid(),
                                      std::vector<Graphics::RenderableId>{verticesId, coneId});
@@ -114,8 +130,8 @@ void FlowMeshPresenter::onAdd(const FlowMeshCylinder& flowMeshCylinder)
 
 void FlowMeshPresenter::onAdd(const FlowMeshSegments& flowMeshSegments)
 {
-    auto segmentsId = m_view->addRenderable(
-        createLineRenderables(flowMeshSegments, m_presenterConfig.lineColor));
+    auto segmentsId =
+        m_view->addRenderable(createLineRenderables(flowMeshSegments, m_presenterConfig.lineColor));
     m_fGuidRenderableMapping.emplace(flowMeshSegments.getFGuid(),
                                      std::vector<Graphics::RenderableId>{segmentsId});
 }
@@ -136,11 +152,10 @@ void FlowMeshPresenter::onPositionChanged(const PositionEvent& positionEvent)
 
     if (iter != m_fGuidRenderableMapping.cend())
         for (const Graphics::RenderableId& id: iter->second)
-            m_view->updatePosition(
-                id,
-                Graphics::Vec3(static_cast<float_t>(positionEvent.position[0]),
-                               static_cast<float_t>(positionEvent.position[1]),
-                               static_cast<float_t>(positionEvent.position[2])));
+            m_view->updatePosition(id,
+                                   Graphics::Vec3(static_cast<float_t>(positionEvent.position[0]),
+                                                  static_cast<float_t>(positionEvent.position[1]),
+                                                  static_cast<float_t>(positionEvent.position[2])));
 }
 
 void FlowMeshPresenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)

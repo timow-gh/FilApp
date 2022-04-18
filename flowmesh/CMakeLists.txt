@@ -9,7 +9,6 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/GeometryElements/GeometryElements.hpp
         include/FlowMesh/GeometryElements/GeometryElementBase.hpp
         include/FlowMesh/Interactors/CommandInteractor.hpp
-        include/FlowMesh/Interactors/Interactor.hpp
         include/FlowMesh/Interactors/InteractorCommands.hpp
         include/FlowMesh/Interactors/InteractorKeyMap.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp

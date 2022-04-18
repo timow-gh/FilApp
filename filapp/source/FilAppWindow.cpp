@@ -52,6 +52,16 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, filament::Engine* e
     m_mainView = std::make_unique<FilAppCameraView>(viewConfig, *m_renderer);
 }
 
+InputEventDispatcher& FilAppWindow::getInputEventDispatcher()
+{
+    return m_inputEventDispatcher;
+}
+
+RayPickEventDispatcher& FilAppWindow::getRayPickEventDispatcher()
+{
+    return m_rayPickEventDispatcher;
+}
+
 void FilAppWindow::event(const MouseButtonEvent& evt)
 {
     m_mainView->onEvent(evt);

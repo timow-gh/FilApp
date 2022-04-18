@@ -6,10 +6,10 @@
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
-#include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/SnapGeometries.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
+#include <GraphicsInterface/GraphicsController.hpp>
 #include <GraphicsInterface/InputEvents/InputEventListener.hpp>
 #include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
 #include <GraphicsInterface/InputEvents/PickRayMoveEvent.hpp>
@@ -21,35 +21,14 @@ namespace FlowMesh
 {
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-class PlacingInteractor
-    : public Interactor
-    , public Graphics::RayPickEventListener {
+class PlacingInteractor : public Graphics::GraphicsController {
     FlowMeshModel* m_model{nullptr};
     SnapGeometries m_snapGeometries;
     std::optional<FGuid> m_geometryGuid;
     TGeomConfig<T> m_geomConfig;
-    Graphics::RayPickEventDispatcher* m_rayPickEventDispatcher{nullptr};
 
   public:
-    PlacingInteractor(FlowMeshModel& model,
-                      SnapGeometries snapGeometries,
-                      const TGeomConfig<T>& m_geomConfig,
-                      Graphics::RayPickEventDispatcher& rayPickEventDispatcher);
-
-    void initListeners() override;
-
-    PlacingInteractor(const PlacingInteractor& rhs) = delete;
-    PlacingInteractor& operator=(const PlacingInteractor& rhs) = delete;
-    PlacingInteractor(PlacingInteractor&& rhs) noexcept = default;
-    PlacingInteractor& operator=(PlacingInteractor&& rhs) = default;
-
-    ~PlacingInteractor() override
-    {
-        if (m_geometryGuid)
-            m_model->remove(*m_geometryGuid);
-        if (m_rayPickEventDispatcher)
-            m_rayPickEventDispatcher->removeListener(this);
-    }
+    PlacingInteractor(FlowMeshModel& model, const TGeomConfig<T>& m_geomConfig);
 
   private:
     CORE_NODISCARD std::optional<LinAl::Vec3d>
@@ -57,26 +36,18 @@ class PlacingInteractor
 
     void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;
     void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
+
+    void onRemoveListener();
 };
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
 PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::PlacingInteractor(
     FlowMeshModel& model,
-    SnapGeometries snapGeometries,
-    const TGeomConfig<T>& geomConfig,
-    Graphics::RayPickEventDispatcher& rayPickEventDispatcher)
+    const TGeomConfig<T>& geomConfig)
     : m_model(&model)
-    , m_snapGeometries(std::move(snapGeometries))
+    , m_snapGeometries(model.calcModelSnapGeometries())
     , m_geomConfig(geomConfig)
-    , m_rayPickEventDispatcher(&rayPickEventDispatcher)
 {
-}
-
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::initListeners()
-{
-    m_rayPickEventDispatcher->registerListener(
-        dynamic_cast<PlacingInteractor<TFlowMeshGeometry, double_t, TGeomConfig>*>(this));
 }
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
@@ -128,6 +99,13 @@ void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
     }
 
     m_model->setPosition(*m_geometryGuid, *intersection);
+}
+
+template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
+void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onRemoveListener()
+{
+    if (m_geometryGuid)
+        m_model->remove(*m_geometryGuid);
 }
 
 } // namespace FlowMesh

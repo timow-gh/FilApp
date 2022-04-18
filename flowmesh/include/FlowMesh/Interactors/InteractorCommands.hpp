@@ -2,7 +2,6 @@
 #define FILAPP_INTERACTORCOMMANDS_HPP
 
 #include <Core/Types/THashMap.hpp>
-#include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
 #include <GraphicsInterface/InputEvents/KeyEvent.hpp>
 #include <GraphicsInterface/InputEvents/KeyScancode.hpp>

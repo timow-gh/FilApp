@@ -32,9 +32,9 @@ filament::Engine* FilApplication::getEngine()
     return m_engine;
 }
 
-Window* FilApplication::getWindow()
+Window& FilApplication::getWindow()
 {
-    return m_window.get();
+    return *m_window;
 }
 
 double_t FilApplication::getDeltaT()
@@ -90,14 +90,14 @@ void FilApplication::run()
         case SDL_MOUSEBUTTONDOWN:
         {
             filament::math::int2 pos =
-                                      m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
-                                  m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
-                                                                   sdlEvent.button.button,
-                                                                   sdlEvent.button.timestamp,
-                                                                   sdlEvent.button.windowID,
-                                                                   sdlEvent.button.clicks,
-                                                                   pos.x,
-                                                                   pos.y,
+                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
+            m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
+                                             sdlEvent.button.button,
+                                             sdlEvent.button.timestamp,
+                                             sdlEvent.button.windowID,
+                                             sdlEvent.button.clicks,
+                                             pos.x,
+                                             pos.y,
                                              deltaT));
             break;
         }

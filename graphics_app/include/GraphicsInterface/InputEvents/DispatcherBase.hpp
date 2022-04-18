@@ -30,7 +30,10 @@ class DispatcherBase {
     {
         auto iter = std::remove(m_listener.begin(), m_listener.end(), listener);
         if (iter != m_listener.cend())
+        {
+            listener->onRemoveListener();
             m_listener.erase(iter, m_listener.end());
+        }
     }
 };
 } // namespace Graphics

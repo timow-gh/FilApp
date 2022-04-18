@@ -11,6 +11,7 @@
 #include <FlowMesh/ModelEventDispatcher.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
+#include <GraphicsInterface/GraphicsController.hpp>
 #include <GraphicsInterface/Renderables/RendereableId.hpp>
 #include <GraphicsInterface/View.hpp>
 
@@ -31,15 +32,8 @@ class FlowMeshPresenter : public ModelEventListener {
   public:
     explicit FlowMeshPresenter(Graphics::View* mainView);
 
-    CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() const
-    {
-        return m_view->getInputEventDispatcher();
-    }
-
-    CORE_NODISCARD Graphics::RayPickEventDispatcher& getRayPickDispatcher() const
-    {
-        return m_view->getRayPickEventDispatcher();
-    }
+    void registerListener(Graphics::GraphicsController* flowMeshController);
+    void removeListener(Graphics::GraphicsController* flowMeshController);
 
     void onAdd(const FlowMeshSphere& flowMeshSphere) override;
     void onAdd(const FlowMeshCone& flowMeshCone) override;

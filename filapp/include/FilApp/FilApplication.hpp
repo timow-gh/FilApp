@@ -36,7 +36,7 @@ class FILAPP_EXPORT FilApplication : public GraphicsApp {
     CORE_NODISCARD filament::Engine* getEngine();
     CORE_NODISCARD static double_t getDeltaT();
 
-    CORE_NODISCARD Window* getWindow() override;
+    CORE_NODISCARD Window& getWindow() override;
     void run() override;
 
   private:

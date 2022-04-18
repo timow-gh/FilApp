@@ -6,10 +6,9 @@
 #include <FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp>
 #include <FlowMesh/Interactors/CommandInteractor.hpp>
-#include <FlowMesh/Interactors/Interactor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
-#include <GraphicsInterface/InputController.hpp>
+#include <GraphicsInterface/GraphicsController.hpp>
 #include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
 #include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
 #include <memory>
@@ -17,29 +16,36 @@
 namespace FlowMesh
 {
 
-class FlowMeshController : public Graphics::InputController {
+class FlowMeshController : public Graphics::GraphicsController {
     FlowMeshPresenter* m_flowMeshPresenter{nullptr};
     FlowMeshModel* m_flowMeshModel{nullptr};
 
     std::unique_ptr<CommandInteractor> m_commandInteractor{nullptr};
-    std::unique_ptr<Interactor> m_currentInteractor{nullptr};
+    std::unique_ptr<Graphics::GraphicsController> m_currentInteractor{nullptr};
 
   public:
-    FlowMeshController(FlowMeshPresenter* flowMeshPresenter, FlowMeshModel* flowMeshModel)
-        : m_flowMeshPresenter(flowMeshPresenter), m_flowMeshModel(flowMeshModel)
+    FlowMeshController() = default;
+
+    CORE_NODISCARD static std::shared_ptr<FlowMeshController>
+    create(FlowMeshPresenter* flowMeshPresenter, FlowMeshModel* flowMeshModel)
     {
+        auto controller = std::make_shared<FlowMeshController>(
+            FlowMeshController(flowMeshPresenter, flowMeshModel));
+        controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
+        flowMeshPresenter->registerListener(controller.get());
+        controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
+        return controller;
     }
 
-    void init()
+    void onEvent(const Graphics::KeyEvent& keyEvent) override
     {
-        m_commandInteractor =
-            std::make_unique<CommandInteractor>(*this,
-                                                m_flowMeshPresenter->getInputEventDispatcher());
-        m_flowMeshPresenter->getInputEventDispatcher().registerListener(m_commandInteractor.get());
+        m_commandInteractor->onEvent(keyEvent);
     }
 
     void setNextInteractor(const InteractorCommand& command)
     {
+        m_flowMeshPresenter->removeListener(m_currentInteractor.get());
+
         switch (command.getId())
         {
         case Command::PLACING_INTERACTOR_SPHERE:
@@ -47,9 +53,7 @@ class FlowMeshController : public Graphics::InputController {
             m_currentInteractor =
                 std::make_unique<PlacingInteractor<FlowMeshSphere, double_t, SphereTraitsConfig>>(
                     *m_flowMeshModel,
-                    m_flowMeshModel->calcModelSnapGeometries(),
-                    SphereTraitsConfig<double_t>{},
-                    m_flowMeshPresenter->getRayPickDispatcher());
+                    SphereTraitsConfig<double_t>{});
             break;
         }
         case Command::PLACING_INTERACTOR_CONE:
@@ -57,10 +61,7 @@ class FlowMeshController : public Graphics::InputController {
             m_currentInteractor =
                 std::make_unique<PlacingInteractor<FlowMeshCone, double_t, ConeTraitsConfig>>(
                     *m_flowMeshModel,
-                    m_flowMeshModel->calcModelSnapGeometries(),
-                    ConeTraitsConfig<double_t>{},
-                    m_flowMeshPresenter->getRayPickDispatcher());
-
+                    ConeTraitsConfig<double_t>{});
             break;
         }
         case Command::PLACING_INTERACTOR_CYLINDER:
@@ -68,15 +69,18 @@ class FlowMeshController : public Graphics::InputController {
             m_currentInteractor = std::make_unique<
                 PlacingInteractor<FlowMeshCylinder, double_t, CylinderTraitsConfig>>(
                 *m_flowMeshModel,
-                m_flowMeshModel->calcModelSnapGeometries(),
-                CylinderTraitsConfig<double_t>{},
-                m_flowMeshPresenter->getRayPickDispatcher());
-
+                CylinderTraitsConfig<double_t>{});
             break;
         }
         }
 
-        m_currentInteractor->initListeners();
+        m_flowMeshPresenter->registerListener(m_currentInteractor.get());
+    }
+
+  private:
+    FlowMeshController(FlowMeshPresenter* flowMeshPresenter, FlowMeshModel* flowMeshModel)
+        : m_flowMeshPresenter(flowMeshPresenter), m_flowMeshModel(flowMeshModel)
+    {
     }
 };
 

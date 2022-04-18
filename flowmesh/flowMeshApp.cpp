@@ -92,19 +92,17 @@ int main()
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
         FilApplication::getFilApp(appConfig, WindowConfig());
 
-    FlowMeshPresenter flowMeshPresenter{graphicsApp->getWindow()->getMainIView()};
+    FlowMeshPresenter flowMeshPresenter{graphicsApp->getWindow().getMainIView()};
 
     FlowMeshModel flowMeshModel;
     flowMeshModel.registerListener(&flowMeshPresenter);
-
-    FlowMeshController flowMeshController{&flowMeshPresenter, &flowMeshModel};
-    flowMeshController.init();
 
     createGridSegments(flowMeshModel);
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 
-    flowMeshController.setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
+    std::shared_ptr<FlowMeshController> flowMeshController =
+        FlowMeshController::create(&flowMeshPresenter, &flowMeshModel);
 
     graphicsApp->run();
 }

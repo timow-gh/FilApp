@@ -19,8 +19,8 @@ class View : public InputEventListener {
   public:
     ~View() override = default;
 
-    virtual InputEventDispatcher& getInputEventDispatcher() = 0;
-    virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
+    CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
+    CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
 
     // clang-format off
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;

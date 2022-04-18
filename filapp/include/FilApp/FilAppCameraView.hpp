@@ -44,6 +44,9 @@ class FilAppCameraView : public View {
     CameraManipulator::Bookmark m_cameraHomeBookMark;
     filament::Viewport m_filamentViewport;
 
+    InputEventDispatcher m_inputEventDispatcher;
+    RayPickEventDispatcher m_rayPickEventDispatcher;
+
     std::map<RenderableId, std::unique_ptr<PointRenderable>> m_pointRenderables;
     std::map<RenderableId, std::unique_ptr<LineRenderable>> m_lineRenderables;
     std::map<RenderableId, std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
@@ -52,9 +55,6 @@ class FilAppCameraView : public View {
     std::vector<FilAppRenderable> m_filAppRenderables;
 
     std::vector<AnimationCallBack> m_animationCallbacks;
-
-    InputEventDispatcher m_inputEventDispatcher;
-    RayPickEventDispatcher m_rayPickEventDispatcher;
 
   public:
     FilAppCameraView() = default;

@@ -1,6 +1,6 @@
 #include <Core/Utils/Assert.hpp>
-#include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppCameraView.hpp>
+#include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
@@ -81,16 +81,6 @@ FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Rende
     updateViewPort(m_viewConfig.viewport);
 }
 
-InputEventDispatcher& FilAppCameraView::getInputEventDispatcher()
-{
-    return m_inputEventDispatcher;
-}
-
-RayPickEventDispatcher& FilAppCameraView::getRayPickEventDispatcher()
-{
-    return m_rayPickEventDispatcher;
-}
-
 FilAppCameraView::~FilAppCameraView()
 {
     utils::EntityManager& entityManager = utils::EntityManager::get();
@@ -151,6 +141,16 @@ void FilAppCameraView::configureCameraProjection()
             toFilamentFovDirection(m_viewConfig.fovDirection, FilamentCameraTag()));
         break;
     }
+}
+
+InputEventDispatcher& FilAppCameraView::getInputEventDispatcher()
+{
+    return m_inputEventDispatcher;
+}
+
+RayPickEventDispatcher& FilAppCameraView::getRayPickEventDispatcher()
+{
+    return m_rayPickEventDispatcher;
 }
 
 RenderableId FilAppCameraView::addRenderable(TriangleRenderable&& triangleRenderable)
@@ -246,7 +246,8 @@ void FilAppCameraView::setUsePostprocessing(bool usePostProcessing)
     m_filamentView->setPostProcessingEnabled(usePostProcessing);
 }
 
-void FilAppCameraView::addRotationAnimation(RenderableId renderableIdentifier, const Vec3& rotationAxis)
+void FilAppCameraView::addRotationAnimation(RenderableId renderableIdentifier,
+                                            const Vec3& rotationAxis)
 {
     m_animationCallbacks.emplace_back(
         [renderableIdentifier, engine = m_engine](double_t deltaT)
@@ -382,7 +383,7 @@ void FilAppCameraView::onEvent(const KeyEvent& keyEvent)
 }
 
 bool FilAppCameraView::manipulatorKeyFromKeycode(Graphics::KeyScancode scancode,
-                                           filament::camutils::Manipulator<float_t>::Key& key)
+                                                 filament::camutils::Manipulator<float_t>::Key& key)
 {
     switch (scancode)
     {

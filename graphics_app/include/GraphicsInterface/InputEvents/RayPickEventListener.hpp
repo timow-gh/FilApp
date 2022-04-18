@@ -11,6 +11,8 @@ class RayPickEventListener {
   public:
     virtual ~RayPickEventListener() = default;
 
+    virtual void onRemoveListener(){};
+
     virtual void onEvent(const PickRayEvent& pickRayEvent){};
     virtual void onEvent(const PickRayMoveEvent& pickRayMoveEvent){};
 };

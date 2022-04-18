@@ -3,7 +3,9 @@
 
 #include <FilApp/FilAppCameraView.hpp>
 #include <FilApp/FilApplication.hpp>
+#include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
 #include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
+#include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
 #include <GraphicsInterface/Window.hpp>
 #include <GraphicsInterface/WindowConfig.hpp>
 #include <SDL_video.h>
@@ -34,11 +36,17 @@ class FilAppWindow : public Window {
 
     std::unordered_map<SDL_Scancode, FilAppCameraView*> m_keyEventTarget;
 
+    InputEventDispatcher m_inputEventDispatcher;
+    RayPickEventDispatcher m_rayPickEventDispatcher;
+
   public:
     FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine);
     FilAppWindow(FilAppWindow&& window) = default;
     FilAppWindow& operator=(FilAppWindow&& window) = default;
     ~FilAppWindow() override;
+
+    CORE_NODISCARD InputEventDispatcher& getInputEventDispatcher() override;
+    CORE_NODISCARD RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
     void event(const MouseButtonEvent& mouseButtonEvent);
     void event(const MouseMoveEvent& mouseMoveEvent);
