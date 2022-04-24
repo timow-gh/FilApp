@@ -8,11 +8,15 @@ using namespace Graphics;
 
 int main()
 {
-    FilApplication::init(AppConfig(), WindowConfig());
-    auto& app = FilApplication::get();
-    Window* mainWindow = app.getWindow();
+    AppConfig appConfig;
+    appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
-    View* mainView = mainWindow->getMainIView();
+    std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
+        FilApplication::getFilApp(appConfig, WindowConfig());
+
+    Window& mainWindow = graphicsApp->getWindow();
+    View* mainView = mainWindow.getMainIView();
+
     std::uint32_t hexColor = 0xFFc0bfbb;
     mainView->addRenderable(
         LineRenderable::create(Vertex{{0, 0, 0}, hexColor}, Vertex{{1, 0, 0}, hexColor}));
@@ -23,6 +27,7 @@ int main()
                                     Vertex{{0, 0, 3}, hexColor}};
     mainView->addRenderable(LineRenderable::create(std::move(vertices)));
 
-    app.run();
+    graphicsApp->run();
+
     return 0;
 }

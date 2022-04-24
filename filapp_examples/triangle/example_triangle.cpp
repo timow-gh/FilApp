@@ -5,12 +5,15 @@ using namespace Graphics;
 
 int main()
 {
-    FilApplication::init(AppConfig(), WindowConfig());
+    AppConfig appConfig;
+    appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
-    Window* window = FilApplication::get().getWindow();
+    std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
+        FilApplication::getFilApp(appConfig, WindowConfig());
 
-    auto mainView = window->getMainIView();
-    mainView->setUsePostprocessing(false);
+    Window& mainWindow = graphicsApp->getWindow();
+    View* mainView = mainWindow.getMainIView();
+
     mainView->addRenderable(TriangleRenderable(
         {
             Vertex{{0, 0, 0}, 0xffff0000u},
@@ -19,7 +22,7 @@ int main()
         },
         {0, 1, 2}));
 
-    FilApplication::get().run();
+    graphicsApp->run();
 
     return 0;
 }

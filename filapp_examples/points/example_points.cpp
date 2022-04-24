@@ -10,10 +10,13 @@ using namespace Graphics;
 int main()
 {
     AppConfig appConfig;
-    appConfig.backendMode = BackendMode::OPENGL;
-    FilApplication::init(appConfig, WindowConfig());
-    auto& app = FilApplication::get();
-    Window* window = app.getWindow();
+    appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
+
+    std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
+        FilApplication::getFilApp(appConfig, WindowConfig());
+
+    Window& mainWindow = graphicsApp->getWindow();
+    View* mainView = mainWindow.getMainIView();
 
     std::uint32_t hexColor = 0xFFc0bfbb;
     std::vector<Vertex> vertices = {
@@ -21,12 +24,13 @@ int main()
         Vertex{{1, 0, 0}, hexColor},
         Vertex{{0, 0, 2}, hexColor},
     };
-    View* mainView = window->getMainIView();
 
     constexpr float_t POINT_SIZE = 15;
     mainView->addRenderable(
         PointRenderable::create(std::move(vertices), {POINT_SIZE, POINT_SIZE, POINT_SIZE}));
     mainView->addRenderable(PointRenderable::create(Vertex{{2, 0, 0}, hexColor}, POINT_SIZE));
 
-    app.run();
+    graphicsApp->run();
+
+    return 0;
 }
