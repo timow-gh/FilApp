@@ -41,12 +41,6 @@ class FlowMeshModel {
             m_modelEventDispatcher.dispatchAdd(flowMeshGeometry);
     }
 
-    template <typename TFlowMeshGeometry>
-    bool get(FGuid guid, TFlowMeshGeometry& result)
-    {
-        return m_geometryElements.get(guid, result);
-    }
-
     void remove(const FGuid& fGuid);
     void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
 
