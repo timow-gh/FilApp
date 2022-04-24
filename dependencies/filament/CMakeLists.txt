@@ -1,7 +1,7 @@
 FetchContent_Declare(
         filament
         GIT_REPOSITORY https://github.com/timow-gh/filament.git
-        GIT_TAG 4baa4d60b9320da46e168c7c2b296dfa6c2f8279) # tw-cmake-minimal
+        GIT_TAG tw-cmake-minimal)
 FetchContent_GetProperties(filament)
 if (NOT filament_POPULATED)
     set(FILAMENT_SUPPORTS_OPENGL ON CACHE BOOL "Include the OpenGL backend" FORCE)
