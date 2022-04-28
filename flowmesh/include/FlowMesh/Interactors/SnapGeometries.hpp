@@ -19,7 +19,7 @@ class SnapGeometries {
     Geometry::Plane<double_t> m_snapPlane;
     LinAl::Vec3dVector m_snapPoints;
     Core::TVector<Geometry::Sphere<double_t>> m_snapSpheres;
-    double_t m_snapDistance{0.5};
+    double_t m_snapDistance{0.3};
 
   public:
     explicit SnapGeometries(const Geometry::Plane<double_t>& snapPlane);

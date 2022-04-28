@@ -106,6 +106,8 @@ bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
         if (placementRay.distance(vec) < m_snapDistance)
             snapPoints.push_back(vec);
 
+    if ( snapPoints.empty() )
+        return false;
     return size == snapPoints.size();
 }
 
