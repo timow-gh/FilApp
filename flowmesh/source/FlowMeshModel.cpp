@@ -39,6 +39,10 @@ SnapGeometries FlowMeshModel::calcModelSnapGeometries() const
         result.add(Geometry::transformation(pair.second.getGeometryElement(),
                                             pair.second.getTransformation()));
 
+    for (const auto& pair: m_geometryElements.getCuboidMap())
+        result.add(Geometry::transformation(pair.second.getGeometryElement(),
+                                            pair.second.getTransformation()));
+
     return result;
 }
 

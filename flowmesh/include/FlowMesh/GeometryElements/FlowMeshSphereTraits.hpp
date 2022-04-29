@@ -2,6 +2,7 @@
 #define FILAPP_FLOWMESHSPHERETRAITS_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 

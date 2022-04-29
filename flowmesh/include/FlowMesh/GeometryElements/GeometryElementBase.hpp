@@ -7,6 +7,7 @@
 
 namespace FlowMesh
 {
+
 template <typename Derived>
 class GeometryElementBase {
   protected:
@@ -46,6 +47,7 @@ class GeometryElementBase {
     friend bool operator<=(const Derived& lhs, const Derived& rhs) { return !(rhs < lhs); }
     friend bool operator>=(const Derived& lhs, const Derived& rhs) { return !(lhs < rhs); }
 };
+
 } // namespace FlowMesh
 
 #endif // FILAPP_GEOMETRYELEMENTBASE_HPP

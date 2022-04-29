@@ -51,6 +51,11 @@ class ModelEventDispatcher {
         dispatchAddImpl(flowMeshSphere);
     }
 
+    virtual void dispatchAdd(const FlowMeshCuboid& flowMeshCuboid)
+    {
+        dispatchAddImpl(flowMeshCuboid);
+    }
+
     virtual void dispatchRemove(const FGuid& fGuid)
     {
         for (ModelEventListener* listener: m_listeners)

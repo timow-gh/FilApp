@@ -5,6 +5,7 @@
 #include <Core/Types/TMap.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCuboid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
@@ -39,6 +40,7 @@ class FlowMeshPresenter : public ModelEventListener {
     void onAdd(const FlowMeshCone& flowMeshCone) override;
     void onAdd(const FlowMeshCylinder& flowMeshCylinder) override;
     void onAdd(const FlowMeshSegments& flowMeshSegments) override;
+    void onAdd(const FlowMeshCuboid& flowMeshCuboid) override;
 
     void onRemove(const FGuid& fGuid) override;
     void onPositionChanged(const PositionEvent& positionEvent) override;

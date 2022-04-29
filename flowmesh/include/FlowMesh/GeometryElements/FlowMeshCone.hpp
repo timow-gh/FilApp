@@ -7,6 +7,7 @@
 
 namespace FlowMesh
 {
+
 class FlowMeshCone : public GeometryElementBase<FlowMeshCone> {
     Geometry::Cone<double_t> m_cone;
 
@@ -16,6 +17,7 @@ class FlowMeshCone : public GeometryElementBase<FlowMeshCone> {
 
     [[nodiscard]] const Geometry::Cone<double_t>& getGeometryElement() const;
 };
+
 } // namespace FlowMesh
 
 #endif // FILAPP_FLOWMESHCONE_HPP

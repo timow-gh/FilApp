@@ -1,6 +1,8 @@
 #ifndef FILAPP_FLOWMESHCYLINDERTRAITS_HPP
 #define FILAPP_FLOWMESHCYLINDERTRAITS_HPP
 
+#include <Core/Utils/Compiler.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
 

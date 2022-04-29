@@ -84,6 +84,12 @@ void SnapGeometries::add(const Geometry::Cone<double_t>& cone)
     add(Geometry::Circle3d{seg.getSource(), cone.getRadius(), seg.direction()});
 }
 
+void SnapGeometries::add(const Geometry::Cuboid<double_t>& cuboid)
+{
+    for (const LinAl::Vec3d& cuboidVertex: Geometry::calcCuboidVertices(cuboid))
+        add(cuboidVertex);
+}
+
 std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d& placementRay) const
 {
     GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
@@ -106,7 +112,7 @@ bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
         if (placementRay.distance(vec) < m_snapDistance)
             snapPoints.push_back(vec);
 
-    if ( snapPoints.empty() )
+    if (snapPoints.empty())
         return false;
     return size == snapPoints.size();
 }

@@ -2,6 +2,7 @@
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
+#include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
 #include <GraphicsInterface/Vec.hpp>
@@ -125,7 +126,7 @@ void FlowMeshPresenter::onAdd(const FlowMeshCylinder& flowMeshCylinder)
         m_view->addRenderable(createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
 
     m_fGuidRenderableMapping.emplace(flowMeshCylinder.getFGuid(),
-                                     std::vector<Graphics::RenderableId>{verticesId, coneId});
+                                     Core::TVector<Graphics::RenderableId>{verticesId, coneId});
 }
 
 void FlowMeshPresenter::onAdd(const FlowMeshSegments& flowMeshSegments)
@@ -134,6 +135,25 @@ void FlowMeshPresenter::onAdd(const FlowMeshSegments& flowMeshSegments)
         m_view->addRenderable(createLineRenderables(flowMeshSegments, m_presenterConfig.lineColor));
     m_fGuidRenderableMapping.emplace(flowMeshSegments.getFGuid(),
                                      std::vector<Graphics::RenderableId>{segmentsId});
+}
+void FlowMeshPresenter::onAdd(const FlowMeshCuboid& flowMeshCuboid)
+{
+    auto cuboidMesh = Geometry::CuboidMeshBuilder<double_t>()
+                          .setCuboid(flowMeshCuboid.getGeometryElement())
+                          .build();
+
+    const auto& segIndices = Geometry::calcMeshSegmentIndices(*cuboidMesh);
+
+    Core::TVector<Graphics::Vertex> graphicsVertices;
+    graphicsVertices.reserve(segIndices.size());
+    segmentFilAppVertices(*cuboidMesh, segIndices, graphicsVertices);
+
+    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
+    auto cuboidId =
+        m_view->addRenderable(createTriangleRenderable(*cuboidMesh, m_presenterConfig.faceColor));
+
+    m_fGuidRenderableMapping.emplace(flowMeshCuboid.getFGuid(),
+                                     Core::TVector<Graphics::RenderableId>{verticesId, cuboidId});
 }
 
 void FlowMeshPresenter::onRemove(const FGuid& fGuid)

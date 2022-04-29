@@ -19,7 +19,7 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/ModelEventDispatcher.hpp
         include/FlowMesh/PresenterConfig.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
-        include/FlowMesh/ModelEventListener.hpp)
+        include/FlowMesh/ModelEventListener.hpp include/FlowMesh/GeometryElements/FlowMeshCuboid.hpp include/FlowMesh/GeometryElements/FlowMeshCuboidTraits.hpp)
 
 set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSegments.cpp
@@ -30,7 +30,7 @@ set(FLOWMESH_SOURCES
         source/Interactors/CommandInteractor.cpp
         source/Interactors/SnapGeometries.cpp
         source/FlowMeshPresenter.cpp
-        source/FlowMeshModel.cpp)
+        source/FlowMeshModel.cpp source/GeometryElements/FlowMeshCuboid.cpp)
 
 add_library(flow_mesh ${FLOWMESH_SOURCES} ${FLOWMESH_PUBLIC_HEADERS})
 add_library(flowmesh::flowmesh ALIAS flow_mesh)

@@ -80,6 +80,11 @@ bool GeometryElements::add(const FlowMeshCylinder& cylinder)
     return addImpl(cylinder, m_cylinder);
 }
 
+bool GeometryElements::add(const FlowMeshCuboid& cuboid)
+{
+    return addImpl(cuboid, m_cuboid);
+}
+
 const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSegments>&
 GeometryElements::getSegmentMap() const
 {
@@ -102,13 +107,20 @@ GeometryElements::getCylinderMap() const
     return m_cylinder;
 }
 
+const Core::TMap<FGuid, FlowMeshCuboid>& GeometryElements::getCuboidMap() const
+{
+    return m_cuboid;
+}
+
 bool GeometryElements::remove(const FGuid& fGuid)
 {
     bool removedSegment = removeElement(m_segments, fGuid);
     bool removedSphere = removeElement(m_spheres, fGuid);
     bool removedCone = removeElement(m_cones, fGuid);
     bool removedCylinder = removeElement(m_cylinder, fGuid);
-    return removedSegment || removedSphere || removedCone || removedCylinder;
+    bool removedCuboid = removeElement(m_cylinder, fGuid);
+
+    return removedSegment || removedSphere || removedCone || removedCylinder || removedCuboid;
 }
 
 bool GeometryElements::setPosition(const FGuid& fGuid, const LinAl::Vec3d& position)
@@ -117,7 +129,9 @@ bool GeometryElements::setPosition(const FGuid& fGuid, const LinAl::Vec3d& posit
     bool updatedSphere = updatePosition(position, fGuid, m_spheres);
     bool updatedCone = updatePosition(position, fGuid, m_cones);
     bool updatedCylinder = updatePosition(position, fGuid, m_cylinder);
-    return updatedSeg || updatedSphere || updatedCone || updatedCylinder;
+    bool updatedCuboid = updatePosition(position, fGuid, m_cuboid);
+
+    return updatedSeg || updatedSphere || updatedCone || updatedCylinder || updatedCuboid;
 }
 
 std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
@@ -130,7 +144,9 @@ std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
     aggregateGuids(guids, m_spheres);
     aggregateGuids(guids, m_cones);
     aggregateGuids(guids, m_cylinder);
+    aggregateGuids(guids, m_cuboid);
 
     return guids;
 }
+
 } // namespace FlowMesh

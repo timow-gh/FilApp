@@ -5,6 +5,7 @@
 #include <Core/Utils/Compiler.hpp>
 #include <Geometry/Circle.hpp>
 #include <Geometry/Cone.hpp>
+#include <Geometry/Cuboid.hpp>
 #include <Geometry/Cylinder.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
@@ -33,6 +34,7 @@ class SnapGeometries {
     void add(const Geometry::Sphere<double_t>& sphere, const LinAl::HMatrixd& transformation);
     void add(const Geometry::Cylinder<double_t>& cylinder);
     void add(const Geometry::Cone<double_t>& cone);
+    void add(const Geometry::Cuboid<double_t>& cuboid);
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcSnapPoint(const Geometry::Ray3d& placementRay) const;

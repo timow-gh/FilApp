@@ -3,6 +3,7 @@
 
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshConeTraits.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshCuboidTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp>
 #include <FlowMesh/Interactors/CommandInteractor.hpp>
@@ -70,6 +71,14 @@ class FlowMeshController : public Graphics::GraphicsController {
                 PlacingInteractor<FlowMeshCylinder, double_t, CylinderTraitsConfig>>(
                 *m_flowMeshModel,
                 CylinderTraitsConfig<double_t>{});
+            break;
+        }
+        case Command::PLACING_INTERACTOR_CUBOID:
+        {
+            m_currentInteractor =
+                std::make_unique<PlacingInteractor<FlowMeshCuboid, double_t, CuboidTraitsConfig>>(
+                    *m_flowMeshModel,
+                    CuboidTraitsConfig<double_t>{});
             break;
         }
         }

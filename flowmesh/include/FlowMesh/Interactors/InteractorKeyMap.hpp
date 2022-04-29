@@ -29,7 +29,9 @@ class InteractorKeyMap {
                     {Graphics::KeyScancode::SCANCODE_2,
                      InteractorCommand(Command::PLACING_INTERACTOR_CONE)},
                     {Graphics::KeyScancode::SCANCODE_3,
-                     InteractorCommand(Command::PLACING_INTERACTOR_CYLINDER)}};
+                     InteractorCommand(Command::PLACING_INTERACTOR_CYLINDER)},
+                    {Graphics::KeyScancode::SCANCODE_4,
+                     InteractorCommand(Command::PLACING_INTERACTOR_CUBOID)}};
     }
 };
 

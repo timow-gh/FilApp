@@ -2,6 +2,7 @@
 #define FILAPP_FLOWMESHCONETRAITS_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
 
