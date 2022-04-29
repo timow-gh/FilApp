@@ -19,7 +19,10 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/ModelEventDispatcher.hpp
         include/FlowMesh/PresenterConfig.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
-        include/FlowMesh/ModelEventListener.hpp include/FlowMesh/GeometryElements/FlowMeshCuboid.hpp include/FlowMesh/GeometryElements/FlowMeshCuboidTraits.hpp)
+        include/FlowMesh/ModelEventListener.hpp
+        include/FlowMesh/GeometryElements/FlowMeshCuboid.hpp
+        include/FlowMesh/GeometryElements/FlowMeshCuboidTraits.hpp
+        include/FlowMesh/PresenterUtils.hpp)
 
 set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSegments.cpp

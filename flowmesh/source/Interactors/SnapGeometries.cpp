@@ -114,7 +114,7 @@ bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
 
     if (snapPoints.empty())
         return false;
-    return size == snapPoints.size();
+    return snapPoints.size() == size;
 }
 
 void SnapGeometries::findSnapPlane(LinAl::Vec3dVector& snapPoints,
@@ -128,9 +128,6 @@ std::optional<LinAl::Vec3d>
 SnapGeometries::findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints,
                                      const Geometry::Ray3d& placementRay) const
 {
-    if (snapPoints.empty())
-        return {};
-
     LinAl::Vec3d result;
     LinAl::Vec3d origin = placementRay.getOrigin();
     double_t dist{std::numeric_limits<double_t>::max()};
@@ -146,7 +143,7 @@ SnapGeometries::findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints,
     return result;
 }
 
-void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& m_snapPoints,
+void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& snapPoints,
                                                const Geometry::Ray3d& placementRay) const
 {
     for (const Geometry::Sphere<double_t>& sphere: m_snapSpheres)
@@ -154,9 +151,9 @@ void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& m_snapPoints,
         Geometry::SphereIntersection<double_t> intersection =
             Geometry::calcIntersection(sphere, placementRay);
         if (intersection.first)
-            m_snapPoints.push_back(*intersection.first);
+            snapPoints.push_back(*intersection.first);
         if (intersection.second)
-            m_snapPoints.push_back(*intersection.second);
+            snapPoints.push_back(*intersection.second);
     }
 }
 

@@ -53,7 +53,7 @@ class FlowMeshPresenter : public ModelEventListener {
                              std::uint32_t faceColor);
     static Graphics::LineRenderable createLineRenderables(const FlowMeshSegments& flowMeshSegments,
                                                           std::uint32_t lineColor);
-    void segmentFilAppVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
+    void segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
                                const std::vector<Geometry::SegmentIndices>& segIndices,
                                std::vector<Graphics::Vertex>& vertices) const;
 };

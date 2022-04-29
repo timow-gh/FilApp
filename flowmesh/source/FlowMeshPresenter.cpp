@@ -1,6 +1,7 @@
 #include <Core/Utils/Assert.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/PresenterUtils.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
@@ -34,12 +35,9 @@ Graphics::TriangleRenderable
 FlowMeshPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh,
                                             std::uint32_t faceColor)
 {
-    std::vector<Graphics::Vertex> vertices;
+    Core::TVector<Graphics::Vertex> vertices;
     for (const auto& vec: halfedgeMesh.getVertexPoints())
-        vertices.push_back(Graphics::Vertex{{static_cast<float_t>(vec[0]),
-                                             static_cast<float_t>(vec[1]),
-                                             static_cast<float_t>(vec[2])},
-                                            faceColor});
+        vertices.push_back(vecToVertex(vec, faceColor));
 
     return {std::move(vertices),
             Geometry::calcTriangleIndices<double_t, uint16_t>(halfedgeMesh.getFacets())};
@@ -52,16 +50,8 @@ FlowMeshPresenter::createLineRenderables(const FlowMeshSegments& flowMeshSegment
     Core::TVector<Graphics::Vertex> vertices;
     for (const auto& segment: flowMeshSegments.getSegments())
     {
-        auto& source = segment.getSource();
-        auto& target = segment.getTarget();
-        vertices.push_back(Graphics::Vertex{{static_cast<float_t>(source[0]),
-                                             static_cast<float_t>(source[1]),
-                                             static_cast<float_t>(source[2])},
-                                            lineColor});
-        vertices.push_back(Graphics::Vertex{{static_cast<float_t>(target[0]),
-                                             static_cast<float_t>(target[1]),
-                                             static_cast<float_t>(target[2])},
-                                            lineColor});
+        vertices.push_back(vecToVertex(segment.getSource(), lineColor));
+        vertices.push_back(vecToVertex(segment.getTarget(), lineColor));
     }
 
     return Graphics::LineRenderable::create(vertices);
@@ -77,16 +67,16 @@ void FlowMeshPresenter::onAdd(const FlowMeshSphere& flowMeshSphere)
             .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*sphereMesh);
-    std::vector<Graphics::Vertex> filAppVertices;
-    filAppVertices.reserve(segIndices.size());
-    segmentFilAppVertices(*sphereMesh, segIndices, filAppVertices);
+    Core::TVector<Graphics::Vertex> graphicsVertices;
+    graphicsVertices.reserve(segIndices.size());
+    segmentGraphicsVertices(*sphereMesh, segIndices, graphicsVertices);
 
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(filAppVertices));
+    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
     auto sphereId =
         m_view->addRenderable(createTriangleRenderable(*sphereMesh, m_presenterConfig.faceColor));
 
     m_fGuidRenderableMapping.emplace(flowMeshSphere.getFGuid(),
-                                     std::vector<Graphics::RenderableId>{verticesId, sphereId});
+                                     Core::TVector<Graphics::RenderableId>{verticesId, sphereId});
 }
 
 void FlowMeshPresenter::onAdd(const FlowMeshCone& flowMeshCone)
@@ -97,16 +87,16 @@ void FlowMeshPresenter::onAdd(const FlowMeshCone& flowMeshCone)
                         .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*coneMesh);
-    std::vector<Graphics::Vertex> filAppVertices;
-    filAppVertices.reserve(segIndices.size());
-    segmentFilAppVertices(*coneMesh, segIndices, filAppVertices);
+    Core::TVector<Graphics::Vertex> graphicsVertices;
+    graphicsVertices.reserve(segIndices.size());
+    segmentGraphicsVertices(*coneMesh, segIndices, graphicsVertices);
 
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(filAppVertices));
+    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
     auto coneId =
         m_view->addRenderable(createTriangleRenderable(*coneMesh, m_presenterConfig.faceColor));
 
     m_fGuidRenderableMapping.emplace(flowMeshCone.getFGuid(),
-                                     std::vector<Graphics::RenderableId>{verticesId, coneId});
+                                     Core::TVector<Graphics::RenderableId>{verticesId, coneId});
 }
 
 void FlowMeshPresenter::onAdd(const FlowMeshCylinder& flowMeshCylinder)
@@ -117,11 +107,11 @@ void FlowMeshPresenter::onAdd(const FlowMeshCylinder& flowMeshCylinder)
                             .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*cylinderMesh);
-    std::vector<Graphics::Vertex> filAppVertices;
-    filAppVertices.reserve(segIndices.size());
-    segmentFilAppVertices(*cylinderMesh, segIndices, filAppVertices);
+    Core::TVector<Graphics::Vertex> graphicsVertices;
+    graphicsVertices.reserve(segIndices.size());
+    segmentGraphicsVertices(*cylinderMesh, segIndices, graphicsVertices);
 
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(filAppVertices));
+    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
     auto coneId =
         m_view->addRenderable(createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
 
@@ -134,8 +124,9 @@ void FlowMeshPresenter::onAdd(const FlowMeshSegments& flowMeshSegments)
     auto segmentsId =
         m_view->addRenderable(createLineRenderables(flowMeshSegments, m_presenterConfig.lineColor));
     m_fGuidRenderableMapping.emplace(flowMeshSegments.getFGuid(),
-                                     std::vector<Graphics::RenderableId>{segmentsId});
+                                     Core::TVector<Graphics::RenderableId>{segmentsId});
 }
+
 void FlowMeshPresenter::onAdd(const FlowMeshCuboid& flowMeshCuboid)
 {
     auto cuboidMesh = Geometry::CuboidMeshBuilder<double_t>()
@@ -146,7 +137,7 @@ void FlowMeshPresenter::onAdd(const FlowMeshCuboid& flowMeshCuboid)
 
     Core::TVector<Graphics::Vertex> graphicsVertices;
     graphicsVertices.reserve(segIndices.size());
-    segmentFilAppVertices(*cuboidMesh, segIndices, graphicsVertices);
+    segmentGraphicsVertices(*cuboidMesh, segIndices, graphicsVertices);
 
     auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
     auto cuboidId =
@@ -163,6 +154,7 @@ void FlowMeshPresenter::onRemove(const FGuid& fGuid)
         for (const Graphics::RenderableId id: iter->second)
             m_view->removeRenderable(id);
 }
+
 void FlowMeshPresenter::onPositionChanged(const PositionEvent& positionEvent)
 {
     auto iter = m_fGuidRenderableMapping.find(positionEvent.fGuid);
@@ -184,24 +176,18 @@ void FlowMeshPresenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)
         m_view->addRotationAnimation(id, rotationAxis);
 }
 
-void FlowMeshPresenter::segmentFilAppVertices(
+void FlowMeshPresenter::segmentGraphicsVertices(
     const Geometry::HalfedgeMesh<double_t>& heMesh,
-    const std::vector<Geometry::SegmentIndices>& segIndices,
-    std::vector<Graphics::Vertex>& vertices) const
+    const Core::TVector<Geometry::SegmentIndices>& segIndices,
+    Core::TVector<Graphics::Vertex>& vertices) const
 
 {
     for (const auto& segmentIndices: segIndices)
     {
-        auto sPoint = heMesh.getVertex(segmentIndices.source).getPoint();
-        auto tPoint = heMesh.getVertex(segmentIndices.target).getPoint();
-        vertices.push_back(Graphics::Vertex{{static_cast<float_t>(sPoint[0]),
-                                             static_cast<float_t>(sPoint[1]),
-                                             static_cast<float_t>(sPoint[2])},
-                                            m_presenterConfig.lineColor});
-        vertices.push_back(Graphics::Vertex{{static_cast<float_t>(tPoint[0]),
-                                             static_cast<float_t>(tPoint[1]),
-                                             static_cast<float_t>(tPoint[2])},
-                                            m_presenterConfig.lineColor});
+        vertices.push_back(vecToVertex(heMesh.getVertex(segmentIndices.source).getPoint(),
+                                       m_presenterConfig.lineColor));
+        vertices.push_back(vecToVertex(heMesh.getVertex(segmentIndices.target).getPoint(),
+                                       m_presenterConfig.lineColor));
     }
 }
 
