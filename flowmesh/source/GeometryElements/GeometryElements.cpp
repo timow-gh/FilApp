@@ -85,6 +85,11 @@ bool GeometryElements::add(const FlowMeshCuboid& cuboid)
     return addImpl(cuboid, m_cuboid);
 }
 
+bool GeometryElements::add(const FlowMeshGrid& grid)
+{
+    return addImpl(grid, m_grid);
+}
+
 const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSegments>&
 GeometryElements::getSegmentMap() const
 {
@@ -112,6 +117,11 @@ const Core::TMap<FGuid, FlowMeshCuboid>& GeometryElements::getCuboidMap() const
     return m_cuboid;
 }
 
+const Core::TMap<FGuid, FlowMeshGrid>& GeometryElements::getGridMap() const
+{
+    return m_grid;
+}
+
 bool GeometryElements::remove(const FGuid& fGuid)
 {
     bool removedSegment = removeElement(m_segments, fGuid);
@@ -119,8 +129,10 @@ bool GeometryElements::remove(const FGuid& fGuid)
     bool removedCone = removeElement(m_cones, fGuid);
     bool removedCylinder = removeElement(m_cylinder, fGuid);
     bool removedCuboid = removeElement(m_cylinder, fGuid);
+    bool removedGrid = removeElement(m_grid, fGuid);
 
-    return removedSegment || removedSphere || removedCone || removedCylinder || removedCuboid;
+    return removedSegment || removedSphere || removedCone || removedCylinder || removedCuboid ||
+           removedGrid;
 }
 
 bool GeometryElements::setPosition(const FGuid& fGuid, const LinAl::Vec3d& position)
@@ -130,8 +142,10 @@ bool GeometryElements::setPosition(const FGuid& fGuid, const LinAl::Vec3d& posit
     bool updatedCone = updatePosition(position, fGuid, m_cones);
     bool updatedCylinder = updatePosition(position, fGuid, m_cylinder);
     bool updatedCuboid = updatePosition(position, fGuid, m_cuboid);
+    bool updatedGrid = updatePosition(position, fGuid, m_grid);
 
-    return updatedSeg || updatedSphere || updatedCone || updatedCylinder || updatedCuboid;
+    return updatedSeg || updatedSphere || updatedCone || updatedCylinder || updatedCuboid ||
+           updatedGrid;
 }
 
 std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
@@ -145,6 +159,7 @@ std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
     aggregateGuids(guids, m_cones);
     aggregateGuids(guids, m_cylinder);
     aggregateGuids(guids, m_cuboid);
+    aggregateGuids(guids, m_grid);
 
     return guids;
 }

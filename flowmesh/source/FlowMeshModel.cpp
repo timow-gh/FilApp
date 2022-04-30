@@ -1,5 +1,11 @@
 #include "FlowMesh/FlowMeshModel.hpp"
 #include "FlowMesh/FlowMeshPresenter.hpp"
+#include <Geometry/Cone.hpp>
+#include <Geometry/Transformation/TransformCone.hpp>
+#include <Geometry/Transformation/TransformCuboid.hpp>
+#include <Geometry/Transformation/TransformCylinder.hpp>
+#include <Geometry/Transformation/TransformSegment.hpp>
+#include <Geometry/Transformation/TransformVec.hpp>
 
 namespace FlowMesh
 {
@@ -42,6 +48,17 @@ SnapGeometries FlowMeshModel::calcModelSnapGeometries() const
     for (const auto& pair: m_geometryElements.getCuboidMap())
         result.add(Geometry::transformation(pair.second.getGeometryElement(),
                                             pair.second.getTransformation()));
+
+    for (const auto& pair: m_geometryElements.getGridMap())
+    {
+        auto trafo = pair.second.getTransformation();
+
+        for (const Geometry::Segment3d& segment: pair.second.getSegments())
+            result.add(Geometry::transformation(segment, trafo));
+
+        for (const LinAl::Vec3d& vec: pair.second.getIntersectionPoints())
+            result.add(Geometry::transformation(vec, trafo));
+    }
 
     return result;
 }

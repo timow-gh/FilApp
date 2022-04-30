@@ -7,6 +7,7 @@
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCuboid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGrid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <FlowMesh/ModelEventDispatcher.hpp>
@@ -41,6 +42,7 @@ class FlowMeshPresenter : public ModelEventListener {
     void onAdd(const FlowMeshCylinder& flowMeshCylinder) override;
     void onAdd(const FlowMeshSegments& flowMeshSegments) override;
     void onAdd(const FlowMeshCuboid& flowMeshCuboid) override;
+    void onAdd(const FlowMeshGrid& flowMeshGrid) override;
 
     void onRemove(const FGuid& fGuid) override;
     void onPositionChanged(const PositionEvent& positionEvent) override;
@@ -51,11 +53,11 @@ class FlowMeshPresenter : public ModelEventListener {
     static Graphics::TriangleRenderable
     createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh,
                              std::uint32_t faceColor);
-    static Graphics::LineRenderable createLineRenderables(const FlowMeshSegments& flowMeshSegments,
+    static Graphics::LineRenderable createLineRenderables(const Core::TVector<Geometry::Segment3d>&,
                                                           std::uint32_t lineColor);
     void segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
-                               const std::vector<Geometry::SegmentIndices>& segIndices,
-                               std::vector<Graphics::Vertex>& vertices) const;
+                                 const std::vector<Geometry::SegmentIndices>& segIndices,
+                                 std::vector<Graphics::Vertex>& vertices) const;
 };
 
 } // namespace FlowMesh

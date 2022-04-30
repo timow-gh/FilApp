@@ -4,6 +4,7 @@
 #include <Geometry/Distance/DistanceRay.hpp>
 #include <Geometry/GeometryAssert.hpp>
 #include <Geometry/Intersection/IntersectionSphere.hpp>
+#include <Geometry/Transformation/TransformSphere.hpp>
 #include <algorithm>
 #include <limits>
 

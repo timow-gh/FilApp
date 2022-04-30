@@ -44,11 +44,11 @@ FlowMeshPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_
 }
 
 Graphics::LineRenderable
-FlowMeshPresenter::createLineRenderables(const FlowMeshSegments& flowMeshSegments,
+FlowMeshPresenter::createLineRenderables(const Core::TVector<Geometry::Segment3d>& segments,
                                          std::uint32_t lineColor)
 {
     Core::TVector<Graphics::Vertex> vertices;
-    for (const auto& segment: flowMeshSegments.getSegments())
+    for (const auto& segment: segments)
     {
         vertices.push_back(vecToVertex(segment.getSource(), lineColor));
         vertices.push_back(vecToVertex(segment.getTarget(), lineColor));
@@ -121,8 +121,8 @@ void FlowMeshPresenter::onAdd(const FlowMeshCylinder& flowMeshCylinder)
 
 void FlowMeshPresenter::onAdd(const FlowMeshSegments& flowMeshSegments)
 {
-    auto segmentsId =
-        m_view->addRenderable(createLineRenderables(flowMeshSegments, m_presenterConfig.lineColor));
+    auto segmentsId = m_view->addRenderable(
+        createLineRenderables(flowMeshSegments.getSegments(), m_presenterConfig.lineColor));
     m_fGuidRenderableMapping.emplace(flowMeshSegments.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{segmentsId});
 }
@@ -145,6 +145,14 @@ void FlowMeshPresenter::onAdd(const FlowMeshCuboid& flowMeshCuboid)
 
     m_fGuidRenderableMapping.emplace(flowMeshCuboid.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{verticesId, cuboidId});
+}
+
+void FlowMeshPresenter::onAdd(const FlowMeshGrid& flowMeshGrid)
+{
+    auto segmentsId = m_view->addRenderable(
+        createLineRenderables(flowMeshGrid.getSegments(), m_presenterConfig.lineColor));
+    m_fGuidRenderableMapping.emplace(flowMeshGrid.getFGuid(),
+                                     Core::TVector<Graphics::RenderableId>{segmentsId});
 }
 
 void FlowMeshPresenter::onRemove(const FGuid& fGuid)

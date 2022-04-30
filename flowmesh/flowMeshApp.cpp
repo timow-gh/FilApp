@@ -3,6 +3,7 @@
 #include <FlowMesh/FlowMeshController.hpp>
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/FlowMeshPresenter.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGrid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <Geometry/Segment.hpp>
@@ -14,24 +15,7 @@ using namespace FlowMesh;
 using namespace Geometry;
 using namespace LinAl;
 
-void createGridSegments(FlowMeshModel& fMModel)
-{
-    Core::TVector<Geometry::Segment3d> xSegs;
-    Core::TVector<Geometry::Segment3d> ySegs;
-    constexpr double_t MIN = -5;
-    constexpr double_t MAX = 5;
-    constexpr auto SEG_COUNT = static_cast<std::size_t>(MAX - MIN + 1);
-    constexpr double_t LENGTH_HALF = (MAX - MIN) / 2.0;
-    for (std::uint32_t i = 0; i < SEG_COUNT; ++i)
-    {
-        xSegs.push_back(Geometry::Segment3d{{MIN + i, -LENGTH_HALF, 0}, {MIN + i, LENGTH_HALF, 0}});
-        ySegs.push_back(Geometry::Segment3d{{-LENGTH_HALF, MIN + i, 0}, {LENGTH_HALF, MIN + i, 0}});
-    }
-    fMModel.add(FlowMeshSegments(xSegs, newFGuid()));
-    fMModel.add(FlowMeshSegments(ySegs, newFGuid()));
-}
-
-void createSpheres(FlowMeshModel& fMModel)
+void createSpheres(FlowMeshModel& model)
 {
     FGuid sphereToRemove;
 
@@ -46,7 +30,7 @@ void createSpheres(FlowMeshModel& fMModel)
             if (i == 0 && j == 0)
                 sphereToRemove = id;
 
-            fMModel.add(FlowMeshSphere(
+            model.add(FlowMeshSphere(
                 Sphere<double_t>(
                     Vec3d{static_cast<double_t>(i) * DIST, static_cast<double_t>(j) * DIST, 0},
                     RADIUS),
@@ -54,32 +38,32 @@ void createSpheres(FlowMeshModel& fMModel)
         }
     }
 
-    fMModel.remove(sphereToRemove);
+    model.remove(sphereToRemove);
 }
 
-void createCones(FlowMeshModel& fmModel)
+void createCones(FlowMeshModel& model)
 {
     // x
-    fmModel.add(FlowMeshCone(
+    model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}}, 0.1),
         newFGuid()));
 
     // y
-    fmModel.add(FlowMeshCone(
+    model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}}, 0.1),
         newFGuid()));
-    fmModel.add(FlowMeshCone(
+    model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0.5, 0}, LinAl::Vec3d{0, 1.0, 0}}, 0.1),
         newFGuid()));
 
     // z
-    fmModel.add(FlowMeshCone(
+    model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}}, 0.1),
         newFGuid()));
-    fmModel.add(FlowMeshCone(
+    model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0.5}, LinAl::Vec3d{0, 0, 1.0}}, 0.1),
         newFGuid()));
-    fmModel.add(FlowMeshCone(
+    model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 1.0}, LinAl::Vec3d{0, 0, 1.5}}, 0.1),
         newFGuid()));
 }
@@ -97,7 +81,7 @@ int main()
     FlowMeshModel flowMeshModel;
     flowMeshModel.registerListener(&flowMeshPresenter);
 
-    createGridSegments(flowMeshModel);
+    flowMeshModel.add(FlowMeshGrid{});
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 

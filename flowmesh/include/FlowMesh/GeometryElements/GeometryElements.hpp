@@ -7,6 +7,7 @@
 #include <FlowMesh/GeometryElements/FlowMeshCone.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCuboid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGrid.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSegments.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 
@@ -35,6 +36,7 @@ class GeometryElements {
     Core::TMap<FGuid, FlowMeshCone> m_cones;
     Core::TMap<FGuid, FlowMeshCylinder> m_cylinder;
     Core::TMap<FGuid, FlowMeshCuboid> m_cuboid;
+    Core::TMap<FGuid, FlowMeshGrid> m_grid;
 
   public:
     bool add(const FlowMeshSegments& segments);
@@ -42,6 +44,7 @@ class GeometryElements {
     bool add(const FlowMeshCone& cone);
     bool add(const FlowMeshCylinder& cylinder);
     bool add(const FlowMeshCuboid& cuboid);
+    bool add(const FlowMeshGrid& grid);
 
     template <typename TFlowMeshGeometry,
               typename = std::is_same<TFlowMeshGeometry, FlowMeshSphere>>
@@ -57,6 +60,7 @@ class GeometryElements {
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCone>& getConeMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCylinder>& getCylinderMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCuboid>& getCuboidMap() const;
+    CORE_NODISCARD const Core::TMap<FGuid, FlowMeshGrid>& getGridMap() const;
 
     bool remove(const FGuid& fGuid);
     bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);

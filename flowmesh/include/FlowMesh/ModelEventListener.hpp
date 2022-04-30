@@ -20,6 +20,7 @@ class FlowMeshCylinder;
 class FlowMeshSegments;
 class FlowMeshSphere;
 class FlowMeshCuboid;
+class FlowMeshGrid;
 
 class ModelEventListener {
   public:
@@ -30,6 +31,7 @@ class ModelEventListener {
     virtual void onAdd(const FlowMeshSegments& flowMeshSegments) {}
     virtual void onAdd(const FlowMeshSphere& flowMeshSphere) {}
     virtual void onAdd(const FlowMeshCuboid& flowMeshCuboid) {};
+    virtual void onAdd(const FlowMeshGrid& flowMeshGrid) {};
 
     virtual void onRemove(const FGuid& fGuid) {}
 
