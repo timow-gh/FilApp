@@ -4,7 +4,6 @@
 #include <Core/Types/TVector.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/ModelEventListener.hpp>
-#include <GraphicsInterface/InputEvents/DispatcherBase.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh
@@ -17,14 +16,7 @@ class FlowMeshSphere;
 class PositionEvent;
 
 class ModelEventDispatcher {
-    std::vector<ModelEventListener*> m_listeners;
-
-    template <typename TMessage>
-    void dispatchAddImpl(const TMessage& message)
-    {
-        for (ModelEventListener* listener: m_listeners)
-            listener->onAdd(message);
-    }
+    Core::TVector<ModelEventListener*> m_listeners;
 
   public:
     void registerListener(ModelEventListener* listener) { m_listeners.push_back(listener); }
@@ -34,40 +26,35 @@ class ModelEventDispatcher {
         m_listeners.erase(iter, m_listeners.end());
     }
 
-    virtual void dispatchAdd(const FlowMeshCylinder& flowMeshCylinder)
-    {
-        dispatchAddImpl(flowMeshCylinder);
-    }
-
-    virtual void dispatchAdd(const FlowMeshCone& flowMeshCone) { dispatchAddImpl(flowMeshCone); }
-
-    virtual void dispatchAdd(const FlowMeshSegments& flowMeshSegments)
-    {
-        dispatchAddImpl(flowMeshSegments);
-    }
-
-    virtual void dispatchAdd(const FlowMeshSphere& flowMeshSphere)
-    {
-        dispatchAddImpl(flowMeshSphere);
-    }
-
-    virtual void dispatchAdd(const FlowMeshCuboid& flowMeshCuboid)
-    {
-        dispatchAddImpl(flowMeshCuboid);
-    }
-
-    virtual void dispatchAdd(const FlowMeshGrid& flowMeshGrid)
-    {
-        dispatchAddImpl(flowMeshGrid);
-    }
-
-    virtual void dispatchRemove(const FGuid& fGuid)
+    template <typename TGeometryElement>
+    void dispatchAdd(const TGeometryElement& element)
     {
         for (ModelEventListener* listener: m_listeners)
-            listener->onRemove(fGuid);
+        {
+            listener->onPreAddEvent();
+            listener->onAdd(element);
+            listener->onPostAddEvent();
+        }
     }
 
-    virtual void dispatchPositionChanged(const PositionEvent& positionEvent)
+    void dispatchRemove(const FGuid& fGuid)
+    {
+        for (ModelEventListener* listener: m_listeners)
+        {
+            listener->onPreRemove(fGuid);
+            listener->onRemove(fGuid);
+            listener->onPostRemove(fGuid);
+        }
+    }
+
+    template <typename TGeometryElement>
+    void dispatchUpdate(const TGeometryElement& element)
+    {
+        for (ModelEventListener* listener: m_listeners)
+            listener->onUpdate(element);
+    }
+
+    void dispatchPositionChanged(const PositionEvent& positionEvent)
     {
         for (ModelEventListener* listener: m_listeners)
             listener->onPositionChanged(positionEvent);

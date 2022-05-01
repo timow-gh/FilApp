@@ -3,80 +3,74 @@
 namespace FlowMesh
 {
 
-FlowMeshGrid::FlowMeshGrid() : GeometryElementBase<FlowMeshGrid>(FGuid())
+FlowMeshGrid::FlowMeshGrid()
+    : GeometryElementBase<FlowMeshGrid>(newFGuid(), FlowMeshGeometryConfigBase{})
 {
     updateSegments();
 }
 
 FlowMeshGrid::FlowMeshGrid(const FGuid& guid,
-                           const LinAl::Vec3d& origin,
-                           const LinAl::Vec3d& widthVec,
-                           const LinAl::Vec3d& heightVec,
-                           double_t stepWidth)
-    : GeometryElementBase(guid)
-    , m_origin(origin)
-    , m_widthVec(widthVec)
-    , m_heightVec(heightVec)
+                           double_t minXLength,
+                           double_t minYLength,
+                           double_t maxXLength,
+                           double_t maxYLength,
+                           double_t stepWidth,
+                           FlowMeshGeometryConfigBase baseConfig)
+    : GeometryElementBase(guid, baseConfig)
+    , m_minXLength(minXLength)
+    , m_minYLength(minYLength)
+    , m_maxXLength(maxXLength)
+    , m_maxYLength(maxYLength)
     , m_stepWidth(stepWidth)
 {
     updateSegments();
 }
 
-void FlowMeshGrid::setSource(const LinAl::Vec3d& source)
-{
-    m_widthVec = source;
-    updateSegments();
-}
-
-void FlowMeshGrid::setTarget(const LinAl::Vec3d& target)
-{
-    m_heightVec = target;
-    updateSegments();
-}
-
-void FlowMeshGrid::setStepWidth(double_t stepWidth)
-{
-    m_stepWidth = stepWidth;
-    updateSegments();
-}
-
-const LinAl::Vec3dVector& FlowMeshGrid::getIntersectionPoints() const
-{
-    return m_intersectionPoints;
-}
-
 void FlowMeshGrid::updateSegments()
 {
-    const double_t widthVecLen = LinAl::norm2(
-        LinAl::Vec2d{LinAl::Vec2d{m_heightVec[0], 0} - LinAl::Vec2d{m_widthVec[0], 0}});
-    const std::int64_t widthNo = static_cast<std::int64_t>(std::ceil(widthVecLen / m_stepWidth));
+    m_segments.clear();
+    m_intersectionPoints.clear();
 
-    const double_t heightVecLen = LinAl::norm2(
-        LinAl::Vec2d{LinAl::Vec2d{0, m_heightVec[1]} - LinAl::Vec2d{0, m_widthVec[1]}});
-    const std::int64_t heightNo = static_cast<std::int64_t>(std::ceil(heightVecLen / m_stepWidth));
+    double_t flooredMinX = floorCoordAsMultipleOfStep(m_minXLength, m_stepWidth);
+    double_t flooredMinY = floorCoordAsMultipleOfStep(m_minYLength, m_stepWidth);
+    double_t flooredMaxX = floorCoordAsMultipleOfStep(m_maxXLength, m_stepWidth);
+    double_t flooredMaxY = floorCoordAsMultipleOfStep(m_maxYLength, m_stepWidth);
 
-    LinAl::Vec3d widthDirection = LinAl::normalize(m_widthVec);
-    LinAl::Vec3d heightDirection = LinAl::normalize(m_heightVec);
+    const auto xNo = static_cast<std::int64_t>((flooredMaxX - flooredMinX) / m_stepWidth);
+    const auto yNo = static_cast<std::int64_t>((flooredMaxY - flooredMinY) / m_stepWidth);
 
-    for (std::int64_t i{0}; i <= widthNo; ++i)
+    LinAl::Vec3d origin{flooredMinX, flooredMinY, 0.0};
+
+    for (std::int64_t i{0}; i <= xNo; ++i)
     {
-        LinAl::Vec3d currentI = LinAl::Vec3d{m_origin + widthDirection * i * m_stepWidth};
+        LinAl::Vec3d currentI = LinAl::Vec3d{origin + LinAl::X_VEC3D * i * m_stepWidth};
         m_segments.push_back(
-            Geometry::Segment3d{currentI, currentI + heightDirection * heightNo * m_stepWidth});
+            Geometry::Segment3d{currentI, currentI + LinAl::Y_VEC3D * yNo * m_stepWidth});
 
-        for (std::int64_t j{0}; j <= heightNo; ++j)
+        for (std::int64_t j{0}; j <= yNo; ++j)
         {
-            LinAl::Vec3d point = currentI + heightDirection * j * m_stepWidth;
+            LinAl::Vec3d point = currentI + LinAl::Y_VEC3D * j * m_stepWidth;
             m_intersectionPoints.push_back(point);
         }
     }
 
-    for (std::int64_t j{0}; j <= heightNo; ++j)
+    for (std::int64_t j{0}; j <= yNo; ++j)
     {
-        LinAl::Vec3d currentJ = LinAl::Vec3d{m_origin + heightDirection * j * m_stepWidth};
+        LinAl::Vec3d currentJ = LinAl::Vec3d{origin + LinAl::Y_VEC3D * j * m_stepWidth};
         m_segments.push_back(
-            Geometry::Segment3d{currentJ, currentJ + widthDirection * widthNo * m_stepWidth});
+            Geometry::Segment3d{currentJ, currentJ + LinAl::X_VEC3D * xNo * m_stepWidth});
     }
+}
+
+double_t FlowMeshGrid::floorCoordAsMultipleOfStep(double_t coord, double_t stepWidth) const
+{
+    coord = std::clamp(coord, -m_maxLength, m_maxLength);
+    double_t floored = std::floor(coord);
+    double_t divRes = coord / stepWidth;
+    double_t flooredDivRes = std::floor(divRes);
+    if (divRes != flooredDivRes)
+        return floored = stepWidth * flooredDivRes;
+    return floored;
 }
 
 } // namespace FlowMesh

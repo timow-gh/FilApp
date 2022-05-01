@@ -38,6 +38,8 @@ struct FilAppRenderable
 
     void destroy() const
     {
+        auto& em = utils::EntityManager::get();
+        em.destroy(renderableEntity);
         engine->destroy(renderableEntity);
         engine->destroy(vb);
         engine->destroy(ib);

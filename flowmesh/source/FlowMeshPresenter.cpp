@@ -17,18 +17,36 @@ FlowMeshPresenter::FlowMeshPresenter(Graphics::View* mainView) : m_view(mainView
 
 void FlowMeshPresenter::registerListener(Graphics::GraphicsController* flowMeshController)
 {
-    m_view->getInputEventDispatcher().registerListener(
-        dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
-    m_view->getRayPickEventDispatcher().registerListener(
-        dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+    registerInputEventListener(dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
+    registerRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
 }
 
 void FlowMeshPresenter::removeListener(Graphics::GraphicsController* flowMeshController)
 {
-    m_view->getInputEventDispatcher().removeListener(
-        dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
-    m_view->getRayPickEventDispatcher().removeListener(
-        dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+    removeInputEventListener(dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
+    removeRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+}
+
+void FlowMeshPresenter::registerInputEventListener(Graphics::InputEventListener* inputEventListener)
+{
+    m_view->getInputEventDispatcher().registerInputEventListener(inputEventListener);
+}
+
+void FlowMeshPresenter::removeInputEventListener(Graphics::InputEventListener* inputEventListener)
+{
+    m_view->getInputEventDispatcher().removeInputEventListener(inputEventListener);
+}
+
+void FlowMeshPresenter::registerRayPickEventListener(
+    Graphics::RayPickEventListener* rayPickEventListener)
+{
+    m_view->getRayPickEventDispatcher().registerRayPickEventListener(rayPickEventListener);
+}
+
+void FlowMeshPresenter::removeRayPickEventListener(
+    Graphics::RayPickEventListener* rayPickEventListener)
+{
+    m_view->getRayPickEventDispatcher().removeRayPickEventListener(rayPickEventListener);
 }
 
 Graphics::TriangleRenderable
@@ -151,16 +169,52 @@ void FlowMeshPresenter::onAdd(const FlowMeshGrid& flowMeshGrid)
 {
     auto segmentsId = m_view->addRenderable(
         createLineRenderables(flowMeshGrid.getSegments(), m_presenterConfig.lineColor));
-    m_fGuidRenderableMapping.emplace(flowMeshGrid.getFGuid(),
-                                     Core::TVector<Graphics::RenderableId>{segmentsId});
+
+    auto result =
+        m_fGuidRenderableMapping.emplace(flowMeshGrid.getFGuid(),
+                                         Core::TVector<Graphics::RenderableId>{segmentsId});
+    CORE_POSTCONDITION_DEBUG_ASSERT(result.second, "GeometryElement already exists.");
 }
 
 void FlowMeshPresenter::onRemove(const FGuid& fGuid)
 {
     auto iter = m_fGuidRenderableMapping.find(fGuid);
     if (iter != m_fGuidRenderableMapping.end())
+    {
         for (const Graphics::RenderableId id: iter->second)
             m_view->removeRenderable(id);
+        m_fGuidRenderableMapping.erase(iter);
+    }
+}
+
+void FlowMeshPresenter::onUpdate(const FlowMeshCylinder& flowMeshCylinder)
+{
+    onUpdateImpl(flowMeshCylinder);
+}
+
+void FlowMeshPresenter::onUpdate(const FlowMeshCone& flowMeshCone)
+{
+    onUpdateImpl(flowMeshCone);
+}
+
+void FlowMeshPresenter::onUpdate(const FlowMeshSegments& flowMeshSegments)
+{
+    onUpdateImpl(flowMeshSegments);
+}
+
+void FlowMeshPresenter::onUpdate(const FlowMeshSphere& flowMeshSphere)
+{
+    onUpdateImpl(flowMeshSphere);
+}
+
+void FlowMeshPresenter::onUpdate(const FlowMeshCuboid& flowMeshCuboid)
+{
+    onUpdateImpl(flowMeshCuboid);
+}
+
+void FlowMeshPresenter::onUpdate(const FlowMeshGrid& flowMeshGrid)
+{
+    onUpdateImpl(flowMeshGrid);
 }
 
 void FlowMeshPresenter::onPositionChanged(const PositionEvent& positionEvent)

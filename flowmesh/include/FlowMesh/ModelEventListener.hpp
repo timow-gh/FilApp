@@ -3,7 +3,6 @@
 
 #include <Core/Types/TVector.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
-#include <GraphicsInterface/InputEvents/DispatcherBase.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh
@@ -26,14 +25,27 @@ class ModelEventListener {
   public:
     virtual ~ModelEventListener() = default;
 
+    virtual void onPreAddEvent(){};
+    virtual void onPostAddEvent(){};
+
     virtual void onAdd(const FlowMeshCylinder& flowMeshCylinder) {}
     virtual void onAdd(const FlowMeshCone& flowMeshCone) {}
     virtual void onAdd(const FlowMeshSegments& flowMeshSegments) {}
     virtual void onAdd(const FlowMeshSphere& flowMeshSphere) {}
-    virtual void onAdd(const FlowMeshCuboid& flowMeshCuboid) {};
-    virtual void onAdd(const FlowMeshGrid& flowMeshGrid) {};
+    virtual void onAdd(const FlowMeshCuboid& flowMeshCuboid){};
+    virtual void onAdd(const FlowMeshGrid& flowMeshGrid){};
 
-    virtual void onRemove(const FGuid& fGuid) {}
+    virtual void onPreRemove(const FGuid& guid){};
+    virtual void onPostRemove(const FGuid& guid){};
+
+    virtual void onRemove(const FGuid& guid) {}
+
+    virtual void onUpdate(const FlowMeshCylinder& flowMeshCylinder) {}
+    virtual void onUpdate(const FlowMeshCone& flowMeshCone) {}
+    virtual void onUpdate(const FlowMeshSegments& flowMeshSegments) {}
+    virtual void onUpdate(const FlowMeshSphere& flowMeshSphere) {}
+    virtual void onUpdate(const FlowMeshCuboid& flowMeshCuboid){};
+    virtual void onUpdate(const FlowMeshGrid& flowMeshGrid){};
 
     virtual void onPositionChanged(const PositionEvent& positionEvent) {}
 };

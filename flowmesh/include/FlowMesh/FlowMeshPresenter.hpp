@@ -37,6 +37,12 @@ class FlowMeshPresenter : public ModelEventListener {
     void registerListener(Graphics::GraphicsController* flowMeshController);
     void removeListener(Graphics::GraphicsController* flowMeshController);
 
+    void registerInputEventListener(Graphics::InputEventListener* inputEventListener);
+    void removeInputEventListener(Graphics::InputEventListener* inputEventListener);
+
+    void registerRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener);
+    void removeRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener);
+
     void onAdd(const FlowMeshSphere& flowMeshSphere) override;
     void onAdd(const FlowMeshCone& flowMeshCone) override;
     void onAdd(const FlowMeshCylinder& flowMeshCylinder) override;
@@ -45,6 +51,14 @@ class FlowMeshPresenter : public ModelEventListener {
     void onAdd(const FlowMeshGrid& flowMeshGrid) override;
 
     void onRemove(const FGuid& fGuid) override;
+
+    void onUpdate(const FlowMeshCylinder& flowMeshCylinder) override;
+    void onUpdate(const FlowMeshCone& flowMeshCone) override;
+    void onUpdate(const FlowMeshSegments& flowMeshSegments) override;
+    void onUpdate(const FlowMeshSphere& flowMeshSphere) override;
+    void onUpdate(const FlowMeshCuboid& flowMeshCuboid) override;
+    void onUpdate(const FlowMeshGrid& flowMeshGrid) override;
+
     void onPositionChanged(const PositionEvent& positionEvent) override;
 
     void setIdleAnimation(const Graphics::Vec3& rotationAxis);
@@ -58,6 +72,13 @@ class FlowMeshPresenter : public ModelEventListener {
     void segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
                                  const std::vector<Geometry::SegmentIndices>& segIndices,
                                  std::vector<Graphics::Vertex>& vertices) const;
+
+    template <typename TGeometryElement>
+    void onUpdateImpl(const TGeometryElement& elem)
+    {
+        onRemove(elem.getFGuid());
+        onAdd(elem);
+    }
 };
 
 } // namespace FlowMesh

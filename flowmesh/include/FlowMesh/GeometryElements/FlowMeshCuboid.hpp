@@ -2,6 +2,7 @@
 #define FILAPP_FLOWMESHCUBOID_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp>
 #include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cuboid.hpp>
 
@@ -13,7 +14,9 @@ class FlowMeshCuboid : public GeometryElementBase<FlowMeshCuboid> {
 
   public:
     FlowMeshCuboid();
-    FlowMeshCuboid(const Geometry::Cuboid<double_t>& cuboid, const FGuid& fGuid);
+    FlowMeshCuboid(const Geometry::Cuboid<double_t>& cuboid,
+                   const FGuid& fGuid,
+                   FlowMeshGeometryConfigBase baseConfig);
 
     [[nodiscard]] const Geometry::Cuboid<double_t>& getGeometryElement() const;
 };

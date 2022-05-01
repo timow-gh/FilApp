@@ -218,6 +218,10 @@ void FilAppCameraView::removeRenderable(RenderableId id)
                                    return false;
                                });
     m_filAppRenderables.erase(iter, m_filAppRenderables.end());
+    eraseRenderable(id);
+
+    // Synchronize the GPU with the CPU
+    m_engine->flushAndWait();
 }
 
 void FilAppCameraView::updatePosition(RenderableId renderableId, const Vec3& position)

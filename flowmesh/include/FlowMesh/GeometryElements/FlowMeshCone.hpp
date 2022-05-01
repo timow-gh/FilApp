@@ -2,6 +2,7 @@
 #define FILAPP_FLOWMESHCONE_HPP
 
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp>
 #include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cone.hpp>
 
@@ -13,7 +14,9 @@ class FlowMeshCone : public GeometryElementBase<FlowMeshCone> {
 
   public:
     FlowMeshCone();
-    FlowMeshCone(const Geometry::Cone<double_t>& cone, const FGuid& fGuid);
+    FlowMeshCone(const Geometry::Cone<double_t>& cone,
+                 const FGuid& fGuid,
+                 FlowMeshGeometryConfigBase baseConfig);
 
     [[nodiscard]] const Geometry::Cone<double_t>& getGeometryElement() const;
 };

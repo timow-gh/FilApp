@@ -4,13 +4,15 @@ namespace FlowMesh
 {
 
 FlowMeshSphere::FlowMeshSphere()
-    : GeometryElementBase<FlowMeshSphere>(FGuid())
+    : GeometryElementBase<FlowMeshSphere>(FGuid(), FlowMeshGeometryConfigBase{})
     , m_sphere(Geometry::Sphere<double_t>(LinAl::ZERO_VEC3D, 1.0))
 {
 }
 
-FlowMeshSphere::FlowMeshSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid)
-    : GeometryElementBase<FlowMeshSphere>(guid), m_sphere(std::move(sphere))
+FlowMeshSphere::FlowMeshSphere(Geometry::Sphere<double_t> sphere,
+                               const FGuid& guid,
+                               FlowMeshGeometryConfigBase baseConfig)
+    : GeometryElementBase<FlowMeshSphere>(guid, baseConfig), m_sphere(std::move(sphere))
 {
 }
 

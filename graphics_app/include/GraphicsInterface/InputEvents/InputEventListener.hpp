@@ -12,7 +12,7 @@ class InputEventListener {
   public:
     virtual ~InputEventListener() = default;
 
-    virtual void onRemoveListener(){};
+    virtual void onRemoveInputEventListener(){};
 
     virtual void onEvent(const MouseButtonEvent& mouseButtonEvent){};
     virtual void onEvent(const MouseMoveEvent& mouseMovedEvent){};

@@ -24,7 +24,8 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/FlowMeshPresenter.hpp
         include/FlowMesh/ModelEventListener.hpp
         include/FlowMesh/PresenterUtils.hpp
-        )
+        include/FlowMesh/Interactors/FlowMeshGridInteractor.cpp
+        include/FlowMesh/Interactors/FlowMeshGridInteractor.hpp include/FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp)
 
 set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSegments.cpp
@@ -54,6 +55,8 @@ set_target_properties(flow_mesh
         EXPORT_NAME flowmesh)
 target_link_libraries(flow_mesh
         PUBLIC
+        Core::Types
+        Core::Utils
         graphics::interface
         LinAl::LinAl
         Geometry::Geometry

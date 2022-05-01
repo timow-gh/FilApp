@@ -1,7 +1,7 @@
 #ifndef FILAPP_FLOWMESHGEOMETRYTRAITS_HPP
 #define FILAPP_FLOWMESHGEOMETRYTRAITS_HPP
 
-#include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp>
 
 namespace FlowMesh
 {
@@ -9,11 +9,6 @@ namespace FlowMesh
 template <typename TFlowMeshGeometry, typename TGeomConfig>
 struct FlowMeshGeometryTraits
 {
-    static TFlowMeshGeometry create()
-    {
-        static_assert(sizeof(TFlowMeshGeometry) < 0,
-                      "TFlowMeshGeometry is not specialized for this type");
-    }
 };
 
 } // namespace FlowMesh

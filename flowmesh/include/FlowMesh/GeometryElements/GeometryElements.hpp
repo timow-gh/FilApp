@@ -13,22 +13,23 @@
 
 namespace FlowMesh
 {
+
+namespace details
+{
 template <typename TFlowMeshGeometry,
           template <typename K,
                     typename V,
                     typename Compare = std::less<K>,
                     typename Alloc = std::allocator<std::pair<const K, V>>>
           class Map>
-bool getImpl(FGuid guid, Map<FGuid, TFlowMeshGeometry>& map, TFlowMeshGeometry& result)
+TFlowMeshGeometry* getImpl(const FGuid& guid, Map<FGuid, TFlowMeshGeometry>& map)
 {
     auto iter = map.find(guid);
     if (iter != map.end())
-    {
-        result = iter->second;
-        return true;
-    }
-    return false;
+        return &iter->second;
+    return nullptr;
 }
+} // namespace details
 
 class GeometryElements {
     Core::TMap<FGuid, FlowMeshSegments> m_segments;
@@ -46,14 +47,50 @@ class GeometryElements {
     bool add(const FlowMeshCuboid& cuboid);
     bool add(const FlowMeshGrid& grid);
 
-    template <typename TFlowMeshGeometry,
-              typename = std::is_same<TFlowMeshGeometry, FlowMeshSphere>>
-    bool get(FGuid guid, TFlowMeshGeometry& result)
+    bool remove(const FGuid& fGuid);
+
+    template <typename TGeometryElement>
+    TGeometryElement* get(const FGuid& guid);
+
+    template <>
+    FlowMeshSegments* get(const FGuid& guid)
     {
-        if (getImpl(guid, m_spheres, result))
-            return true;
-        return false;
+        return details::getImpl(guid, m_segments);
     }
+
+    template <>
+    FlowMeshSphere* get(const FGuid& guid)
+    {
+        return details::getImpl(guid, m_spheres);
+    }
+
+    template <>
+    FlowMeshCone* get(const FGuid& guid)
+    {
+        return details::getImpl(guid, m_cones);
+    }
+
+    template <>
+    FlowMeshCylinder* get(const FGuid& guid)
+    {
+        return details::getImpl(guid, m_cylinder);
+    }
+
+    template <>
+    FlowMeshCuboid* get(const FGuid& guid)
+    {
+        return details::getImpl(guid, m_cuboid);
+    }
+
+    template <>
+    FlowMeshGrid* get(const FGuid& guid)
+    {
+        return details::getImpl(guid, m_grid);
+    }
+
+    bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
+
+    CORE_NODISCARD Core::TVector<FGuid> getFGuidsFromMaps() const;
 
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshSegments>& getSegmentMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshSphere>& getSphereMap() const;
@@ -61,13 +98,6 @@ class GeometryElements {
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCylinder>& getCylinderMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshCuboid>& getCuboidMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, FlowMeshGrid>& getGridMap() const;
-
-    bool remove(const FGuid& fGuid);
-    bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
-
-    CORE_NODISCARD Core::TVector<FGuid> getFGuidsFromMaps() const;
-
-  private:
 };
 } // namespace FlowMesh
 

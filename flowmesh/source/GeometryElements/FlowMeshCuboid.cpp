@@ -5,13 +5,15 @@ namespace FlowMesh
 {
 
 FlowMeshCuboid::FlowMeshCuboid()
-    : GeometryElementBase<FlowMeshCuboid>(FGuid())
+    : GeometryElementBase<FlowMeshCuboid>(FGuid(), FlowMeshGeometryConfigBase{})
     , m_cuboid(Geometry::Cuboid<double_t>(LinAl::ZERO_VEC3D, LinAl::Vec3d{1, 1, 1}))
 {
 }
 
-FlowMeshCuboid::FlowMeshCuboid(const Geometry::Cuboid<double_t>& cuboid, const FGuid& fGuid)
-    : GeometryElementBase<FlowMeshCuboid>(fGuid), m_cuboid(cuboid)
+FlowMeshCuboid::FlowMeshCuboid(const Geometry::Cuboid<double_t>& cuboid,
+                               const FGuid& fGuid,
+                               FlowMeshGeometryConfigBase baseConfig)
+    : GeometryElementBase<FlowMeshCuboid>(fGuid, baseConfig), m_cuboid(cuboid)
 {
 }
 

@@ -3,6 +3,7 @@
 
 #include <Core/Utils/Compiler.hpp>
 #include <FlowMesh/FlowMeshGuid.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp>
 #include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
@@ -14,7 +15,9 @@ class FlowMeshSphere : public GeometryElementBase<FlowMeshSphere> {
 
   public:
     FlowMeshSphere();
-    FlowMeshSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid);
+    FlowMeshSphere(Geometry::Sphere<double_t> sphere,
+                   const FGuid& guid,
+                   FlowMeshGeometryConfigBase baseConfig);
 
     CORE_NODISCARD const Geometry::Sphere<double_t>& getGeometryElement() const;
     void setGeometryElement(const Geometry::Sphere<double_t>& sphere);

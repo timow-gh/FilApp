@@ -41,7 +41,16 @@ class FlowMeshModel {
             m_modelEventDispatcher.dispatchAdd(flowMeshGeometry);
     }
 
-    void remove(const FGuid& fGuid);
+    void remove(FGuid fGuid);
+
+    template <typename TGeometryElement>
+    TGeometryElement* get(const FGuid& guid)
+    {
+        return m_geometryElements.get<TGeometryElement>(guid);
+    }
+
+    void update(const FGuid& guid);
+
     void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
 
     CORE_NODISCARD SnapGeometries calcModelSnapGeometries() const;

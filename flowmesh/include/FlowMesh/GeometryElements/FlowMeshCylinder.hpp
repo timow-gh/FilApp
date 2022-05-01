@@ -3,6 +3,7 @@
 
 #include <FlowMesh/FlowMeshGuid.hpp>
 #include <FlowMesh/GeometryElements/GeometryElementBase.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp>
 #include <Geometry/Cylinder.hpp>
 #include <Geometry/Segment.hpp>
 
@@ -14,7 +15,8 @@ class FlowMeshCylinder : public GeometryElementBase<FlowMeshCylinder> {
 
   public:
     FlowMeshCylinder();
-    FlowMeshCylinder(const Geometry::Cylinder<double_t>& cylinder, const FGuid& fGuid);
+    FlowMeshCylinder(const Geometry::Cylinder<double_t>& cylinder, const FGuid& fGuid,
+                     FlowMeshGeometryConfigBase baseConfig);
 
     [[nodiscard]] const Geometry::Cylinder<double_t>& getGeometryElement() const;
 };

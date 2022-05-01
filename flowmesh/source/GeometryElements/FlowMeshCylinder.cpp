@@ -7,13 +7,15 @@ namespace FlowMesh
 {
 
 FlowMeshCylinder::FlowMeshCylinder()
-    : GeometryElementBase<FlowMeshCylinder>(FGuid())
+    : GeometryElementBase<FlowMeshCylinder>(FGuid(), FlowMeshGeometryConfigBase{})
     , m_cylinder(Cylinder<double_t>(Segment3d{ZERO_VEC3D, Z_VEC3D}, 1.0))
 {
 }
 
-FlowMeshCylinder::FlowMeshCylinder(const Cylinder<double_t>& cylinder, const FGuid& fGuid)
-    : GeometryElementBase<FlowMeshCylinder>(fGuid), m_cylinder(cylinder)
+FlowMeshCylinder::FlowMeshCylinder(const Cylinder<double_t>& cylinder,
+                                   const FGuid& fGuid,
+                                   FlowMeshGeometryConfigBase baseConfig)
+    : GeometryElementBase<FlowMeshCylinder>(fGuid, baseConfig), m_cylinder(cylinder)
 {
 }
 

@@ -7,7 +7,6 @@ add_library(graphics_interface INTERFACE
         include/GraphicsInterface/InputEvents/RayPickEventListener.hpp
         include/GraphicsInterface/InputEvents/PickRayMoveEvent.hpp
         include/GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp
-        include/GraphicsInterface/InputEvents/DispatcherBase.hpp
         include/GraphicsInterface/InputEvents/MouseButtonEvent.hpp
         include/GraphicsInterface/Renderables/RendereableId.hpp
         include/GraphicsInterface/Renderables/PointRenderable.hpp

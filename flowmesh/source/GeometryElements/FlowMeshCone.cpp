@@ -9,13 +9,14 @@ namespace FlowMesh
 {
 
 FlowMeshCone::FlowMeshCone()
-    : GeometryElementBase<FlowMeshCone>(FGuid())
+    : GeometryElementBase<FlowMeshCone>(FGuid(), FlowMeshGeometryConfigBase{})
     , m_cone(Cone<double_t>(Segment3d{ZERO_VEC3D, Z_VEC3D}, 1.0))
 {
 }
 
-FlowMeshCone::FlowMeshCone(const Cone<double_t>& cone, const FGuid& fGuid)
-    : GeometryElementBase<FlowMeshCone>(fGuid), m_cone(cone)
+FlowMeshCone::FlowMeshCone(const Cone<double_t>& cone, const FGuid& fGuid,
+                           FlowMeshGeometryConfigBase baseConfig)
+    : GeometryElementBase<FlowMeshCone>(fGuid, baseConfig), m_cone(cone)
 {
 }
 

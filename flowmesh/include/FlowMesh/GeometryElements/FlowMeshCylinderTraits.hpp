@@ -2,9 +2,10 @@
 #define FILAPP_FLOWMESHCYLINDERTRAITS_HPP
 
 #include <Core/Utils/Compiler.hpp>
-#include <LinAl/LinearAlgebra.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshCylinder.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGeometryTraits.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh
 {
@@ -15,6 +16,7 @@ struct CylinderTraitsConfig
     T radius{1.0};
     LinAl::Vec3<T> start{0, 0, 0};
     LinAl::Vec3<T> end{0, 0, 1.0};
+    FlowMeshGeometryConfigBase baseConfig;
 };
 
 template <typename T>
@@ -24,7 +26,8 @@ struct FlowMeshGeometryTraits<FlowMeshCylinder, CylinderTraitsConfig<T>>
     {
         return FlowMeshCylinder{
             Geometry::Cylinder<T>{Geometry::Segment3<T>{config.start, config.end}, config.radius},
-            newFGuid()};
+            newFGuid(),
+            config.baseConfig};
     }
 };
 

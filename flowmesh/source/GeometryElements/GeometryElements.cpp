@@ -2,6 +2,7 @@
 
 namespace FlowMesh
 {
+
 template <typename TGeometryElement,
           template <typename K,
                     typename V,
@@ -90,38 +91,6 @@ bool GeometryElements::add(const FlowMeshGrid& grid)
     return addImpl(grid, m_grid);
 }
 
-const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSegments>&
-GeometryElements::getSegmentMap() const
-{
-    return m_segments;
-}
-
-const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSphere>& GeometryElements::getSphereMap() const
-{
-    return m_spheres;
-}
-
-const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshCone>& GeometryElements::getConeMap() const
-{
-    return m_cones;
-}
-
-const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshCylinder>&
-GeometryElements::getCylinderMap() const
-{
-    return m_cylinder;
-}
-
-const Core::TMap<FGuid, FlowMeshCuboid>& GeometryElements::getCuboidMap() const
-{
-    return m_cuboid;
-}
-
-const Core::TMap<FGuid, FlowMeshGrid>& GeometryElements::getGridMap() const
-{
-    return m_grid;
-}
-
 bool GeometryElements::remove(const FGuid& fGuid)
 {
     bool removedSegment = removeElement(m_segments, fGuid);
@@ -162,6 +131,38 @@ std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
     aggregateGuids(guids, m_grid);
 
     return guids;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSegments>&
+GeometryElements::getSegmentMap() const
+{
+    return m_segments;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshSphere>& GeometryElements::getSphereMap() const
+{
+    return m_spheres;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshCone>& GeometryElements::getConeMap() const
+{
+    return m_cones;
+}
+
+const Core::TMap<FlowMesh::FGuid, FlowMesh::FlowMeshCylinder>&
+GeometryElements::getCylinderMap() const
+{
+    return m_cylinder;
+}
+
+const Core::TMap<FGuid, FlowMeshCuboid>& GeometryElements::getCuboidMap() const
+{
+    return m_cuboid;
+}
+
+const Core::TMap<FGuid, FlowMeshGrid>& GeometryElements::getGridMap() const
+{
+    return m_grid;
 }
 
 } // namespace FlowMesh

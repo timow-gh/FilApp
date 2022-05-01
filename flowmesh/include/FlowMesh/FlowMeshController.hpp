@@ -7,6 +7,7 @@
 #include <FlowMesh/GeometryElements/FlowMeshCylinderTraits.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshSphereTraits.hpp>
 #include <FlowMesh/Interactors/CommandInteractor.hpp>
+#include <FlowMesh/Interactors/FlowMeshGridInteractor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
 #include <GraphicsInterface/GraphicsController.hpp>
@@ -22,6 +23,7 @@ class FlowMeshController : public Graphics::GraphicsController {
     FlowMeshModel* m_flowMeshModel{nullptr};
 
     std::unique_ptr<CommandInteractor> m_commandInteractor{nullptr};
+    std::unique_ptr<FlowMeshGridInteractor> m_flowMeshGridInteractor{nullptr};
     std::unique_ptr<Graphics::GraphicsController> m_currentInteractor{nullptr};
 
   public:
@@ -35,6 +37,11 @@ class FlowMeshController : public Graphics::GraphicsController {
         controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
         flowMeshPresenter->registerListener(controller.get());
         controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
+
+        controller->m_flowMeshGridInteractor =
+            FlowMeshGridInteractor::create(*flowMeshModel, FlowMeshGrid{});
+        flowMeshPresenter->registerRayPickEventListener(controller->m_flowMeshGridInteractor.get());
+
         return controller;
     }
 

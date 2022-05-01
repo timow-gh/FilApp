@@ -34,7 +34,8 @@ void createSpheres(FlowMeshModel& model)
                 Sphere<double_t>(
                     Vec3d{static_cast<double_t>(i) * DIST, static_cast<double_t>(j) * DIST, 0},
                     RADIUS),
-                id));
+                id,
+                FlowMeshGeometryConfigBase{}));
         }
     }
 
@@ -46,32 +47,39 @@ void createCones(FlowMeshModel& model)
     // x
     model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}}, 0.1),
-        newFGuid()));
+        newFGuid(),
+        FlowMeshGeometryConfigBase{}));
 
     // y
     model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}}, 0.1),
-        newFGuid()));
+        newFGuid(),
+        FlowMeshGeometryConfigBase{}));
     model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0.5, 0}, LinAl::Vec3d{0, 1.0, 0}}, 0.1),
-        newFGuid()));
+        newFGuid(),
+        FlowMeshGeometryConfigBase{}));
 
     // z
     model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}}, 0.1),
-        newFGuid()));
+        newFGuid(),
+        FlowMeshGeometryConfigBase{}));
     model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0.5}, LinAl::Vec3d{0, 0, 1.0}}, 0.1),
-        newFGuid()));
+        newFGuid(),
+        FlowMeshGeometryConfigBase{}));
     model.add(FlowMeshCone(
         Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 1.0}, LinAl::Vec3d{0, 0, 1.5}}, 0.1),
-        newFGuid()));
+        newFGuid(),
+        FlowMeshGeometryConfigBase{}));
 }
 
 int main()
 {
     AppConfig appConfig;
     appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
+    appConfig.backendMode = Graphics::BackendMode::VULKAN;
 
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
         FilApplication::getFilApp(appConfig, WindowConfig());
@@ -81,7 +89,6 @@ int main()
     FlowMeshModel flowMeshModel;
     flowMeshModel.registerListener(&flowMeshPresenter);
 
-    flowMeshModel.add(FlowMeshGrid{});
     createSpheres(flowMeshModel);
     createCones(flowMeshModel);
 
