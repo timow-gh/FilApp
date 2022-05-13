@@ -27,12 +27,6 @@ void SnapGeometries::add(const LinAl::Vec3dVector& snapPoints)
         add(vec);
 }
 
-void SnapGeometries::remove(const LinAl::Vec3d& snapPoint)
-{
-    auto eraseIter = std::remove(m_snapPoints.begin(), m_snapPoints.end(), snapPoint);
-    m_snapPoints.erase(eraseIter, m_snapPoints.end());
-}
-
 void SnapGeometries::add(const Geometry::Segment3d& segment)
 {
     for (const LinAl::Vec3d& vec: {segment.getSource(), segment.getTarget()})
@@ -50,21 +44,16 @@ void SnapGeometries::add(const Geometry::Circle3d& circle)
         add(LinAl::hVecToVec3(LinAl::HVecd{transformation * vec}));
 }
 
-void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere,
-                         const LinAl::HMatrixd& transformation)
+void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere)
 {
-    auto transformedSphere = Geometry::transformation(sphere, transformation);
-    m_snapSpheres.push_back(transformedSphere);
+    m_snapSpheres.push_back(sphere);
 
-    double_t radius = transformedSphere.getRadius();
-    add(Geometry::Circle3d{transformedSphere.getOrigin(), radius, LinAl::Z_VEC3D});
-    for (const LinAl::HVecd& hVec:
-         {LinAl::HVecd{0.0, 0.0, 1.0 * radius, 1.0}, LinAl::HVecd{0.0, 0.0, -1.0 * radius, 1.0}})
-    {
-        LinAl::HVecd transformedVec = transformation * hVec;
-        transformedVec += LinAl::vec3ToHVec(sphere.getOrigin());
-        add(LinAl::hVecToVec3(transformedVec));
-    }
+    double_t radius = sphere.getRadius();
+    LinAl::Vec3d origin = sphere.getOrigin();
+    add(Geometry::Circle3d{origin, radius, LinAl::Z_VEC3D});
+    for (const LinAl::Vec3d& vec:
+         {LinAl::Vec3d{0.0, 0.0, 1.0 * radius}, LinAl::Vec3d{0.0, 0.0, -1.0 * radius}})
+        add(origin + vec);
 }
 
 void SnapGeometries::add(const Geometry::Cylinder<double_t>& cylinder)
@@ -89,6 +78,12 @@ void SnapGeometries::add(const Geometry::Cuboid<double_t>& cuboid)
 {
     for (const LinAl::Vec3d& cuboidVertex: Geometry::calcCuboidVertices(cuboid))
         add(cuboidVertex);
+}
+
+void SnapGeometries::remove(const LinAl::Vec3d& snapPoint)
+{
+    auto eraseIter = std::remove(m_snapPoints.begin(), m_snapPoints.end(), snapPoint);
+    m_snapPoints.erase(eraseIter, m_snapPoints.end());
 }
 
 std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d& placementRay) const
@@ -156,6 +151,22 @@ void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& snapPoints,
         if (intersection.second)
             snapPoints.push_back(*intersection.second);
     }
+}
+
+void SnapGeometries::add(const FlowMeshSphere& flowMeshSphere)
+{
+    const auto& sphere = flowMeshSphere.getGeometryElement();
+    const auto& trafo = flowMeshSphere.getTransformation();
+
+    auto transformedSphere = Geometry::transformation(sphere, trafo);
+    m_snapSpheres.push_back(transformedSphere);
+
+    double_t radius = transformedSphere.getRadius();
+    const auto& transformedOrigin = transformedSphere.getOrigin();
+    LinAl::Vec3d transformedZVec = Geometry::transformation(LinAl::Z_VEC3D, trafo);
+    add(Geometry::Circle3d{transformedOrigin, radius, transformedZVec});
+    add(LinAl::Vec3d{transformedZVec * radius});
+    add(LinAl::Vec3d{-transformedZVec * radius});
 }
 
 } // namespace FlowMesh

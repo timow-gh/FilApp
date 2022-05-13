@@ -19,7 +19,7 @@ struct SphereTraitsConfig
 };
 
 template <typename T>
-struct FlowMeshGeometryTraits<FlowMeshSphere, SphereTraitsConfig<T>>
+struct FlowMeshGeometryTraits<FlowMeshSphere, SphereTraitsConfig, T>
 {
     CORE_NODISCARD static FlowMeshSphere create(const SphereTraitsConfig<T>& config)
     {

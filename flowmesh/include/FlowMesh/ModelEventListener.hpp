@@ -26,7 +26,7 @@ class ModelEventListener {
     virtual ~ModelEventListener() = default;
 
     virtual void onPreAddEvent(){};
-    virtual void onPostAddEvent(){};
+    virtual void onModelPostAddEvent(){};
 
     virtual void onAdd(const FlowMeshCylinder& flowMeshCylinder) {}
     virtual void onAdd(const FlowMeshCone& flowMeshCone) {}

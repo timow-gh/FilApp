@@ -44,8 +44,7 @@ class PlacingInteractor
 
     void onRemoveRayPickEventListener() override;
 
-    // ModelEventListener
-    void onPostAddEvent();
+    void onModelPostAddEvent() override;
 };
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
@@ -86,7 +85,7 @@ void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
 
     m_geomConfig.baseConfig.isSnapGeometry = false;
     TFlowMeshGeometry nextFlowMeshGeometry =
-        FlowMeshGeometryTraits<TFlowMeshGeometry, TGeomConfig<T>>::create(m_geomConfig);
+        FlowMeshGeometryTraits<TFlowMeshGeometry, TGeomConfig, T>::create(m_geomConfig);
     m_model->add(nextFlowMeshGeometry);
     m_geometryGuid = nextFlowMeshGeometry.getFGuid();
     m_model->setPosition(*m_geometryGuid, *intersection);
@@ -104,7 +103,7 @@ void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
     {
         m_geomConfig.baseConfig.isSnapGeometry = false;
         auto geomElem =
-            FlowMeshGeometryTraits<TFlowMeshGeometry, TGeomConfig<T>>::create(m_geomConfig);
+            FlowMeshGeometryTraits<TFlowMeshGeometry, TGeomConfig, T>::create(m_geomConfig);
         m_geometryGuid = geomElem.getFGuid();
         m_model->add(geomElem);
     }
@@ -120,7 +119,7 @@ void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onRemoveRayPickEventL
 }
 
 template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onPostAddEvent()
+void PlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onModelPostAddEvent()
 {
     m_snapGeometries = m_model->calcModelSnapGeometries();
 }

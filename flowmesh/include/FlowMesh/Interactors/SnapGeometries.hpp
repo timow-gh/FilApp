@@ -3,6 +3,7 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
+#include <FlowMesh/GeometryElements/FlowMeshSphere.hpp>
 #include <Geometry/Circle.hpp>
 #include <Geometry/Cone.hpp>
 #include <Geometry/Cuboid.hpp>
@@ -27,14 +28,16 @@ class SnapGeometries {
 
     void add(const LinAl::Vec3d& snapPoint);
     void add(const LinAl::Vec3dVector& snapPoints);
-    void remove(const LinAl::Vec3d& snapPoint);
-
     void add(const Geometry::Segment3d& segment);
     void add(const Geometry::Circle3d& circle);
-    void add(const Geometry::Sphere<double_t>& sphere, const LinAl::HMatrixd& transformation);
+    void add(const Geometry::Sphere<double_t>& sphere);
     void add(const Geometry::Cylinder<double_t>& cylinder);
     void add(const Geometry::Cone<double_t>& cone);
     void add(const Geometry::Cuboid<double_t>& cuboid);
+
+    void add(const FlowMeshSphere& flowMeshSphere);
+
+    void remove(const LinAl::Vec3d& snapPoint);
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     calcSnapPoint(const Geometry::Ray3d& placementRay) const;

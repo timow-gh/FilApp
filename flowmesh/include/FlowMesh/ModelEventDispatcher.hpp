@@ -33,7 +33,7 @@ class ModelEventDispatcher {
         {
             listener->onPreAddEvent();
             listener->onAdd(element);
-            listener->onPostAddEvent();
+            listener->onModelPostAddEvent();
         }
     }
 

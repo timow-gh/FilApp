@@ -20,7 +20,7 @@ struct ConeTraitsConfig
 };
 
 template <typename T>
-struct FlowMeshGeometryTraits<FlowMeshCone, ConeTraitsConfig<T>>
+struct FlowMeshGeometryTraits<FlowMeshCone, ConeTraitsConfig, T>
 {
     CORE_NODISCARD static FlowMeshCone create(const ConeTraitsConfig<T>& config)
     {

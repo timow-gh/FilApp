@@ -20,7 +20,7 @@ struct CylinderTraitsConfig
 };
 
 template <typename T>
-struct FlowMeshGeometryTraits<FlowMeshCylinder, CylinderTraitsConfig<T>>
+struct FlowMeshGeometryTraits<FlowMeshCylinder, CylinderTraitsConfig, T>
 {
     CORE_NODISCARD static FlowMeshCylinder create(const CylinderTraitsConfig<T>& config)
     {

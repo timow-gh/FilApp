@@ -19,7 +19,7 @@ struct CuboidTraitsConfig
 };
 
 template <typename T>
-struct FlowMeshGeometryTraits<FlowMeshCuboid, CuboidTraitsConfig<T>>
+struct FlowMeshGeometryTraits<FlowMeshCuboid, CuboidTraitsConfig, T>
 {
     CORE_NODISCARD static FlowMeshCuboid create(const CuboidTraitsConfig<T>& config)
     {

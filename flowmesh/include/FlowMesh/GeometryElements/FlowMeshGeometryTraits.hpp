@@ -6,9 +6,13 @@
 namespace FlowMesh
 {
 
-template <typename TFlowMeshGeometry, typename TGeomConfig>
+template <typename TFlowMeshGeometry, template<typename> typename TGeomConfig, typename T>
 struct FlowMeshGeometryTraits
 {
+    CORE_NODISCARD static TFlowMeshGeometry create(const TGeomConfig<T>& config)
+    {
+        static_assert(sizeof(0) && "create not implemented.");
+    }
 };
 
 } // namespace FlowMesh

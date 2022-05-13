@@ -10,6 +10,7 @@
 #include <Geometry/Transformation/TransformCuboid.hpp>
 #include <Geometry/Transformation/TransformCylinder.hpp>
 #include <Geometry/Transformation/TransformSegment.hpp>
+#include <Geometry/Transformation/TransformSphere.hpp>
 #include <Geometry/Transformation/TransformVec.hpp>
 
 namespace FlowMesh
@@ -54,7 +55,8 @@ SnapGeometries FlowMeshModel::calcModelSnapGeometries() const
 
     for (const auto& pair: m_geometryElements.getSphereMap())
         if (pair.second.getIsSnapGeometry())
-            result.add(pair.second.getGeometryElement(), pair.second.getTransformation());
+            result.add(Geometry::transformation(pair.second.getGeometryElement(),
+                                                pair.second.getTransformation()));
 
     for (const auto& pair: m_geometryElements.getCylinderMap())
         if (pair.second.getIsSnapGeometry())
