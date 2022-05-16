@@ -16,7 +16,6 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/InteractorKeyMap.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/SnapGeometries.hpp
-        include/FlowMesh/Interactors/FlowMeshGridInteractor.cpp
         include/FlowMesh/Interactors/FlowMeshGridInteractor.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshGuid.hpp
@@ -38,6 +37,7 @@ set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshCuboid.cpp
         source/GeometryElements/FlowMeshGrid.cpp
         source/Interactors/CommandInteractor.cpp
+        source/Interactors/FlowMeshGridInteractor.cpp
         source/Interactors/SnapGeometries.cpp
         source/FlowMeshPresenter.cpp
         source/FlowMeshModel.cpp)
