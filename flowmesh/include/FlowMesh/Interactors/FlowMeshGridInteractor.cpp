@@ -1,5 +1,6 @@
 #include "FlowMeshGridInteractor.hpp"
 #include <Core/Math/Eps.hpp>
+#include <FlowMesh/LinAlConversion.hpp>
 
 namespace FlowMesh
 {
@@ -16,15 +17,17 @@ FlowMeshGridInteractor::FlowMeshGridInteractor(FlowMeshModel& model, const FGuid
 {
 }
 
+void FlowMeshGridInteractor::onEvent(const Graphics::PickRayEvent& pickRayEvent)
+{
+    RayPickEventListener::onEvent(pickRayEvent);
+}
+
 void FlowMeshGridInteractor::onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent)
 {
     Geometry::Plane<double_t> plane{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D};
 
-    const Graphics::Vec3& pickOrigin = pickRayMoveEvent.origin;
-    const Graphics::Vec3& pickDirection = pickRayMoveEvent.direction;
-    const Geometry::Ray3<double_t> ray{
-        LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
-        LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
+    const Geometry::Ray3<double_t> ray{vec3ToLinAlVec3<double_t>(pickRayMoveEvent.origin),
+                                       vec3ToLinAlVec3<double_t>(pickRayMoveEvent.direction)};
 
     std::optional<LinAl::Vec3d> result = plane.intersection(ray);
     if (!result)

@@ -13,7 +13,7 @@ class FlowMeshGridInteractor : public Graphics::RayPickEventListener {
     double_t m_updateDistance{6.0};
     double_t m_diffUpdateDistance{2.0};
     FlowMeshGrid m_minimalGrid{};
-    LinAl::Vec3d m_pevGridIntersectionPoint{0,0,0};
+    LinAl::Vec3d m_pevGridIntersectionPoint{0, 0, 0};
     FGuid m_gridGuid;
 
   public:
@@ -23,6 +23,7 @@ class FlowMeshGridInteractor : public Graphics::RayPickEventListener {
   private:
     FlowMeshGridInteractor(FlowMeshModel& model, const FGuid& fGuid);
 
+    void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;
     void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
 };
 

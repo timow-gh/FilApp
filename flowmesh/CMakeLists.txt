@@ -16,16 +16,18 @@ set(FLOWMESH_PUBLIC_HEADERS
         include/FlowMesh/Interactors/InteractorKeyMap.hpp
         include/FlowMesh/Interactors/PlacingInteractor.hpp
         include/FlowMesh/Interactors/SnapGeometries.hpp
+        include/FlowMesh/Interactors/FlowMeshGridInteractor.cpp
+        include/FlowMesh/Interactors/FlowMeshGridInteractor.hpp
         include/FlowMesh/FlowMeshController.hpp
         include/FlowMesh/FlowMeshGuid.hpp
         include/FlowMesh/FlowMeshModel.hpp
         include/FlowMesh/ModelEventDispatcher.hpp
         include/FlowMesh/PresenterConfig.hpp
         include/FlowMesh/FlowMeshPresenter.hpp
+        include/FlowMesh/LinAlConversion.hpp
         include/FlowMesh/ModelEventListener.hpp
         include/FlowMesh/PresenterUtils.hpp
-        include/FlowMesh/Interactors/FlowMeshGridInteractor.cpp
-        include/FlowMesh/Interactors/FlowMeshGridInteractor.hpp include/FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp)
+        include/FlowMesh/GeometryElements/FlowMeshGeometryConfigBase.hpp)
 
 set(FLOWMESH_SOURCES
         source/GeometryElements/FlowMeshSegments.cpp
