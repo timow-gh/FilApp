@@ -2,10 +2,10 @@
 #define FILAPP_INPUTEVENTDISPATCHER_HPP
 
 #include <Core/Types/TVector.hpp>
-#include <GraphicsInterface/InputEvents/InputEventListener.hpp>
-#include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
-#include <GraphicsInterface/InputEvents/MouseMoveEvent.hpp>
-#include <GraphicsInterface/InputEvents/MouseWheelEvent.hpp>
+#include <Graphics/InputEvents/InputEventListener.hpp>
+#include <Graphics/InputEvents/MouseButtonEvent.hpp>
+#include <Graphics/InputEvents/MouseMoveEvent.hpp>
+#include <Graphics/InputEvents/MouseWheelEvent.hpp>
 
 namespace Graphics
 {

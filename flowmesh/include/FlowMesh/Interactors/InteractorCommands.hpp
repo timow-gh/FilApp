@@ -3,8 +3,8 @@
 
 #include <Core/Types/THashMap.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
-#include <GraphicsInterface/InputEvents/KeyEvent.hpp>
-#include <GraphicsInterface/InputEvents/KeyScancode.hpp>
+#include <Graphics/InputEvents/KeyEvent.hpp>
+#include <Graphics/InputEvents/KeyScancode.hpp>
 
 namespace FlowMesh
 {

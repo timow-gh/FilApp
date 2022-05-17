@@ -1,10 +1,10 @@
 #ifndef FILAPP_VIEWCONFIG_HPP
 #define FILAPP_VIEWCONFIG_HPP
 
-#include <GraphicsInterface/RGBAColor.hpp>
-#include <GraphicsInterface/Vec.hpp>
-#include <GraphicsInterface/Viewport.hpp>
-#include <GraphicsInterface/WindowConfig.hpp>
+#include <Graphics/RGBAColor.hpp>
+#include <Graphics/Vec.hpp>
+#include <Graphics/Viewport.hpp>
+#include <Graphics/WindowConfig.hpp>
 #include <string>
 
 namespace Graphics

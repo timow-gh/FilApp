@@ -3,11 +3,11 @@
 
 #include <FilApp/FilAppCameraView.hpp>
 #include <FilApp/FilApplication.hpp>
-#include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
-#include <GraphicsInterface/Window.hpp>
-#include <GraphicsInterface/WindowConfig.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/MouseButtonEvent.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Graphics/Window.hpp>
+#include <Graphics/WindowConfig.hpp>
 #include <SDL_video.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>

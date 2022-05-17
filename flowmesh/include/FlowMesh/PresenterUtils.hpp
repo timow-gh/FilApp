@@ -1,7 +1,7 @@
 #ifndef FILAPP_PRESENTERUTILS_HPP
 #define FILAPP_PRESENTERUTILS_HPP
 
-#include <GraphicsInterface/Vertex.hpp>
+#include <Graphics/Vertex.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh

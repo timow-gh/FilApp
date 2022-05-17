@@ -17,7 +17,7 @@ class FlowMeshGrid : public GeometryElementBase<FlowMeshGrid> {
     double_t m_minYLength{-10.0};
     double_t m_maxXLength{10.0};
     double_t m_maxYLength{10.0};
-    double_t m_stepWidth{5.0};
+    double_t m_stepWidth{1.0};
     double_t m_maxLength{1000.0};
     LinAl::Vec3dVector m_intersectionPoints;
     Core::TVector<Geometry::Segment3d> m_segments;

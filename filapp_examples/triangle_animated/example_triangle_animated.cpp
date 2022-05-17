@@ -1,7 +1,7 @@
 #include <FilApp/FilApplication.hpp>
-#include <GraphicsInterface/Renderables/TriangleRenderable.hpp>
-#include <GraphicsInterface/Vec.hpp>
-#include <GraphicsInterface/View.hpp>
+#include <Graphics/Renderables/TriangleRenderable.hpp>
+#include <Graphics/Vec.hpp>
+#include <Graphics/View.hpp>
 
 using namespace Graphics;
 

@@ -13,9 +13,9 @@
 #include <FlowMesh/ModelEventDispatcher.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
-#include <GraphicsInterface/GraphicsController.hpp>
-#include <GraphicsInterface/Renderables/RendereableId.hpp>
-#include <GraphicsInterface/View.hpp>
+#include <Graphics/GraphicsController.hpp>
+#include <Graphics/Renderables/RendereableId.hpp>
+#include <Graphics/View.hpp>
 
 namespace Graphics
 {

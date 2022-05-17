@@ -1,10 +1,10 @@
 #ifndef FILAPP_INPUTEVENTLISTENER_HPP
 #define FILAPP_INPUTEVENTLISTENER_HPP
 
-#include <GraphicsInterface/InputEvents/KeyEvent.hpp>
-#include <GraphicsInterface/InputEvents/MouseButtonEvent.hpp>
-#include <GraphicsInterface/InputEvents/MouseMoveEvent.hpp>
-#include <GraphicsInterface/InputEvents/MouseWheelEvent.hpp>
+#include <Graphics/InputEvents/KeyEvent.hpp>
+#include <Graphics/InputEvents/MouseButtonEvent.hpp>
+#include <Graphics/InputEvents/MouseMoveEvent.hpp>
+#include <Graphics/InputEvents/MouseWheelEvent.hpp>
 
 namespace Graphics
 {

@@ -10,12 +10,12 @@
 #include <FlowMesh/ModelEventListener.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
-#include <GraphicsInterface/GraphicsController.hpp>
-#include <GraphicsInterface/InputEvents/InputEventListener.hpp>
-#include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
-#include <GraphicsInterface/InputEvents/PickRayMoveEvent.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
+#include <Graphics/GraphicsController.hpp>
+#include <Graphics/InputEvents/InputEventListener.hpp>
+#include <Graphics/InputEvents/PickRayEvent.hpp>
+#include <Graphics/InputEvents/PickRayMoveEvent.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <optional>
 
 namespace FlowMesh

@@ -2,7 +2,7 @@
 #define FILAPP_INTERACTORKEYMAP_HPP
 
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
-#include <GraphicsInterface/InputEvents/KeyScancode.hpp>
+#include <Graphics/InputEvents/KeyScancode.hpp>
 
 namespace FlowMesh
 {

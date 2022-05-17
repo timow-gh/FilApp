@@ -1,7 +1,7 @@
 #ifndef FILAPP_KEYEVENT_HPP
 #define FILAPP_KEYEVENT_HPP
 
-#include <GraphicsInterface/InputEvents/KeyScancode.hpp>
+#include <Graphics/InputEvents/KeyScancode.hpp>
 #include <cmath>
 #include <cstdint>
 

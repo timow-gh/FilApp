@@ -1,7 +1,7 @@
 #ifndef FILAPP_LINERENDERABLE_HPP
 #define FILAPP_LINERENDERABLE_HPP
 
-#include <GraphicsInterface/Vertex.hpp>
+#include <Graphics/Vertex.hpp>
 #include <cassert>
 #include <utility>
 #include <vector>

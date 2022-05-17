@@ -1,5 +1,5 @@
 #include <FilApp/FilApplication.hpp>
-#include <GraphicsInterface/View.hpp>
+#include <Graphics/View.hpp>
 
 using namespace Graphics;
 

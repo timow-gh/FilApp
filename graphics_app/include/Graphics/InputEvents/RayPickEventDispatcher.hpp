@@ -2,9 +2,9 @@
 #define FILAPP_RAYPICKEVENTDISPATCHER_HPP
 
 #include <Core/Types/TVector.hpp>
-#include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
-#include <GraphicsInterface/InputEvents/PickRayMoveEvent.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
+#include <Graphics/InputEvents/PickRayEvent.hpp>
+#include <Graphics/InputEvents/PickRayMoveEvent.hpp>
+#include <Graphics/InputEvents/RayPickEventListener.hpp>
 
 namespace Graphics
 {

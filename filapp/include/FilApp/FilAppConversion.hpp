@@ -1,12 +1,12 @@
 #ifndef FILAPP_FILAPPCONVERSION_HPP
 #define FILAPP_FILAPPCONVERSION_HPP
 
-#include <GraphicsInterface/AppConfig.hpp>
-#include <GraphicsInterface/InputEvents/KeyScancode.hpp>
-#include <GraphicsInterface/Vec.hpp>
-#include <GraphicsInterface/ViewConfig.hpp>
-#include <GraphicsInterface/Viewport.hpp>
-#include <GraphicsInterface/WindowConfig.hpp>
+#include <Graphics/AppConfig.hpp>
+#include <Graphics/InputEvents/KeyScancode.hpp>
+#include <Graphics/Vec.hpp>
+#include <Graphics/ViewConfig.hpp>
+#include <Graphics/Viewport.hpp>
+#include <Graphics/WindowConfig.hpp>
 #include <SDL_scancode.h>
 #include <camutils/Bookmark.h>
 #include <camutils/Manipulator.h>

@@ -2,8 +2,8 @@
 #define FILAPP_COMMANDINTERACTOR_HPP
 
 #include <FlowMesh/Interactors/InteractorKeyMap.hpp>
-#include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/InputEventListener.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/InputEventListener.hpp>
 
 namespace FlowMesh
 {

@@ -4,7 +4,7 @@
 #include <FlowMesh/FlowMeshModel.hpp>
 #include <FlowMesh/GeometryElements/FlowMeshGrid.hpp>
 #include <Geometry/Plane.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
+#include <Graphics/InputEvents/RayPickEventListener.hpp>
 
 namespace FlowMesh
 {

@@ -2,11 +2,11 @@
 #define FILAPP_FILAPPRENDERABLE_HPP
 
 #include <Core/Utils/Compiler.hpp>
-#include <GraphicsInterface/Renderables/LineRenderable.hpp>
-#include <GraphicsInterface/Renderables/PointRenderable.hpp>
-#include <GraphicsInterface/Renderables/RendereableId.hpp>
-#include <GraphicsInterface/Renderables/TriangleRenderable.hpp>
-#include <GraphicsInterface/Vertex.hpp>
+#include <Graphics/Renderables/LineRenderable.hpp>
+#include <Graphics/Renderables/PointRenderable.hpp>
+#include <Graphics/Renderables/RendereableId.hpp>
+#include <Graphics/Renderables/TriangleRenderable.hpp>
+#include <Graphics/Vertex.hpp>
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>

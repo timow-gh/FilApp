@@ -4,8 +4,8 @@
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
-#include <GraphicsInterface/View.hpp>
-#include <GraphicsInterface/ViewConfig.hpp>
+#include <Graphics/View.hpp>
+#include <Graphics/ViewConfig.hpp>
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>

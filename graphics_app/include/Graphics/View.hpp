@@ -1,16 +1,16 @@
 #ifndef FILAPP_VIEW_HPP
 #define FILAPP_VIEW_HPP
 
-#include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/InputEventListener.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
-#include <GraphicsInterface/Renderables/LineRenderable.hpp>
-#include <GraphicsInterface/Renderables/PointRenderable.hpp>
-#include <GraphicsInterface/Renderables/RendereableId.hpp>
-#include <GraphicsInterface/Renderables/TriangleRenderable.hpp>
-#include <GraphicsInterface/Vec.hpp>
-#include <GraphicsInterface/Viewport.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/InputEventListener.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventListener.hpp>
+#include <Graphics/Renderables/LineRenderable.hpp>
+#include <Graphics/Renderables/PointRenderable.hpp>
+#include <Graphics/Renderables/RendereableId.hpp>
+#include <Graphics/Renderables/TriangleRenderable.hpp>
+#include <Graphics/Vec.hpp>
+#include <Graphics/Viewport.hpp>
 
 namespace Graphics
 {

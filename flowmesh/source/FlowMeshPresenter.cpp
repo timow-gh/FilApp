@@ -6,8 +6,8 @@
 #include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
-#include <GraphicsInterface/Vec.hpp>
-#include <GraphicsInterface/Vertex.hpp>
+#include <Graphics/Vec.hpp>
+#include <Graphics/Vertex.hpp>
 
 namespace FlowMesh
 {

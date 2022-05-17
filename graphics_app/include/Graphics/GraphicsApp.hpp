@@ -2,11 +2,11 @@
 #define FILAPP_GRAPHICSAPP_HPP
 
 #include <Core/Utils/Compiler.hpp>
-#include <GraphicsInterface/AppConfig.hpp>
-#include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
-#include <GraphicsInterface/Window.hpp>
-#include <GraphicsInterface/WindowConfig.hpp>
+#include <Graphics/AppConfig.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Graphics/Window.hpp>
+#include <Graphics/WindowConfig.hpp>
 #include <memory>
 
 namespace Graphics

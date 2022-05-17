@@ -1,7 +1,7 @@
 #ifndef FILAPP_PICKRAYEVENT_HPP
 #define FILAPP_PICKRAYEVENT_HPP
 
-#include <GraphicsInterface/Vec.hpp>
+#include <Graphics/Vec.hpp>
 #include <cmath>
 
 namespace Graphics

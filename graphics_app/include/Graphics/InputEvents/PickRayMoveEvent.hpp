@@ -1,7 +1,7 @@
 #ifndef FILAPP_PICKRAYMOVEEVENT_HPP
 #define FILAPP_PICKRAYMOVEEVENT_HPP
 
-#include <GraphicsInterface/InputEvents/PickRayEvent.hpp>
+#include <Graphics/InputEvents/PickRayEvent.hpp>
 
 namespace Graphics
 {

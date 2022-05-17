@@ -1,8 +1,8 @@
 #include <FilApp/FilApplication.hpp>
-#include <GraphicsInterface/Renderables/LineRenderable.hpp>
-#include <GraphicsInterface/Vertex.hpp>
-#include <GraphicsInterface/View.hpp>
-#include <GraphicsInterface/Window.hpp>
+#include <Graphics/Renderables/LineRenderable.hpp>
+#include <Graphics/Vertex.hpp>
+#include <Graphics/View.hpp>
+#include <Graphics/Window.hpp>
 
 using namespace Graphics;
 

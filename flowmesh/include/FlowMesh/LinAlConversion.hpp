@@ -1,7 +1,7 @@
 #ifndef FILAPP_LINALCONVERSION_HPP
 #define FILAPP_LINALCONVERSION_HPP
 
-#include <GraphicsInterface/Vec.hpp>
+#include <Graphics/Vec.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
 namespace FlowMesh

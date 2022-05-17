@@ -1,8 +1,8 @@
 #ifndef FILAPP_GRAPHICSCONTROLLER_HPP
 #define FILAPP_GRAPHICSCONTROLLER_HPP
 
-#include <GraphicsInterface/InputEvents/InputEventListener.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventListener.hpp>
+#include <Graphics/InputEvents/InputEventListener.hpp>
+#include <Graphics/InputEvents/RayPickEventListener.hpp>
 
 namespace Graphics
 {

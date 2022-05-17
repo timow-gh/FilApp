@@ -10,9 +10,9 @@
 #include <FlowMesh/Interactors/FlowMeshGridInteractor.hpp>
 #include <FlowMesh/Interactors/InteractorCommands.hpp>
 #include <FlowMesh/Interactors/PlacingInteractor.hpp>
-#include <GraphicsInterface/GraphicsController.hpp>
-#include <GraphicsInterface/InputEvents/InputEventDispatcher.hpp>
-#include <GraphicsInterface/InputEvents/RayPickEventDispatcher.hpp>
+#include <Graphics/GraphicsController.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <memory>
 
 namespace FlowMesh
