@@ -4,7 +4,7 @@
 #include <math/mat4.h>
 #include <math/vec4.h>
 
-namespace Graphics
+namespace FilApp
 {
 /*
  * The global filament coordinate system his defined with an y-Axis that points

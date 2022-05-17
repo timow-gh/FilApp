@@ -5,7 +5,9 @@
 #include <SDL_video.h>
 #include <utils/EntityManager.h>
 
-namespace Graphics
+using namespace Graphics;
+
+namespace FilApp
 {
 
 FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine)
@@ -252,4 +254,4 @@ Viewport FilAppWindow::calcWindowViewport()
     return {0, 0, static_cast<uint32_t>(m_width), static_cast<uint32_t>(m_height)};
 }
 
-} // namespace Graphics
+} // namespace FilApp

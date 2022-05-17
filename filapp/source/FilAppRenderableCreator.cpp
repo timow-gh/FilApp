@@ -4,7 +4,9 @@
 #include <generated/resources/filapp_resources.h>
 #include <math/vec3.h>
 
-namespace Graphics
+using namespace Graphics;
+
+namespace FilApp
 {
 FilAppRenderableCreator FilAppRenderableCreator::create(filament::Engine* engine)
 {
@@ -117,4 +119,4 @@ void FilAppRenderableCreator::destroyMaterials()
     }
 }
 
-} // namespace Graphics
+} // namespace FilApp

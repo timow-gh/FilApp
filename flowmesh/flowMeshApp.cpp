@@ -77,12 +77,12 @@ void createCones(FlowMeshModel& model)
 
 int main()
 {
-    AppConfig appConfig;
+    Graphics::AppConfig appConfig;
     appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
     appConfig.backendMode = Graphics::BackendMode::VULKAN;
 
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
-        FilApplication::getFilApp(appConfig, WindowConfig());
+        FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
 
     FlowMeshPresenter flowMeshPresenter{graphicsApp->getWindow().getMainIView()};
 

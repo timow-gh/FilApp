@@ -16,16 +16,17 @@
 #include <math/vec3.h>
 #include <math/vec4.h>
 
-namespace Graphics
+namespace FilApp
 {
 /*
  * Convenience functions to convert from filament data types to the interface
  * data types.
  */
 
-filament::Engine::Backend toFilamentBackend(BackendMode backendMode);
-filament::camutils::Mode toFilamentCameraMode(ViewConfig::CameraMode cameraMode);
-filament::Camera::Projection toFilamentProjection(ViewConfig::CameraProjection cameraProjection);
+filament::Engine::Backend toFilamentBackend(Graphics::BackendMode backendMode);
+filament::camutils::Mode toFilamentCameraMode(Graphics::ViewConfig::CameraMode cameraMode);
+filament::Camera::Projection
+toFilamentProjection(Graphics::ViewConfig::CameraProjection cameraProjection);
 
 /*
  * Fov is declared in filament::Camera and filament::camutils.
@@ -37,25 +38,27 @@ struct FilamentCamUtilsTag{};
 // clang-format on
 
 filament::camutils::Fov
-toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection, FilamentCamUtilsTag);
-filament::Camera::Fov toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection,
-                                             FilamentCameraTag);
+toFilamentFovDirection(Graphics::ViewConfig::FieldOfViewDirection fieldOfViewDirection,
+                       FilamentCamUtilsTag);
+filament::Camera::Fov
+toFilamentFovDirection(Graphics::ViewConfig::FieldOfViewDirection fieldOfViewDirection,
+                       FilamentCameraTag);
 
-filament::Viewport toFilamentViewport(const Viewport& viewport);
+filament::Viewport toFilamentViewport(const Graphics::Viewport& viewport);
 
-filament::math::float4 vec4ToFloat4(const Vec4& vec4);
-filament::math::float3 vec3ToFloat3(const Vec3& vec3);
-Vec3 float3ToVec3(const filament::math::float3& float3Vec);
-Vec4 float4ToVec4(const filament::math::float4& float4Vec);
+filament::math::float4 vec4ToFloat4(const Graphics::Vec4& vec4);
+filament::math::float3 vec3ToFloat3(const Graphics::Vec3& vec3);
+Graphics::Vec3 float3ToVec3(const filament::math::float3& float3Vec);
+Graphics::Vec4 float4ToVec4(const filament::math::float4& float4Vec);
 
-filament::math::float3 toFilamentCS(const Vec3& vec3);
-filament::math::float4 toFilamentCS(const Vec4& vec4);
-Vec3 toGlobalCS(const filament::math::float3& floatVec);
-Vec4 toGlobalCS(const filament::math::float4& floatVec);
+filament::math::float3 toFilamentCS(const Graphics::Vec3& vec3);
+filament::math::float4 toFilamentCS(const Graphics::Vec4& vec4);
+Graphics::Vec3 toGlobalCS(const filament::math::float3& floatVec);
+Graphics::Vec4 toGlobalCS(const filament::math::float4& floatVec);
 
-SDL_Scancode toSDLScancode(KeyScancode keyScancode);
-KeyScancode toKeyScancode(SDL_Scancode sdlScancode);
+SDL_Scancode toSDLScancode(Graphics::KeyScancode keyScancode);
+Graphics::KeyScancode toKeyScancode(SDL_Scancode sdlScancode);
 
-} // namespace Graphics
+} // namespace FilApp
 
 #endif // FILAPP_FILAPPCONVERSION_HPP

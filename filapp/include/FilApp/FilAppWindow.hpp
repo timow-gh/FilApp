@@ -15,10 +15,10 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Graphics
+namespace FilApp
 {
 
-class FilAppWindow : public Window {
+class FilAppWindow : public Graphics::Window {
     SDL_Window* m_sdlWindow = nullptr;
     Window::WindowId m_windowId{0};
     filament::Engine* m_engine = nullptr;
@@ -36,29 +36,29 @@ class FilAppWindow : public Window {
 
     std::unordered_map<SDL_Scancode, FilAppCameraView*> m_keyEventTarget;
 
-    InputEventDispatcher m_inputEventDispatcher;
-    RayPickEventDispatcher m_rayPickEventDispatcher;
+    Graphics::InputEventDispatcher m_inputEventDispatcher;
+    Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
 
   public:
-    FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine);
+    FilAppWindow(const Graphics::WindowConfig& windowConfig, filament::Engine* engine);
     FilAppWindow(FilAppWindow&& window) = default;
     FilAppWindow& operator=(FilAppWindow&& window) = default;
     ~FilAppWindow() override;
 
-    CORE_NODISCARD InputEventDispatcher& getInputEventDispatcher() override;
-    CORE_NODISCARD RayPickEventDispatcher& getRayPickEventDispatcher() override;
+    CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;
+    CORE_NODISCARD Graphics::RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
-    void event(const MouseButtonEvent& mouseButtonEvent);
-    void event(const MouseMoveEvent& mouseMoveEvent);
-    void event(const KeyEvent& keyEventr);
+    void event(const Graphics::MouseButtonEvent& mouseButtonEvent);
+    void event(const Graphics::MouseMoveEvent& mouseMoveEvent);
+    void event(const Graphics::KeyEvent& keyEventr);
     void mouseWheel(float_t x, double_t deltaT);
 
     void resize();
     void animate(double_t deltaT);
     void render();
 
-    CORE_NODISCARD View* getMainIView() override;
-    CORE_NODISCARD std::vector<View*> getIViews() override;
+    CORE_NODISCARD Graphics::View* getMainIView() override;
+    CORE_NODISCARD std::vector<Graphics::View*> getIViews() override;
 
     WindowId getIWindowId() override;
 
@@ -72,10 +72,10 @@ class FilAppWindow : public Window {
     CORE_NODISCARD filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const;
 
   private:
-    CORE_NODISCARD Viewport calcWindowViewport();
+    CORE_NODISCARD Graphics::Viewport calcWindowViewport();
 };
 
-bool intersects(const Viewport& viewport, size_t x, size_t y);
-} // namespace Graphics
+bool intersects(const Graphics::Viewport& viewport, size_t x, size_t y);
+} // namespace FilApp
 
 #endif // FILAPP_FILAPPWINDOW_HPP

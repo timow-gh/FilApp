@@ -2,10 +2,11 @@
 #define FILAPP_FILAPPRENDERABLECREATOR_HPP
 
 #include <FilApp/FilAppRenderable.hpp>
+#include <Graphics/Vertex.hpp>
 #include <map>
 #include <vector>
 
-namespace Graphics
+namespace FilApp
 {
 class FilAppRenderableCreator {
     enum class FilAppMaterialType
@@ -35,7 +36,7 @@ class FilAppRenderableCreator {
 
     FilAppRenderableCreator() = default;
 
-    FilAppRenderable createBakedColorRenderable(const std::vector<Vertex>& vertices,
+    FilAppRenderable createBakedColorRenderable(const std::vector<Graphics::Vertex>& vertices,
                                                 const std::vector<uint16_t>& indices,
                                                 PrimitiveType primitiveType);
 
@@ -46,6 +47,6 @@ class FilAppRenderableCreator {
     void createMaterials();
     [[nodiscard]] const MatPair& getMaterial(FilAppMaterialType filAppMaterialType) const;
 };
-} // namespace Graphics
+} // namespace FilApp
 
 #endif // FILAPP_FILAPPRENDERABLECREATOR_HPP

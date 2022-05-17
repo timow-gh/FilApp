@@ -7,7 +7,9 @@
 #include <memory>
 #include <utils/Panic.h>
 
-namespace Graphics
+using namespace Graphics;
+
+namespace FilApp
 {
 double_t FilApplication::m_prevTimeStep = 0;
 

@@ -3,7 +3,9 @@
 #include <FilApp/FilamentCoordinateSystem.hpp>
 #include <utils/Panic.h>
 
-namespace Graphics
+using namespace Graphics;
+
+namespace FilApp
 {
 filament::Engine::Backend toFilamentBackend(BackendMode backendMode)
 {
@@ -602,4 +604,4 @@ KeyScancode toKeyScancode(SDL_Scancode sdlScancode)
     }
 }
 
-} // namespace Graphics
+} // namespace FilApp

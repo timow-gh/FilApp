@@ -20,11 +20,11 @@
 #include <utils/Entity.h>
 #include <vector>
 
-namespace Graphics
+namespace FilApp
 {
 using AnimationCallBack = std::function<void(double_t now)>;
 
-class FilAppCameraView : public View {
+class FilAppCameraView : public Graphics::View {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 
@@ -40,16 +40,17 @@ class FilAppCameraView : public View {
     utils::Entity m_cameraEntity;
     utils::Entity m_globalTrafoComponent;
 
-    ViewConfig m_viewConfig;
+    Graphics::ViewConfig m_viewConfig;
     CameraManipulator::Bookmark m_cameraHomeBookMark;
     filament::Viewport m_filamentViewport;
 
-    InputEventDispatcher m_inputEventDispatcher;
-    RayPickEventDispatcher m_rayPickEventDispatcher;
+    Graphics::InputEventDispatcher m_inputEventDispatcher;
+    Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
 
-    std::map<RenderableId, std::unique_ptr<PointRenderable>> m_pointRenderables;
-    std::map<RenderableId, std::unique_ptr<LineRenderable>> m_lineRenderables;
-    std::map<RenderableId, std::unique_ptr<TriangleRenderable>> m_triangleRenderables;
+    std::map<Graphics::RenderableId, std::unique_ptr<Graphics::PointRenderable>> m_pointRenderables;
+    std::map<Graphics::RenderableId, std::unique_ptr<Graphics::LineRenderable>> m_lineRenderables;
+    std::map<Graphics::RenderableId, std::unique_ptr<Graphics::TriangleRenderable>>
+        m_triangleRenderables;
 
     FilAppRenderableCreator m_renderableCreator;
     std::vector<FilAppRenderable> m_filAppRenderables;
@@ -58,35 +59,36 @@ class FilAppCameraView : public View {
 
   public:
     FilAppCameraView() = default;
-    FilAppCameraView(const ViewConfig& viewConfig, filament::Renderer& renderer);
+    FilAppCameraView(const Graphics::ViewConfig& viewConfig, filament::Renderer& renderer);
     ~FilAppCameraView() override;
 
-    CORE_NODISCARD InputEventDispatcher& getInputEventDispatcher() override;
-    CORE_NODISCARD RayPickEventDispatcher& getRayPickEventDispatcher() override;
+    CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;
+    CORE_NODISCARD Graphics::RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
     // clang-format off
-    CORE_NODISCARD auto addRenderable(TriangleRenderable&& renderable) -> RenderableId override;
-    CORE_NODISCARD auto addRenderable(PointRenderable&& renderable) -> RenderableId override;
-    CORE_NODISCARD auto addRenderable(LineRenderable&& lineRenderable) -> RenderableId override;
-    CORE_NODISCARD auto getRenderableIdentifiers() const -> std::vector<RenderableId> override;
-    void removeRenderable(RenderableId id) override;
-    void updatePosition(RenderableId renderableId, const Vec3 & position) override;
+    CORE_NODISCARD auto addRenderable(Graphics::TriangleRenderable&& renderable) -> Graphics::RenderableId override;
+    CORE_NODISCARD auto addRenderable(Graphics::PointRenderable&& renderable) -> Graphics::RenderableId override;
+    CORE_NODISCARD auto addRenderable(Graphics::LineRenderable&& lineRenderable) -> Graphics::RenderableId override;
+    CORE_NODISCARD auto getRenderableIdentifiers() const -> std::vector<Graphics::RenderableId> override;
+    void removeRenderable(Graphics::RenderableId id) override;
+    void updatePosition(Graphics::RenderableId renderableId, const Graphics::Vec3 & position) override;
     void clearRenderables() override;
     // clang-format on
 
     void setUsePostprocessing(bool usePostProcessing) override;
 
-    void addRotationAnimation(RenderableId renderableIdentifier, const Vec3& rotationAxis) override;
+    void addRotationAnimation(Graphics::RenderableId renderableIdentifier,
+                              const Graphics::Vec3& rotationAxis) override;
 
-    CORE_NODISCARD Viewport getViewport() const override;
-    void updateViewPort(const Viewport& viewport);
+    CORE_NODISCARD Graphics::Viewport getViewport() const override;
+    void updateViewPort(const Graphics::Viewport& viewport);
     void setCamera(filament::Camera* camera);
-    void resize(const Viewport& viewport) override;
+    void resize(const Graphics::Viewport& viewport) override;
 
-    void onEvent(const MouseButtonEvent& mouseButtonEvent) override;
-    void onEvent(const MouseMoveEvent& mouseMoveEvent) override;
-    void onEvent(const MouseWheelEvent& mouseWheelEvent) override;
-    void onEvent(const KeyEvent& keyEvent) override;
+    void onEvent(const Graphics::MouseButtonEvent& mouseButtonEvent) override;
+    void onEvent(const Graphics::MouseMoveEvent& mouseMoveEvent) override;
+    void onEvent(const Graphics::MouseWheelEvent& mouseWheelEvent) override;
+    void onEvent(const Graphics::KeyEvent& keyEvent) override;
 
     void animate(double_t deltaT) override;
 
@@ -99,24 +101,23 @@ class FilAppCameraView : public View {
                                                          CameraManipulator::Key& key);
 
     //! Adds the global to filament transformation to all renderables.
-    CORE_NODISCARD RenderableId addRenderable(const FilAppRenderable& filAppRenderable);
+    CORE_NODISCARD Graphics::RenderableId addRenderable(const FilAppRenderable& filAppRenderable);
     void clearFilAppRenderables();
     void configureCameraProjection();
 
     template <typename V>
-    void eraseFromMap(std::map<RenderableId, V>& map, RenderableId id)
+    void eraseFromMap(std::map<Graphics::RenderableId, V>& map, Graphics::RenderableId id)
     {
         auto idIter = map.find(id);
         if (idIter != map.end())
             map.erase(idIter);
     }
 
-    void eraseRenderable(RenderableId id);
-    CORE_NODISCARD FilAppRenderable* findFilAppRenderable(RenderableId id);
-    CORE_NODISCARD PickRayEvent getPickRayMoveEvent(std::size_t x,
-                                                    std::size_t y,
-                                                    double_t time) const;
+    void eraseRenderable(Graphics::RenderableId id);
+    CORE_NODISCARD FilAppRenderable* findFilAppRenderable(Graphics::RenderableId id);
+    CORE_NODISCARD Graphics::PickRayEvent
+    getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const;
 };
-} // namespace Graphics
+} // namespace FilApp
 
 #endif // FILAPP_FILAPPCAMERAVIEW_HPP

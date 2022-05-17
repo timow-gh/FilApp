@@ -17,7 +17,9 @@
 #define DEBUG_CHECK_CAMERA_MANIP()
 #endif
 
-namespace Graphics
+using namespace Graphics;
+
+namespace FilApp
 {
 FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Renderer& renderer)
     : m_engine(renderer.getEngine()), m_name(viewConfig.name), m_viewConfig(viewConfig)

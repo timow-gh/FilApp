@@ -15,16 +15,15 @@ namespace filament
 class Engine;
 }
 
-// TODO Fix namespace
-namespace Graphics
+namespace FilApp
 {
 
 class FilAppWindow;
 
-class FILAPP_EXPORT FilApplication : public GraphicsApp {
+class FILAPP_EXPORT FilApplication : public Graphics::GraphicsApp {
   public:
     CORE_NODISCARD static std::shared_ptr<Graphics::GraphicsApp>
-    getFilApp(const AppConfig& appConfig, const WindowConfig& windowConfig);
+    getFilApp(const Graphics::AppConfig& appConfig, const Graphics::WindowConfig& windowConfig);
 
     FilApplication() = default;
     ~FilApplication() override;
@@ -36,7 +35,7 @@ class FILAPP_EXPORT FilApplication : public GraphicsApp {
     CORE_NODISCARD filament::Engine* getEngine();
     CORE_NODISCARD static double_t getDeltaT();
 
-    CORE_NODISCARD Window& getWindow() override;
+    CORE_NODISCARD Graphics::Window& getWindow() override;
     void run() override;
 
   private:
@@ -44,7 +43,8 @@ class FILAPP_EXPORT FilApplication : public GraphicsApp {
     static double_t m_prevTimeStep;
 
   public:
-    FilApplication(const AppConfig& appConfig, const WindowConfig& windowConfig);
+    FilApplication(const Graphics::AppConfig& appConfig,
+                   const Graphics::WindowConfig& windowConfig);
 
   private:
     filament::Engine* m_engine = nullptr;
@@ -52,8 +52,8 @@ class FILAPP_EXPORT FilApplication : public GraphicsApp {
     std::unique_ptr<FilAppWindow> m_window;
 
     bool m_closeApp = false;
-    AppConfig m_appConfig;
+    Graphics::AppConfig m_appConfig;
 };
-} // namespace Graphics
+} // namespace FilApp
 
 #endif // FILAPP_FILAPPLICATION_HPP

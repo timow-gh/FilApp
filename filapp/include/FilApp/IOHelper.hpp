@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math/vec3.h>
 
-namespace Graphics
+namespace FilApp
 {
 inline std::ostream& operator<<(std::ostream& os, const filament::math::float3& vec)
 {

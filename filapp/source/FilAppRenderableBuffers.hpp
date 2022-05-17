@@ -3,15 +3,16 @@
 
 #include <FilApp/FilAppRenderable.hpp>
 
-namespace Graphics
+namespace FilApp
 {
-void createVertexBuffer(FilAppRenderable* filAppRenderable, const std::vector<Vertex>& vertices);
+void createVertexBuffer(FilAppRenderable* filAppRenderable,
+                        const std::vector<Graphics::Vertex>& vertices);
 
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
-                        PointRenderable* pointRenderable,
+                        Graphics::PointRenderable* pointRenderable,
                         std::size_t VERTEX_SIZE);
 
 void createIndicesBuffer(FilAppRenderable* filAppRenderable, const std::vector<uint16_t>& indices);
-} // namespace Graphics
+} // namespace FilApp
 
 #endif // FILAPP_FILAPPRENDERABLEBUFFERS_HPP
