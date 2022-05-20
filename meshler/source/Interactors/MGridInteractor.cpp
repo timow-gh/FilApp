@@ -6,25 +6,22 @@
 namespace FlowMesh
 {
 
-std::unique_ptr<MGridInteractor> MGridInteractor::create(MModel& model,
-                                                                       const MGrid& grid)
+std::unique_ptr<MGridInteractor> MGridInteractor::create(MModel& model, const MGrid& grid)
 {
     model.add(grid);
     return std::make_unique<MGridInteractor>(
         MGridInteractor(model,
-                               Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
-                               grid.getFGuid()));
+                        Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
+                        grid.getFGuid()));
 }
 
-MGridInteractor::MGridInteractor(MModel& model,
-                                               Geometry::Plane<double_t> plane,
-                                               const FGuid& fGuid)
+MGridInteractor::MGridInteractor(MModel& model, Geometry::Plane<double_t> plane, const FGuid& fGuid)
     : m_model(&model), m_plane(std::move(plane)), m_activeGridGuid(fGuid)
 {
 }
 
 std::optional<LinAl::Vec3d>
-MGridInteractor::rayFromEvent(const Graphics::PickRayEvent& pickRayEvent) const
+MGridInteractor::rayIntersection(const Graphics::PickRayEvent& pickRayEvent) const
 {
 
     const Geometry::Ray3<double_t> ray{vec3ToLinAlVec3<double_t>(pickRayEvent.origin),
@@ -35,7 +32,7 @@ MGridInteractor::rayFromEvent(const Graphics::PickRayEvent& pickRayEvent) const
 
 void MGridInteractor::onEvent(const Graphics::PickRayEvent& pickRayEvent)
 {
-    std::optional<LinAl::Vec3d> result = rayFromEvent(pickRayEvent);
+    std::optional<LinAl::Vec3d> result = rayIntersection(pickRayEvent);
     if (!result)
         return;
     LinAl::Vec3d& vec = *result;
@@ -66,13 +63,14 @@ void MGridInteractor::onEvent(const Graphics::PickRayEvent& pickRayEvent)
 
 void MGridInteractor::onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent)
 {
-    std::optional<LinAl::Vec3d> result = rayFromEvent(pickRayMoveEvent);
+    std::optional<LinAl::Vec3d> result = rayIntersection(pickRayMoveEvent);
     if (!result)
         return;
 
     double_t diff = LinAl::norm2(LinAl::Vec3d{*result - m_pevGridIntersectionPoint});
     if (Core::isLess(diff, m_diffUpdateDistance))
         return;
+    m_pevGridIntersectionPoint = *result;
 
     double_t xCoord = (*result)[0];
     double_t yCoord = (*result)[1];

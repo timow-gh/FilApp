@@ -58,7 +58,7 @@ class FilAppWindow : public Graphics::Window {
     void render();
 
     CORE_NODISCARD Graphics::View* getMainIView() override;
-    CORE_NODISCARD std::vector<Graphics::View*> getIViews() override;
+    CORE_NODISCARD std::vector<Graphics::View*> getViews() override;
 
     WindowId getIWindowId() override;
 

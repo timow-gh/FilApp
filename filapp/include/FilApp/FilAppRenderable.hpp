@@ -41,8 +41,8 @@ struct FilAppRenderable
         auto& em = utils::EntityManager::get();
         em.destroy(renderableEntity);
         engine->destroy(renderableEntity);
-        engine->destroy(vb);
-        engine->destroy(ib);
+//        engine->destroy(vb);
+//        engine->destroy(ib);
         // FilAppRenderable does not own material and material instance
     }
 };
