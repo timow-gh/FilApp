@@ -50,7 +50,7 @@ jobs:
             CXX: clang++-10
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config.build_type }} --target FlowMeshApp
+        run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config.build_type }} --target MeshlerApp
 
       - name: Test
         working-directory: ${{github.workspace}}/build
