@@ -1,5 +1,5 @@
-#ifndef FILAPP_MOUSEBUTTONEVENT_HPP
-#define FILAPP_MOUSEBUTTONEVENT_HPP
+#ifndef GRAPHICS_MOUSEBUTTONEVENT_HPP
+#define GRAPHICS_MOUSEBUTTONEVENT_HPP
 
 #include <cmath>
 #include <cstdint>
@@ -47,4 +47,4 @@ struct MouseButtonEvent
 
 } // namespace Graphics
 
-#endif // FILAPP_MOUSEBUTTONEVENT_HPP
+#endif // GRAPHICS_MOUSEBUTTONEVENT_HPP

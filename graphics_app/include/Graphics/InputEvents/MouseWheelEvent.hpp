@@ -1,5 +1,5 @@
-#ifndef FILAPP_MOUSEWHEELEVENT_HPP
-#define FILAPP_MOUSEWHEELEVENT_HPP
+#ifndef GRAPHICS_MOUSEWHEELEVENT_HPP
+#define GRAPHICS_MOUSEWHEELEVENT_HPP
 
 #include <cmath>
 
@@ -14,4 +14,4 @@ struct MouseWheelEvent
 };
 } // namespace Graphics
 
-#endif // FILAPP_MOUSEWHEELEVENT_HPP
+#endif // GRAPHICS_MOUSEWHEELEVENT_HPP

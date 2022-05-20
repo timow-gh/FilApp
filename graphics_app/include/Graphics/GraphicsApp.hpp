@@ -1,5 +1,5 @@
-#ifndef FILAPP_GRAPHICSAPP_HPP
-#define FILAPP_GRAPHICSAPP_HPP
+#ifndef GRAPHICS_GRAPHICSAPP_HPP
+#define GRAPHICS_GRAPHICSAPP_HPP
 
 #include <Core/Utils/Compiler.hpp>
 #include <Graphics/AppConfig.hpp>
@@ -21,4 +21,4 @@ class GraphicsApp {
 
 } // namespace Graphics
 
-#endif // FILAPP_GRAPHICSAPP_HPP
+#endif // GRAPHICS_GRAPHICSAPP_HPP

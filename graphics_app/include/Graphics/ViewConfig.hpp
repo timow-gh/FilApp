@@ -1,5 +1,5 @@
-#ifndef FILAPP_VIEWCONFIG_HPP
-#define FILAPP_VIEWCONFIG_HPP
+#ifndef GRAPHICS_VIEWCONFIG_HPP
+#define GRAPHICS_VIEWCONFIG_HPP
 
 #include <Graphics/RGBAColor.hpp>
 #include <Graphics/Vec.hpp>
@@ -51,4 +51,4 @@ struct ViewConfig
 };
 } // namespace Graphics
 
-#endif // FILAPP_VIEWCONFIG_HPP
+#endif // GRAPHICS_VIEWCONFIG_HPP

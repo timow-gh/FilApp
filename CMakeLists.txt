@@ -13,7 +13,7 @@ if (NOT ${lcs_twCMakeUtils}_POPULATED)
     include(CMakeHelperFunctions)
 endif ()
 
-project(FilApp
+project(Meshler
         VERSION 0.1.0
         LANGUAGES C CXX ASM)
 
@@ -57,9 +57,9 @@ add_subdirectory(dependencies)
 
 add_subdirectory(graphics_app)
 add_subdirectory(filapp)
-
-add_subdirectory(flowmesh)
-
 if (FilApp_BUILD_EXAMPLES)
     add_subdirectory(filapp_examples)
 endif ()
+add_subdirectory(meshler)
+
+

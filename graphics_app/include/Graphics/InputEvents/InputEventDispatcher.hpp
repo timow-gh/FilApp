@@ -1,5 +1,5 @@
-#ifndef FILAPP_INPUTEVENTDISPATCHER_HPP
-#define FILAPP_INPUTEVENTDISPATCHER_HPP
+#ifndef GRAPHICS_INPUTEVENTDISPATCHER_HPP
+#define GRAPHICS_INPUTEVENTDISPATCHER_HPP
 
 #include <Core/Types/TVector.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
@@ -43,4 +43,4 @@ class InputEventDispatcher {
 };
 } // namespace Graphics
 
-#endif // FILAPP_INPUTEVENTDISPATCHER_HPP
+#endif // GRAPHICS_INPUTEVENTDISPATCHER_HPP

@@ -1,5 +1,5 @@
-#ifndef FILAPP_VERTEX_HPP
-#define FILAPP_VERTEX_HPP
+#ifndef GRAPHICS_VERTEX_HPP
+#define GRAPHICS_VERTEX_HPP
 
 #include <cmath>
 #include <cstdint>
@@ -13,4 +13,4 @@ struct Vertex
 };
 } // namespace Graphics
 
-#endif // FILAPP_VERTEX_HPP
+#endif // GRAPHICS_VERTEX_HPP

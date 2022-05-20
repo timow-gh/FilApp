@@ -1,5 +1,5 @@
-#ifndef FILAPP_PICKRAYEVENT_HPP
-#define FILAPP_PICKRAYEVENT_HPP
+#ifndef GRAPHICS_PICKRAYEVENT_HPP
+#define GRAPHICS_PICKRAYEVENT_HPP
 
 #include <Graphics/Vec.hpp>
 #include <cmath>
@@ -19,4 +19,4 @@ struct PickRayEvent
 };
 } // namespace Graphics
 
-#endif // FILAPP_PICKRAYEVENT_HPP
+#endif // GRAPHICS_PICKRAYEVENT_HPP

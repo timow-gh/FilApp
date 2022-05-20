@@ -9,7 +9,7 @@ int main()
     appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
-        FilApplication::getFilApp(appConfig, WindowConfig());
+        FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
 
     Window& mainWindow = graphicsApp->getWindow();
     View* mainView = mainWindow.getMainIView();

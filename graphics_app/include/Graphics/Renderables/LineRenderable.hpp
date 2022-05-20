@@ -1,5 +1,5 @@
-#ifndef FILAPP_LINERENDERABLE_HPP
-#define FILAPP_LINERENDERABLE_HPP
+#ifndef GRAPHICS_LINERENDERABLE_HPP
+#define GRAPHICS_LINERENDERABLE_HPP
 
 #include <Graphics/Vertex.hpp>
 #include <cassert>
@@ -44,4 +44,4 @@ inline LineRenderable LineRenderable::create(std::vector<Vertex> vertices)
 
 } // namespace Graphics
 
-#endif // FILAPP_LINERENDERABLE_HPP
+#endif // GRAPHICS_LINERENDERABLE_HPP

@@ -1,5 +1,5 @@
-#ifndef FILAPP_TRIANGLERENDERABLE_HPP
-#define FILAPP_TRIANGLERENDERABLE_HPP
+#ifndef GRAPHICS_TRIANGLERENDERABLE_HPP
+#define GRAPHICS_TRIANGLERENDERABLE_HPP
 
 #include <Graphics/Vertex.hpp>
 #include <utility>
@@ -24,4 +24,4 @@ class TriangleRenderable {
 };
 } // namespace Graphics
 
-#endif // FILAPP_TRIANGLERENDERABLE_HPP
+#endif // GRAPHICS_TRIANGLERENDERABLE_HPP

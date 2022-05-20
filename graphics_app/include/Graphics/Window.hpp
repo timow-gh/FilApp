@@ -1,5 +1,5 @@
-#ifndef FILAPP_WINDOW_HPP
-#define FILAPP_WINDOW_HPP
+#ifndef GRAPHICS_WINDOW_HPP
+#define GRAPHICS_WINDOW_HPP
 
 #include <Core/Utils/Compiler.hpp>
 #include <vector>
@@ -27,4 +27,4 @@ class Window {
 };
 } // namespace Graphics
 
-#endif // FILAPP_WINDOW_HPP
+#endif // GRAPHICS_WINDOW_HPP

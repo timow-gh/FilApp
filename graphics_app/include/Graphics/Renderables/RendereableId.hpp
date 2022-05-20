@@ -1,5 +1,5 @@
-#ifndef FILAPP_RENDEREABLEID_HPP
-#define FILAPP_RENDEREABLEID_HPP
+#ifndef GRAPHICS_RENDEREABLEID_HPP
+#define GRAPHICS_RENDEREABLEID_HPP
 
 namespace Graphics
 {
@@ -40,4 +40,4 @@ struct hash<Graphics::RenderableId>
 
 } // namespace std
 
-#endif // FILAPP_RENDEREABLEID_HPP
+#endif // GRAPHICS_RENDEREABLEID_HPP

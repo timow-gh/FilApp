@@ -1,5 +1,5 @@
-#ifndef FILAPP_VIEW_HPP
-#define FILAPP_VIEW_HPP
+#ifndef GRAPHICS_VIEW_HPP
+#define GRAPHICS_VIEW_HPP
 
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
@@ -45,4 +45,4 @@ class View : public InputEventListener {
 };
 } // namespace Graphics
 
-#endif // FILAPP_VIEW_HPP
+#endif // GRAPHICS_VIEW_HPP

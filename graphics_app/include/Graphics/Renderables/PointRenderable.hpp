@@ -1,5 +1,5 @@
-#ifndef FILAPP_POINTRENDERABLE_HPP
-#define FILAPP_POINTRENDERABLE_HPP
+#ifndef GRAPHICS_POINTRENDERABLE_HPP
+#define GRAPHICS_POINTRENDERABLE_HPP
 
 #include <Graphics/Vertex.hpp>
 #include <numeric>
@@ -58,4 +58,4 @@ inline PointRenderable PointRenderable::create(std::vector<Vertex> vertices,
 
 } // namespace Graphics
 
-#endif // FILAPP_POINTRENDERABLE_HPP
+#endif // GRAPHICS_POINTRENDERABLE_HPP

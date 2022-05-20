@@ -1,5 +1,5 @@
-#ifndef FILAPP_GRAPHICSCONTROLLER_HPP
-#define FILAPP_GRAPHICSCONTROLLER_HPP
+#ifndef GRAPHICS_GRAPHICSCONTROLLER_HPP
+#define GRAPHICS_GRAPHICSCONTROLLER_HPP
 
 #include <Graphics/InputEvents/InputEventListener.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
@@ -16,4 +16,4 @@ class GraphicsController
 
 } // namespace Graphics
 
-#endif // FILAPP_GRAPHICSCONTROLLER_HPP
+#endif // GRAPHICS_GRAPHICSCONTROLLER_HPP

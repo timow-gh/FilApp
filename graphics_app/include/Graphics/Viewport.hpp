@@ -1,5 +1,5 @@
-#ifndef FILAPP_VIEWPORT_HPP
-#define FILAPP_VIEWPORT_HPP
+#ifndef GRAPHICS_VIEWPORT_HPP
+#define GRAPHICS_VIEWPORT_HPP
 
 #include <cstdint>
 
@@ -20,4 +20,4 @@ struct Viewport
 };
 } // namespace Graphics
 
-#endif // FILAPP_VIEWPORT_HPP
+#endif // GRAPHICS_VIEWPORT_HPP

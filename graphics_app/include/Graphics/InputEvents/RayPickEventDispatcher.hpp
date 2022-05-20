@@ -1,5 +1,5 @@
-#ifndef FILAPP_RAYPICKEVENTDISPATCHER_HPP
-#define FILAPP_RAYPICKEVENTDISPATCHER_HPP
+#ifndef GRAPHICS_RAYPICKEVENTDISPATCHER_HPP
+#define GRAPHICS_RAYPICKEVENTDISPATCHER_HPP
 
 #include <Core/Types/TVector.hpp>
 #include <Graphics/InputEvents/PickRayEvent.hpp>
@@ -40,4 +40,4 @@ class RayPickEventDispatcher {
 };
 } // namespace Graphics
 
-#endif // FILAPP_RAYPICKEVENTDISPATCHER_HPP
+#endif // GRAPHICS_RAYPICKEVENTDISPATCHER_HPP

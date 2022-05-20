@@ -1,5 +1,5 @@
-#ifndef FILAPP_INPUTEVENTLISTENER_HPP
-#define FILAPP_INPUTEVENTLISTENER_HPP
+#ifndef GRAPHICS_INPUTEVENTLISTENER_HPP
+#define GRAPHICS_INPUTEVENTLISTENER_HPP
 
 #include <Graphics/InputEvents/KeyEvent.hpp>
 #include <Graphics/InputEvents/MouseButtonEvent.hpp>
@@ -21,4 +21,4 @@ class InputEventListener {
 };
 } // namespace Graphics
 
-#endif // FILAPP_INPUTEVENTLISTENER_HPP
+#endif // GRAPHICS_INPUTEVENTLISTENER_HPP

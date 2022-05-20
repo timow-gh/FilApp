@@ -44,6 +44,11 @@ toFilamentFovDirection(ViewConfig::FieldOfViewDirection fieldOfViewDirection, Fi
     {
     case ViewConfig::FieldOfViewDirection::HORIZONTAL: return filament::camutils::Fov::HORIZONTAL;
     case ViewConfig::FieldOfViewDirection::VERTICAL: return filament::camutils::Fov::VERTICAL;
+    default:
+    {
+        CORE_POSTCONDITION_ASSERT(false, "ViewConfig::FieldOfViewDirection not defined.");
+        return filament::camutils::Fov::VERTICAL;
+    }
     }
 }
 
@@ -54,6 +59,11 @@ filament::Camera::Fov toFilamentFovDirection(ViewConfig::FieldOfViewDirection fi
     {
     case ViewConfig::FieldOfViewDirection::HORIZONTAL: return filament::Camera::Fov::HORIZONTAL;
     case ViewConfig::FieldOfViewDirection::VERTICAL: return filament::Camera::Fov::VERTICAL;
+    default:
+    {
+        CORE_POSTCONDITION_ASSERT(false, "ViewConfig::FieldOfViewDirection not defined.");
+        return filament::Camera::Fov::VERTICAL;
+    }
     }
 }
 

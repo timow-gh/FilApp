@@ -1,5 +1,5 @@
-#ifndef FILAPP_KEYEVENT_HPP
-#define FILAPP_KEYEVENT_HPP
+#ifndef GRAPHICS_KEYEVENT_HPP
+#define GRAPHICS_KEYEVENT_HPP
 
 #include <Graphics/InputEvents/KeyScancode.hpp>
 #include <cmath>
@@ -38,4 +38,4 @@ struct KeyEvent
 
 } // namespace Graphics
 
-#endif // FILAPP_KEYEVENT_HPP
+#endif // GRAPHICS_KEYEVENT_HPP

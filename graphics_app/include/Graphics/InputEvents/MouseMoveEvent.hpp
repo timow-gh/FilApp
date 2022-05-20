@@ -1,5 +1,5 @@
-#ifndef FILAPP_MOUSEMOVEEVENT_HPP
-#define FILAPP_MOUSEMOVEEVENT_HPP
+#ifndef GRAPHICS_MOUSEMOVEEVENT_HPP
+#define GRAPHICS_MOUSEMOVEEVENT_HPP
 
 #include <cmath>
 
@@ -22,4 +22,4 @@ struct MouseMoveEvent
 
 } // namespace Graphics
 
-#endif // FILAPP_MOUSEMOVEEVENT_HPP
+#endif // GRAPHICS_MOUSEMOVEEVENT_HPP

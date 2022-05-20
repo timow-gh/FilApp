@@ -1,5 +1,5 @@
-#ifndef FILAPP_KEYSCANCODE_HPP
-#define FILAPP_KEYSCANCODE_HPP
+#ifndef GRAPHICS_KEYSCANCODE_HPP
+#define GRAPHICS_KEYSCANCODE_HPP
 
 #include <cstdint>
 
@@ -255,4 +255,4 @@ enum class KeyScancode : std::uint32_t
 
 } // namespace Graphics
 
-#endif // FILAPP_KEYSCANCODE_HPP
+#endif // GRAPHICS_KEYSCANCODE_HPP

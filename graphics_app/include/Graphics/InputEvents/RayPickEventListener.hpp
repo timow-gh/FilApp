@@ -1,5 +1,5 @@
-#ifndef FILAPP_RAYPICKEVENTLISTENER_HPP
-#define FILAPP_RAYPICKEVENTLISTENER_HPP
+#ifndef GRAPHICS_RAYPICKEVENTLISTENER_HPP
+#define GRAPHICS_RAYPICKEVENTLISTENER_HPP
 
 #include <Graphics/InputEvents/PickRayEvent.hpp>
 #include <Graphics/InputEvents/PickRayMoveEvent.hpp>
@@ -19,4 +19,4 @@ class RayPickEventListener {
 
 } // namespace Graphics
 
-#endif // FILAPP_RAYPICKEVENTLISTENER_HPP
+#endif // GRAPHICS_RAYPICKEVENTLISTENER_HPP

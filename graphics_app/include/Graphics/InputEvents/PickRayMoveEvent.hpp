@@ -1,5 +1,5 @@
-#ifndef FILAPP_PICKRAYMOVEEVENT_HPP
-#define FILAPP_PICKRAYMOVEEVENT_HPP
+#ifndef GRAPHICS_PICKRAYMOVEEVENT_HPP
+#define GRAPHICS_PICKRAYMOVEEVENT_HPP
 
 #include <Graphics/InputEvents/PickRayEvent.hpp>
 
@@ -14,4 +14,4 @@ struct PickRayMoveEvent : public PickRayEvent
 };
 } // namespace Graphics
 
-#endif // FILAPP_PICKRAYMOVEEVENT_HPP
+#endif // GRAPHICS_PICKRAYMOVEEVENT_HPP

@@ -1,5 +1,5 @@
-#ifndef FILAPP_APPCONFIG_HPP
-#define FILAPP_APPCONFIG_HPP
+#ifndef GRAPHICS_APPCONFIG_HPP
+#define GRAPHICS_APPCONFIG_HPP
 
 namespace Graphics
 {
@@ -20,6 +20,7 @@ struct AppConfig
     BackendMode backendMode = BackendMode::VULKAN;
     EventPollingMode eventPollingMode = EventPollingMode::WAIT_EVENTS;
 };
+
 } // namespace Graphics
 
-#endif // FILAPP_APPCONFIG_HPP
+#endif // GRAPHICS_APPCONFIG_HPP

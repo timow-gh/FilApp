@@ -1,5 +1,5 @@
-#ifndef FILAPP_WINDOWCONFIG_HPP
-#define FILAPP_WINDOWCONFIG_HPP
+#ifndef GRAPHICS_WINDOWCONFIG_HPP
+#define GRAPHICS_WINDOWCONFIG_HPP
 
 #include <string>
 
@@ -15,4 +15,4 @@ struct WindowConfig
 };
 } // namespace Graphics
 
-#endif // FILAPP_WINDOWCONFIG_HPP
+#endif // GRAPHICS_WINDOWCONFIG_HPP

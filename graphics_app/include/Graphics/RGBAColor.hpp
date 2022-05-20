@@ -1,5 +1,5 @@
-#ifndef FILAPP_RGBACOLOR_HPP
-#define FILAPP_RGBACOLOR_HPP
+#ifndef GRAPHICS_RGBACOLOR_HPP
+#define GRAPHICS_RGBACOLOR_HPP
 
 #include <array>
 #include <cmath>
@@ -52,4 +52,4 @@ class RGBAColor {
 
 } // namespace Graphics
 
-#endif // FILAPP_RGBACOLOR_HPP
+#endif // GRAPHICS_RGBACOLOR_HPP

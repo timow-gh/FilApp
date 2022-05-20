@@ -1,5 +1,5 @@
-#ifndef FILAPP_VEC_HPP
-#define FILAPP_VEC_HPP
+#ifndef GRAPHICS_VEC_HPP
+#define GRAPHICS_VEC_HPP
 
 #include <cmath>
 #include <iostream>
@@ -32,4 +32,4 @@ struct Vec4 : public Vec<4>{using Vec<4>::Vec;};
 // clang-format on
 } // namespace Graphics
 
-#endif // FILAPP_VEC_HPP
+#endif // GRAPHICS_VEC_HPP
