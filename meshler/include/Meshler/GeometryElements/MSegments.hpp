@@ -21,7 +21,7 @@ class MSegments : public GeometryElementBase<MSegments> {
                      const FGuid& guid,
                      MGeometryConfigBase baseConfig);
 
-    [[nodiscard]] const Core::TVector<Geometry::Segment3d>& getSegments() const;
+    CORE_NODISCARD const Core::TVector<Geometry::Segment3d>& getSegments() const;
     void setSegments(const Core::TVector<Geometry::Segment3d>& segments);
 };
 } // namespace Meshler

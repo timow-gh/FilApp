@@ -8,7 +8,7 @@ namespace Meshler
 {
 
 template <typename T>
-[[nodiscard]] Graphics::Vertex vecToVertex(const LinAl::Vec3<T>& vec, std::uint32_t color)
+CORE_NODISCARD Graphics::Vertex vecToVertex(const LinAl::Vec3<T>& vec, std::uint32_t color)
 {
     return Graphics::Vertex{
         {static_cast<float_t>(vec[0]), static_cast<float_t>(vec[1]), static_cast<float_t>(vec[2])},

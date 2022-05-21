@@ -27,7 +27,7 @@ class MGridInteractor : public Graphics::RayPickEventListener {
                            Geometry::Plane<double_t> plane,
                            const FGuid& fGuid);
 
-    [[nodiscard]] std::optional<LinAl::Vec3d>
+    CORE_NODISCARD std::optional<LinAl::Vec3d>
     rayIntersection(const Graphics::PickRayEvent& pickRayEvent) const;
 
     void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;

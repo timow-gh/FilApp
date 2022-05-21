@@ -8,7 +8,7 @@ namespace Meshler
 {
 
 class InteractorKeyMap {
-    std::map<Graphics::KeyScancode, InteractorCommand> m_keyMap;
+    Core::TMap<Graphics::KeyScancode, InteractorCommand> m_keyMap;
 
   public:
     InteractorKeyMap() { initMap(); }

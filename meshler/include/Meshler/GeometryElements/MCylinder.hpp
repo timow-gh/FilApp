@@ -18,7 +18,7 @@ class MCylinder : public GeometryElementBase<MCylinder> {
     MCylinder(const Geometry::Cylinder<double_t>& cylinder, const FGuid& fGuid,
               MGeometryConfigBase baseConfig);
 
-    [[nodiscard]] const Geometry::Cylinder<double_t>& getGeometryElement() const;
+    CORE_NODISCARD const Geometry::Cylinder<double_t>& getGeometryElement() const;
 };
 
 } // namespace Meshler

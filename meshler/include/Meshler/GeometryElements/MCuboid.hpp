@@ -18,7 +18,7 @@ class MCuboid : public GeometryElementBase<MCuboid> {
                    const FGuid& fGuid,
             MGeometryConfigBase baseConfig);
 
-    [[nodiscard]] const Geometry::Cuboid<double_t>& getGeometryElement() const;
+    CORE_NODISCARD const Geometry::Cuboid<double_t>& getGeometryElement() const;
 };
 
 } // namespace Meshler

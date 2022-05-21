@@ -38,7 +38,7 @@ template <typename TGeometryElement,
                     typename Compare = std::less<K>,
                     typename Alloc = std::allocator<std::pair<const K, V>>>
           class Map>
-void aggregateGuids(std::vector<FGuid>& guids, const Map<FGuid, TGeometryElement>& map)
+void aggregateGuids(Core::TVector<FGuid>& guids, const Map<FGuid, TGeometryElement>& map)
 {
     for (const auto& pair: map)
         guids.push_back(pair.first);
@@ -117,9 +117,9 @@ bool GeometryElements::setPosition(const FGuid& fGuid, const LinAl::Vec3d& posit
            updatedGrid;
 }
 
-std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
+Core::TVector<FGuid> GeometryElements::getFGuidsFromMaps() const
 {
-    std::vector<FGuid> guids;
+    Core::TVector<FGuid> guids;
     std::size_t resultSize = m_segments.size() + m_spheres.size();
     guids.reserve(resultSize);
 

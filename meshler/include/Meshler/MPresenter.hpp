@@ -29,7 +29,7 @@ class MPresenter : public MModelEventListener {
     Graphics::View* m_view{nullptr};
     PresenterConfig m_presenterConfig{};
 
-    Core::TMap<FGuid, std::vector<Graphics::RenderableId>> m_fGuidRenderableMapping;
+    Core::TMap<FGuid, Core::TVector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
     explicit MPresenter(Graphics::View* mainView);
@@ -70,8 +70,8 @@ class MPresenter : public MModelEventListener {
     static Graphics::LineRenderable createLineRenderables(const Core::TVector<Geometry::Segment3d>&,
                                                           std::uint32_t lineColor);
     void segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
-                                 const std::vector<Geometry::SegmentIndices>& segIndices,
-                                 std::vector<Graphics::Vertex>& vertices) const;
+                                 const Core::TVector<Geometry::SegmentIndices>& segIndices,
+                                 Core::TVector<Graphics::Vertex>& vertices) const;
 
     template <typename TGeometryElement>
     void onUpdateImpl(const TGeometryElement& elem)

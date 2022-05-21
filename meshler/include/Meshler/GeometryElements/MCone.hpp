@@ -17,7 +17,7 @@ class MCone : public GeometryElementBase<MCone> {
     MCone(const Geometry::Cone<double_t>& cone,
                  const FGuid& fGuid, MGeometryConfigBase baseConfig);
 
-    [[nodiscard]] const Geometry::Cone<double_t>& getGeometryElement() const;
+    CORE_NODISCARD const Geometry::Cone<double_t>& getGeometryElement() const;
 };
 
 } // namespace Meshler
