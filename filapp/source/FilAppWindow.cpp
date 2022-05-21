@@ -152,9 +152,9 @@ FilAppWindow::~FilAppWindow()
     SDL_DestroyWindow(m_sdlWindow);
 }
 
-std::vector<View*> FilAppWindow::getViews()
+Core::TVector<View*> FilAppWindow::getViews()
 {
-    std::vector<View*> views;
+    Core::TVector<View*> views;
     views.push_back(m_mainView.get());
     for (const auto& filappview: m_views)
         views.push_back(filappview.get());

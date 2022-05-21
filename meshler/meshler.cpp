@@ -3,10 +3,10 @@
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/MController.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MPresenter.hpp>
-#include <Meshler/GeometryElements/MSphere.hpp>
 
 using namespace Graphics;
 using namespace Meshler;
@@ -17,9 +17,9 @@ void createSpheres(MModel& model)
 {
     FGuid sphereToRemove;
 
-    constexpr std::int32_t MINMAX = 1;
-    constexpr double_t RADIUS = 1.0;
-    constexpr double_t DIST = 4.0;
+    CORE_CONSTEXPR std::int32_t MINMAX = 1;
+    CORE_CONSTEXPR double_t RADIUS = 1.0;
+    CORE_CONSTEXPR double_t DIST = 4.0;
     for (std::int32_t i{-MINMAX}; i <= MINMAX; ++i)
     {
         for (std::int32_t j{-MINMAX}; j <= MINMAX; ++j)

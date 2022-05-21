@@ -1,10 +1,10 @@
 #ifndef MESHLER_MCUBOID_HPP
 #define MESHLER_MCUBOID_HPP
 
-#include <Meshler/MGuid.hpp>
-#include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
-#include <Meshler/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cuboid.hpp>
+#include <Meshler/GeometryElements/GeometryElementBase.hpp>
+#include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
+#include <Meshler/MGuid.hpp>
 
 namespace Meshler
 {
@@ -15,7 +15,7 @@ class MCuboid : public GeometryElementBase<MCuboid> {
   public:
     MCuboid();
     MCuboid(const Geometry::Cuboid<double_t>& cuboid,
-                   const FGuid& fGuid,
+            const FGuid& fGuid,
             MGeometryConfigBase baseConfig);
 
     CORE_NODISCARD const Geometry::Cuboid<double_t>& getGeometryElement() const;

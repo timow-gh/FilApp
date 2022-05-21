@@ -1,10 +1,10 @@
 #ifndef MESHLER_MGRIDINTERACTOR_HPP
 #define MESHLER_MGRIDINTERACTOR_HPP
 
-#include <Meshler/MModel.hpp>
-#include <Meshler/GeometryElements/MGrid.hpp>
 #include <Geometry/Plane.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
+#include <Meshler/GeometryElements/MGrid.hpp>
+#include <Meshler/MModel.hpp>
 
 namespace Meshler
 {
@@ -19,13 +19,10 @@ class MGridInteractor : public Graphics::RayPickEventListener {
     FGuid m_activeGridGuid;
 
   public:
-    static std::unique_ptr<MGridInteractor> create(MModel& model,
-                                                          const MGrid& grid);
+    static std::unique_ptr<MGridInteractor> create(MModel& model, const MGrid& grid);
 
   private:
-    MGridInteractor(MModel& model,
-                           Geometry::Plane<double_t> plane,
-                           const FGuid& fGuid);
+    MGridInteractor(MModel& model, Geometry::Plane<double_t> plane, const FGuid& fGuid);
 
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     rayIntersection(const Graphics::PickRayEvent& pickRayEvent) const;

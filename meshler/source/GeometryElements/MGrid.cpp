@@ -3,19 +3,18 @@
 namespace Meshler
 {
 
-MGrid::MGrid()
-    : GeometryElementBase<MGrid>(newFGuid(), MGeometryConfigBase{})
+MGrid::MGrid() : GeometryElementBase<MGrid>(newFGuid(), MGeometryConfigBase{})
 {
     updateSegments();
 }
 
 MGrid::MGrid(const FGuid& guid,
-                           double_t minXLength,
-                           double_t minYLength,
-                           double_t maxXLength,
-                           double_t maxYLength,
-                           double_t stepWidth,
-                           MGeometryConfigBase baseConfig)
+             double_t minXLength,
+             double_t minYLength,
+             double_t maxXLength,
+             double_t maxYLength,
+             double_t stepWidth,
+             MGeometryConfigBase baseConfig)
     : GeometryElementBase(guid, baseConfig)
     , m_minXLength(minXLength)
     , m_minYLength(minYLength)

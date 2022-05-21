@@ -2,10 +2,10 @@
 #define MESHLER_MSEGMENTS_HPP
 
 #include <Core/Types/TVector.hpp>
-#include <Meshler/MGuid.hpp>
-#include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
-#include <Meshler/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Segment.hpp>
+#include <Meshler/GeometryElements/GeometryElementBase.hpp>
+#include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
+#include <Meshler/MGuid.hpp>
 
 namespace Meshler
 {
@@ -15,11 +15,11 @@ class MSegments : public GeometryElementBase<MSegments> {
   public:
     MSegments();
     MSegments(Core::TVector<Geometry::Segment3d> segments,
-                     const FGuid& guid,
-                     MGeometryConfigBase baseConfig);
+              const FGuid& guid,
+              MGeometryConfigBase baseConfig);
     MSegments(const Geometry::Segment3d& segment,
-                     const FGuid& guid,
-                     MGeometryConfigBase baseConfig);
+              const FGuid& guid,
+              MGeometryConfigBase baseConfig);
 
     CORE_NODISCARD const Core::TVector<Geometry::Segment3d>& getSegments() const;
     void setSegments(const Core::TVector<Geometry::Segment3d>& segments);

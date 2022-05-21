@@ -3,7 +3,6 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
-#include <Meshler/GeometryElements/MSphere.hpp>
 #include <Geometry/Circle.hpp>
 #include <Geometry/Cone.hpp>
 #include <Geometry/Cuboid.hpp>
@@ -13,6 +12,7 @@
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <Meshler/GeometryElements/MSphere.hpp>
 
 namespace Meshler
 {

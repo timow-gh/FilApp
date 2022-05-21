@@ -20,7 +20,7 @@ FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine) : m_e
     createMaterials();
 }
 
-filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
+filament::Box calcFilamentBbox(const Core::TVector<Vertex>& vertices)
 {
     CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
     filament::math::float3 minVec(std::numeric_limits<float_t>::max());
@@ -35,8 +35,8 @@ filament::Box calcFilamentBbox(const std::vector<Vertex>& vertices)
 }
 
 FilAppRenderable
-FilAppRenderableCreator::createBakedColorRenderable(const std::vector<Vertex>& vertices,
-                                                    const std::vector<uint16_t>& indices,
+FilAppRenderableCreator::createBakedColorRenderable(const Core::TVector<Vertex>& vertices,
+                                                    const Core::TVector<uint16_t>& indices,
                                                     PrimitiveType primitiveType)
 
 {

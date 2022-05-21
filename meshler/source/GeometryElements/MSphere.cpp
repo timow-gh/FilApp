@@ -10,8 +10,8 @@ MSphere::MSphere()
 }
 
 MSphere::MSphere(Geometry::Sphere<double_t> sphere,
-                               const FGuid& guid,
-                               MGeometryConfigBase baseConfig)
+                 const FGuid& guid,
+                 MGeometryConfigBase baseConfig)
     : GeometryElementBase<MSphere>(guid, baseConfig), m_sphere(std::move(sphere))
 {
 }

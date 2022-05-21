@@ -1,18 +1,18 @@
 #ifndef MESHLER_MCONTROLLER_HPP
 #define MESHLER_MCONTROLLER_HPP
 
-#include <Meshler/MModel.hpp>
+#include <Graphics/GraphicsController.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <Meshler/GeometryElements/MConeTraits.hpp>
 #include <Meshler/GeometryElements/MCuboidTraits.hpp>
 #include <Meshler/GeometryElements/MCylinderTraits.hpp>
 #include <Meshler/GeometryElements/MSphereTraits.hpp>
 #include <Meshler/Interactors/CommandInteractor.hpp>
-#include <Meshler/Interactors/MGridInteractor.hpp>
 #include <Meshler/Interactors/InteractorCommands.hpp>
 #include <Meshler/Interactors/MElementPlacingInteractor.hpp>
-#include <Graphics/GraphicsController.hpp>
-#include <Graphics/InputEvents/InputEventDispatcher.hpp>
-#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Meshler/Interactors/MGridInteractor.hpp>
+#include <Meshler/MModel.hpp>
 #include <memory>
 
 namespace Meshler
@@ -29,11 +29,11 @@ class MController : public Graphics::GraphicsController {
   public:
     MController() = default;
 
-    CORE_NODISCARD static std::shared_ptr<MController>
-    create(MPresenter* meshlerPresenter,
+    CORE_NODISCARD static std::shared_ptr<MController> create(MPresenter* meshlerPresenter,
                                                               MModel* meshlerModel)
     {
-        auto controller = std::make_shared<MController>(MController(meshlerPresenter, meshlerModel));
+        auto controller =
+            std::make_shared<MController>(MController(meshlerPresenter, meshlerModel));
         controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
         meshlerPresenter->registerListener(controller.get());
         controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));

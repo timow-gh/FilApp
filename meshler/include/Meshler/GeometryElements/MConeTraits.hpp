@@ -2,10 +2,10 @@
 #define MESHLER_MCONETRAITS_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 #include <Meshler/GeometryElements/MCone.hpp>
 #include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
-#include <LinAl/LinearAlgebra.hpp>
 
 namespace Meshler
 {
@@ -25,8 +25,8 @@ struct MGeometryTraits<MCone, ConeTraitsConfig, T>
     CORE_NODISCARD static MCone create(const ConeTraitsConfig<T>& config)
     {
         return MCone{Geometry::Cone<T>{config.circleMidPoint, config.peak, config.radius},
-                            newFGuid(),
-                            config.baseConfig};
+                     newFGuid(),
+                     config.baseConfig};
     }
 };
 

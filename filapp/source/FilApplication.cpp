@@ -153,4 +153,4 @@ FilApplication::FilApplication(const AppConfig& appConfig, const WindowConfig& w
     m_appConfig = appConfig;
 }
 
-} // namespace Graphics
+} // namespace FilApp

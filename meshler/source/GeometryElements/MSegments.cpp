@@ -3,21 +3,20 @@
 
 namespace Meshler
 {
-MSegments::MSegments()
-    : GeometryElementBase<MSegments>(FGuid(), MGeometryConfigBase{})
+MSegments::MSegments() : GeometryElementBase<MSegments>(FGuid(), MGeometryConfigBase{})
 {
 }
 
 MSegments::MSegments(Core::TVector<Geometry::Segment3d> segments,
-                                   const FGuid& guid,
-                                   MGeometryConfigBase baseConfig)
+                     const FGuid& guid,
+                     MGeometryConfigBase baseConfig)
     : GeometryElementBase<MSegments>(guid, baseConfig), m_segments(std::move(segments))
 {
 }
 
 MSegments::MSegments(const Geometry::Segment3d& segment,
-                                   const FGuid& guid,
-                                   MGeometryConfigBase baseConfig)
+                     const FGuid& guid,
+                     MGeometryConfigBase baseConfig)
     : GeometryElementBase<MSegments>(guid, baseConfig), m_segments({segment})
 {
 }

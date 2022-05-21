@@ -1,10 +1,10 @@
 #ifndef FILAPP_FILAPPRENDERABLECREATOR_HPP
 #define FILAPP_FILAPPRENDERABLECREATOR_HPP
 
+#include <Core/Types/TMap.hpp>
+#include <Core/Types/TVector.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <Graphics/Vertex.hpp>
-#include <map>
-#include <vector>
 
 namespace FilApp
 {
@@ -27,7 +27,7 @@ class FilAppRenderableCreator {
         }
     };
     filament::Engine* m_engine{nullptr};
-    std::map<FilAppMaterialType, MatPair> m_filAppMaterials;
+    Core::TMap<FilAppMaterialType, MatPair> m_filAppMaterials;
 
   public:
     using PrimitiveType = filament::RenderableManager::PrimitiveType;
@@ -36,8 +36,8 @@ class FilAppRenderableCreator {
 
     FilAppRenderableCreator() = default;
 
-    FilAppRenderable createBakedColorRenderable(const std::vector<Graphics::Vertex>& vertices,
-                                                const std::vector<uint16_t>& indices,
+    FilAppRenderable createBakedColorRenderable(const Core::TVector<Graphics::Vertex>& vertices,
+                                                const Core::TVector<uint16_t>& indices,
                                                 PrimitiveType primitiveType);
 
     void destroyMaterials();
@@ -45,7 +45,7 @@ class FilAppRenderableCreator {
   private:
     explicit FilAppRenderableCreator(filament::Engine* engine);
     void createMaterials();
-    [[nodiscard]] const MatPair& getMaterial(FilAppMaterialType filAppMaterialType) const;
+    CORE_NODISCARD const MatPair& getMaterial(FilAppMaterialType filAppMaterialType) const;
 };
 } // namespace FilApp
 

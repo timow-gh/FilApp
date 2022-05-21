@@ -44,10 +44,10 @@ class RGBAColor {
         return RGBAColor<float_t>::create(red, green, blue, alpha);
     }
 
-    [[nodiscard]] T getRed() const { return m_values[0]; }
-    [[nodiscard]] T getGreen() const { return m_values[1]; }
-    [[nodiscard]] T getBlue() const { return m_values[2]; }
-    [[nodiscard]] T getAlpha() const { return m_values[3]; }
+    CORE_NODISCARD T getRed() const { return m_values[0]; }
+    CORE_NODISCARD T getGreen() const { return m_values[1]; }
+    CORE_NODISCARD T getBlue() const { return m_values[2]; }
+    CORE_NODISCARD T getAlpha() const { return m_values[3]; }
 };
 
 } // namespace Graphics

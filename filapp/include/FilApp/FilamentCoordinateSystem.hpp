@@ -49,6 +49,6 @@ inline filament::math::mat4f globalCSToFilCS4()
             filament::math::float4{1, 0, 0, 0},
             filament::math::float4{0, 0, 0, 1}};
 }
-} // namespace Graphics
+} // namespace FilApp
 
 #endif // FILAPP_FILAMENTCOORDINATESYSTEM_HPP

@@ -196,9 +196,9 @@ RenderableId FilAppCameraView::addRenderable(LineRenderable&& lineRenderable)
     return id;
 }
 
-std::vector<RenderableId> FilAppCameraView::getRenderableIdentifiers() const
+Core::TVector<RenderableId> FilAppCameraView::getRenderableIdentifiers() const
 {
-    std::vector<RenderableId> result;
+    Core::TVector<RenderableId> result;
     for (const auto& filAppRenderable: m_filAppRenderables)
         result.emplace_back(filAppRenderable.renderableEntity.getId());
     return result;
@@ -209,19 +209,18 @@ void FilAppCameraView::removeRenderable(RenderableId id)
     // Synchronize the GPU with the CPU
     m_engine->flushAndWait();
     eraseRenderable(id);
-    auto iter =
-        std::remove_if(m_filAppRenderables.begin(),
-                       m_filAppRenderables.end(),
-                       [id = id, scene = m_scene](const FilAppRenderable& item)
-                       {
-                           if (item.renderableEntity.getId() == id.getId())
-                           {
-                               scene->remove(item.renderableEntity);
-                               item.destroy();
-                               return true;
-                           }
-                           return false;
-                       });
+    auto iter = std::remove_if(m_filAppRenderables.begin(),
+                               m_filAppRenderables.end(),
+                               [id = id, scene = m_scene](const FilAppRenderable& item)
+                               {
+                                   if (item.renderableEntity.getId() == id.getId())
+                                   {
+                                       scene->remove(item.renderableEntity);
+                                       item.destroy();
+                                       return true;
+                                   }
+                                   return false;
+                               });
     m_filAppRenderables.erase(iter, m_filAppRenderables.end());
     eraseRenderable(id);
 }

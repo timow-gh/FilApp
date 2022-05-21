@@ -1,5 +1,5 @@
-#include <Meshler/GeometryElements/MCuboid.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <Meshler/GeometryElements/MCuboid.hpp>
 
 namespace Meshler
 {
@@ -11,7 +11,7 @@ MCuboid::MCuboid()
 }
 
 MCuboid::MCuboid(const Geometry::Cuboid<double_t>& cuboid,
-                               const FGuid& fGuid,
+                 const FGuid& fGuid,
                  MGeometryConfigBase baseConfig)
     : GeometryElementBase<MCuboid>(fGuid, baseConfig), m_cuboid(cuboid)
 {

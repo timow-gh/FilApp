@@ -1,16 +1,16 @@
 #ifndef MESHLER_MMODEL_HPP
 #define MESHLER_MMODEL_HPP
 
-#include <Meshler/MGuid.hpp>
-#include <Meshler/MPresenter.hpp>
+#include <Geometry/Segment.hpp>
+#include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/GeometryElements/MCone.hpp>
 #include <Meshler/GeometryElements/MCylinder.hpp>
 #include <Meshler/GeometryElements/MSegments.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
-#include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/Interactors/SnapGeometries.hpp>
+#include <Meshler/MGuid.hpp>
 #include <Meshler/MModelEventDispatcher.hpp>
-#include <Geometry/Segment.hpp>
+#include <Meshler/MPresenter.hpp>
 #include <map>
 
 namespace Meshler

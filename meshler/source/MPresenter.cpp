@@ -1,13 +1,13 @@
 #include <Core/Utils/Assert.hpp>
-#include <Meshler/MPresenter.hpp>
-#include <Meshler/GeometryElements/MCylinder.hpp>
-#include <Meshler/PresenterUtils.hpp>
 #include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
 #include <Graphics/Vec.hpp>
 #include <Graphics/Vertex.hpp>
+#include <Meshler/GeometryElements/MCylinder.hpp>
+#include <Meshler/MPresenter.hpp>
+#include <Meshler/PresenterUtils.hpp>
 
 namespace Meshler
 {
@@ -37,21 +37,19 @@ void MPresenter::removeInputEventListener(Graphics::InputEventListener* inputEve
     m_view->getInputEventDispatcher().removeInputEventListener(inputEventListener);
 }
 
-void MPresenter::registerRayPickEventListener(
-    Graphics::RayPickEventListener* rayPickEventListener)
+void MPresenter::registerRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener)
 {
     m_view->getRayPickEventDispatcher().registerRayPickEventListener(rayPickEventListener);
 }
 
-void MPresenter::removeRayPickEventListener(
-    Graphics::RayPickEventListener* rayPickEventListener)
+void MPresenter::removeRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener)
 {
     m_view->getRayPickEventDispatcher().removeRayPickEventListener(rayPickEventListener);
 }
 
 Graphics::TriangleRenderable
 MPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh,
-                                            std::uint32_t faceColor)
+                                     std::uint32_t faceColor)
 {
     Core::TVector<Graphics::Vertex> vertices;
     for (const auto& vec: halfedgeMesh.getVertexPoints())
@@ -63,7 +61,7 @@ MPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& hal
 
 Graphics::LineRenderable
 MPresenter::createLineRenderables(const Core::TVector<Geometry::Segment3d>& segments,
-                                         std::uint32_t lineColor)
+                                  std::uint32_t lineColor)
 {
     Core::TVector<Graphics::Vertex> vertices;
     for (const auto& segment: segments)
@@ -238,10 +236,9 @@ void MPresenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)
         m_view->addRotationAnimation(id, rotationAxis);
 }
 
-void MPresenter::segmentGraphicsVertices(
-    const Geometry::HalfedgeMesh<double_t>& heMesh,
-    const Core::TVector<Geometry::SegmentIndices>& segIndices,
-    Core::TVector<Graphics::Vertex>& vertices) const
+void MPresenter::segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
+                                         const Core::TVector<Geometry::SegmentIndices>& segIndices,
+                                         Core::TVector<Graphics::Vertex>& vertices) const
 
 {
     for (const auto& segmentIndices: segIndices)

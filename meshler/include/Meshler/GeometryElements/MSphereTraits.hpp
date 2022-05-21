@@ -2,10 +2,10 @@
 #define MESHLER_MSPHERETRAITS_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 #include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
-#include <LinAl/LinearAlgebra.hpp>
 
 namespace Meshler
 {
@@ -24,8 +24,8 @@ struct MGeometryTraits<MSphere, SphereTraitsConfig, T>
     CORE_NODISCARD static MSphere create(const SphereTraitsConfig<T>& config)
     {
         return MSphere{Geometry::Sphere<T>{config.origin, config.radius},
-                              newFGuid(),
-                              config.baseConfig};
+                       newFGuid(),
+                       config.baseConfig};
     }
 };
 

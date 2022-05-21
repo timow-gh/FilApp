@@ -4,13 +4,13 @@ using namespace Graphics;
 
 namespace FilApp
 {
-void createVertexBuffer(FilAppRenderable* filAppRenderable, const std::vector<Vertex>& vertices)
+void createVertexBuffer(FilAppRenderable* filAppRenderable, const Core::TVector<Vertex>& vertices)
 {
     const std::size_t VERTEX_COUNT = vertices.size();
     const std::size_t VERTEX_SIZE = sizeof(Vertex);
     static_assert(VERTEX_SIZE == 16, "Strange vertex size.");
-    constexpr std::size_t VERTEX_POSITION_OFFSET = 0;
-    constexpr std::size_t VERTEX_COLOR_OFFSET = 12;
+    CORE_CONSTEXPR std::size_t VERTEX_POSITION_OFFSET = 0;
+    CORE_CONSTEXPR std::size_t VERTEX_COLOR_OFFSET = 12;
     filAppRenderable->vb = filament::VertexBuffer::Builder()
                                .vertexCount(VERTEX_COUNT)
                                .bufferCount(1)
@@ -40,8 +40,8 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
 {
 
     const std::size_t VERTEX_COUNT = pointRenderable->getVertices().size();
-    constexpr std::size_t VERTEX_POSITION_OFFSET = 0;
-    constexpr std::size_t VERTEX_COLOR_OFFSET = 12;
+    CORE_CONSTEXPR std::size_t VERTEX_POSITION_OFFSET = 0;
+    CORE_CONSTEXPR std::size_t VERTEX_COLOR_OFFSET = 12;
     filAppRenderable->vb = filament::VertexBuffer::Builder()
                                .vertexCount(VERTEX_COUNT)
                                .bufferCount(2)
@@ -79,7 +79,7 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
                                                  nullptr));
 }
 
-void createIndicesBuffer(FilAppRenderable* filAppRenderable, const std::vector<uint16_t>& indices)
+void createIndicesBuffer(FilAppRenderable* filAppRenderable, const Core::TVector<uint16_t>& indices)
 {
     const std::size_t INDICES_COUNT = indices.size();
     filAppRenderable->ib = filament::IndexBuffer::Builder()
@@ -87,11 +87,11 @@ void createIndicesBuffer(FilAppRenderable* filAppRenderable, const std::vector<u
                                .bufferType(filament::IndexBuffer::IndexType::USHORT)
                                .build(*filAppRenderable->engine);
 
-    constexpr std::size_t INDICES_SIZE = sizeof(uint16_t);
+    CORE_CONSTEXPR std::size_t INDICES_SIZE = sizeof(uint16_t);
     const std::size_t INDICES_BUFFER_SIZE = INDICES_COUNT * INDICES_SIZE;
     filAppRenderable->ib->setBuffer(
         *filAppRenderable->engine,
         filament::IndexBuffer::BufferDescriptor(indices.data(), INDICES_BUFFER_SIZE, nullptr));
 }
 
-} // namespace Graphics
+} // namespace FilApp

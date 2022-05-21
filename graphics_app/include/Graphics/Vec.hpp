@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_VEC_HPP
 #define GRAPHICS_VEC_HPP
 
+#include <Core/Utils/Compiler.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -16,8 +17,8 @@ struct Vec
     {
     }
 
-    [[nodiscard]] inline std::size_t size() const noexcept { return SIZE; }
-    [[nodiscard]] inline float_t operator[](std::size_t i) const noexcept { return values[i]; }
+    CORE_NODISCARD inline std::size_t size() const noexcept { return SIZE; }
+    CORE_NODISCARD inline float_t operator[](std::size_t i) const noexcept { return values[i]; }
     inline float_t& operator[](std::size_t i) noexcept { return values[i]; }
 
     friend std::ostream& operator<<(std::ostream& os, const Vec<SIZE>& vec)

@@ -23,9 +23,9 @@ class PointRenderable {
     static PointRenderable create(std::vector<Vertex> vertices, float_t pointSize);
     static PointRenderable create(std::vector<Vertex> vertices, std::vector<float_t> pointSizes);
 
-    [[nodiscard]] const std::vector<Vertex>& getVertices() const { return m_vertices; }
-    [[nodiscard]] const std::vector<uint16_t>& getIndices() const { return m_indices; }
-    [[nodiscard]] const std::vector<float_t>& getPointSizes() const { return m_pointSizes; }
+    CORE_NODISCARD const std::vector<Vertex>& getVertices() const { return m_vertices; }
+    CORE_NODISCARD const std::vector<uint16_t>& getIndices() const { return m_indices; }
+    CORE_NODISCARD const std::vector<float_t>& getPointSizes() const { return m_pointSizes; }
 
   private:
     std::vector<Vertex> m_vertices;

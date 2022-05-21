@@ -1,10 +1,10 @@
 #include <Core/Math/Eps.hpp>
 #include <Core/Utils/Assert.hpp>
-#include <Meshler/Interactors/SnapGeometries.hpp>
 #include <Geometry/Distance/DistanceRay.hpp>
 #include <Geometry/GeometryAssert.hpp>
 #include <Geometry/Intersection/IntersectionSphere.hpp>
 #include <Geometry/Transformation/TransformSphere.hpp>
+#include <Meshler/Interactors/SnapGeometries.hpp>
 #include <algorithm>
 #include <limits>
 

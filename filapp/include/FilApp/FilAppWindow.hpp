@@ -27,7 +27,7 @@ class FilAppWindow : public Graphics::Window {
     filament::SwapChain* m_swapChain = nullptr;
 
     std::unique_ptr<FilAppCameraView> m_mainView{nullptr};
-    std::vector<std::unique_ptr<FilAppCameraView>> m_views;
+    Core::TVector<std::unique_ptr<FilAppCameraView>> m_views;
 
     std::uint32_t m_width = 0;
     std::uint32_t m_height = 0;
@@ -58,7 +58,7 @@ class FilAppWindow : public Graphics::Window {
     void render();
 
     CORE_NODISCARD Graphics::View* getMainIView() override;
-    CORE_NODISCARD std::vector<Graphics::View*> getViews() override;
+    CORE_NODISCARD Core::TVector<Graphics::View*> getViews() override;
 
     WindowId getIWindowId() override;
 

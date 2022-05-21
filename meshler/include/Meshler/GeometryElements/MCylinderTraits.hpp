@@ -2,10 +2,10 @@
 #define MESHLER_MCYLINDERTRAITS_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 #include <Meshler/GeometryElements/MCylinder.hpp>
 #include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
-#include <LinAl/LinearAlgebra.hpp>
 
 namespace Meshler
 {

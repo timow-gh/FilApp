@@ -133,8 +133,7 @@ Core::TVector<FGuid> GeometryElements::getFGuidsFromMaps() const
     return guids;
 }
 
-const Core::TMap<Meshler::FGuid, Meshler::MSegments>&
-GeometryElements::getSegmentMap() const
+const Core::TMap<Meshler::FGuid, Meshler::MSegments>& GeometryElements::getSegmentMap() const
 {
     return m_segments;
 }
@@ -149,8 +148,7 @@ const Core::TMap<Meshler::FGuid, Meshler::MCone>& GeometryElements::getConeMap()
     return m_cones;
 }
 
-const Core::TMap<Meshler::FGuid, Meshler::MCylinder>&
-GeometryElements::getCylinderMap() const
+const Core::TMap<Meshler::FGuid, Meshler::MCylinder>& GeometryElements::getCylinderMap() const
 {
     return m_cylinder;
 }

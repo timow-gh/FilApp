@@ -15,7 +15,7 @@ class RenderableId {
     RenderableId& operator=(const RenderableId& id) noexcept = default;
     RenderableId& operator=(RenderableId&& id) noexcept = default;
 
-    [[nodiscard]] Type getId() const noexcept { return m_id; }
+    CORE_NODISCARD Type getId() const noexcept { return m_id; }
 
     bool operator==(const RenderableId& rhs) const noexcept { return m_id == rhs.m_id; }
     bool operator!=(const RenderableId& rhs) const noexcept { return !(rhs == *this); }

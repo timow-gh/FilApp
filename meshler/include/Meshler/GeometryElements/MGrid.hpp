@@ -3,11 +3,11 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
-#include <Meshler/MGuid.hpp>
-#include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
-#include <Meshler/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Segment.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <Meshler/GeometryElements/GeometryElementBase.hpp>
+#include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
+#include <Meshler/MGuid.hpp>
 
 namespace Meshler
 {
@@ -25,12 +25,12 @@ class MGrid : public GeometryElementBase<MGrid> {
   public:
     MGrid();
     MGrid(const FGuid& guid,
-                 double_t minXLength,
-                 double_t minYLength,
-                 double_t maxXLength,
-                 double_t maxYLength,
-                 double_t stepWidth,
-                 MGeometryConfigBase baseConfig);
+          double_t minXLength,
+          double_t minYLength,
+          double_t maxXLength,
+          double_t maxYLength,
+          double_t stepWidth,
+          MGeometryConfigBase baseConfig);
 
     // clang-format off
     CORE_CONSTEXPR void setMinXLength(double_t minXLength) { m_minXLength = minXLength; }

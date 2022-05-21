@@ -3,11 +3,6 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Assert.hpp>
-#include <Meshler/MGuid.hpp>
-#include <Meshler/MModel.hpp>
-#include <Meshler/GeometryElements/MGeometryTraits.hpp>
-#include <Meshler/Interactors/SnapGeometries.hpp>
-#include <Meshler/MModelEventListener.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
 #include <Graphics/GraphicsController.hpp>
@@ -16,6 +11,11 @@
 #include <Graphics/InputEvents/PickRayMoveEvent.hpp>
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
+#include <Meshler/GeometryElements/MGeometryTraits.hpp>
+#include <Meshler/Interactors/SnapGeometries.hpp>
+#include <Meshler/MGuid.hpp>
+#include <Meshler/MModel.hpp>
+#include <Meshler/MModelEventListener.hpp>
 #include <optional>
 
 namespace Meshler

@@ -15,8 +15,8 @@ class TriangleRenderable {
     {
     }
 
-    [[nodiscard]] const std::vector<Vertex>& getVertices() const { return m_vertices; }
-    [[nodiscard]] const std::vector<uint16_t>& getIndices() const { return m_indices; }
+    CORE_NODISCARD const std::vector<Vertex>& getVertices() const { return m_vertices; }
+    CORE_NODISCARD const std::vector<uint16_t>& getIndices() const { return m_indices; }
 
   private:
     std::vector<Vertex> m_vertices;

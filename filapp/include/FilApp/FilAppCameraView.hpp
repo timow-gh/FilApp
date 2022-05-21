@@ -1,6 +1,7 @@
 #ifndef FILAPP_FILAPPCAMERAVIEW_HPP
 #define FILAPP_FILAPPCAMERAVIEW_HPP
 
+#include <Core/Types/TString.hpp>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
@@ -16,9 +17,7 @@
 #include <filament/Viewport.h>
 #include <filapp_export.h>
 #include <memory>
-#include <string>
 #include <utils/Entity.h>
-#include <vector>
 
 namespace FilApp
 {
@@ -29,7 +28,7 @@ class FilAppCameraView : public Graphics::View {
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 
   private:
-    std::string m_name;
+    Core::TString m_name;
     filament::Engine* m_engine = nullptr;
     filament::View* m_filamentView = nullptr;
     filament::Scene* m_scene = nullptr;
@@ -47,15 +46,16 @@ class FilAppCameraView : public Graphics::View {
     Graphics::InputEventDispatcher m_inputEventDispatcher;
     Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
 
-    std::map<Graphics::RenderableId, std::unique_ptr<Graphics::PointRenderable>> m_pointRenderables;
-    std::map<Graphics::RenderableId, std::unique_ptr<Graphics::LineRenderable>> m_lineRenderables;
-    std::map<Graphics::RenderableId, std::unique_ptr<Graphics::TriangleRenderable>>
+    Core::TMap<Graphics::RenderableId, std::unique_ptr<Graphics::PointRenderable>>
+        m_pointRenderables;
+    Core::TMap<Graphics::RenderableId, std::unique_ptr<Graphics::LineRenderable>> m_lineRenderables;
+    Core::TMap<Graphics::RenderableId, std::unique_ptr<Graphics::TriangleRenderable>>
         m_triangleRenderables;
 
     FilAppRenderableCreator m_renderableCreator;
-    std::vector<FilAppRenderable> m_filAppRenderables;
+    Core::TVector<FilAppRenderable> m_filAppRenderables;
 
-    std::vector<AnimationCallBack> m_animationCallbacks;
+    Core::TVector<AnimationCallBack> m_animationCallbacks;
 
   public:
     FilAppCameraView() = default;
@@ -69,7 +69,7 @@ class FilAppCameraView : public Graphics::View {
     CORE_NODISCARD auto addRenderable(Graphics::TriangleRenderable&& renderable) -> Graphics::RenderableId override;
     CORE_NODISCARD auto addRenderable(Graphics::PointRenderable&& renderable) -> Graphics::RenderableId override;
     CORE_NODISCARD auto addRenderable(Graphics::LineRenderable&& lineRenderable) -> Graphics::RenderableId override;
-    CORE_NODISCARD auto getRenderableIdentifiers() const -> std::vector<Graphics::RenderableId> override;
+    CORE_NODISCARD auto getRenderableIdentifiers() const -> Core::TVector<Graphics::RenderableId> override;
     void removeRenderable(Graphics::RenderableId id) override;
     void updatePosition(Graphics::RenderableId renderableId, const Graphics::Vec3 & position) override;
     void clearRenderables() override;
@@ -104,7 +104,7 @@ class FilAppCameraView : public Graphics::View {
     void configureCameraProjection();
 
     template <typename V>
-    void eraseFromMap(std::map<Graphics::RenderableId, V>& map, Graphics::RenderableId id)
+    void eraseFromMap(Core::TMap<Graphics::RenderableId, V>& map, Graphics::RenderableId id)
     {
         auto idIter = map.find(id);
         if (idIter != map.end())

@@ -1,6 +1,6 @@
-#include <Meshler/GeometryElements/MCone.hpp>
 #include <Geometry/Segment.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <Meshler/GeometryElements/MCone.hpp>
 
 using namespace Geometry;
 using namespace LinAl;
