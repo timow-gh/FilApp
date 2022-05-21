@@ -9,22 +9,22 @@
 #include <Graphics/Vec.hpp>
 #include <Graphics/Vertex.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 MPresenter::MPresenter(Graphics::View* mainView) : m_view(mainView)
 {
 }
 
-void MPresenter::registerListener(Graphics::GraphicsController* flowMeshController)
+void MPresenter::registerListener(Graphics::GraphicsController* meshlerController)
 {
-    registerInputEventListener(dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
-    registerRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+    registerInputEventListener(dynamic_cast<Graphics::InputEventListener*>(meshlerController));
+    registerRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(meshlerController));
 }
 
-void MPresenter::removeListener(Graphics::GraphicsController* flowMeshController)
+void MPresenter::removeListener(Graphics::GraphicsController* meshlerController)
 {
-    removeInputEventListener(dynamic_cast<Graphics::InputEventListener*>(flowMeshController));
-    removeRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(flowMeshController));
+    removeInputEventListener(dynamic_cast<Graphics::InputEventListener*>(meshlerController));
+    removeRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(meshlerController));
 }
 
 void MPresenter::registerInputEventListener(Graphics::InputEventListener* inputEventListener)
@@ -75,13 +75,13 @@ MPresenter::createLineRenderables(const Core::TVector<Geometry::Segment3d>& segm
     return Graphics::LineRenderable::create(vertices);
 }
 
-void MPresenter::onAdd(const MSphere& flowMeshSphere)
+void MPresenter::onAdd(const MSphere& meshlerSphere)
 {
     std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
         Geometry::SphereMeshBuilder<double_t>()
             .setPolarCount(m_presenterConfig.spherePolarCount)
             .setAzimuthCount(m_presenterConfig.sphereAzimuthCount)
-            .setSphere(flowMeshSphere.getGeometryElement())
+            .setSphere(meshlerSphere.getGeometryElement())
             .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*sphereMesh);
@@ -93,14 +93,14 @@ void MPresenter::onAdd(const MSphere& flowMeshSphere)
     auto sphereId =
         m_view->addRenderable(createTriangleRenderable(*sphereMesh, m_presenterConfig.faceColor));
 
-    m_fGuidRenderableMapping.emplace(flowMeshSphere.getFGuid(),
+    m_fGuidRenderableMapping.emplace(meshlerSphere.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{verticesId, sphereId});
 }
 
-void MPresenter::onAdd(const MCone& flowMeshCone)
+void MPresenter::onAdd(const MCone& meshlerCone)
 {
     auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
-                        .setCone((flowMeshCone.getGeometryElement()))
+                        .setCone((meshlerCone.getGeometryElement()))
                         .setAzimuthCount(m_presenterConfig.coneAzimuthCount)
                         .build();
 
@@ -113,14 +113,14 @@ void MPresenter::onAdd(const MCone& flowMeshCone)
     auto coneId =
         m_view->addRenderable(createTriangleRenderable(*coneMesh, m_presenterConfig.faceColor));
 
-    m_fGuidRenderableMapping.emplace(flowMeshCone.getFGuid(),
+    m_fGuidRenderableMapping.emplace(meshlerCone.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{verticesId, coneId});
 }
 
-void MPresenter::onAdd(const MCylinder& flowMeshCylinder)
+void MPresenter::onAdd(const MCylinder& meshlerCylinder)
 {
     auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
-                            .setCylinder(flowMeshCylinder.getGeometryElement())
+                            .setCylinder(meshlerCylinder.getGeometryElement())
                             .setAzimuthCount(m_presenterConfig.cylinderAzimuthCount)
                             .build();
 
@@ -133,22 +133,22 @@ void MPresenter::onAdd(const MCylinder& flowMeshCylinder)
     auto coneId =
         m_view->addRenderable(createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
 
-    m_fGuidRenderableMapping.emplace(flowMeshCylinder.getFGuid(),
+    m_fGuidRenderableMapping.emplace(meshlerCylinder.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{verticesId, coneId});
 }
 
-void MPresenter::onAdd(const MSegments& flowMeshSegments)
+void MPresenter::onAdd(const MSegments& meshlerSegments)
 {
     auto segmentsId = m_view->addRenderable(
-        createLineRenderables(flowMeshSegments.getSegments(), m_presenterConfig.lineColor));
-    m_fGuidRenderableMapping.emplace(flowMeshSegments.getFGuid(),
+        createLineRenderables(meshlerSegments.getSegments(), m_presenterConfig.lineColor));
+    m_fGuidRenderableMapping.emplace(meshlerSegments.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{segmentsId});
 }
 
-void MPresenter::onAdd(const MCuboid& flowMeshCuboid)
+void MPresenter::onAdd(const MCuboid& meshlerCuboid)
 {
     auto cuboidMesh = Geometry::CuboidMeshBuilder<double_t>()
-                          .setCuboid(flowMeshCuboid.getGeometryElement())
+                          .setCuboid(meshlerCuboid.getGeometryElement())
                           .build();
 
     const auto& segIndices = Geometry::calcMeshSegmentIndices(*cuboidMesh);
@@ -161,17 +161,17 @@ void MPresenter::onAdd(const MCuboid& flowMeshCuboid)
     auto cuboidId =
         m_view->addRenderable(createTriangleRenderable(*cuboidMesh, m_presenterConfig.faceColor));
 
-    m_fGuidRenderableMapping.emplace(flowMeshCuboid.getFGuid(),
+    m_fGuidRenderableMapping.emplace(meshlerCuboid.getFGuid(),
                                      Core::TVector<Graphics::RenderableId>{verticesId, cuboidId});
 }
 
-void MPresenter::onAdd(const MGrid& flowMeshGrid)
+void MPresenter::onAdd(const MGrid& meshlerGrid)
 {
     auto segmentsId = m_view->addRenderable(
-        createLineRenderables(flowMeshGrid.getSegments(), m_presenterConfig.lineColor));
+        createLineRenderables(meshlerGrid.getSegments(), m_presenterConfig.lineColor));
 
     auto result =
-        m_fGuidRenderableMapping.emplace(flowMeshGrid.getFGuid(),
+        m_fGuidRenderableMapping.emplace(meshlerGrid.getFGuid(),
                                          Core::TVector<Graphics::RenderableId>{segmentsId});
     CORE_POSTCONDITION_DEBUG_ASSERT(result.second, "GeometryElement already exists.");
 }
@@ -187,34 +187,34 @@ void MPresenter::onRemove(const FGuid& fGuid)
     }
 }
 
-void MPresenter::onUpdate(const MCylinder& flowMeshCylinder)
+void MPresenter::onUpdate(const MCylinder& meshlerCylinder)
 {
-    onUpdateImpl(flowMeshCylinder);
+    onUpdateImpl(meshlerCylinder);
 }
 
-void MPresenter::onUpdate(const MCone& flowMeshCone)
+void MPresenter::onUpdate(const MCone& meshlerCone)
 {
-    onUpdateImpl(flowMeshCone);
+    onUpdateImpl(meshlerCone);
 }
 
-void MPresenter::onUpdate(const MSegments& flowMeshSegments)
+void MPresenter::onUpdate(const MSegments& meshlerSegments)
 {
-    onUpdateImpl(flowMeshSegments);
+    onUpdateImpl(meshlerSegments);
 }
 
-void MPresenter::onUpdate(const MSphere& flowMeshSphere)
+void MPresenter::onUpdate(const MSphere& meshlerSphere)
 {
-    onUpdateImpl(flowMeshSphere);
+    onUpdateImpl(meshlerSphere);
 }
 
-void MPresenter::onUpdate(const MCuboid& flowMeshCuboid)
+void MPresenter::onUpdate(const MCuboid& meshlerCuboid)
 {
-    onUpdateImpl(flowMeshCuboid);
+    onUpdateImpl(meshlerCuboid);
 }
 
-void MPresenter::onUpdate(const MGrid& flowMeshGrid)
+void MPresenter::onUpdate(const MGrid& meshlerGrid)
 {
-    onUpdateImpl(flowMeshGrid);
+    onUpdateImpl(meshlerGrid);
 }
 
 void MPresenter::onPositionChanged(const PositionEvent& positionEvent)
@@ -253,4 +253,4 @@ void MPresenter::segmentGraphicsVertices(
     }
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

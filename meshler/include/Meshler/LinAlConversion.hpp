@@ -4,7 +4,7 @@
 #include <Graphics/Vec.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 template <typename T>
@@ -41,6 +41,6 @@ Graphics::Vec3 linAlVec3ToVec3(const LinAl::Vec3<T>& vec3)
                           static_cast<T>(vec3[2])};
 }
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_LINALCONVERSION_HPP

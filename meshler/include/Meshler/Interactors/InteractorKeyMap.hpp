@@ -4,7 +4,7 @@
 #include <Meshler/Interactors/InteractorCommands.hpp>
 #include <Graphics/InputEvents/KeyScancode.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class InteractorKeyMap {
@@ -35,6 +35,6 @@ class InteractorKeyMap {
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_INTERACTORKEYMAP_HPP

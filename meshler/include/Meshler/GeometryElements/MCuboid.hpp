@@ -6,7 +6,7 @@
 #include <Meshler/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cuboid.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MCuboid : public GeometryElementBase<MCuboid> {
@@ -21,6 +21,6 @@ class MCuboid : public GeometryElementBase<MCuboid> {
     [[nodiscard]] const Geometry::Cuboid<double_t>& getGeometryElement() const;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MCUBOID_HPP

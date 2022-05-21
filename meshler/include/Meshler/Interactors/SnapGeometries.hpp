@@ -14,7 +14,7 @@
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class SnapGeometries {
@@ -35,7 +35,7 @@ class SnapGeometries {
     void add(const Geometry::Cone<double_t>& cone);
     void add(const Geometry::Cuboid<double_t>& cuboid);
 
-    void add(const MSphere& flowMeshSphere);
+    void add(const MSphere& meshlerSphere);
 
     void remove(const LinAl::Vec3d& snapPoint);
 
@@ -54,6 +54,6 @@ class SnapGeometries {
                                    const Geometry::Ray3d& placementRay) const;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_SNAPGEOMETRIES_HPP

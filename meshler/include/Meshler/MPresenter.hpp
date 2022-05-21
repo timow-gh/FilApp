@@ -22,7 +22,7 @@ namespace Graphics
 class View;
 }
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MPresenter : public MModelEventListener {
@@ -34,8 +34,8 @@ class MPresenter : public MModelEventListener {
   public:
     explicit MPresenter(Graphics::View* mainView);
 
-    void registerListener(Graphics::GraphicsController* flowMeshController);
-    void removeListener(Graphics::GraphicsController* flowMeshController);
+    void registerListener(Graphics::GraphicsController* meshlerController);
+    void removeListener(Graphics::GraphicsController* meshlerController);
 
     void registerInputEventListener(Graphics::InputEventListener* inputEventListener);
     void removeInputEventListener(Graphics::InputEventListener* inputEventListener);
@@ -43,21 +43,21 @@ class MPresenter : public MModelEventListener {
     void registerRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener);
     void removeRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener);
 
-    void onAdd(const MSphere& flowMeshSphere) override;
-    void onAdd(const MCone& flowMeshCone) override;
-    void onAdd(const MCylinder& flowMeshCylinder) override;
-    void onAdd(const MSegments& flowMeshSegments) override;
-    void onAdd(const MCuboid& flowMeshCuboid) override;
-    void onAdd(const MGrid& flowMeshGrid) override;
+    void onAdd(const MSphere& meshlerSphere) override;
+    void onAdd(const MCone& meshlerCone) override;
+    void onAdd(const MCylinder& meshlerCylinder) override;
+    void onAdd(const MSegments& meshlerSegments) override;
+    void onAdd(const MCuboid& meshlerCuboid) override;
+    void onAdd(const MGrid& meshlerGrid) override;
 
     void onRemove(const FGuid& fGuid) override;
 
-    void onUpdate(const MCylinder& flowMeshCylinder) override;
-    void onUpdate(const MCone& flowMeshCone) override;
-    void onUpdate(const MSegments& flowMeshSegments) override;
-    void onUpdate(const MSphere& flowMeshSphere) override;
-    void onUpdate(const MCuboid& flowMeshCuboid) override;
-    void onUpdate(const MGrid& flowMeshGrid) override;
+    void onUpdate(const MCylinder& meshlerCylinder) override;
+    void onUpdate(const MCone& meshlerCone) override;
+    void onUpdate(const MSegments& meshlerSegments) override;
+    void onUpdate(const MSphere& meshlerSphere) override;
+    void onUpdate(const MCuboid& meshlerCuboid) override;
+    void onUpdate(const MGrid& meshlerGrid) override;
 
     void onPositionChanged(const PositionEvent& positionEvent) override;
 
@@ -81,6 +81,6 @@ class MPresenter : public MModelEventListener {
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MPRESENTER_HPP

@@ -6,7 +6,7 @@
 #include <Meshler/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Cone.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MCone : public GeometryElementBase<MCone> {
@@ -20,6 +20,6 @@ class MCone : public GeometryElementBase<MCone> {
     [[nodiscard]] const Geometry::Cone<double_t>& getGeometryElement() const;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MCONE_HPP

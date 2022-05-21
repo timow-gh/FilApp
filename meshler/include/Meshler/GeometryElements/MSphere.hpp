@@ -8,7 +8,7 @@
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 class MSphere : public GeometryElementBase<MSphere> {
     Geometry::Sphere<double_t> m_sphere;
@@ -22,6 +22,6 @@ class MSphere : public GeometryElementBase<MSphere> {
     CORE_NODISCARD const Geometry::Sphere<double_t>& getGeometryElement() const;
     void setGeometryElement(const Geometry::Sphere<double_t>& sphere);
 };
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MSPHERE_HPP

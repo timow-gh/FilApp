@@ -1,7 +1,7 @@
 #include <Meshler/Interactors/CommandInteractor.hpp>
 #include <Meshler/MController.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 CommandInteractor::CommandInteractor(MController& controller) : m_controller(&controller)
@@ -14,4 +14,4 @@ void CommandInteractor::onEvent(const Graphics::KeyEvent& keyEvent)
         m_controller->setNextInteractor(*nextInteractorCommand);
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

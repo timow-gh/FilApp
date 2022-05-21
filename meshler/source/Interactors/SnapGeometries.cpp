@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <limits>
 
-namespace FlowMesh
+namespace Meshler
 {
 SnapGeometries::SnapGeometries(const Geometry::Plane<double_t>& snapPlane) : m_snapPlane(snapPlane)
 {
@@ -153,10 +153,10 @@ void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& snapPoints,
     }
 }
 
-void SnapGeometries::add(const MSphere& flowMeshSphere)
+void SnapGeometries::add(const MSphere& meshlerSphere)
 {
-    const auto& sphere = flowMeshSphere.getGeometryElement();
-    const auto& trafo = flowMeshSphere.getTransformation();
+    const auto& sphere = meshlerSphere.getGeometryElement();
+    const auto& trafo = meshlerSphere.getTransformation();
 
     auto transformedSphere = Geometry::transformation(sphere, trafo);
     m_snapSpheres.push_back(transformedSphere);
@@ -169,4 +169,4 @@ void SnapGeometries::add(const MSphere& flowMeshSphere)
     add(LinAl::Vec3d{-transformedZVec * radius});
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

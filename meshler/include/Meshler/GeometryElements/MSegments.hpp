@@ -7,7 +7,7 @@
 #include <Meshler/GeometryElements/GeometryElementBase.hpp>
 #include <Geometry/Segment.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 class MSegments : public GeometryElementBase<MSegments> {
     Core::TVector<Geometry::Segment3d> m_segments;
@@ -24,6 +24,6 @@ class MSegments : public GeometryElementBase<MSegments> {
     [[nodiscard]] const Core::TVector<Geometry::Segment3d>& getSegments() const;
     void setSegments(const Core::TVector<Geometry::Segment3d>& segments);
 };
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MSEGMENTS_HPP

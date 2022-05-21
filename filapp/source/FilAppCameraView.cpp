@@ -247,11 +247,6 @@ void FilAppCameraView::clearRenderables()
     clearFilAppRenderables();
 }
 
-void FilAppCameraView::setUsePostprocessing(bool usePostProcessing)
-{
-    m_filamentView->setPostProcessingEnabled(usePostProcessing);
-}
-
 void FilAppCameraView::addRotationAnimation(RenderableId renderableIdentifier,
                                             const Vec3& rotationAxis)
 {
@@ -421,6 +416,8 @@ RenderableId FilAppCameraView::addRenderable(const FilAppRenderable& filAppRende
 
 void FilAppCameraView::clearFilAppRenderables()
 {
+    // Synchronize the GPU with the CPU
+    m_engine->flushAndWait();
     for (auto& renderable: m_filAppRenderables)
     {
         m_scene->remove(renderable.renderableEntity);

@@ -3,7 +3,7 @@
 using namespace Geometry;
 using namespace LinAl;
 
-namespace FlowMesh
+namespace Meshler
 {
 
 MCylinder::MCylinder()
@@ -24,4 +24,4 @@ const Cylinder<double_t>& MCylinder::getGeometryElement() const
     return m_cylinder;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

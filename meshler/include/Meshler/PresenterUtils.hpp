@@ -4,7 +4,7 @@
 #include <Graphics/Vertex.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 template <typename T>
@@ -15,6 +15,6 @@ template <typename T>
         color};
 }
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_PRESENTERUTILS_HPP

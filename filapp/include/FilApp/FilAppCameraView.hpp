@@ -75,8 +75,6 @@ class FilAppCameraView : public Graphics::View {
     void clearRenderables() override;
     // clang-format on
 
-    void setUsePostprocessing(bool usePostProcessing) override;
-
     void addRotationAnimation(Graphics::RenderableId renderableIdentifier,
                               const Graphics::Vec3& rotationAxis) override;
 

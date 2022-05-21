@@ -3,7 +3,7 @@
 #include <Meshler/LinAlConversion.hpp>
 #include <utility>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 std::unique_ptr<MGridInteractor> MGridInteractor::create(MModel& model, const MGrid& grid)
@@ -183,4 +183,4 @@ void MGridInteractor::onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent
     }
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

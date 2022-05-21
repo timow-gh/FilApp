@@ -6,7 +6,7 @@
 #include <Meshler/MModelEventListener.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MCone;
@@ -61,6 +61,6 @@ class MModelEventDispatcher {
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MMODELEVENTDISPATCHER_HPP

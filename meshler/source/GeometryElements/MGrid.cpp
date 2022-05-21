@@ -1,6 +1,6 @@
 #include <Meshler/GeometryElements/MGrid.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 MGrid::MGrid()
@@ -73,4 +73,4 @@ double_t MGrid::floorCoordAsMultipleOfStep(double_t coord, double_t stepWidth) c
     return floored;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

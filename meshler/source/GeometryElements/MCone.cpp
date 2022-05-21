@@ -5,7 +5,7 @@
 using namespace Geometry;
 using namespace LinAl;
 
-namespace FlowMesh
+namespace Meshler
 {
 
 MCone::MCone()
@@ -24,4 +24,4 @@ const Cone<double_t>& MCone::getGeometryElement() const
     return m_cone;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

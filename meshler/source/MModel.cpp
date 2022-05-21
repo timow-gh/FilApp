@@ -13,7 +13,7 @@
 #include <Geometry/Transformation/TransformSphere.hpp>
 #include <Geometry/Transformation/TransformVec.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 MModel::MModel(MModelEventListener* modelEventListener)
 {
@@ -90,4 +90,4 @@ SnapGeometries MModel::calcModelSnapGeometries() const
     return result;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

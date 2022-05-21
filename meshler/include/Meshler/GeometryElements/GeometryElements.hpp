@@ -11,18 +11,18 @@
 #include <Meshler/GeometryElements/MSegments.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 namespace details
 {
-template <typename TFlowMeshGeometry,
+template <typename TMeshlerGeometry,
           template <typename K,
                     typename V,
                     typename Compare = std::less<K>,
                     typename Alloc = std::allocator<std::pair<const K, V>>>
           class Map>
-TFlowMeshGeometry* getImpl(const FGuid& guid, Map<FGuid, TFlowMeshGeometry>& map)
+TMeshlerGeometry* getImpl(const FGuid& guid, Map<FGuid, TMeshlerGeometry>& map)
 {
     auto iter = map.find(guid);
     if (iter != map.end())
@@ -99,6 +99,6 @@ class GeometryElements {
     CORE_NODISCARD const Core::TMap<FGuid, MCuboid>& getCuboidMap() const;
     CORE_NODISCARD const Core::TMap<FGuid, MGrid>& getGridMap() const;
 };
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_GEOMETRYELEMENTS_HPP

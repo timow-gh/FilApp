@@ -6,7 +6,7 @@
 #include <Graphics/InputEvents/KeyEvent.hpp>
 #include <Graphics/InputEvents/KeyScancode.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 enum class Command : std::uint32_t
@@ -32,15 +32,15 @@ class InteractorCommand {
     CORE_NODISCARD Command getId() const { return m_id; }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 namespace std
 {
 
 template <>
-struct hash<FlowMesh::InteractorCommand>
+struct hash<Meshler::InteractorCommand>
 {
-    std::size_t operator()(const FlowMesh::InteractorCommand& command) const
+    std::size_t operator()(const Meshler::InteractorCommand& command) const
     {
         return static_cast<std::size_t>(command.getId());
     }

@@ -7,7 +7,7 @@
 #include <Geometry/Cylinder.hpp>
 #include <Geometry/Segment.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MCylinder : public GeometryElementBase<MCylinder> {
@@ -21,6 +21,6 @@ class MCylinder : public GeometryElementBase<MCylinder> {
     [[nodiscard]] const Geometry::Cylinder<double_t>& getGeometryElement() const;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MCYLINDER_HPP

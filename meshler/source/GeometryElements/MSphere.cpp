@@ -1,6 +1,6 @@
 #include <Meshler/GeometryElements/MSphere.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 MSphere::MSphere()
@@ -26,4 +26,4 @@ void MSphere::setGeometryElement(const Geometry::Sphere<double_t>& sphere)
     m_sphere = sphere;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

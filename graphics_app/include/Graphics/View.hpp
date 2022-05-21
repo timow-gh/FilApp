@@ -32,9 +32,6 @@ class View : public InputEventListener {
     virtual void clearRenderables() = 0;
     // clang-format on
 
-    // Prototype. Filament specific, will be removed
-    virtual void setUsePostprocessing(bool usePostProcessing) = 0;
-
     // Animation prototype
     virtual void addRotationAnimation(RenderableId renderableIdentifier,
                                       const Vec3& rotationAxis) = 0;

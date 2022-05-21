@@ -18,10 +18,10 @@
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <optional>
 
-namespace FlowMesh
+namespace Meshler
 {
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
 class MElementPlacingInteractor
     : public Graphics::GraphicsController
     , public MModelEventListener {
@@ -47,8 +47,8 @@ class MElementPlacingInteractor
     void onModelPostAddEvent() override;
 };
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::MElementPlacingInteractor(
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
+MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::MElementPlacingInteractor(
     MModel& model,
     const TGeomConfig<T>& geomConfig)
     : m_model(&model), m_snapGeometries(model.calcModelSnapGeometries()), m_geomConfig(geomConfig)
@@ -56,9 +56,9 @@ MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::MElementPlacingInt
     m_model->registerListener(this);
 }
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
 std::optional<LinAl::Vec3d>
-MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::calcIntersection(
+MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::calcIntersection(
     const Graphics::PickRayEvent& pickRayEvent) const
 {
     const Graphics::Vec3& pickOrigin = pickRayEvent.origin;
@@ -69,8 +69,8 @@ MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::calcIntersection(
     return m_snapGeometries.calcSnapPoint(ray);
 }
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
+void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onEvent(
     const Graphics::PickRayEvent& pickRayEvent)
 {
     auto intersection = calcIntersection(pickRayEvent);
@@ -78,22 +78,22 @@ void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
         return;
 
     m_model->setPosition(*m_geometryGuid, *intersection);
-    auto* geomElem = m_model->get<TFlowMeshGeometry>(*m_geometryGuid);
+    auto* geomElem = m_model->get<TMeshlerGeometry>(*m_geometryGuid);
     geomElem->setIsSnapGeometry(true);
     m_geometryGuid.reset();
 
     m_snapGeometries = m_model->calcModelSnapGeometries();
 
     m_geomConfig.baseConfig.isSnapGeometry = false;
-    TFlowMeshGeometry nextFlowMeshGeometry =
-        MGeometryTraits<TFlowMeshGeometry, TGeomConfig, T>::create(m_geomConfig);
-    m_model->add(nextFlowMeshGeometry);
-    m_geometryGuid = nextFlowMeshGeometry.getFGuid();
+    TMeshlerGeometry nextMeshlerGeometry =
+        MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
+    m_model->add(nextMeshlerGeometry);
+    m_geometryGuid = nextMeshlerGeometry.getFGuid();
     m_model->setPosition(*m_geometryGuid, *intersection);
 }
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
+void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onEvent(
     const Graphics::PickRayMoveEvent& pickRayMoveEvent)
 {
     auto intersection = calcIntersection(pickRayMoveEvent);
@@ -103,7 +103,7 @@ void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
     if (!m_geometryGuid)
     {
         m_geomConfig.baseConfig.isSnapGeometry = false;
-        auto geomElem = MGeometryTraits<TFlowMeshGeometry, TGeomConfig, T>::create(m_geomConfig);
+        auto geomElem = MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
         m_geometryGuid = geomElem.getFGuid();
         m_model->add(geomElem);
     }
@@ -111,19 +111,19 @@ void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onEvent(
     m_model->setPosition(*m_geometryGuid, *intersection);
 }
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onRemoveRayPickEventListener()
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
+void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onRemoveRayPickEventListener()
 {
     if (m_geometryGuid)
         m_model->remove(*m_geometryGuid);
 }
 
-template <typename TFlowMeshGeometry, typename T, template <typename> typename TGeomConfig>
-void MElementPlacingInteractor<TFlowMeshGeometry, T, TGeomConfig>::onModelPostAddEvent()
+template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
+void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onModelPostAddEvent()
 {
     m_snapGeometries = m_model->calcModelSnapGeometries();
 }
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MELEMENTPLACINGINTERACTOR_HPP

@@ -13,7 +13,7 @@
 #include <Geometry/Segment.hpp>
 #include <map>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MModel {
@@ -34,11 +34,11 @@ class MModel {
         m_modelEventDispatcher.removeListener(modelEventListener);
     }
 
-    template <typename TFlowMeshGeometry>
-    void add(const TFlowMeshGeometry& flowMeshGeometry)
+    template <typename TMeshlerGeometry>
+    void add(const TMeshlerGeometry& meshlerGeometry)
     {
-        if (m_geometryElements.add(flowMeshGeometry))
-            m_modelEventDispatcher.dispatchAdd(flowMeshGeometry);
+        if (m_geometryElements.add(meshlerGeometry))
+            m_modelEventDispatcher.dispatchAdd(meshlerGeometry);
     }
 
     void remove(FGuid fGuid);
@@ -56,6 +56,6 @@ class MModel {
     CORE_NODISCARD SnapGeometries calcModelSnapGeometries() const;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MMODEL_HPP

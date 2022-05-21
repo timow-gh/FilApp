@@ -7,7 +7,7 @@
 #include <Meshler/GeometryElements/MSphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 template <typename T>
@@ -29,6 +29,6 @@ struct MGeometryTraits<MSphere, SphereTraitsConfig, T>
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MSPHERETRAITS_HPP

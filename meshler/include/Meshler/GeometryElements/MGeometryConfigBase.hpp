@@ -2,7 +2,7 @@
 #ifndef MESHLER_MGEOMETRYCONFIGBASE_HPP
 #define MESHLER_MGEOMETRYCONFIGBASE_HPP
 
-namespace FlowMesh
+namespace Meshler
 {
 
 struct MGeometryConfigBase
@@ -10,6 +10,6 @@ struct MGeometryConfigBase
     bool isSnapGeometry{true};
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MGEOMETRYCONFIGBASE_HPP

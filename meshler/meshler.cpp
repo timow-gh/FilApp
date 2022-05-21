@@ -9,7 +9,7 @@
 #include <Meshler/GeometryElements/MSphere.hpp>
 
 using namespace Graphics;
-using namespace FlowMesh;
+using namespace Meshler;
 using namespace Geometry;
 using namespace LinAl;
 
@@ -82,16 +82,16 @@ int main()
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
         FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
 
-    MPresenter flowMeshPresenter{graphicsApp->getWindow().getMainIView()};
+    MPresenter meshlerPresenter{graphicsApp->getWindow().getMainIView()};
 
-    MModel flowMeshModel;
-    flowMeshModel.registerListener(&flowMeshPresenter);
+    MModel meshlerModel;
+    meshlerModel.registerListener(&meshlerPresenter);
 
-    createSpheres(flowMeshModel);
-    createCones(flowMeshModel);
+    createSpheres(meshlerModel);
+    createCones(meshlerModel);
 
-    std::shared_ptr<MController> flowMeshController =
-        MController::create(&flowMeshPresenter, &flowMeshModel);
+    std::shared_ptr<MController> meshlerController =
+        MController::create(&meshlerPresenter, &meshlerModel);
 
     graphicsApp->run();
 }

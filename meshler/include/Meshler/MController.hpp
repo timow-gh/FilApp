@@ -15,31 +15,31 @@
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <memory>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MController : public Graphics::GraphicsController {
-    MPresenter* m_flowMeshPresenter{nullptr};
-    MModel* m_flowMeshModel{nullptr};
+    MPresenter* m_meshlerPresenter{nullptr};
+    MModel* m_meshlerModel{nullptr};
 
     std::unique_ptr<CommandInteractor> m_commandInteractor{nullptr};
-    std::unique_ptr<MGridInteractor> m_flowMeshGridInteractor{nullptr};
+    std::unique_ptr<MGridInteractor> m_meshlerGridInteractor{nullptr};
     std::unique_ptr<Graphics::GraphicsController> m_currentInteractor{nullptr};
 
   public:
     MController() = default;
 
     CORE_NODISCARD static std::shared_ptr<MController>
-    create(MPresenter* flowMeshPresenter,
-                                                              MModel* flowMeshModel)
+    create(MPresenter* meshlerPresenter,
+                                                              MModel* meshlerModel)
     {
-        auto controller = std::make_shared<MController>(MController(flowMeshPresenter, flowMeshModel));
+        auto controller = std::make_shared<MController>(MController(meshlerPresenter, meshlerModel));
         controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
-        flowMeshPresenter->registerListener(controller.get());
+        meshlerPresenter->registerListener(controller.get());
         controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
 
-        controller->m_flowMeshGridInteractor = MGridInteractor::create(*flowMeshModel, MGrid{});
-        flowMeshPresenter->registerRayPickEventListener(controller->m_flowMeshGridInteractor.get());
+        controller->m_meshlerGridInteractor = MGridInteractor::create(*meshlerModel, MGrid{});
+        meshlerPresenter->registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
 
         return controller;
     }
@@ -51,7 +51,7 @@ class MController : public Graphics::GraphicsController {
 
     void setNextInteractor(const InteractorCommand& command)
     {
-        m_flowMeshPresenter->removeListener(m_currentInteractor.get());
+        m_meshlerPresenter->removeListener(m_currentInteractor.get());
 
         switch (command.getId())
         {
@@ -59,7 +59,7 @@ class MController : public Graphics::GraphicsController {
         {
             m_currentInteractor =
                 std::make_unique<MElementPlacingInteractor<MSphere, double_t, SphereTraitsConfig>>(
-                    *m_flowMeshModel,
+                    *m_meshlerModel,
                     SphereTraitsConfig<double_t>{});
             break;
         }
@@ -67,7 +67,7 @@ class MController : public Graphics::GraphicsController {
         {
             m_currentInteractor =
                 std::make_unique<MElementPlacingInteractor<MCone, double_t, ConeTraitsConfig>>(
-                    *m_flowMeshModel,
+                    *m_meshlerModel,
                     ConeTraitsConfig<double_t>{});
             break;
         }
@@ -75,7 +75,7 @@ class MController : public Graphics::GraphicsController {
         {
             m_currentInteractor = std::make_unique<
                 MElementPlacingInteractor<MCylinder, double_t, CylinderTraitsConfig>>(
-                *m_flowMeshModel,
+                *m_meshlerModel,
                 CylinderTraitsConfig<double_t>{});
             break;
         }
@@ -83,22 +83,22 @@ class MController : public Graphics::GraphicsController {
         {
             m_currentInteractor =
                 std::make_unique<MElementPlacingInteractor<MCuboid, double_t, CuboidTraitsConfig>>(
-                    *m_flowMeshModel,
+                    *m_meshlerModel,
                     CuboidTraitsConfig<double_t>{});
             break;
         }
         }
 
-        m_flowMeshPresenter->registerListener(m_currentInteractor.get());
+        m_meshlerPresenter->registerListener(m_currentInteractor.get());
     }
 
   private:
-    MController(MPresenter* flowMeshPresenter, MModel* flowMeshModel)
-        : m_flowMeshPresenter(flowMeshPresenter), m_flowMeshModel(flowMeshModel)
+    MController(MPresenter* meshlerPresenter, MModel* meshlerModel)
+        : m_meshlerPresenter(meshlerPresenter), m_meshlerModel(meshlerModel)
     {
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MCONTROLLER_HPP

@@ -3,18 +3,18 @@
 
 #include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
-template <typename TFlowMeshGeometry, template<typename> typename TGeomConfig, typename T>
+template <typename TMeshlerGeometry, template<typename> typename TGeomConfig, typename T>
 struct MGeometryTraits
 {
-    CORE_NODISCARD static TFlowMeshGeometry create(const TGeomConfig<T>& config)
+    CORE_NODISCARD static TMeshlerGeometry create(const TGeomConfig<T>& config)
     {
         static_assert(sizeof(0) && "create not implemented.");
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MGEOMETRYTRAITS_HPP

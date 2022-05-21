@@ -1,7 +1,7 @@
 #include <Meshler/GeometryElements/MSegments.hpp>
 #include <utility>
 
-namespace FlowMesh
+namespace Meshler
 {
 MSegments::MSegments()
     : GeometryElementBase<MSegments>(FGuid(), MGeometryConfigBase{})
@@ -32,4 +32,4 @@ void MSegments::setSegments(const Core::TVector<Geometry::Segment3d>& segments)
     m_segments = segments;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

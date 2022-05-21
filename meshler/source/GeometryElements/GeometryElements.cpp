@@ -1,6 +1,6 @@
 #include <Meshler/GeometryElements/GeometryElements.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 template <typename TGeometryElement,
@@ -133,23 +133,23 @@ std::vector<FGuid> GeometryElements::getFGuidsFromMaps() const
     return guids;
 }
 
-const Core::TMap<FlowMesh::FGuid, FlowMesh::MSegments>&
+const Core::TMap<Meshler::FGuid, Meshler::MSegments>&
 GeometryElements::getSegmentMap() const
 {
     return m_segments;
 }
 
-const Core::TMap<FlowMesh::FGuid, FlowMesh::MSphere>& GeometryElements::getSphereMap() const
+const Core::TMap<Meshler::FGuid, Meshler::MSphere>& GeometryElements::getSphereMap() const
 {
     return m_spheres;
 }
 
-const Core::TMap<FlowMesh::FGuid, FlowMesh::MCone>& GeometryElements::getConeMap() const
+const Core::TMap<Meshler::FGuid, Meshler::MCone>& GeometryElements::getConeMap() const
 {
     return m_cones;
 }
 
-const Core::TMap<FlowMesh::FGuid, FlowMesh::MCylinder>&
+const Core::TMap<Meshler::FGuid, Meshler::MCylinder>&
 GeometryElements::getCylinderMap() const
 {
     return m_cylinder;
@@ -165,4 +165,4 @@ const Core::TMap<FGuid, MGrid>& GeometryElements::getGridMap() const
     return m_grid;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

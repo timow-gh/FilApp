@@ -6,7 +6,7 @@
 #include <Geometry/Plane.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MGridInteractor : public Graphics::RayPickEventListener {
@@ -34,6 +34,6 @@ class MGridInteractor : public Graphics::RayPickEventListener {
     void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MGRIDINTERACTOR_HPP

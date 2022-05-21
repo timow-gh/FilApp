@@ -9,7 +9,7 @@
 #include <Geometry/Segment.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MGrid : public GeometryElementBase<MGrid> {
@@ -64,6 +64,6 @@ class MGrid : public GeometryElementBase<MGrid> {
     CORE_NODISCARD double_t floorCoordAsMultipleOfStep(double_t coord, double_t stepWidth) const;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MGRID_HPP

@@ -1,7 +1,7 @@
 #include <Meshler/GeometryElements/MCuboid.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 MCuboid::MCuboid()
@@ -22,4 +22,4 @@ const Geometry::Cuboid<double_t>& MCuboid::getGeometryElement() const
     return m_cuboid;
 }
 
-} // namespace FlowMesh
+} // namespace Meshler

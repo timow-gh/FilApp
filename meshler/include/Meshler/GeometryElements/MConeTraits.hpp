@@ -7,7 +7,7 @@
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 template <typename T>
@@ -30,6 +30,6 @@ struct MGeometryTraits<MCone, ConeTraitsConfig, T>
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_MCONETRAITS_HPP

@@ -1,7 +1,7 @@
 #ifndef MESHLER_PRESENTERCONFIG_HPP
 #define MESHLER_PRESENTERCONFIG_HPP
 
-namespace FlowMesh
+namespace Meshler
 {
 struct PresenterConfig
 {
@@ -15,6 +15,6 @@ struct PresenterConfig
     std::uint32_t lineColor{0xFF000000};
     std::uint32_t selectedLineColor{0xFF000000};
 };
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_PRESENTERCONFIG_HPP

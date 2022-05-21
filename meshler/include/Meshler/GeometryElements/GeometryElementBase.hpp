@@ -6,7 +6,7 @@
 #include <Meshler/GeometryElements/MGeometryConfigBase.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 template <typename Derived>
@@ -107,6 +107,6 @@ class GeometryElementBase {
     }
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_GEOMETRYELEMENTBASE_HPP

@@ -5,7 +5,7 @@
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
 
-namespace FlowMesh
+namespace Meshler
 {
 
 class MController;
@@ -24,6 +24,6 @@ class CommandInteractor : public Graphics::InputEventListener {
     void onEvent(const Graphics::KeyEvent& keyEvent) override;
 };
 
-} // namespace FlowMesh
+} // namespace Meshler
 
 #endif // MESHLER_COMMANDINTERACTOR_HPP
