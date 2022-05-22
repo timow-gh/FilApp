@@ -23,7 +23,7 @@ namespace FilApp
  * data types.
  */
 
-filament::Engine::Backend toFilamentBackend(Graphics::BackendMode backendMode);
+filament::backend::Backend toFilamentBackend(Graphics::BackendMode backendMode);
 filament::camutils::Mode toFilamentCameraMode(Graphics::ViewConfig::CameraMode cameraMode);
 filament::Camera::Projection
 toFilamentProjection(Graphics::ViewConfig::CameraProjection cameraProjection);

@@ -50,7 +50,6 @@ target_link_libraries(fil_app
         utils
         camutils
         )
-target_compile_features(fil_app PUBLIC cxx_std_17)
 
 if (MSVC)
     target_compile_definitions(fil_app PRIVATE -DMSVC)

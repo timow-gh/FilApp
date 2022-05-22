@@ -7,13 +7,13 @@ using namespace Graphics;
 
 namespace FilApp
 {
-filament::Engine::Backend toFilamentBackend(BackendMode backendMode)
+filament::backend::Backend toFilamentBackend(BackendMode backendMode)
 {
     switch (backendMode)
     {
-    case BackendMode::VULKAN: return filament::Engine::Backend::VULKAN;
-    case BackendMode::OPENGL: return filament::Engine::Backend ::OPENGL;
-    default: PANIC_LOG("BackendMode not implemented."); return filament::Engine::Backend::DEFAULT;
+    case BackendMode::VULKAN: return filament::backend::Backend::VULKAN;
+    case BackendMode::OPENGL: return filament::backend::Backend ::OPENGL;
+    default: PANIC_LOG("BackendMode not implemented."); return filament::backend::Backend::DEFAULT;
     }
 }
 

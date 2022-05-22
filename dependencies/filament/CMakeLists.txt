@@ -4,6 +4,7 @@ FetchContent_Declare(
         GIT_TAG tw-cmake-minimal)
 FetchContent_GetProperties(filament)
 if (NOT filament_POPULATED)
+
     set(FILAMENT_SUPPORTS_OPENGL ON CACHE BOOL "Include the OpenGL backend" FORCE)
     set(FILAMENT_SUPPORTS_VULKAN ON CACHE BOOL "Include the Vulkan backend" FORCE)
     set(FILAMENT_SUPPORTS_METAL OFF CACHE BOOL "Include the Metal backend" FORCE)
@@ -34,8 +35,10 @@ if (NOT filament_POPULATED)
 
     set(FILAMENT_SUPPORTS_XLIB ON CACHE BOOL "Include XLIB support in Linux builds" FORCE)
     set(FILAMENT_SUPPORTS_XCB ON CACHE BOOL "Include XCB support in Linux builds" FORCE)
-    FetchContent_Populate(filament)
+    set(FILAMENT_SKIP_SDL2 OFF CACHE BOOL "Skip dependencies of SDL2, and SDL2" FORCE)
+    set(SDL_VIDEO_DRIVER_X11 ON CACHE BOOL "Use SDL2 X11 Windows when on Linux" FORCE)
 
+    FetchContent_Populate(filament)
     list(APPEND CMAKE_MODULE_PATH ${filament_SOURCE_DIR})
     add_subdirectory(${filament_SOURCE_DIR} ${filament_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()

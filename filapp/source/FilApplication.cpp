@@ -148,7 +148,8 @@ void FilApplication::run()
 FilApplication::FilApplication(const AppConfig& appConfig, const WindowConfig& windowConfig)
     : m_appConfig(appConfig)
 {
-    m_engine = filament::Engine::create(toFilamentBackend(appConfig.backendMode));
+    filament::backend::Backend chosenBackend = toFilamentBackend(appConfig.backendMode);
+    m_engine = filament::Engine::create(chosenBackend);
     m_window = std::make_unique<FilAppWindow>(windowConfig, m_engine);
     m_appConfig = appConfig;
 }
