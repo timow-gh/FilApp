@@ -1,4 +1,4 @@
-set(FETCHCONTENT_SOURCE_DIR_CORE "/home/timo/dev/repos/Core")
+#set(FETCHCONTENT_SOURCE_DIR_CORE "")
 
 FetchContent_Declare(
         core

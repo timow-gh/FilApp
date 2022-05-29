@@ -1,4 +1,4 @@
-set(FETCHCONTENT_SOURCE_DIR_GEOMETRY "/home/timo/dev/repos/Geometry")
+#set(FETCHCONTENT_SOURCE_DIR_GEOMETRY "")
 FetchContent_Declare(
         geometry
         GIT_REPOSITORY https://github.com/timow-gh/Geometry.git
