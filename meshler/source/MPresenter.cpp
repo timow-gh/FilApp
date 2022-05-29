@@ -52,11 +52,11 @@ MPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& hal
                                      std::uint32_t faceColor)
 {
     Core::TVector<Graphics::Vertex> vertices;
-    for (const auto& vec: halfedgeMesh.getVertexPoints())
+    for (const auto& vec: halfedgeMesh.meshPoints.getPoints())
         vertices.push_back(vecToVertex(vec, faceColor));
 
     return {std::move(vertices),
-            Geometry::calcTriangleIndices<double_t, uint16_t>(halfedgeMesh.getFacets())};
+            Geometry::calcTriangleIndices<double_t, std::size_t, uint16_t>(halfedgeMesh.facets)};
 }
 
 Graphics::LineRenderable
@@ -241,12 +241,17 @@ void MPresenter::segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>&
                                          Core::TVector<Graphics::Vertex>& vertices) const
 
 {
+    using VertexIndex_t = Geometry::HalfedgeMesh<double_t>::VertexIndex_t;
     for (const auto& segmentIndices: segIndices)
     {
-        vertices.push_back(vecToVertex(heMesh.getVertex(segmentIndices.source).getPoint(),
-                                       m_presenterConfig.lineColor));
-        vertices.push_back(vecToVertex(heMesh.getVertex(segmentIndices.target).getPoint(),
-                                       m_presenterConfig.lineColor));
+        vertices.push_back(vecToVertex(
+            heMesh.getVertex(VertexIndex_t(static_cast<std::size_t>(segmentIndices.source)))
+                .getVector(),
+            m_presenterConfig.lineColor));
+        vertices.push_back(vecToVertex(
+            heMesh.getVertex(VertexIndex_t(static_cast<std::size_t>(segmentIndices.target)))
+                .getVector(),
+            m_presenterConfig.lineColor));
     }
 }
 

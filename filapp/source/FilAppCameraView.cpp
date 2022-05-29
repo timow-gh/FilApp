@@ -30,7 +30,6 @@ FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Rende
     if (viewConfig.useFXAA)
     {
         m_filamentView->setAntiAliasing(filament::AntiAliasing::FXAA);
-        m_filamentView->setSampleCount(viewConfig.fxaaSampleCount);
     }
 
     m_scene = m_engine->createScene();
