@@ -2,12 +2,14 @@
 #define FILAPP_FILAPPCAMERAVIEW_HPP
 
 #include <Core/Types/TString.hpp>
+#include <Core/Utils/Warnings.h>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <Graphics/View.hpp>
 #include <Graphics/ViewConfig.hpp>
 #include <camutils/Manipulator.h>
+DISABLE_ALL_WARNINGS
 #include <filament/Camera.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
@@ -15,6 +17,7 @@
 #include <filament/Skybox.h>
 #include <filament/View.h>
 #include <filament/Viewport.h>
+ENABLE_ALL_WARNINGS
 #include <filapp_export.h>
 #include <memory>
 #include <utils/Entity.h>

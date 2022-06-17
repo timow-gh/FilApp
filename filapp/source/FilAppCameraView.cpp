@@ -22,7 +22,7 @@ using namespace Graphics;
 namespace FilApp
 {
 FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Renderer& renderer)
-    : m_engine(renderer.getEngine()), m_name(viewConfig.name), m_viewConfig(viewConfig)
+    : m_name(viewConfig.name), m_engine(renderer.getEngine()), m_viewConfig(viewConfig)
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
@@ -53,18 +53,17 @@ FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Rende
     m_filamentView->setCamera(m_camera);
 
     filament::camutils::Mode cameraMode = toFilamentCameraMode(viewConfig.cameraMode);
-    const Viewport& vport = viewConfig.viewport;
     if (cameraMode == filament::camutils::Mode::ORBIT)
         m_cameraManipulator = std::unique_ptr<CameraManipulator>(
             CameraManipulator::Builder()
-                .fovDegrees(m_viewConfig.fieldOfViewInDegree)
+                .fovDegrees(static_cast<float>(m_viewConfig.fieldOfViewInDegree))
                 .fovDirection(
                     toFilamentFovDirection(m_viewConfig.fovDirection, FilamentCamUtilsTag()))
-                .farPlane(m_viewConfig.far)
+                .farPlane(static_cast<float>(m_viewConfig.far))
                 .orbitHomePosition(eye[0], eye[1], eye[2])
                 .targetPosition(center[0], center[1], center[2])
                 .upVector(up[0], up[1], up[2])
-                .zoomSpeed(0.01)
+                .zoomSpeed(0.01f)
                 .build(toFilamentCameraMode(m_viewConfig.cameraMode)));
     else
         CORE_POSTCONDITION_ASSERT(false, "Camera not implemented.");
@@ -120,7 +119,8 @@ void FilAppCameraView::configureCameraProjection()
 {
     CORE_PRECONDITION_DEBUG_ASSERT(m_viewConfig.near < m_viewConfig.far,
                                    "Invalid near and far plane.");
-    const float_t aspect = (float_t)m_filamentViewport.width / (float_t)m_filamentViewport.height;
+    const double_t aspect = static_cast<double_t>(m_filamentViewport.width) /
+                            static_cast<double_t>(m_filamentViewport.height);
 
     switch (m_viewConfig.cameraProjection)
     {
@@ -248,20 +248,20 @@ void FilAppCameraView::addRotationAnimation(RenderableId renderableIdentifier,
                                             const Vec3& rotationAxis)
 {
     m_animationCallbacks.emplace_back(
-        [renderableIdentifier, engine = m_engine](double_t deltaT)
+        [renderableIdentifier, engine = m_engine, rotationAxis](double_t deltaT)
         {
             auto& tcm = engine->getTransformManager();
             tcm.setTransform(
                 tcm.getInstance(
                     utils::Entity::import(static_cast<int>(renderableIdentifier.getId()))),
-                filament::math::mat4f::rotation(deltaT * 0.4, filament::math::float3{0, 1, 0}));
+                filament::math::mat4f::rotation(deltaT * 0.4, vec3ToFloat3(rotationAxis)));
         });
 }
 
 Viewport FilAppCameraView::getViewport() const
 {
-    return {m_filamentViewport.left,
-            m_filamentViewport.bottom,
+    return {static_cast<uint32_t>(m_filamentViewport.left),
+            static_cast<uint32_t>(m_filamentViewport.bottom),
             m_filamentViewport.width,
             m_filamentViewport.height};
 }
@@ -269,7 +269,7 @@ Viewport FilAppCameraView::getViewport() const
 void FilAppCameraView::updateViewPort(const Viewport& viewport)
 {
     CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
-    DEBUG_CHECK_CAMERA_MANIP();
+    DEBUG_CHECK_CAMERA_MANIP()
 
     m_viewConfig.viewport = viewport;
     m_filamentViewport = toFilamentViewport(viewport);
@@ -294,7 +294,7 @@ void FilAppCameraView::resize(const Viewport& viewport)
 
 void FilAppCameraView::onEvent(const MouseButtonEvent& mouseButtonEvent)
 {
-    DEBUG_CHECK_CAMERA_MANIP();
+    DEBUG_CHECK_CAMERA_MANIP()
     switch (mouseButtonEvent.type)
     {
     case MouseButtonEvent::Type::PUSH:

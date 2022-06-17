@@ -1,11 +1,14 @@
+#include <Core/Utils/Warnings.h>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppWindow.hpp>
 #include <FilApp/FilApplication.hpp>
+DISABLE_ALL_WARNINGS
 #include <SDL.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
-#include <memory>
 #include <utils/Panic.h>
+ENABLE_ALL_WARNINGS
+#include <memory>
 
 using namespace Graphics;
 
@@ -41,14 +44,15 @@ Window& FilApplication::getWindow()
 
 double_t FilApplication::getDeltaT()
 {
-    return (double_t)SDL_GetPerformanceCounter() / (double_t)SDL_GetPerformanceFrequency() -
+    return static_cast<double_t>(SDL_GetPerformanceCounter()) /
+               static_cast<double_t>(SDL_GetPerformanceFrequency()) -
            m_prevTimeStep;
 }
 
 void FilApplication::run()
 {
-    m_prevTimeStep =
-        (double_t)SDL_GetPerformanceCounter() / (double_t)SDL_GetPerformanceFrequency();
+    m_prevTimeStep = static_cast<double_t>(SDL_GetPerformanceCounter()) /
+                     static_cast<double_t>(SDL_GetPerformanceFrequency());
 
     EventPollingMode eventPollingMode = m_appConfig.eventPollingMode;
     while (!m_closeApp)
@@ -92,39 +96,42 @@ void FilApplication::run()
         case SDL_MOUSEBUTTONDOWN:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x),
+                                                       static_cast<uint32_t>(sdlEvent.button.y));
             m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
                                              sdlEvent.button.button,
                                              sdlEvent.button.timestamp,
                                              sdlEvent.button.windowID,
                                              sdlEvent.button.clicks,
-                                             pos.x,
-                                             pos.y,
+                                             static_cast<uint32_t>(pos.x),
+                                             static_cast<uint32_t>(pos.y),
                                              deltaT));
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x),
+                                                       static_cast<uint32_t>(sdlEvent.button.y));
             m_window->event(MouseButtonEvent(MouseButtonEvent::Type::RELEASE,
                                              sdlEvent.button.button,
                                              sdlEvent.button.timestamp,
                                              sdlEvent.button.windowID,
                                              sdlEvent.button.clicks,
-                                             pos.x,
-                                             pos.y,
+                                             static_cast<uint32_t>(pos.x),
+                                             static_cast<uint32_t>(pos.y),
                                              deltaT));
             break;
         }
         case SDL_MOUSEMOTION:
         {
             filament::math::int2 pos =
-                m_window->fixupMouseCoordinatesForHdpi(sdlEvent.button.x, sdlEvent.button.y);
+                m_window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x),
+                                                       static_cast<uint32_t>(sdlEvent.button.y));
             m_window->event(MouseMoveEvent(sdlEvent.button.timestamp,
                                            sdlEvent.button.windowID,
-                                           pos.x,
-                                           pos.y,
+                                           static_cast<uint32_t>(pos.x),
+                                           static_cast<uint32_t>(pos.y),
                                            deltaT));
             break;
         }

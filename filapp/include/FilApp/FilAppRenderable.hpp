@@ -7,12 +7,15 @@
 #include <Graphics/Renderables/RendereableId.hpp>
 #include <Graphics/Renderables/TriangleRenderable.hpp>
 #include <Graphics/Vertex.hpp>
+#include <Core/Utils/Warnings.h>
+DISABLE_ALL_WARNINGS
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>
 #include <filament/Material.h>
 #include <filament/MaterialInstance.h>
 #include <filament/RenderableManager.h>
 #include <filament/VertexBuffer.h>
+ENABLE_ALL_WARNINGS
 #include <filapp_export.h>
 #include <memory>
 #include <utils/EntityManager.h>

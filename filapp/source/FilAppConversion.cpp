@@ -1,7 +1,9 @@
 #include <Core/Utils/Assert.hpp>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
+DISABLE_ALL_WARNINGS
 #include <utils/Panic.h>
+ENABLE_ALL_WARNINGS
 
 using namespace Graphics;
 
@@ -69,7 +71,10 @@ filament::Camera::Fov toFilamentFovDirection(ViewConfig::FieldOfViewDirection fi
 
 filament::Viewport toFilamentViewport(const Viewport& viewport)
 {
-    return {viewport.left, viewport.bottom, viewport.width, viewport.height};
+    return {static_cast<int32_t>(viewport.left),
+            static_cast<int32_t>(viewport.bottom),
+            viewport.width,
+            viewport.height};
 }
 
 filament::math::float4 vec4ToFloat4(const Vec4& vec4)

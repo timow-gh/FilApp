@@ -20,7 +20,7 @@ FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine) : m_e
     createMaterials();
 }
 
-filament::Box calcFilamentBbox(const Core::TVector<Vertex>& vertices)
+static filament::Box calcFilamentBbox(const Core::TVector<Vertex>& vertices)
 {
     CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
     filament::math::float3 minVec(std::numeric_limits<float_t>::max());
@@ -90,15 +90,16 @@ void FilAppRenderableCreator::createMaterials()
     filament::Material* mat = nullptr;
     filament::MaterialInstance* matInstance = nullptr;
 
-    mat =
-        filament::Material::Builder()
-            .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA, FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE)
-            .build(*m_engine);
+    mat = filament::Material::Builder()
+              .package(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_DATA,
+                       static_cast<size_t>(FILAPP_RESOURCES_BAKEDVERTEXCOLOR_SIZE))
+              .build(*m_engine);
     matInstance = mat->createInstance();
     m_filAppMaterials.emplace(FilAppMaterialType::BAKEDVERTEXCOLOR, MatPair(mat, matInstance));
 
     mat = filament::Material::Builder()
-              .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA, FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE)
+              .package(FILAPP_RESOURCES_BAKEDFRAGCOLOR_DATA,
+                       static_cast<size_t>(FILAPP_RESOURCES_BAKEDFRAGCOLOR_SIZE))
               .build(*m_engine);
     matInstance = mat->createInstance();
     m_filAppMaterials.emplace(FilAppMaterialType::BAKEDFRAGCOLOR, MatPair(mat, matInstance));

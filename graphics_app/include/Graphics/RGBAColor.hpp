@@ -29,7 +29,7 @@ class RGBAColor {
     {
         auto sRGB_to_linear = [](float color) -> float_t
         {
-            return color <= 0.04045 ? color / 12.92 : std::pow((color + 0.055) / 1.055, 2.4);
+            return color <= 0.04045f ? color / 12.92f : std::pow((color + 0.055f) / 1.055f, 2.4f);
         };
         float_t sum = 255.0f; // red + green + blue; //
         return {sRGB_to_linear(static_cast<float_t>(red) / sum) * alpha,

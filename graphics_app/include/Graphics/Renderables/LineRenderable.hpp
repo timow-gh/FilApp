@@ -38,7 +38,7 @@ inline LineRenderable LineRenderable::create(std::vector<Vertex> vertices)
     indices.reserve((vertices.size()));
     const std::size_t SIZE = vertices.size();
     for (std::size_t i{1}; i <= SIZE; ++i)
-        indices.push_back(i - 1);
+        indices.push_back(static_cast<unsigned short>(i - 1));
     return {std::move(vertices), std::move(indices)};
 }
 

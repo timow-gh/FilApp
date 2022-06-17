@@ -1,12 +1,14 @@
 #ifndef FILAPP_FILAPPCONVERSION_HPP
 #define FILAPP_FILAPPCONVERSION_HPP
 
+#include <Core/Utils/Warnings.h>
 #include <Graphics/AppConfig.hpp>
 #include <Graphics/InputEvents/KeyScancode.hpp>
 #include <Graphics/Vec.hpp>
 #include <Graphics/ViewConfig.hpp>
 #include <Graphics/Viewport.hpp>
 #include <Graphics/WindowConfig.hpp>
+DISABLE_ALL_WARNINGS
 #include <SDL_scancode.h>
 #include <camutils/Bookmark.h>
 #include <camutils/Manipulator.h>
@@ -15,6 +17,7 @@
 #include <filament/Viewport.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
+ENABLE_ALL_WARNINGS
 
 namespace FilApp
 {

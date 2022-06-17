@@ -18,7 +18,7 @@ namespace Graphics
 
 class View : public InputEventListener {
   public:
-    ~View() override = default;
+    ~View() override;
 
     CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
     CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;

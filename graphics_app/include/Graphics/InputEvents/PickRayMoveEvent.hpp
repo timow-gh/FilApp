@@ -7,8 +7,8 @@ namespace Graphics
 {
 struct PickRayMoveEvent : public PickRayEvent
 {
-    PickRayMoveEvent(const Vec3& origin, const Vec3& direction, double_t time)
-        : PickRayEvent(origin, direction, time)
+    PickRayMoveEvent(const Vec3& originVec, const Vec3& directionVec, double_t ttime)
+        : PickRayEvent(originVec, directionVec, ttime)
     {
     }
 };

@@ -62,7 +62,6 @@ target_link_libraries(meshler
         CrossGuid::CrossGuid
         LinAl::LinAl
         Geometry::Geometry
-        graphics::interface
         filapp::filapp)
 
 include(GenerateExportHeader)

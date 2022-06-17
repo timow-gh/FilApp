@@ -13,7 +13,7 @@ class WindowId;
 
 class Window {
   public:
-    virtual ~Window() = default;
+    virtual ~Window();
 
     using WindowId = uint32_t;
 

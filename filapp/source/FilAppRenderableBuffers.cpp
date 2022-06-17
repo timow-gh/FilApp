@@ -1,4 +1,6 @@
 #include "FilAppRenderableBuffers.hpp"
+#include <Core/Utils/Assert.hpp>
+#include <limits>
 
 using namespace Graphics;
 
@@ -6,7 +8,9 @@ namespace FilApp
 {
 void createVertexBuffer(FilAppRenderable* filAppRenderable, const Core::TVector<Vertex>& vertices)
 {
-    const std::size_t VERTEX_COUNT = vertices.size();
+    CORE_PRECONDITION_DEBUG_ASSERT(vertices.size() <= std::numeric_limits<uint32_t>::max(), "");
+
+    const auto VERTEX_COUNT = static_cast<uint32_t>(vertices.size());
     const std::size_t VERTEX_SIZE = sizeof(Vertex);
     static_assert(VERTEX_SIZE == 16, "Strange vertex size.");
     CORE_CONSTEXPR std::size_t VERTEX_POSITION_OFFSET = 0;
@@ -36,10 +40,9 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable, const Core::TVector<
 
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
                         PointRenderable* pointRenderable,
-                        std::size_t VERTEX_SIZE)
+                        std::uint8_t VERTEX_SIZE)
 {
-
-    const std::size_t VERTEX_COUNT = pointRenderable->getVertices().size();
+    const auto VERTEX_COUNT = static_cast<uint32_t>(pointRenderable->getVertices().size());
     CORE_CONSTEXPR std::size_t VERTEX_POSITION_OFFSET = 0;
     CORE_CONSTEXPR std::size_t VERTEX_COLOR_OFFSET = 12;
     filAppRenderable->vb = filament::VertexBuffer::Builder()
@@ -81,7 +84,7 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
 
 void createIndicesBuffer(FilAppRenderable* filAppRenderable, const Core::TVector<uint16_t>& indices)
 {
-    const std::size_t INDICES_COUNT = indices.size();
+    const auto INDICES_COUNT = static_cast<uint32_t>(indices.size());
     filAppRenderable->ib = filament::IndexBuffer::Builder()
                                .indexCount(INDICES_COUNT)
                                .bufferType(filament::IndexBuffer::IndexType::USHORT)

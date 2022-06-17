@@ -11,7 +11,7 @@ void createVertexBuffer(FilAppRenderable* filAppRenderable,
 
 void createVertexBuffer(FilAppRenderable* filAppRenderable,
                         Graphics::PointRenderable* pointRenderable,
-                        std::size_t VERTEX_SIZE);
+                        std::uint8_t VERTEX_SIZE);
 
 void createIndicesBuffer(FilAppRenderable* filAppRenderable,
                          const Core::TVector<uint16_t>& indices);

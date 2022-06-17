@@ -42,9 +42,9 @@ target_link_libraries(fil_app
         PUBLIC
         Core::Types
         Core::Utils
+        graphics::app
         filament
         fil_app_sources
-        graphics_interface
         sdl2
         math
         utils
@@ -64,12 +64,6 @@ install(DIRECTORY "include/FilApp" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 install(TARGETS
         fil_app
         fil_app_sources
-        graphics_interface
-        filament
-        sdl2
-        math
-        utils
-        camutils
         EXPORT FilAppTargetsExportSet
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

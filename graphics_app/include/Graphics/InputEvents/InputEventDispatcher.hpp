@@ -36,9 +36,9 @@ class InputEventDispatcher {
         }
     }
 
-    void dispatch(const MouseButtonEvent& mouseButtonEvent) { dispatchImpl(mouseButtonEvent); };
-    void dispatch(const MouseMoveEvent& mouseMovedEvent) { dispatchImpl(mouseMovedEvent); };
-    void dispatch(const MouseWheelEvent& mouseWheelEvent) { dispatchImpl(mouseWheelEvent); };
+    void dispatch(const MouseButtonEvent& mouseButtonEvent) { dispatchImpl(mouseButtonEvent); }
+    void dispatch(const MouseMoveEvent& mouseMovedEvent) { dispatchImpl(mouseMovedEvent); }
+    void dispatch(const MouseWheelEvent& mouseWheelEvent) { dispatchImpl(mouseWheelEvent); }
     void dispatch(const KeyEvent& keyEvent) { dispatchImpl(keyEvent); }
 };
 } // namespace Graphics

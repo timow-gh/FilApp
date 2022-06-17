@@ -11,10 +11,10 @@ class RayPickEventListener {
   public:
     virtual ~RayPickEventListener() = default;
 
-    virtual void onRemoveRayPickEventListener(){};
+    virtual void onRemoveRayPickEventListener() {}
 
-    virtual void onEvent(const PickRayEvent& pickRayEvent){};
-    virtual void onEvent(const PickRayMoveEvent& pickRayMoveEvent){};
+    virtual void onEvent(const PickRayEvent&) {}
+    virtual void onEvent(const PickRayMoveEvent&) {}
 };
 
 } // namespace Graphics

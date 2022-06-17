@@ -10,14 +10,14 @@ namespace Graphics
 {
 class InputEventListener {
   public:
-    virtual ~InputEventListener() = default;
+    virtual ~InputEventListener();
 
-    virtual void onRemoveInputEventListener(){};
+    virtual void onRemoveInputEventListener() {}
 
-    virtual void onEvent(const MouseButtonEvent& mouseButtonEvent){};
-    virtual void onEvent(const MouseMoveEvent& mouseMovedEvent){};
-    virtual void onEvent(const MouseWheelEvent& mouseWheelEvent){};
-    virtual void onEvent(const KeyEvent& keyEvent){};
+    virtual void onEvent(const MouseButtonEvent&) {}
+    virtual void onEvent(const MouseMoveEvent&) {}
+    virtual void onEvent(const MouseWheelEvent&) {}
+    virtual void onEvent(const KeyEvent&) {}
 };
 } // namespace Graphics
 

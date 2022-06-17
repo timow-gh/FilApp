@@ -1,8 +1,11 @@
 #ifndef FILAPP_FILAMENTCOORDINATESYSTEM_HPP
 #define FILAPP_FILAMENTCOORDINATESYSTEM_HPP
 
+#include <Core/Utils/Warnings.h>
+DISABLE_ALL_WARNINGS
 #include <math/mat4.h>
 #include <math/vec4.h>
+ENABLE_ALL_WARNINGS
 
 namespace FilApp
 {

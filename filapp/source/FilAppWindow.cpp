@@ -197,8 +197,8 @@ filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint
     int dw, dh, ww, wh;
     SDL_GL_GetDrawableSize(m_sdlWindow, &dw, &dh);
     SDL_GetWindowSize(m_sdlWindow, &ww, &wh);
-    x = x * dw / ww;
-    y = y * dh / wh;
+    x = x * static_cast<uint32_t>(dw / ww);
+    y = y * static_cast<uint32_t>(dh / wh);
     y = m_height - y;
     return filament::math::int2{x, y};
 }
@@ -251,8 +251,10 @@ bool intersects(const Viewport& viewport, size_t x, size_t y)
 
 Viewport FilAppWindow::calcWindowViewport()
 {
-    SDL_GL_GetDrawableSize(m_sdlWindow, (int*)&m_width, (int*)&m_height);
-    return {0, 0, static_cast<uint32_t>(m_width), static_cast<uint32_t>(m_height)};
+    int width;
+    int height;
+    SDL_GL_GetDrawableSize(m_sdlWindow, &width, &height);
+    return {0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
 }
 
 } // namespace FilApp
