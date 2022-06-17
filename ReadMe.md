@@ -1,5 +1,8 @@
 ## meshler
 
+[![Ubuntu](https://github.com/timow-gh/meshler/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/timow-gh/meshler/actions/workflows/ubuntu.yml)
+[![Windows](https://github.com/timow-gh/meshler/actions/workflows/windows.yml/badge.svg)](https://github.com/timow-gh/meshler/actions/workflows/windows.yml)
+
 Dabbeling with OOP.
 
 ![](media/ubuntu_meshler.png)
