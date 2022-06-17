@@ -221,7 +221,6 @@ void FilAppCameraView::removeRenderable(RenderableId id)
                                    return false;
                                });
     m_filAppRenderables.erase(iter, m_filAppRenderables.end());
-    eraseRenderable(id);
 }
 
 void FilAppCameraView::updatePosition(RenderableId renderableId, const Vec3& position)
