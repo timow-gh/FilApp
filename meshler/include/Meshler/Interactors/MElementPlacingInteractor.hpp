@@ -54,6 +54,10 @@ MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::MElementPlacingInte
     : m_model(&model), m_snapGeometries(model.calcModelSnapGeometries()), m_geomConfig(geomConfig)
 {
     m_model->registerListener(this);
+    m_geomConfig.baseConfig.isSnapGeometry = false;
+    auto geomElem = MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
+    m_geometryGuid = geomElem.getFGuid();
+    m_model->add(geomElem);
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -99,14 +103,6 @@ void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onEvent(
     auto intersection = calcIntersection(pickRayMoveEvent);
     if (!intersection)
         return;
-
-    if (!m_geometryGuid)
-    {
-        m_geomConfig.baseConfig.isSnapGeometry = false;
-        auto geomElem = MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
-        m_geometryGuid = geomElem.getFGuid();
-        m_model->add(geomElem);
-    }
 
     m_model->setPosition(*m_geometryGuid, *intersection);
 }
