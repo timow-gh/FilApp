@@ -9,7 +9,7 @@ namespace Meshler
 template <typename TMeshlerGeometry, template <typename> typename TGeomConfig, typename T>
 struct MGeometryTraits
 {
-    CORE_NODISCARD static TMeshlerGeometry create(const TGeomConfig<T>& config)
+    CORE_NODISCARD static TMeshlerGeometry create(const TGeomConfig<T>&)
     {
         static_assert(sizeof(0) && "create not implemented.");
     }

@@ -3,6 +3,7 @@
 #include <FilApp/FilAppWindow.hpp>
 #include <NativeWindowHelper.hpp>
 #include <SDL_video.h>
+#include <camutils/Manipulator.h>
 #include <utils/EntityManager.h>
 
 using namespace Graphics;
@@ -227,7 +228,7 @@ void FilAppWindow::render()
 
 void FilAppWindow::animate(double_t deltaT)
 {
-    if (auto mainViewManip = m_mainView->getCameraManipulator())
+    if (FilAppCameraView::CameraManipulator* mainViewManip = m_mainView->getCameraManipulator())
     {
         filament::math::float3 eye;
         filament::math::float3 center;
@@ -254,7 +255,9 @@ Viewport FilAppWindow::calcWindowViewport()
     int width;
     int height;
     SDL_GL_GetDrawableSize(m_sdlWindow, &width, &height);
-    return {0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
+    m_width = static_cast<uint32_t>(width);
+    m_height = static_cast<uint32_t>(height);
+    return {0, 0, m_width, m_height};
 }
 
 } // namespace FilApp

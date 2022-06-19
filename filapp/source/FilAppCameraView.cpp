@@ -342,12 +342,12 @@ void FilAppCameraView::onEvent(const MouseMoveEvent& mouseMoveEvent)
 
 void FilAppCameraView::onEvent(const MouseWheelEvent& mouseWheelEvent)
 {
-    DEBUG_CHECK_CAMERA_MANIP();
+    DEBUG_CHECK_CAMERA_MANIP()
 
     if (m_viewConfig.cameraProjection == ViewConfig::CameraProjection::ORTHOGRAPHIC)
     {
         m_viewConfig.orthogonalCameraZoom +=
-            mouseWheelEvent.x * m_viewConfig.scrollMultiplierOrthographic;
+            static_cast<double_t>(mouseWheelEvent.x * m_viewConfig.scrollMultiplierOrthographic);
         configureCameraProjection();
     }
     else
@@ -366,7 +366,7 @@ void FilAppCameraView::onEvent(const MouseWheelEvent& mouseWheelEvent)
 
 void FilAppCameraView::onEvent(const KeyEvent& keyEvent)
 {
-    DEBUG_CHECK_CAMERA_MANIP();
+    DEBUG_CHECK_CAMERA_MANIP()
     CameraManipulator::Key key;
     if (manipulatorKeyFromKeycode(keyEvent.keyScancode, key))
         m_cameraManipulator->keyDown(key);
@@ -436,13 +436,13 @@ FilAppRenderable* FilAppCameraView::findFilAppRenderable(RenderableId id)
     if (!std::is_sorted(m_filAppRenderables.begin(), m_filAppRenderables.end()))
         std::sort(m_filAppRenderables.begin(), m_filAppRenderables.end());
 
-    utils::Entity entity = utils::Entity::import(id.getId());
+    utils::Entity entity = utils::Entity::import(static_cast<int32_t>(id.getId()));
     auto iter = std::lower_bound(m_filAppRenderables.begin(),
                                  m_filAppRenderables.end(),
                                  entity,
-                                 [](const FilAppRenderable& filAppRenderable, utils::Entity entity)
+                                 [](const FilAppRenderable& filAppRenderable, utils::Entity ent)
                                  {
-                                     return filAppRenderable.renderableEntity < entity;
+                                     return filAppRenderable.renderableEntity < ent;
                                  });
     if (iter != m_filAppRenderables.cend())
         return &(*iter);
@@ -456,8 +456,8 @@ FilAppCameraView::getPickRayMoveEvent(std::size_t x, std::size_t y, double_t tim
     const float_t height = static_cast<float_t>(m_viewConfig.viewport.height);
 
     // Viewport coordinates to normalized device coordinates
-    const float_t u = 2.0f * (0.5f + x) / width - 1.0f;
-    const float_t v = 2.0f * (0.5f + y) / height - 1.0f;
+    const float_t u = 2.0f * (0.5f + static_cast<float>(x)) / width - 1.0f;
+    const float_t v = 2.0f * (0.5f + static_cast<float>(y)) / height - 1.0f;
 
     const filament::math::float3 cameraForward = m_camera->getForwardVector();
     const filament::math::float3 right = normalize(cross(cameraForward, m_camera->getUpVector()));

@@ -8,8 +8,8 @@
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <Graphics/View.hpp>
 #include <Graphics/ViewConfig.hpp>
-#include <camutils/Manipulator.h>
 DISABLE_ALL_WARNINGS
+#include <camutils/Manipulator.h>
 #include <filament/Camera.h>
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
@@ -17,10 +17,12 @@ DISABLE_ALL_WARNINGS
 #include <filament/Skybox.h>
 #include <filament/View.h>
 #include <filament/Viewport.h>
+#include <utils/Entity.h>
 ENABLE_ALL_WARNINGS
 #include <filapp_export.h>
 #include <memory>
-#include <utils/Entity.h>
+
+extern template class filament::camutils::Manipulator<float>;
 
 namespace FilApp
 {
