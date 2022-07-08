@@ -11,7 +11,10 @@ class GraphicsController
     : public InputEventListener
     , public RayPickEventListener {
   public:
+    GraphicsController(GraphicsController& ) = delete;
     ~GraphicsController() override = default;
+  protected:
+    GraphicsController() = default;
 };
 
 } // namespace Graphics

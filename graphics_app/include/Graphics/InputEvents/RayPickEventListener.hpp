@@ -9,12 +9,17 @@ namespace Graphics
 
 class RayPickEventListener {
   public:
+    RayPickEventListener(const RayPickEventListener& view) = delete;
+
     virtual ~RayPickEventListener() = default;
 
     virtual void onRemoveRayPickEventListener() {}
 
     virtual void onEvent(const PickRayEvent&) {}
     virtual void onEvent(const PickRayMoveEvent&) {}
+
+  protected:
+    RayPickEventListener() = default;
 };
 
 } // namespace Graphics

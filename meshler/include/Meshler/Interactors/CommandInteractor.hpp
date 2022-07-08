@@ -18,9 +18,6 @@ class CommandInteractor : public Graphics::InputEventListener {
   public:
     explicit CommandInteractor(MController& controller);
 
-    CommandInteractor(CommandInteractor&& rhs) = default;
-    CommandInteractor& operator=(CommandInteractor&& rhs) = default;
-
     void onEvent(const Graphics::KeyEvent& keyEvent) override;
 };
 

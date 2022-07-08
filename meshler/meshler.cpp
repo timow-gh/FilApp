@@ -91,7 +91,7 @@ int main()
     createCones(meshlerModel);
 
     std::shared_ptr<MController> meshlerController =
-        MController::create(&meshlerPresenter, &meshlerModel);
+        MController::create(meshlerPresenter, meshlerModel);
 
     graphicsApp->run();
 }

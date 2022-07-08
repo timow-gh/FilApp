@@ -18,7 +18,7 @@
 namespace FilApp
 {
 
-class FilAppWindow : public Graphics::Window {
+class FilAppWindow final : public Graphics::Window {
     SDL_Window* m_sdlWindow = nullptr;
     Window::WindowId m_windowId{0};
     filament::Engine* m_engine = nullptr;
@@ -41,8 +41,7 @@ class FilAppWindow : public Graphics::Window {
 
   public:
     FilAppWindow(const Graphics::WindowConfig& windowConfig, filament::Engine* engine);
-    FilAppWindow(FilAppWindow&& window) = default;
-    FilAppWindow& operator=(FilAppWindow&& window) = default;
+
     ~FilAppWindow() override;
 
     CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;

@@ -19,11 +19,9 @@ class MGridInteractor : public Graphics::RayPickEventListener {
     FGuid m_activeGridGuid;
 
   public:
-    static std::unique_ptr<MGridInteractor> create(MModel& model, const MGrid& grid);
-
-  private:
     MGridInteractor(MModel& model, Geometry::Plane<double_t> plane, const FGuid& fGuid);
 
+  private:
     CORE_NODISCARD std::optional<LinAl::Vec3d>
     rayIntersection(const Graphics::PickRayEvent& pickRayEvent) const;
 

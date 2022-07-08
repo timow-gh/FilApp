@@ -28,18 +28,27 @@ class MController : public Graphics::GraphicsController {
 
   public:
     MController() = default;
-
-    CORE_NODISCARD static std::shared_ptr<MController> create(MPresenter* meshlerPresenter,
-                                                              MModel* meshlerModel)
+    MController(MPresenter* meshlerPresenter, MModel* meshlerModel)
+        : m_meshlerPresenter(meshlerPresenter), m_meshlerModel(meshlerModel)
     {
-        auto controller =
-            std::make_shared<MController>(MController(meshlerPresenter, meshlerModel));
+    }
+
+    CORE_NODISCARD static std::shared_ptr<MController> create(MPresenter& meshlerPresenter,
+                                                              MModel& meshlerModel)
+    {
+        auto controller = std::make_shared<MController>(&meshlerPresenter, &meshlerModel);
         controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
-        meshlerPresenter->registerListener(controller.get());
+        meshlerPresenter.registerListener(controller.get());
         controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
 
-        controller->m_meshlerGridInteractor = MGridInteractor::create(*meshlerModel, MGrid{});
-        meshlerPresenter->registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
+        MGrid defaultGrid = MGrid{};
+        meshlerModel.add(defaultGrid);
+        controller->m_meshlerGridInteractor = std::make_unique<MGridInteractor>(
+            meshlerModel,
+            Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
+            defaultGrid.getFGuid());
+
+        meshlerPresenter.registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
 
         return controller;
     }
@@ -90,12 +99,6 @@ class MController : public Graphics::GraphicsController {
         }
 
         m_meshlerPresenter->registerListener(m_currentInteractor.get());
-    }
-
-  private:
-    MController(MPresenter* meshlerPresenter, MModel* meshlerModel)
-        : m_meshlerPresenter(meshlerPresenter), m_meshlerModel(meshlerModel)
-    {
     }
 };
 

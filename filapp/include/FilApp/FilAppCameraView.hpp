@@ -28,7 +28,7 @@ namespace FilApp
 {
 using AnimationCallBack = std::function<void(double_t now)>;
 
-class FilAppCameraView : public Graphics::View {
+class FilAppCameraView final : public Graphics::View {
   public:
     using CameraManipulator = filament::camutils::Manipulator<float_t>;
 
@@ -45,7 +45,7 @@ class FilAppCameraView : public Graphics::View {
     utils::Entity m_globalTrafoComponent;
 
     Graphics::ViewConfig m_viewConfig;
-    CameraManipulator::Bookmark m_cameraHomeBookMark;
+    CameraManipulator::Bookmark m_cameraHomeBookMark{};
     filament::Viewport m_filamentViewport;
 
     Graphics::InputEventDispatcher m_inputEventDispatcher;

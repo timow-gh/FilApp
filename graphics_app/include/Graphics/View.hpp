@@ -18,6 +18,8 @@ namespace Graphics
 
 class View : public InputEventListener {
   public:
+    View(const View& view) = delete;
+
     ~View() override;
 
     CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
@@ -40,6 +42,9 @@ class View : public InputEventListener {
 
     CORE_NODISCARD virtual Viewport getViewport() const = 0;
     virtual void resize(const Viewport& viewport) = 0;
+
+  protected:
+    View() = default;
 };
 } // namespace Graphics
 

@@ -10,6 +10,8 @@ namespace Graphics
 {
 class InputEventListener {
   public:
+    InputEventListener(const InputEventListener& view) = delete;
+
     virtual ~InputEventListener();
 
     virtual void onRemoveInputEventListener() {}
@@ -18,6 +20,9 @@ class InputEventListener {
     virtual void onEvent(const MouseMoveEvent&) {}
     virtual void onEvent(const MouseWheelEvent&) {}
     virtual void onEvent(const KeyEvent&) {}
+
+  protected:
+    InputEventListener() = default;
 };
 } // namespace Graphics
 

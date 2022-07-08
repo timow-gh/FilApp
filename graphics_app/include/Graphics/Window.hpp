@@ -13,6 +13,8 @@ class WindowId;
 
 class Window {
   public:
+    Window(const Window&) = delete;
+
     virtual ~Window();
 
     using WindowId = uint32_t;
@@ -24,6 +26,9 @@ class Window {
     CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
 
     virtual WindowId getIWindowId() = 0;
+
+  protected:
+    Window() = default;
 };
 } // namespace Graphics
 

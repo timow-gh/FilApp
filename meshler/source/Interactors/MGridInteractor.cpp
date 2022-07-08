@@ -6,17 +6,10 @@
 namespace Meshler
 {
 
-std::unique_ptr<MGridInteractor> MGridInteractor::create(MModel& model, const MGrid& grid)
-{
-    model.add(grid);
-    return std::make_unique<MGridInteractor>(
-        MGridInteractor(model,
-                        Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
-                        grid.getFGuid()));
-}
-
-MGridInteractor::MGridInteractor(MModel& model, Geometry::Plane<double_t> plane, const FGuid& fGuid)
-    : m_model(&model), m_plane(std::move(plane)), m_activeGridGuid(fGuid)
+MGridInteractor::MGridInteractor(MModel& model,
+                                 Geometry::Plane<double_t> plane,
+                                 const FGuid& activeGridGuid)
+    : m_model(&model), m_plane(std::move(plane)), m_activeGridGuid(activeGridGuid)
 {
 }
 
