@@ -82,16 +82,15 @@ int main()
     std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
         FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
 
-    MPresenter meshlerPresenter{graphicsApp->getWindow().getMainIView()};
+    MPresenter presenter{*graphicsApp->getWindow().getMainIView()};
 
     MModel meshlerModel;
-    meshlerModel.registerListener(&meshlerPresenter);
+    meshlerModel.registerListener(&presenter);
 
     createSpheres(meshlerModel);
     createCones(meshlerModel);
 
-    std::shared_ptr<MController> meshlerController =
-        MController::create(meshlerPresenter, meshlerModel);
+    std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel);
 
     graphicsApp->run();
 }

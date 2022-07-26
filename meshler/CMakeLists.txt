@@ -26,6 +26,7 @@ set(MESHLER_PUBLIC_HEADERS
         include/Meshler/LinAlConversion.hpp
         include/Meshler/MModelEventListener.hpp
         include/Meshler/PresenterUtils.hpp
+        include/Meshler/RenderableBuilder.hpp
         include/Meshler/GeometryElements/MGeometryConfigBase.hpp)
 
 set(MESHLER_SOURCES
@@ -40,6 +41,7 @@ set(MESHLER_SOURCES
         source/Interactors/MGridInteractor.cpp
         source/Interactors/SnapGeometries.cpp
         source/MPresenter.cpp
+        source/RenderableBuilder.cpp
         source/MModel.cpp)
 
 add_library(meshler ${MESHLER_SOURCES} ${MESHLER_PUBLIC_HEADERS})

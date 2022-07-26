@@ -1,10 +1,10 @@
 #ifndef GRAPHICS_LINERENDERABLE_HPP
 #define GRAPHICS_LINERENDERABLE_HPP
 
+#include <Core/Types/TVector.hpp>
 #include <Graphics/Vertex.hpp>
 #include <cassert>
 #include <utility>
-#include <vector>
 
 namespace Graphics
 {
@@ -16,7 +16,7 @@ class LineRenderable {
     }
 
     static LineRenderable create(const Vertex& start, const Vertex& end);
-    static LineRenderable create(std::vector<Vertex> vertices);
+    static LineRenderable create(Core::TVector<Vertex>&& vertices);
 
     CORE_NODISCARD const std::vector<Vertex>& getVertices() const { return m_vertices; }
     CORE_NODISCARD const std::vector<uint16_t>& getIndices() const { return m_indices; }
@@ -31,7 +31,7 @@ inline LineRenderable LineRenderable::create(const Vertex& start, const Vertex& 
     return create({start, end});
 }
 
-inline LineRenderable LineRenderable::create(std::vector<Vertex> vertices)
+inline LineRenderable LineRenderable::create(Core::TVector<Vertex>&& vertices)
 {
     assert(vertices.size() % 2 == 0);
     std::vector<uint16_t> indices;

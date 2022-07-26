@@ -1,17 +1,20 @@
 #include <Core/Utils/Assert.hpp>
-#include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
-#include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
-#include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
-#include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
+#include <Graphics/GraphicsController.hpp>
 #include <Graphics/Vec.hpp>
 #include <Graphics/Vertex.hpp>
+#include <Graphics/View.hpp>
+#include <Meshler/GeometryElements/MCone.hpp>
+#include <Meshler/GeometryElements/MCuboid.hpp>
 #include <Meshler/GeometryElements/MCylinder.hpp>
+#include <Meshler/GeometryElements/MGrid.hpp>
+#include <Meshler/GeometryElements/MSegments.hpp>
+#include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/MPresenter.hpp>
-#include <Meshler/PresenterUtils.hpp>
+#include <Meshler/RenderableBuilder.hpp>
 
 namespace Meshler
 {
-MPresenter::MPresenter(Graphics::View* mainView) : m_view(mainView)
+MPresenter::MPresenter(Graphics::View& mainView) : m_view(mainView)
 {
 }
 
@@ -29,149 +32,52 @@ void MPresenter::removeListener(Graphics::GraphicsController* meshlerController)
 
 void MPresenter::registerInputEventListener(Graphics::InputEventListener* inputEventListener)
 {
-    m_view->getInputEventDispatcher().registerInputEventListener(inputEventListener);
+    m_view.get().getInputEventDispatcher().registerInputEventListener(inputEventListener);
 }
 
 void MPresenter::removeInputEventListener(Graphics::InputEventListener* inputEventListener)
 {
-    m_view->getInputEventDispatcher().removeInputEventListener(inputEventListener);
+    m_view.get().getInputEventDispatcher().removeInputEventListener(inputEventListener);
 }
 
 void MPresenter::registerRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener)
 {
-    m_view->getRayPickEventDispatcher().registerRayPickEventListener(rayPickEventListener);
+    m_view.get().getRayPickEventDispatcher().registerRayPickEventListener(rayPickEventListener);
 }
 
 void MPresenter::removeRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener)
 {
-    m_view->getRayPickEventDispatcher().removeRayPickEventListener(rayPickEventListener);
-}
-
-Graphics::TriangleRenderable
-MPresenter::createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh,
-                                     std::uint32_t faceColor)
-{
-    Core::TVector<Graphics::Vertex> vertices;
-    for (const auto& vec: halfedgeMesh.meshPoints.getPoints())
-        vertices.push_back(vecToVertex(vec, faceColor));
-
-    return {std::move(vertices),
-            Geometry::calcTriangleIndices<double_t, std::size_t, uint16_t>(halfedgeMesh.facets)};
-}
-
-Graphics::LineRenderable
-MPresenter::createLineRenderables(const Core::TVector<Geometry::Segment3d>& segments,
-                                  std::uint32_t lineColor)
-{
-    Core::TVector<Graphics::Vertex> vertices;
-    for (const auto& segment: segments)
-    {
-        vertices.push_back(vecToVertex(segment.getSource(), lineColor));
-        vertices.push_back(vecToVertex(segment.getTarget(), lineColor));
-    }
-
-    return Graphics::LineRenderable::create(vertices);
+    m_view.get().getRayPickEventDispatcher().removeRayPickEventListener(rayPickEventListener);
 }
 
 void MPresenter::onAdd(const MSphere& meshlerSphere)
 {
-    std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
-        Geometry::SphereMeshBuilder<double_t>()
-            .setPolarCount(m_presenterConfig.spherePolarCount)
-            .setAzimuthCount(m_presenterConfig.sphereAzimuthCount)
-            .setSphere(meshlerSphere.getGeometryElement())
-            .build();
-
-    const auto& segIndices = Geometry::calcMeshSegmentIndices(*sphereMesh);
-    Core::TVector<Graphics::Vertex> graphicsVertices;
-    graphicsVertices.reserve(segIndices.size());
-    segmentGraphicsVertices(*sphereMesh, segIndices, graphicsVertices);
-
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
-    auto sphereId =
-        m_view->addRenderable(createTriangleRenderable(*sphereMesh, m_presenterConfig.faceColor));
-
-    m_fGuidRenderableMapping.emplace(meshlerSphere.getFGuid(),
-                                     Core::TVector<Graphics::RenderableId>{verticesId, sphereId});
+    onAddImpl(meshlerSphere);
 }
 
 void MPresenter::onAdd(const MCone& meshlerCone)
 {
-    auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
-                        .setCone((meshlerCone.getGeometryElement()))
-                        .setAzimuthCount(m_presenterConfig.coneAzimuthCount)
-                        .build();
-
-    const auto& segIndices = Geometry::calcMeshSegmentIndices(*coneMesh);
-    Core::TVector<Graphics::Vertex> graphicsVertices;
-    graphicsVertices.reserve(segIndices.size());
-    segmentGraphicsVertices(*coneMesh, segIndices, graphicsVertices);
-
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
-    auto coneId =
-        m_view->addRenderable(createTriangleRenderable(*coneMesh, m_presenterConfig.faceColor));
-
-    m_fGuidRenderableMapping.emplace(meshlerCone.getFGuid(),
-                                     Core::TVector<Graphics::RenderableId>{verticesId, coneId});
+    onAddImpl(meshlerCone);
 }
 
 void MPresenter::onAdd(const MCylinder& meshlerCylinder)
 {
-    auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
-                            .setCylinder(meshlerCylinder.getGeometryElement())
-                            .setAzimuthCount(m_presenterConfig.cylinderAzimuthCount)
-                            .build();
-
-    const auto& segIndices = Geometry::calcMeshSegmentIndices(*cylinderMesh);
-    Core::TVector<Graphics::Vertex> graphicsVertices;
-    graphicsVertices.reserve(segIndices.size());
-    segmentGraphicsVertices(*cylinderMesh, segIndices, graphicsVertices);
-
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
-    auto coneId =
-        m_view->addRenderable(createTriangleRenderable(*cylinderMesh, m_presenterConfig.faceColor));
-
-    m_fGuidRenderableMapping.emplace(meshlerCylinder.getFGuid(),
-                                     Core::TVector<Graphics::RenderableId>{verticesId, coneId});
+    onAddImpl(meshlerCylinder);
 }
 
 void MPresenter::onAdd(const MSegments& meshlerSegments)
 {
-    auto segmentsId = m_view->addRenderable(
-        createLineRenderables(meshlerSegments.getSegments(), m_presenterConfig.lineColor));
-    m_fGuidRenderableMapping.emplace(meshlerSegments.getFGuid(),
-                                     Core::TVector<Graphics::RenderableId>{segmentsId});
+    onAddImpl(meshlerSegments);
 }
 
 void MPresenter::onAdd(const MCuboid& meshlerCuboid)
 {
-    auto cuboidMesh = Geometry::CuboidMeshBuilder<double_t>()
-                          .setCuboid(meshlerCuboid.getGeometryElement())
-                          .build();
-
-    const auto& segIndices = Geometry::calcMeshSegmentIndices(*cuboidMesh);
-
-    Core::TVector<Graphics::Vertex> graphicsVertices;
-    graphicsVertices.reserve(segIndices.size());
-    segmentGraphicsVertices(*cuboidMesh, segIndices, graphicsVertices);
-
-    auto verticesId = m_view->addRenderable(Graphics::LineRenderable::create(graphicsVertices));
-    auto cuboidId =
-        m_view->addRenderable(createTriangleRenderable(*cuboidMesh, m_presenterConfig.faceColor));
-
-    m_fGuidRenderableMapping.emplace(meshlerCuboid.getFGuid(),
-                                     Core::TVector<Graphics::RenderableId>{verticesId, cuboidId});
+    onAddImpl(meshlerCuboid);
 }
 
 void MPresenter::onAdd(const MGrid& meshlerGrid)
 {
-    auto segmentsId = m_view->addRenderable(
-        createLineRenderables(meshlerGrid.getSegments(), m_presenterConfig.lineColor));
-
-    auto result =
-        m_fGuidRenderableMapping.emplace(meshlerGrid.getFGuid(),
-                                         Core::TVector<Graphics::RenderableId>{segmentsId});
-    CORE_POSTCONDITION_DEBUG_ASSERT(result.second, "GeometryElement already exists.");
+    onAddImpl(meshlerGrid);
 }
 
 void MPresenter::onRemove(const FGuid& fGuid)
@@ -180,7 +86,7 @@ void MPresenter::onRemove(const FGuid& fGuid)
     if (iter != m_fGuidRenderableMapping.end())
     {
         for (const Graphics::RenderableId id: iter->second)
-            m_view->removeRenderable(id);
+            m_view.get().removeRenderable(id);
         m_fGuidRenderableMapping.erase(iter);
     }
 }
@@ -224,35 +130,20 @@ void MPresenter::onPositionChanged(const PositionEvent& positionEvent)
 
     if (iter != m_fGuidRenderableMapping.cend())
         for (const Graphics::RenderableId& id: iter->second)
-            m_view->updatePosition(id,
-                                   Graphics::Vec3(static_cast<float_t>(positionEvent.position[0]),
-                                                  static_cast<float_t>(positionEvent.position[1]),
-                                                  static_cast<float_t>(positionEvent.position[2])));
+            m_view.get().updatePosition(
+                id,
+                Graphics::Vec3(static_cast<float_t>(positionEvent.position[0]),
+                               static_cast<float_t>(positionEvent.position[1]),
+                               static_cast<float_t>(positionEvent.position[2])));
 }
 
-void MPresenter::setIdleAnimation(const Graphics::Vec3& rotationAxis)
+template <typename TGeomElement>
+void MPresenter::onAddImpl(const TGeomElement& element)
 {
-    for (const auto id: m_view->getRenderableIdentifiers())
-        m_view->addRotationAnimation(id, rotationAxis);
-}
-
-void MPresenter::segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
-                                         const Core::TVector<Geometry::SegmentIndices>& segIndices,
-                                         Core::TVector<Graphics::Vertex>& vertices) const
-
-{
-    using VertexIndex_t = Geometry::HalfedgeMesh<double_t>::VertexIndex_t;
-    for (const auto& segmentIndices: segIndices)
-    {
-        vertices.push_back(vecToVertex(
-            heMesh.getVertex(VertexIndex_t(static_cast<std::size_t>(segmentIndices.source)))
-                .getVector(),
-            m_presenterConfig.lineColor));
-        vertices.push_back(vecToVertex(
-            heMesh.getVertex(VertexIndex_t(static_cast<std::size_t>(segmentIndices.target)))
-                .getVector(),
-            m_presenterConfig.lineColor));
-    }
+    RenderableBuilder rBuilder{m_view.get(), m_presenterConfig};
+    rBuilder.add(element);
+    auto renderableIds = rBuilder.build();
+    m_fGuidRenderableMapping.emplace(element.getFGuid(), renderableIds);
 }
 
 } // namespace Meshler

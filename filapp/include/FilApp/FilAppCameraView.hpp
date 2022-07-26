@@ -20,12 +20,14 @@ DISABLE_ALL_WARNINGS
 #include <utils/Entity.h>
 ENABLE_ALL_WARNINGS
 #include <filapp_export.h>
+#include <functional>
 #include <memory>
 
 extern template class filament::camutils::Manipulator<float>;
 
 namespace FilApp
 {
+
 using AnimationCallBack = std::function<void(double_t now)>;
 
 class FilAppCameraView final : public Graphics::View {

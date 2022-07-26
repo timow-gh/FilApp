@@ -1,38 +1,37 @@
 #ifndef MESHLER_MPRESENTER_HPP
 #define MESHLER_MPRESENTER_HPP
 
-#include "PresenterConfig.hpp"
 #include <Core/Types/TMap.hpp>
-#include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
-#include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
-#include <Graphics/GraphicsController.hpp>
 #include <Graphics/Renderables/RendereableId.hpp>
-#include <Graphics/View.hpp>
-#include <Meshler/GeometryElements/MCone.hpp>
-#include <Meshler/GeometryElements/MCuboid.hpp>
-#include <Meshler/GeometryElements/MCylinder.hpp>
-#include <Meshler/GeometryElements/MGrid.hpp>
-#include <Meshler/GeometryElements/MSegments.hpp>
-#include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/MGuid.hpp>
-#include <Meshler/MModelEventDispatcher.hpp>
+#include <Meshler/MModelEventListener.hpp>
+#include <Meshler/PresenterConfig.hpp>
 
 namespace Graphics
 {
 class View;
-}
+class GraphicsController;
+class InputEventListener;
+class RayPickEventListener;
+} // namespace Graphics
 
 namespace Meshler
 {
+class MSphere;
+class MCone;
+class MCylinder;
+class MSegments;
+class MCuboid;
+class MGrid;
 
 class MPresenter : public MModelEventListener {
-    Graphics::View* m_view{nullptr};
+    std::reference_wrapper<Graphics::View> m_view;
     PresenterConfig m_presenterConfig{};
 
     Core::TMap<FGuid, Core::TVector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
   public:
-    explicit MPresenter(Graphics::View* mainView);
+    explicit MPresenter(Graphics::View& mainView);
 
     void registerListener(Graphics::GraphicsController* meshlerController);
     void removeListener(Graphics::GraphicsController* meshlerController);
@@ -61,24 +60,16 @@ class MPresenter : public MModelEventListener {
 
     void onPositionChanged(const PositionEvent& positionEvent) override;
 
-    void setIdleAnimation(const Graphics::Vec3& rotationAxis);
-
   private:
-    static Graphics::TriangleRenderable
-    createTriangleRenderable(const Geometry::HalfedgeMesh<double_t>& halfedgeMesh,
-                             std::uint32_t faceColor);
-    static Graphics::LineRenderable createLineRenderables(const Core::TVector<Geometry::Segment3d>&,
-                                                          std::uint32_t lineColor);
-    void segmentGraphicsVertices(const Geometry::HalfedgeMesh<double_t>& heMesh,
-                                 const Core::TVector<Geometry::SegmentIndices>& segIndices,
-                                 Core::TVector<Graphics::Vertex>& vertices) const;
-
-    template <typename TGeometryElement>
-    void onUpdateImpl(const TGeometryElement& elem)
+    template <typename TGeomElement>
+    void onUpdateImpl(const TGeomElement& elem)
     {
         onRemove(elem.getFGuid());
         onAdd(elem);
     }
+
+    template <typename TGeomElement>
+    void onAddImpl(const TGeomElement& geomElement);
 };
 
 } // namespace Meshler
