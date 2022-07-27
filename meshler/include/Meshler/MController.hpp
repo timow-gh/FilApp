@@ -4,23 +4,21 @@
 #include <Graphics/GraphicsController.hpp>
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
-#include <Meshler/GeometryElements/MConeTraits.hpp>
-#include <Meshler/GeometryElements/MCuboidTraits.hpp>
-#include <Meshler/GeometryElements/MCylinderTraits.hpp>
-#include <Meshler/GeometryElements/MSphereTraits.hpp>
-#include <Meshler/Interactors/CommandInteractor.hpp>
-#include <Meshler/Interactors/InteractorCommands.hpp>
-#include <Meshler/Interactors/MElementPlacingInteractor.hpp>
-#include <Meshler/Interactors/MGridInteractor.hpp>
-#include <Meshler/MModel.hpp>
+#include <functional>
 #include <memory>
 
 namespace Meshler
 {
 
+class MPresenter;
+class MModel;
+class CommandInteractor;
+class MGridInteractor;
+class InteractorCommand;
+
 class MController : public Graphics::GraphicsController {
-    MPresenter* m_meshlerPresenter{nullptr};
-    MModel* m_meshlerModel{nullptr};
+    std::reference_wrapper<MPresenter> m_meshlerPresenter;
+    std::reference_wrapper<MModel> m_meshlerModel;
 
     std::unique_ptr<CommandInteractor> m_commandInteractor{nullptr};
     std::unique_ptr<MGridInteractor> m_meshlerGridInteractor{nullptr};
@@ -28,78 +26,13 @@ class MController : public Graphics::GraphicsController {
 
   public:
     MController() = default;
-    MController(MPresenter* meshlerPresenter, MModel* meshlerModel)
-        : m_meshlerPresenter(meshlerPresenter), m_meshlerModel(meshlerModel)
-    {
-    }
+    MController(MPresenter& meshlerPresenter, MModel& meshlerModel);
 
     CORE_NODISCARD static std::shared_ptr<MController> create(MPresenter& meshlerPresenter,
-                                                              MModel& meshlerModel)
-    {
-        auto controller = std::make_shared<MController>(&meshlerPresenter, &meshlerModel);
-        controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
-        meshlerPresenter.registerListener(controller.get());
-        controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
+                                                              MModel& meshlerModel);
 
-        MGrid defaultGrid = MGrid{};
-        meshlerModel.add(defaultGrid);
-        controller->m_meshlerGridInteractor = std::make_unique<MGridInteractor>(
-            meshlerModel,
-            Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
-            defaultGrid.getFGuid());
-
-        meshlerPresenter.registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
-
-        return controller;
-    }
-
-    void onEvent(const Graphics::KeyEvent& keyEvent) override
-    {
-        m_commandInteractor->onEvent(keyEvent);
-    }
-
-    void setNextInteractor(const InteractorCommand& command)
-    {
-        m_meshlerPresenter->removeListener(m_currentInteractor.get());
-
-        switch (command.getId())
-        {
-        case Command::PLACING_INTERACTOR_SPHERE:
-        {
-            m_currentInteractor =
-                std::make_unique<MElementPlacingInteractor<MSphere, double_t, SphereTraitsConfig>>(
-                    *m_meshlerModel,
-                    SphereTraitsConfig<double_t>{});
-            break;
-        }
-        case Command::PLACING_INTERACTOR_CONE:
-        {
-            m_currentInteractor =
-                std::make_unique<MElementPlacingInteractor<MCone, double_t, ConeTraitsConfig>>(
-                    *m_meshlerModel,
-                    ConeTraitsConfig<double_t>{});
-            break;
-        }
-        case Command::PLACING_INTERACTOR_CYLINDER:
-        {
-            m_currentInteractor = std::make_unique<
-                MElementPlacingInteractor<MCylinder, double_t, CylinderTraitsConfig>>(
-                *m_meshlerModel,
-                CylinderTraitsConfig<double_t>{});
-            break;
-        }
-        case Command::PLACING_INTERACTOR_CUBOID:
-        {
-            m_currentInteractor =
-                std::make_unique<MElementPlacingInteractor<MCuboid, double_t, CuboidTraitsConfig>>(
-                    *m_meshlerModel,
-                    CuboidTraitsConfig<double_t>{});
-            break;
-        }
-        }
-
-        m_meshlerPresenter->registerListener(m_currentInteractor.get());
-    }
+    void onEvent(const Graphics::KeyEvent& keyEvent) override;
+    void setNextInteractor(const InteractorCommand& command);
 };
 
 } // namespace Meshler

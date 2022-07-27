@@ -11,6 +11,7 @@ set(MESHLER_PUBLIC_HEADERS
         include/Meshler/GeometryElements/MCuboid.hpp
         include/Meshler/GeometryElements/MCuboidTraits.hpp
         include/Meshler/GeometryElements/MGrid.hpp
+        include/Meshler/GeometryElements/MGeometryConfigBase.hpp
         include/Meshler/Interactors/CommandInteractor.hpp
         include/Meshler/Interactors/InteractorCommands.hpp
         include/Meshler/Interactors/InteractorKeyMap.hpp
@@ -26,8 +27,7 @@ set(MESHLER_PUBLIC_HEADERS
         include/Meshler/LinAlConversion.hpp
         include/Meshler/MModelEventListener.hpp
         include/Meshler/PresenterUtils.hpp
-        include/Meshler/RenderableBuilder.hpp
-        include/Meshler/GeometryElements/MGeometryConfigBase.hpp)
+        include/Meshler/RenderableBuilder.hpp)
 
 set(MESHLER_SOURCES
         source/GeometryElements/MSegments.cpp
@@ -42,7 +42,8 @@ set(MESHLER_SOURCES
         source/Interactors/SnapGeometries.cpp
         source/MPresenter.cpp
         source/RenderableBuilder.cpp
-        source/MModel.cpp)
+        source/MModel.cpp
+        source/MController.cpp)
 
 add_library(meshler ${MESHLER_SOURCES} ${MESHLER_PUBLIC_HEADERS})
 add_library(meshler::meshler ALIAS meshler)

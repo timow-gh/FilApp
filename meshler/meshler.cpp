@@ -3,6 +3,7 @@
 #include <Geometry/Segment.hpp>
 #include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <Meshler/GeometryElements/MCone.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/MController.hpp>
 #include <Meshler/MModel.hpp>

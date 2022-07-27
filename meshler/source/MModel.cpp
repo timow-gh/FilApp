@@ -10,6 +10,7 @@
 #include <Meshler/GeometryElements/MGrid.hpp>
 #include <Meshler/GeometryElements/MSegments.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
+#include <Meshler/Interactors/SnapGeometries.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MPresenter.hpp>
 
@@ -19,13 +20,19 @@ MModel::MModel(MModelEventListener* modelEventListener)
 {
     m_modelEventDispatcher.registerListener(modelEventListener);
 }
-
-void MModel::remove(FGuid fGuid)
+void MModel::registerListener(MModelEventListener* modelEventListener)
 {
-    m_geometryElements.remove(fGuid);
-    m_modelEventDispatcher.dispatchRemove(fGuid);
+    m_modelEventDispatcher.registerListener(modelEventListener);
 }
-
+void MModel::removeListener(MModelEventListener* modelEventListener)
+{
+    m_modelEventDispatcher.removeListener(modelEventListener);
+}
+template <typename TGeometryElement>
+TGeometryElement* MModel::get(const FGuid& guid)
+{
+    return m_geometryElements.get<TGeometryElement>(guid);
+}
 void MModel::update(const FGuid& guid)
 {
     // clang-format off
@@ -37,7 +44,11 @@ void MModel::update(const FGuid& guid)
     if (auto elem = get<MSphere>(guid)) m_modelEventDispatcher.dispatchUpdate(*elem);
     // clang-format on
 }
-
+void MModel::remove(FGuid fGuid)
+{
+    m_geometryElements.remove(fGuid);
+    m_modelEventDispatcher.dispatchRemove(fGuid);
+}
 void MModel::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
 {
     if (m_geometryElements.setPosition(fGuid, position))
@@ -89,5 +100,4 @@ SnapGeometries MModel::calcModelSnapGeometries() const
 
     return result;
 }
-
 } // namespace Meshler
