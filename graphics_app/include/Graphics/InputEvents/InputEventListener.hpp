@@ -1,13 +1,14 @@
 #ifndef GRAPHICS_INPUTEVENTLISTENER_HPP
 #define GRAPHICS_INPUTEVENTLISTENER_HPP
 
-#include <Graphics/InputEvents/KeyEvent.hpp>
-#include <Graphics/InputEvents/MouseButtonEvent.hpp>
-#include <Graphics/InputEvents/MouseMoveEvent.hpp>
-#include <Graphics/InputEvents/MouseWheelEvent.hpp>
-
 namespace Graphics
 {
+
+class MouseButtonEvent;
+class MouseMoveEvent;
+class MouseWheelEvent;
+class KeyEvent;
+
 class InputEventListener {
   public:
     InputEventListener(const InputEventListener& view) = delete;

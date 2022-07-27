@@ -3,19 +3,37 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
-#include <Geometry/Circle.hpp>
-#include <Geometry/Cone.hpp>
-#include <Geometry/Cuboid.hpp>
-#include <Geometry/Cylinder.hpp>
 #include <Geometry/Plane.hpp>
-#include <Geometry/Ray.hpp>
-#include <Geometry/Segment.hpp>
-#include <Geometry/Sphere.hpp>
 #include <LinAl/LinearAlgebra.hpp>
-#include <Meshler/GeometryElements/MSphere.hpp>
+
+namespace Geometry
+{
+
+template <typename T, std::size_t D>
+class Segment;
+using Segment3d = Segment<double_t, 3>;
+
+template <typename T>
+class Circle3;
+using Circle3d = Circle3<double_t>;
+
+template <typename T>
+class Sphere;
+
+template <typename T>
+class Cylinder;
+
+template <typename T>
+class Cone;
+
+template <typename T>
+class Cuboid;
+
+} // namespace Geometry
 
 namespace Meshler
 {
+class MSphere;
 
 class SnapGeometries {
     Geometry::Plane<double_t> m_snapPlane;

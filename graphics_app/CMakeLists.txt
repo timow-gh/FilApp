@@ -26,7 +26,10 @@ set(GRAPHICS_HEADER
 
 set(GRAPHICS_SOURCES
         source/View.cpp
-        source/InputEvents/InputEventListener.cpp source/GraphicsApp.cpp source/Window.cpp)
+        source/InputEvents/InputEventListener.cpp
+        source/GraphicsApp.cpp
+        source/Window.cpp
+        source/Vec.cpp)
 
 add_library(graphics_app ${GRAPHICS_SOURCES} ${GRAPHICS_HEADER})
 add_library(graphics::app ALIAS graphics_app)

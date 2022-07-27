@@ -28,3 +28,16 @@ Build the target MeshlerApp:
 ```
 cmake --build <path-to-build-dir> --target MeshlerApp --config Release --parallel -- /p:CL_MPcount=<your-number-of-processors>
 ```
+
+
+### Ubuntu
+
+Requirements:
+
+- libglu1-mesa-dev # listed filament dep
+- libxi-dev # listed filament dep
+- libxxf86vm-dev # for sdl2
+
+```
+sudo apt install libglu1-mesa-dev libxi-dev libxxf86vm-dev
+```

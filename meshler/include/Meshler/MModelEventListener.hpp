@@ -2,7 +2,6 @@
 #define MESHLER_MMODELEVENTLISTENER_HPP
 
 #include <Core/Types/TVector.hpp>
-#include <LinAl/LinearAlgebra.hpp>
 #include <Meshler/MGuid.hpp>
 
 namespace Meshler

@@ -1,6 +1,7 @@
 #ifndef MESHLER_INTERACTORKEYMAP_HPP
 #define MESHLER_INTERACTORKEYMAP_HPP
 
+#include <Core/Types/TMap.hpp>
 #include <Graphics/InputEvents/KeyScancode.hpp>
 #include <Meshler/Interactors/InteractorCommands.hpp>
 

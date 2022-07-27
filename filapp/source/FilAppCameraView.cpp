@@ -2,6 +2,10 @@
 #include <FilApp/FilAppCameraView.hpp>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
+#include <Graphics/InputEvents/KeyEvent.hpp>
+#include <Graphics/InputEvents/MouseButtonEvent.hpp>
+#include <Graphics/InputEvents/MouseMoveEvent.hpp>
+#include <Graphics/InputEvents/MouseWheelEvent.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
 #include <filament/TransformManager.h>

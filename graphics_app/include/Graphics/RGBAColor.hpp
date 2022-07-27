@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_RGBACOLOR_HPP
 #define GRAPHICS_RGBACOLOR_HPP
 
-#include <array>
+#include <Core/Types/TArray.hpp>
 #include <cmath>
 #include <cstdint>
 
@@ -10,7 +10,7 @@ namespace Graphics
 
 template <typename T>
 class RGBAColor {
-    std::array<T, 4> m_values;
+    Core::TArray<T, 4> m_values;
 
   public:
     explicit RGBAColor(const std::array<T, 3>& values)

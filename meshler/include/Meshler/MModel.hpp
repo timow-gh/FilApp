@@ -30,7 +30,10 @@ class MModel {
     }
 
     template <typename TGeometryElement>
-    TGeometryElement* get(const FGuid& guid);
+    TGeometryElement* get(const FGuid& guid)
+    {
+        return m_geometryElements.get<TGeometryElement>(guid);
+    }
 
     void update(const FGuid& guid);
     void remove(FGuid fGuid);

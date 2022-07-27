@@ -1,6 +1,7 @@
 #include <Core/Math/Eps.hpp>
 #include <Meshler/Interactors/MGridInteractor.hpp>
 #include <Meshler/LinAlConversion.hpp>
+#include <Meshler/MModel.hpp>
 #include <utility>
 
 namespace Meshler

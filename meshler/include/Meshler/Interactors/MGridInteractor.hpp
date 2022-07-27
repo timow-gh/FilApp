@@ -4,10 +4,11 @@
 #include <Geometry/Plane.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <Meshler/GeometryElements/MGrid.hpp>
-#include <Meshler/MModel.hpp>
 
 namespace Meshler
 {
+
+class MModel;
 
 class MGridInteractor : public Graphics::RayPickEventListener {
     MModel* m_model{nullptr};

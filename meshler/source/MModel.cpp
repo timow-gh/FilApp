@@ -28,11 +28,6 @@ void MModel::removeListener(MModelEventListener* modelEventListener)
 {
     m_modelEventDispatcher.removeListener(modelEventListener);
 }
-template <typename TGeometryElement>
-TGeometryElement* MModel::get(const FGuid& guid)
-{
-    return m_geometryElements.get<TGeometryElement>(guid);
-}
 void MModel::update(const FGuid& guid)
 {
     // clang-format off

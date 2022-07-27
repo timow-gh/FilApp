@@ -1,7 +1,6 @@
 #ifndef MESHLER_COMMANDINTERACTOR_HPP
 #define MESHLER_COMMANDINTERACTOR_HPP
 
-#include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
 #include <Meshler/Interactors/InteractorKeyMap.hpp>
 

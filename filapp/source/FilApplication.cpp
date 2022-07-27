@@ -2,6 +2,9 @@
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppWindow.hpp>
 #include <FilApp/FilApplication.hpp>
+#include <Graphics/InputEvents/KeyEvent.hpp>
+#include <Graphics/InputEvents/MouseButtonEvent.hpp>
+#include <Graphics/InputEvents/MouseMoveEvent.hpp>
 DISABLE_ALL_WARNINGS
 #include <SDL.h>
 #include <filament/Camera.h>

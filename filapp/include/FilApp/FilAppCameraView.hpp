@@ -19,6 +19,8 @@ DISABLE_ALL_WARNINGS
 #include <filament/Viewport.h>
 #include <utils/Entity.h>
 ENABLE_ALL_WARNINGS
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <filapp_export.h>
 #include <functional>
 #include <memory>

@@ -1,9 +1,14 @@
 #include <Core/Math/Eps.hpp>
 #include <Core/Utils/Assert.hpp>
-#include <Geometry/Distance/DistanceRay.hpp>
+#include <Geometry/Circle.hpp>
+#include <Geometry/Cone.hpp>
+#include <Geometry/Cuboid.hpp>
+#include <Geometry/Cylinder.hpp>
 #include <Geometry/GeometryAssert.hpp>
 #include <Geometry/Intersection/IntersectionSphere.hpp>
+#include <Geometry/Sphere.hpp>
 #include <Geometry/Transformation/TransformSphere.hpp>
+#include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/Interactors/SnapGeometries.hpp>
 #include <algorithm>
 #include <limits>

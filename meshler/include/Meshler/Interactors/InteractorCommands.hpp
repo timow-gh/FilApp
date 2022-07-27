@@ -2,9 +2,7 @@
 #define MESHLER_INTERACTORCOMMANDS_HPP
 
 #include <Core/Types/THashMap.hpp>
-#include <Graphics/InputEvents/KeyEvent.hpp>
-#include <Graphics/InputEvents/KeyScancode.hpp>
-#include <Meshler/Interactors/MElementPlacingInteractor.hpp>
+#include <Core/Utils/Compiler.hpp>
 
 namespace Meshler
 {

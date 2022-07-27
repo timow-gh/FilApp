@@ -1,5 +1,7 @@
 #include <Core/Utils/Assert.hpp>
 #include <Graphics/GraphicsController.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <Graphics/Vec.hpp>
 #include <Graphics/Vertex.hpp>
 #include <Graphics/View.hpp>

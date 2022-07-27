@@ -2,15 +2,11 @@
 #define GRAPHICS_GRAPHICSAPP_HPP
 
 #include <Core/Utils/Compiler.hpp>
-#include <Graphics/AppConfig.hpp>
-#include <Graphics/InputEvents/InputEventDispatcher.hpp>
-#include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
-#include <Graphics/Window.hpp>
-#include <Graphics/WindowConfig.hpp>
-#include <memory>
 
 namespace Graphics
 {
+
+class Window;
 
 class GraphicsApp {
   public:

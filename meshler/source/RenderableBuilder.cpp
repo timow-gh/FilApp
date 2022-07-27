@@ -4,6 +4,9 @@
 #include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
 #include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
+#include <Graphics/Renderables/LineRenderable.hpp>
+#include <Graphics/Renderables/PointRenderable.hpp>
+#include <Graphics/Renderables/TriangleRenderable.hpp>
 #include <Graphics/Vertex.hpp>
 #include <Graphics/View.hpp>
 #include <Meshler/GeometryElements/MCone.hpp>

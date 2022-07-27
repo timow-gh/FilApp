@@ -2,7 +2,6 @@
 #define MESHLER_MMODELEVENTDISPATCHER_HPP
 
 #include <Core/Types/TVector.hpp>
-#include <LinAl/LinearAlgebra.hpp>
 #include <Meshler/MGuid.hpp>
 #include <Meshler/MModelEventListener.hpp>
 

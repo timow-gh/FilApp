@@ -1,6 +1,10 @@
 #include <Core/Utils/Assert.hpp>
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilAppWindow.hpp>
+#include <Graphics/InputEvents/KeyEvent.hpp>
+#include <Graphics/InputEvents/MouseButtonEvent.hpp>
+#include <Graphics/InputEvents/MouseMoveEvent.hpp>
+#include <Graphics/InputEvents/MouseWheelEvent.hpp>
 #include <NativeWindowHelper.hpp>
 #include <SDL_video.h>
 #include <camutils/Manipulator.h>
