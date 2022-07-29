@@ -4,6 +4,7 @@
 #include <Core/Types/TMap.hpp>
 #include <Graphics/InputEvents/KeyScancode.hpp>
 #include <Meshler/Interactors/InteractorCommands.hpp>
+#include <optional>
 
 namespace Meshler
 {
