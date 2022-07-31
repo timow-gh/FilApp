@@ -6,22 +6,21 @@ namespace Meshler
 enum class MeshDrawType
 {
     WIRED,
-    SURFACE_WIRED
+    SURFACE_WIRED,
+    SURFACE
 };
 
 struct PresenterConfig
 {
-    std::size_t spherePolarCount{16};
-    std::size_t sphereAzimuthCount{20};
-    std::size_t coneAzimuthCount{20};
-    std::size_t cylinderAzimuthCount{20};
+    std::uint32_t polarCount{8};
+    std::uint32_t azimuthCount{10};
 
     std::uint32_t faceColor{0xFFc0bfbb};
     std::uint32_t selectedFaceColor{0xFF129CF3};
     std::uint32_t lineColor{0xFF000000};
     std::uint32_t selectedLineColor{0xFF000000};
 
-    MeshDrawType meshDrawType{MeshDrawType::SURFACE_WIRED};
+    MeshDrawType meshDrawType{MeshDrawType::WIRED};
 };
 } // namespace Meshler
 

@@ -57,18 +57,18 @@ class RenderableBuilder {
 
     void setPresenterConfig(const PresenterConfig& presenterConfig);
 
-    Core::TVector<Graphics::RenderableId> build();
+    CORE_NODISCARD Core::TVector<Graphics::RenderableId> build();
 
   private:
     template <typename TRenderable>
     void addRenderable(TRenderable&& renderable);
 
-    void build(const MSphere& sphere);
-    void build(const MCone& cone);
-    void build(const MCylinder& cylinder);
-    void build(const MSegments& segments);
-    void build(const MCuboid& cuboid);
-    void build(const MGrid& grid);
+    template <typename TGeomElem>
+    void buildMesh(const TGeomElem& geomElem);
+
+    void buildRenderable(const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh);
+    void buildLineRenderable(const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh);
+    void buildTriableRenderable(const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh);
 
     CORE_NODISCARD Core::TVector<Graphics::Vertex>
     buildSegmentVertices(const Core::TVector<Geometry::Segment3d>& segments) const;

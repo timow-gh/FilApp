@@ -1,9 +1,7 @@
 #include <Geometry/HalfedgeMesh/HalfedgeIndices.hpp>
 #include <Geometry/HalfedgeMesh/HalfedgeMesh.hpp>
-#include <Geometry/HalfedgeMeshBuilder/ConeMeshBuilder.hpp>
-#include <Geometry/HalfedgeMeshBuilder/CuboidMeshBuilder.hpp>
-#include <Geometry/HalfedgeMeshBuilder/CylinderMeshBuilder.hpp>
-#include <Geometry/HalfedgeMeshBuilder/SphereMeshBuilder.hpp>
+#include <Geometry/HalfedgeMesh/TriangleIndices.hpp>
+#include <Geometry/HalfedgeMeshBuilder/MeshBuilder.hpp>
 #include <Graphics/Renderables/LineRenderable.hpp>
 #include <Graphics/Renderables/PointRenderable.hpp>
 #include <Graphics/Renderables/TriangleRenderable.hpp>
@@ -49,23 +47,6 @@ void RenderableBuilder::setPresenterConfig(const PresenterConfig& presenterConfi
 {
     m_presenterConfig = presenterConfig;
 }
-Core::TVector<Graphics::RenderableId> RenderableBuilder::build()
-{
-    for (const auto& geomElem: m_spheres)
-        build(geomElem);
-    for (const auto& geomElem: m_cones)
-        build(geomElem);
-    for (const auto& geomElem: m_cylinders)
-        build(geomElem);
-    for (const auto& geomElem: m_segments)
-        build(geomElem);
-    for (const auto& geomElem: m_cuboids)
-        build(geomElem);
-    for (const auto& geomElem: m_grids)
-        build(geomElem);
-
-    return m_renderableIds;
-}
 template <typename TRenderable>
 void RenderableBuilder::addRenderable(TRenderable&& renderable)
 {
@@ -73,61 +54,71 @@ void RenderableBuilder::addRenderable(TRenderable&& renderable)
     auto triangleRenderableId = view.addRenderable(std::forward<TRenderable>(renderable));
     m_renderableIds.push_back(triangleRenderableId);
 }
-void RenderableBuilder::build(const MSphere& sphere)
+template <typename TGeomElem>
+void RenderableBuilder::buildMesh(const TGeomElem& geomElem)
 {
     auto presenterConfig = m_presenterConfig.get();
 
-    std::unique_ptr<Geometry::HalfedgeMesh<double_t>> sphereMesh =
-        Geometry::SphereMeshBuilder<double_t>()
-            .setPolarCount(presenterConfig.spherePolarCount)
-            .setAzimuthCount(presenterConfig.sphereAzimuthCount)
-            .setSphere(sphere.getGeometryElement())
-            .build();
+    Geometry::MeshBuilder meshBuilder{
+        Geometry::MeshBuilderConfig{presenterConfig.polarCount, presenterConfig.azimuthCount}};
+    auto mesh = meshBuilder.build(geomElem.getGeometryElement());
 
-    addRenderable(Graphics::LineRenderable::create(segmentGraphicsVertices(*sphereMesh)));
-    addRenderable(createTriangleRenderable(*sphereMesh));
+    buildRenderable(*mesh);
 }
-void RenderableBuilder::build(const MCone& cone)
+template <>
+void RenderableBuilder::buildMesh(const MSegments& geomElem)
+{
+    auto presenterConfig = m_presenterConfig.get();
+    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.getSegments())));
+}
+template <>
+void RenderableBuilder::buildMesh(const MGrid& geomElem)
+{
+    auto presenterConfig = m_presenterConfig.get();
+    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.getSegments())));
+}
+Core::TVector<Graphics::RenderableId> RenderableBuilder::build()
+{
+    for (const MSphere& geomElem: m_spheres)
+        buildMesh(geomElem);
+    for (const MCone& geomElem: m_cones)
+        buildMesh(geomElem);
+    for (const MCylinder& geomElem: m_cylinders)
+        buildMesh(geomElem);
+    for (const MSegments& geomElem: m_segments)
+        buildMesh(geomElem);
+    for (const MCuboid& geomElem: m_cuboids)
+        buildMesh(geomElem);
+    for (const MGrid& geomElem: m_grids)
+        buildMesh(geomElem);
+
+    return m_renderableIds;
+}
+void RenderableBuilder::buildRenderable(const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh)
+{
+    buildLineRenderable(mesh);
+    buildTriableRenderable(mesh);
+}
+void RenderableBuilder::buildLineRenderable(
+    const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh)
 {
     auto presenterConfig = m_presenterConfig.get();
 
-    auto coneMesh = Geometry::ConeMeshBuilder<double_t>()
-                        .setCone((cone.getGeometryElement()))
-                        .setAzimuthCount(presenterConfig.coneAzimuthCount)
-                        .build();
-
-    addRenderable(Graphics::LineRenderable::create(segmentGraphicsVertices(*coneMesh)));
-    addRenderable(createTriangleRenderable(*coneMesh));
+    if (presenterConfig.meshDrawType == MeshDrawType::WIRED ||
+        presenterConfig.meshDrawType == MeshDrawType::SURFACE_WIRED)
+        addRenderable(Graphics::LineRenderable::create(segmentGraphicsVertices(mesh)));
 }
-void RenderableBuilder::build(const MCylinder& cylinder)
+void RenderableBuilder::buildTriableRenderable(
+    const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh)
 {
     auto presenterConfig = m_presenterConfig.get();
 
-    auto cylinderMesh = Geometry::CylinderMeshBuilder<double_t>()
-                            .setCylinder(cylinder.getGeometryElement())
-                            .setAzimuthCount(presenterConfig.cylinderAzimuthCount)
-                            .build();
+    if (presenterConfig.meshDrawType == MeshDrawType::WIRED)
+        return;
 
-    addRenderable(Graphics::LineRenderable::create(segmentGraphicsVertices(*cylinderMesh)));
-    addRenderable(createTriangleRenderable(*cylinderMesh));
-}
-void RenderableBuilder::build(const MSegments& segments)
-{
-    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(segments.getSegments())));
-}
-void RenderableBuilder::build(const MCuboid& cuboid)
-{
-    auto presenterConfig = m_presenterConfig.get();
-
-    auto cuboidMesh =
-        Geometry::CuboidMeshBuilder<double_t>().setCuboid(cuboid.getGeometryElement()).build();
-
-    addRenderable(Graphics::LineRenderable::create(segmentGraphicsVertices(*cuboidMesh)));
-    addRenderable(createTriangleRenderable(*cuboidMesh));
-}
-void RenderableBuilder::build(const MGrid& grid)
-{
-    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(grid.getSegments())));
+    if (presenterConfig.meshDrawType == MeshDrawType::SURFACE_WIRED ||
+        presenterConfig.meshDrawType == MeshDrawType::SURFACE)
+        addRenderable(createTriangleRenderable(mesh));
 }
 Core::TVector<Graphics::Vertex>
 RenderableBuilder::buildSegmentVertices(const Core::TVector<Geometry::Segment3d>& segments) const
