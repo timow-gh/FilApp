@@ -2,9 +2,10 @@
 #define MESHLER_RENDERABLEBUILDER_H
 
 #include <Core/Types/TVector.hpp>
+#include <Core/Utils/Compiler.hpp>
+#include <Geometry/Fwd/FwdHalfedgeMesh.hpp>
 #include <Graphics/Renderables/RendereableId.hpp>
 #include <functional>
-#include <math.h>
 
 namespace Graphics
 {
@@ -12,13 +13,8 @@ class View;
 class PointRenderable;
 class LineRenderable;
 class TriangleRenderable;
+class Vertex;
 } // namespace Graphics
-
-namespace Geometry
-{
-template <typename TFloatType, typename TIndexType>
-struct HalfedgeMesh;
-}
 
 namespace Meshler
 {
@@ -71,10 +67,10 @@ class RenderableBuilder {
     void buildTriableRenderable(const Geometry::HalfedgeMesh<double_t, std::size_t>& mesh);
 
     CORE_NODISCARD Core::TVector<Graphics::Vertex>
-    buildSegmentVertices(const Core::TVector<Geometry::Segment3d>& segments) const;
+    buildSegmentVertices(const Core::TVector<Geometry::Segment<double_t, 3>>& segments) const;
 
     CORE_NODISCARD Graphics::LineRenderable
-    createLineRenderables(const Core::TVector<Geometry::Segment3d>& segments) const;
+    createLineRenderables(const Core::TVector<Geometry::Segment<double_t, 3>>& segments) const;
 
     CORE_NODISCARD Graphics::TriangleRenderable createTriangleRenderable(
         const Geometry::HalfedgeMesh<double_t, std::size_t>& halfedgeMesh) const;

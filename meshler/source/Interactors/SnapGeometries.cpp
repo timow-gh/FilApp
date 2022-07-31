@@ -4,7 +4,9 @@
 #include <Geometry/Cone.hpp>
 #include <Geometry/Cuboid.hpp>
 #include <Geometry/Cylinder.hpp>
+#include <Geometry/Distance/DistanceRay.hpp>
 #include <Geometry/GeometryAssert.hpp>
+#include <Geometry/Intersection/IntersectionPlane.hpp>
 #include <Geometry/Intersection/IntersectionSphere.hpp>
 #include <Geometry/Sphere.hpp>
 #include <Geometry/Transformation/TransformSphere.hpp>
@@ -110,7 +112,7 @@ bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
     GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
     std::size_t size = snapPoints.size();
     for (const LinAl::Vec3d& vec: m_snapPoints)
-        if (placementRay.distance(vec) < m_snapDistance)
+        if (Geometry::distance(placementRay, vec) < m_snapDistance)
             snapPoints.push_back(vec);
 
     if (snapPoints.empty())
@@ -121,7 +123,7 @@ bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
 void SnapGeometries::findSnapPlane(LinAl::Vec3dVector& snapPoints,
                                    const Geometry::Ray3d& placementRay) const
 {
-    if (std::optional<LinAl::Vec3d> result = m_snapPlane.intersection(placementRay))
+    if (std::optional<LinAl::Vec3d> result = Geometry::intersection(m_snapPlane, placementRay))
         snapPoints.push_back(result.value());
 }
 
@@ -150,7 +152,7 @@ void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& snapPoints,
     for (const Geometry::Sphere<double_t>& sphere: m_snapSpheres)
     {
         Geometry::SphereIntersection<double_t> intersection =
-            Geometry::calcIntersection(sphere, placementRay);
+            Geometry::intersection(sphere, placementRay);
         if (intersection.first)
             snapPoints.push_back(*intersection.first);
         if (intersection.second)

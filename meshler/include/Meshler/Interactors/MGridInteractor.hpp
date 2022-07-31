@@ -4,6 +4,7 @@
 #include <Geometry/Plane.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <Meshler/GeometryElements/MGrid.hpp>
+#include <optional>
 
 namespace Meshler
 {

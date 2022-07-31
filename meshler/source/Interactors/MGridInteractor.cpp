@@ -1,4 +1,6 @@
 #include <Core/Math/Eps.hpp>
+#include <Geometry/Intersection/IntersectionPlane.hpp>
+#include <Geometry/Ray.hpp>
 #include <Meshler/Interactors/MGridInteractor.hpp>
 #include <Meshler/LinAlConversion.hpp>
 #include <Meshler/MModel.hpp>
@@ -21,7 +23,7 @@ MGridInteractor::rayIntersection(const Graphics::PickRayEvent& pickRayEvent) con
     const Geometry::Ray3<double_t> ray{vec3ToLinAlVec3<double_t>(pickRayEvent.origin),
                                        vec3ToLinAlVec3<double_t>(pickRayEvent.direction)};
 
-    return m_plane.intersection(ray);
+    return Geometry::intersection(m_plane, ray);
 }
 
 void MGridInteractor::onEvent(const Graphics::PickRayEvent& pickRayEvent)

@@ -3,9 +3,16 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
-#include <Geometry/FwdGeometry.hpp>
+#include <Geometry/Fwd/FwdCircle.hpp>
+#include <Geometry/Fwd/FwdCone.hpp>
+#include <Geometry/Fwd/FwdCuboid.hpp>
+#include <Geometry/Fwd/FwdCylinder.hpp>
+#include <Geometry/Fwd/FwdRay.hpp>
+#include <Geometry/Fwd/FwdSegment.hpp>
+#include <Geometry/Fwd/FwdSphere.hpp>
 #include <Geometry/Plane.hpp>
 #include <LinAl/LinearAlgebra.hpp>
+#include <optional>
 
 namespace Meshler
 {
