@@ -1,6 +1,7 @@
 #ifndef MESHLER_MMODEL_HPP
 #define MESHLER_MMODEL_HPP
 
+#include <Core/Utils/Assert.hpp>
 #include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/MGuid.hpp>
 #include <Meshler/MModelEventDispatcher.hpp>
@@ -22,11 +23,16 @@ class MModel {
     void removeListener(MModelEventListener* modelEventListener);
 
     template <typename TMeshlerGeometry>
-    void add(const TMeshlerGeometry& meshlerGeometry)
+    void add(TMeshlerGeometry&& meshlerGeometry)
 
     {
-        if (m_geometryElements.add(meshlerGeometry))
-            m_modelEventDispatcher.dispatchAdd(meshlerGeometry);
+        FGuid guid = meshlerGeometry.getFGuid();
+        if (m_geometryElements.add(std::forward<TMeshlerGeometry>(meshlerGeometry)))
+        {
+            auto* geoElem = m_geometryElements.get<TMeshlerGeometry>(guid);
+            CORE_POSTCONDITION_DEBUG_ASSERT(geoElem, "geomElem not found.");
+            m_modelEventDispatcher.dispatchAdd(*geoElem);
+        }
     }
 
     template <typename TGeometryElement>
@@ -35,11 +41,16 @@ class MModel {
         return m_geometryElements.get<TGeometryElement>(guid);
     }
 
+    CORE_NODISCARD SnapGeometries& getSnapGeometries()
+    {
+        return m_geometryElements.getSnapGeometries();
+    }
+
     void update(const FGuid& guid);
     void remove(FGuid fGuid);
     void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
 
-    CORE_NODISCARD SnapGeometries calcModelSnapGeometries() const;
+    void calcModelSnapGeometries();
 };
 
 } // namespace Meshler

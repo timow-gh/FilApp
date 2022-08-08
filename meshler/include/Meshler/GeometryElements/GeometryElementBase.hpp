@@ -14,7 +14,9 @@ class GeometryElementBase {
   protected:
     FGuid m_fGuid;
     bool m_isSnapGeometry{true};
-    LinAl::HMatrixd m_transformation;
+    LinAl::HMatrixd m_transformation{LinAl::createIdentityHMatrix<double_t>()};
+
+    GeometryElementBase() : m_fGuid(newFGuid()) {}
 
     GeometryElementBase(FGuid guid, const MGeometryConfigBase& baseConfig)
         : m_fGuid(guid)
@@ -53,7 +55,7 @@ class GeometryElementBase {
     }
 
   public:
-    CORE_NODISCARD const FGuid& getFGuid() const { return m_fGuid; }
+    CORE_NODISCARD CORE_CONSTEXPR const FGuid& getFGuid() const { return m_fGuid; }
 
     CORE_NODISCARD CORE_CONSTEXPR bool getIsSnapGeometry() const { return m_isSnapGeometry; }
     CORE_CONSTEXPR void setIsSnapGeometry(bool isSnapGeometry)
@@ -61,7 +63,10 @@ class GeometryElementBase {
         m_isSnapGeometry = isSnapGeometry;
     }
 
-    CORE_NODISCARD const LinAl::HMatrixd& getTransformation() const { return m_transformation; }
+    CORE_NODISCARD CORE_CONSTEXPR const LinAl::HMatrixd& getTransformation() const
+    {
+        return m_transformation;
+    }
     CORE_CONSTEXPR void setTransformation(const LinAl::HMatrixd& transformation)
     {
         m_transformation = transformation;

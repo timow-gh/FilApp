@@ -10,7 +10,7 @@
 #include <Meshler/GeometryElements/MGrid.hpp>
 #include <Meshler/GeometryElements/MSegments.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
-#include <Meshler/Interactors/SnapGeometries.hpp>
+#include <Meshler/GeometryElements/SnapGeometries.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MPresenter.hpp>
 
@@ -38,6 +38,7 @@ void MModel::update(const FGuid& guid)
     if (auto elem = get<MSegments>(guid)) m_modelEventDispatcher.dispatchUpdate(*elem);
     if (auto elem = get<MSphere>(guid)) m_modelEventDispatcher.dispatchUpdate(*elem);
     // clang-format on
+    calcModelSnapGeometries();
 }
 void MModel::remove(FGuid fGuid)
 {
@@ -50,9 +51,11 @@ void MModel::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
         m_modelEventDispatcher.dispatchPositionChanged(PositionEvent{fGuid, position});
 }
 
-SnapGeometries MModel::calcModelSnapGeometries() const
+void MModel::calcModelSnapGeometries()
 {
-    SnapGeometries result{Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D}};
+    auto& result = m_geometryElements.getSnapGeometries();
+
+    result = SnapGeometries{Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D}};
 
     for (const auto& pair: m_geometryElements.getSegmentMap())
         if (pair.second.getIsSnapGeometry())
@@ -86,13 +89,11 @@ SnapGeometries MModel::calcModelSnapGeometries() const
 
         auto trafo = pair.second.getTransformation();
 
-        for (const Geometry::Segment3d& segment: pair.second.getSegments())
+        for (const Geometry::Segment3d& segment: pair.second.calcGridSegments())
             result.add(Geometry::transformation(segment, trafo));
 
-        for (const LinAl::Vec3d& vec: pair.second.getIntersectionPoints())
+        for (const LinAl::Vec3d& vec: pair.second.calcIntersectionPoints())
             result.add(Geometry::transformation(vec, trafo));
     }
-
-    return result;
 }
 } // namespace Meshler

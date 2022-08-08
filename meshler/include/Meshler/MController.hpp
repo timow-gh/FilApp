@@ -25,7 +25,6 @@ class MController : public Graphics::GraphicsController {
     std::unique_ptr<Graphics::GraphicsController> m_currentInteractor{nullptr};
 
   public:
-    MController() = default;
     MController(MPresenter& meshlerPresenter, MModel& meshlerModel);
 
     CORE_NODISCARD static std::shared_ptr<MController> create(MPresenter& meshlerPresenter,

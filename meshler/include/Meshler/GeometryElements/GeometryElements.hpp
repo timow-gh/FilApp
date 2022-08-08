@@ -9,6 +9,7 @@
 #include <Meshler/GeometryElements/MGrid.hpp>
 #include <Meshler/GeometryElements/MSegments.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
+#include <Meshler/GeometryElements/SnapGeometries.hpp>
 #include <Meshler/MGuid.hpp>
 
 namespace Meshler
@@ -39,54 +40,58 @@ class GeometryElements {
     Core::TMap<FGuid, MCuboid> m_cuboid;
     Core::TMap<FGuid, MGrid> m_grid;
 
+    SnapGeometries m_snapGeometries;
+
   public:
-    bool add(const MSegments& segments);
-    bool add(const MSphere& sphere);
-    bool add(const MCone& cone);
-    bool add(const MCylinder& cylinder);
-    bool add(const MCuboid& cuboid);
-    bool add(const MGrid& grid);
+    bool add(MSegments&& segments);
+    bool add(MSphere&& sphere);
+    bool add(MCone&& cone);
+    bool add(MCylinder&& cylinder);
+    bool add(MCuboid&& cuboid);
+    bool add(MGrid&& grid);
 
     bool remove(const FGuid& fGuid);
 
     template <typename TGeometryElement>
-    TGeometryElement* get(const FGuid& guid);
+    CORE_NODISCARD TGeometryElement* get(const FGuid& guid);
 
     template <>
-    MSegments* get(const FGuid& guid)
+    CORE_NODISCARD MSegments* get(const FGuid& guid)
     {
         return details::getImpl(guid, m_segments);
     }
 
     template <>
-    MSphere* get(const FGuid& guid)
+    CORE_NODISCARD MSphere* get(const FGuid& guid)
     {
         return details::getImpl(guid, m_spheres);
     }
 
     template <>
-    MCone* get(const FGuid& guid)
+    CORE_NODISCARD MCone* get(const FGuid& guid)
     {
         return details::getImpl(guid, m_cones);
     }
 
     template <>
-    MCylinder* get(const FGuid& guid)
+    CORE_NODISCARD MCylinder* get(const FGuid& guid)
     {
         return details::getImpl(guid, m_cylinder);
     }
 
     template <>
-    MCuboid* get(const FGuid& guid)
+    CORE_NODISCARD MCuboid* get(const FGuid& guid)
     {
         return details::getImpl(guid, m_cuboid);
     }
 
     template <>
-    MGrid* get(const FGuid& guid)
+    CORE_NODISCARD MGrid* get(const FGuid& guid)
     {
         return details::getImpl(guid, m_grid);
     }
+
+    CORE_NODISCARD SnapGeometries& getSnapGeometries() { return m_snapGeometries; }
 
     bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
 

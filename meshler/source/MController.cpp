@@ -24,11 +24,10 @@ std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, M
     controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
 
     MGrid defaultGrid = MGrid{};
-    meshlerModel.add(defaultGrid);
-    controller->m_meshlerGridInteractor = std::make_unique<MGridInteractor>(
-        meshlerModel,
-        Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D},
-        defaultGrid.getFGuid());
+    FGuid defaultGridGuid = defaultGrid.getFGuid();
+    meshlerModel.add(std::move(defaultGrid));
+    controller->m_meshlerGridInteractor =
+        std::make_unique<MGridInteractor>(meshlerModel, defaultGridGuid);
 
     meshlerPresenter.registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
 

@@ -2,7 +2,9 @@
 #define MESHLER_MGRID_HPP
 
 #include <Core/Types/TVector.hpp>
+#include <Core/Utils/Assert.hpp>
 #include <Core/Utils/Compiler.hpp>
+#include <Geometry/Plane.hpp>
 #include <Geometry/Segment.hpp>
 #include <LinAl/LinearAlgebra.hpp>
 #include <Meshler/GeometryElements/GeometryElementBase.hpp>
@@ -12,56 +14,50 @@
 namespace Meshler
 {
 
-class MGrid : public GeometryElementBase<MGrid> {
-    double_t m_minXLength{-10.0};
-    double_t m_minYLength{-10.0};
-    double_t m_maxXLength{10.0};
-    double_t m_maxYLength{10.0};
-    double_t m_stepWidth{1.0};
-    double_t m_maxLength{1000.0};
-    LinAl::Vec3dVector m_intersectionPoints;
-    Core::TVector<Geometry::Segment3d> m_segments;
+struct GridCalcParameters;
+
+class MGrid final : public GeometryElementBase<MGrid> {
+    LinAl::Vec3d m_origin{0, 0, 0};
+    double_t m_xMin{4};
+    double_t m_yMin{4};
+    double_t m_xMax{4};
+    double_t m_yMax{4};
+    double_t m_stepWidth{1};
+    double_t m_maxDistValue{100};
 
   public:
-    MGrid();
-    MGrid(const FGuid& guid,
-          double_t minXLength,
-          double_t minYLength,
-          double_t maxXLength,
-          double_t maxYLength,
-          double_t stepWidth,
-          MGeometryConfigBase baseConfig);
+    MGrid() = default;
 
-    // clang-format off
-    CORE_CONSTEXPR void setMinXLength(double_t minXLength) { m_minXLength = minXLength; }
-    CORE_CONSTEXPR void setMinYLength(double_t minYLength) { m_minYLength = minYLength; }
-    CORE_CONSTEXPR void setMaxXLength(double_t maxXLength) { m_maxXLength = maxXLength; }
-    CORE_CONSTEXPR void setMaxYLength(double_t maxYLength) { m_maxYLength = maxYLength; }
-    CORE_CONSTEXPR void setStepWidth(double_t stepWidth) { m_stepWidth = stepWidth; }
-    CORE_CONSTEXPR void setMaxLength(double_t maxLength) { m_maxLength = maxLength; }
-    // clang-format on
-
-    void updateSegments();
-
-    CORE_NODISCARD CORE_CONSTEXPR double_t getMinXLength() const { return m_minXLength; }
-    CORE_NODISCARD CORE_CONSTEXPR double_t getMinYLength() const { return m_minYLength; }
-    CORE_NODISCARD CORE_CONSTEXPR double_t getMaxXLength() const { return m_maxXLength; }
-    CORE_NODISCARD CORE_CONSTEXPR double_t getMaxYLength() const { return m_maxYLength; }
     CORE_NODISCARD CORE_CONSTEXPR double_t getStepWidth() const { return m_stepWidth; }
-    CORE_NODISCARD CORE_CONSTEXPR double_t getMaxLength() const { return m_maxLength; }
+    void setStepWidth(double_t stepWidth);
 
-    CORE_NODISCARD CORE_CONSTEXPR const LinAl::Vec3dVector& getIntersectionPoints() const
-    {
-        return m_intersectionPoints;
-    }
+    CORE_NODISCARD CORE_CONSTEXPR LinAl::Vec3d getOrigin() const { return m_origin; }
+    CORE_CONSTEXPR void setOrigin(LinAl::Vec3d origin) { m_origin = origin; }
 
-    CORE_NODISCARD CORE_CONSTEXPR const Core::TVector<Geometry::Segment3d>& getSegments() const
-    {
-        return m_segments;
-    }
+    CORE_NODISCARD CORE_CONSTEXPR double_t getXMin() const { return m_xMin; }
+    void setXMin(double_t xMin);
+
+    CORE_NODISCARD CORE_CONSTEXPR double_t getYMin() const { return m_yMin; }
+    void setYMin(double_t yMin);
+
+    CORE_NODISCARD CORE_CONSTEXPR double_t getXMax() const { return m_xMax; }
+    void setXMax(double_t xMax);
+
+    CORE_NODISCARD CORE_CONSTEXPR double_t getYMax() const { return m_yMax; }
+    void setYMax(double_t yMax);
+
+    CORE_NODISCARD CORE_CONSTEXPR double_t getMaxDistValue() const { return m_maxDistValue; }
+    void setMaxDistValue(double_t maxDistValue);
+
+    CORE_NODISCARD Geometry::Plane<double_t> calcPlane() const;
+    CORE_NODISCARD Core::TVector<Geometry::Segment3d> calcGridSegments() const;
+    CORE_NODISCARD LinAl::Vec3dVector calcIntersectionPoints() const;
 
   private:
-    CORE_NODISCARD double_t floorCoordAsMultipleOfStep(double_t coord, double_t stepWidth) const;
+    CORE_NODISCARD GridCalcParameters calcGridCalcParameters() const;
+    void calcGridSegments(Core::TVector<Geometry::Segment3d>& segments,
+                          LinAl::Vec3d dir,
+                          std::int64_t numberOfSteps) const;
 };
 
 } // namespace Meshler

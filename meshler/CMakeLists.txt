@@ -16,7 +16,7 @@ set(MESHLER_PUBLIC_HEADERS
         include/Meshler/Interactors/InteractorCommands.hpp
         include/Meshler/Interactors/InteractorKeyMap.hpp
         include/Meshler/Interactors/MElementPlacingInteractor.hpp
-        include/Meshler/Interactors/SnapGeometries.hpp
+        include/Meshler/GeometryElements/SnapGeometries.hpp
         include/Meshler/Interactors/MGridInteractor.hpp
         include/Meshler/MController.hpp
         include/Meshler/MGuid.hpp

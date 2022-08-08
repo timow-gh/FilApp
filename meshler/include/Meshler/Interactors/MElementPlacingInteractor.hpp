@@ -12,7 +12,7 @@
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
-#include <Meshler/Interactors/SnapGeometries.hpp>
+#include <Meshler/GeometryElements/SnapGeometries.hpp>
 #include <Meshler/MGuid.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MModelEventListener.hpp>
@@ -26,12 +26,12 @@ class MElementPlacingInteractor
     : public Graphics::GraphicsController
     , public MModelEventListener {
     MModel* m_model{nullptr};
-    SnapGeometries m_snapGeometries;
+    std::reference_wrapper<SnapGeometries> m_snapGeometries;
     std::optional<FGuid> m_geometryGuid;
     TGeomConfig<T> m_geomConfig;
 
   public:
-    MElementPlacingInteractor(MModel& model, const TGeomConfig<T>& m_geomConfig);
+    MElementPlacingInteractor(MModel& model, const TGeomConfig<T>& geomConfig);
 
     ~MElementPlacingInteractor() override { m_model->removeListener(this); }
 
@@ -51,13 +51,13 @@ template <typename TMeshlerGeometry, typename T, template <typename> typename TG
 MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::MElementPlacingInteractor(
     MModel& model,
     const TGeomConfig<T>& geomConfig)
-    : m_model(&model), m_snapGeometries(model.calcModelSnapGeometries()), m_geomConfig(geomConfig)
+    : m_model(&model), m_snapGeometries(model.getSnapGeometries()), m_geomConfig(geomConfig)
 {
     m_model->registerListener(this);
     m_geomConfig.baseConfig.isSnapGeometry = false;
     auto geomElem = MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
     m_geometryGuid = geomElem.getFGuid();
-    m_model->add(geomElem);
+    m_model->add(std::move(geomElem));
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -70,7 +70,7 @@ MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::calcIntersection(
     const Geometry::Ray3<double_t> ray{
         LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
         LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
-    return m_snapGeometries.calcSnapPoint(ray);
+    return m_snapGeometries.get().calcSnapPoint(ray);
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -86,13 +86,13 @@ void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onEvent(
     geomElem->setIsSnapGeometry(true);
     m_geometryGuid.reset();
 
-    m_snapGeometries = m_model->calcModelSnapGeometries();
+    m_model->calcModelSnapGeometries();
 
     m_geomConfig.baseConfig.isSnapGeometry = false;
     TMeshlerGeometry nextMeshlerGeometry =
         MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
-    m_model->add(nextMeshlerGeometry);
     m_geometryGuid = nextMeshlerGeometry.getFGuid();
+    m_model->add(std::move(nextMeshlerGeometry));
     m_model->setPosition(*m_geometryGuid, *intersection);
 }
 
@@ -117,7 +117,7 @@ void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onRemoveRayPic
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
 void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onModelPostAddEvent()
 {
-    m_snapGeometries = m_model->calcModelSnapGeometries();
+    m_model->calcModelSnapGeometries();
 }
 
 } // namespace Meshler

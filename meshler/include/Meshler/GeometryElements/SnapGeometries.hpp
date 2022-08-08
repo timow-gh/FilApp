@@ -25,6 +25,7 @@ class SnapGeometries {
     double_t m_snapDistance{0.3};
 
   public:
+    SnapGeometries();
     explicit SnapGeometries(const Geometry::Plane<double_t>& snapPlane);
 
     void add(const LinAl::Vec3d& snapPoint);

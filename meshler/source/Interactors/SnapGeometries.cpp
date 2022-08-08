@@ -11,12 +11,15 @@
 #include <Geometry/Sphere.hpp>
 #include <Geometry/Transformation/TransformSphere.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
-#include <Meshler/Interactors/SnapGeometries.hpp>
+#include <Meshler/GeometryElements/SnapGeometries.hpp>
 #include <algorithm>
 #include <limits>
 
 namespace Meshler
 {
+SnapGeometries::SnapGeometries() : m_snapPlane({LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 1}})
+{
+}
 SnapGeometries::SnapGeometries(const Geometry::Plane<double_t>& snapPlane) : m_snapPlane(snapPlane)
 {
     CORE_PRECONDITION_DEBUG_ASSERT(!Core::isZero(LinAl::norm2Squared(m_snapPlane.getNormal())),

@@ -9,174 +9,137 @@
 namespace Meshler
 {
 
-MGridInteractor::MGridInteractor(MModel& model,
-                                 Geometry::Plane<double_t> plane,
-                                 const FGuid& activeGridGuid)
-    : m_model(&model), m_plane(std::move(plane)), m_activeGridGuid(activeGridGuid)
+MGridInteractor::MGridInteractor(MModel& model, FGuid defaultGridGuid)
+    : m_model(model), m_activeGridGuid(defaultGridGuid)
 {
+    auto* grid = m_model.get().get<MGrid>(defaultGridGuid);
+    CORE_POSTCONDITION_DEBUG_ASSERT(grid,
+                                    "Model does not contain element with the defaultGridGuid.");
+    if (grid)
+    {
+        m_gridCopy = *grid;
+        m_activeGridPlane = m_gridCopy.calcPlane();
+    }
 }
 
 std::optional<LinAl::Vec3d>
 MGridInteractor::rayIntersection(const Graphics::PickRayEvent& pickRayEvent) const
 {
-
     const Geometry::Ray3<double_t> ray{vec3ToLinAlVec3<double_t>(pickRayEvent.origin),
                                        vec3ToLinAlVec3<double_t>(pickRayEvent.direction)};
 
-    return Geometry::intersection(m_plane, ray);
+    return Geometry::intersection(m_activeGridPlane, ray);
 }
 
 void MGridInteractor::onEvent(const Graphics::PickRayEvent& pickRayEvent)
 {
-    std::optional<LinAl::Vec3d> result = rayIntersection(pickRayEvent);
-    if (!result)
+    std::optional<LinAl::Vec3d> intersectionVec = rayIntersection(pickRayEvent);
+    if (!intersectionVec)
         return;
-    LinAl::Vec3d& vec = *result;
 
-    if (Core::isGreater(vec[0], m_minimalGrid.getMaxXLength()))
-    {
-        m_minimalGrid.setMaxXLength(vec[0]);
-    }
-    if (Core::isGreater(vec[1], m_minimalGrid.getMaxYLength()))
-    {
-        m_minimalGrid.setMaxYLength(vec[1]);
-    }
-    if (Core::isLess(vec[0], m_minimalGrid.getMinXLength()))
-    {
-        m_minimalGrid.setMinXLength(vec[0]);
-    }
-    if (Core::isLess(vec[1], m_minimalGrid.getMinYLength()))
-    {
-        m_minimalGrid.setMinYLength(vec[1]);
-    }
+    double_t xMin = m_gridCopy.getXMin();
+    double_t yMin = m_gridCopy.getYMin();
+    double_t xMax = m_gridCopy.getXMax();
+    double_t yMax = m_gridCopy.getYMax();
 
-    m_minimalGrid.updateSegments();
-    m_model->remove(m_activeGridGuid);
-    MGrid newGrid = m_minimalGrid;
-    m_activeGridGuid = newGrid.getFGuid();
-    m_model->add(newGrid);
+    if (updatedLengths(*intersectionVec, xMin, yMin, xMax, yMax))
+    {
+        m_model.get().remove(m_activeGridGuid);
+
+        MGrid newGrid = m_gridCopy;
+        newGrid.setXMin(xMin);
+        newGrid.setYMin(yMin);
+        newGrid.setXMax(xMax);
+        newGrid.setYMax(yMax);
+        m_activeGridGuid = newGrid.getFGuid();
+        m_gridCopy = newGrid;
+        m_model.get().add(std::move(newGrid));
+    }
 }
 
 void MGridInteractor::onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent)
 {
-    std::optional<LinAl::Vec3d> result = rayIntersection(pickRayMoveEvent);
-    if (!result)
+    double_t deltaT = pickRayMoveEvent.time - m_lastUpdateTime;
+    m_lastUpdateTime = pickRayMoveEvent.time;
+    if (deltaT > m_updateTimeDelta)
         return;
 
-    double_t diff = LinAl::norm2(LinAl::Vec3d{*result - m_pevGridIntersectionPoint});
+    std::optional<LinAl::Vec3d> intersectionVec = rayIntersection(pickRayMoveEvent);
+    if (!intersectionVec)
+        return;
+
+    double_t diff = LinAl::norm2(LinAl::Vec3d{*intersectionVec - m_pevGridIntersectionPoint});
     if (Core::isLess(diff, m_diffUpdateDistance))
         return;
-    m_pevGridIntersectionPoint = *result;
 
-    double_t xCoord = (*result)[0];
-    double_t yCoord = (*result)[1];
+    m_pevGridIntersectionPoint = *intersectionVec;
 
-    auto* activeGrid = m_model->get<MGrid>(m_activeGridGuid);
-    if (!activeGrid)
-        return;
+    double_t xMin = m_gridCopy.getXMin();
+    double_t yMin = m_gridCopy.getYMin();
+    double_t xMax = m_gridCopy.getXMax();
+    double_t yMax = m_gridCopy.getYMax();
 
-    double_t flooredXCoord = std::floor(xCoord);
+    if (updatedLengths(*intersectionVec, xMin, yMin, xMax, yMax))
+    {
+        MModel& model = m_model.get();
+        auto* activeGrid = model.get<MGrid>(m_activeGridGuid);
+        CORE_POSTCONDITION_DEBUG_ASSERT(activeGrid, "");
+        if (!activeGrid)
+            return;
+
+        activeGrid->setXMin(xMin);
+        activeGrid->setYMin(yMin);
+        activeGrid->setXMax(xMax);
+        activeGrid->setYMax(yMax);
+        model.update(m_activeGridGuid);
+    }
+}
+bool MGridInteractor::updatedLengths(LinAl::Vec3d intersectionVec,
+                                     double_t& xMin,
+                                     double_t& yMin,
+                                     double_t& xMax,
+                                     double_t& yMax)
+{
+    LinAl::Vec3d distVec = intersectionVec - m_gridCopy.getOrigin();
     bool updated{false};
-    if (Core::isLess(xCoord, m_minimalGrid.getMinXLength() + m_updateDistance) &&
-        Core::isLess(xCoord, activeGrid->getMinXLength() + m_updateDistance))
+    double_t updateDist = m_gridCopy.getStepWidth() * m_updateDistMultiplier;
+    double_t xDist = distVec[0];
+    if (Core::isLess(xDist, 0.0))
     {
-        // Extend xMin to cursor
-        activeGrid->setMinXLength(flooredXCoord - m_updateDistance);
-        updated = true;
+        if (m_gridCopy.getXMin() - updateDist < std::abs(xDist))
+        {
+            xMin = std::abs(xDist) + updateDist;
+            updated = true;
+        }
     }
-    else if (Core::isLess(xCoord, m_minimalGrid.getMinXLength() + m_updateDistance) &&
-             Core::isGreater(xCoord, activeGrid->getMinXLength() + m_updateDistance))
+    else
     {
-        // Shrink xMin to cursor
-        activeGrid->setMinXLength(flooredXCoord - m_updateDistance);
-        updated = true;
-    }
-    else if (Core::isGreater(xCoord, m_minimalGrid.getMinXLength() + m_updateDistance) &&
-             !Core::isEq(activeGrid->getMinXLength(),
-                         m_minimalGrid.getMinXLength() + m_updateDistance))
-    {
-        // Shrink xMin to minimal grid
-        activeGrid->setMinXLength(m_minimalGrid.getMinXLength());
-        updated = true;
+        if (m_gridCopy.getXMax() - updateDist < std::abs(xDist))
+        {
+            xMax = std::abs(xDist) + updateDist;
+            updated = true;
+        }
     }
 
-    double_t flooredYCoord = std::floor(yCoord);
-    if (Core::isLess(yCoord, (m_minimalGrid.getMinYLength() + m_updateDistance)) &&
-        Core::isLess(yCoord, (activeGrid->getMinYLength() + m_updateDistance)))
+    double_t yDist = distVec[1];
+    if (Core::isLess(yDist, 0.0))
     {
-        // Extend yMin to cursor
-        activeGrid->setMinYLength(flooredYCoord - m_updateDistance);
-        updated = true;
+        if (m_gridCopy.getYMin() - updateDist < std::abs(yDist))
+        {
+            yMin = std::abs(yDist) + updateDist;
+            updated = true;
+        }
     }
-    else if (Core::isLess(yCoord, (m_minimalGrid.getMinYLength() + m_updateDistance)) &&
-             Core::isGreater(yCoord, activeGrid->getMinYLength() + m_updateDistance))
+    else
     {
-        // Shrink yMin to cursor
-        activeGrid->setMinYLength(flooredYCoord - m_updateDistance);
-        updated = true;
-    }
-    else if (Core::isGreater(yCoord, m_minimalGrid.getMinYLength() + m_updateDistance) &&
-             !Core::isEq(activeGrid->getMinYLength(),
-                         m_minimalGrid.getMinYLength() + m_updateDistance))
-    {
-        // Shrink yMin to minimal grid
-        activeGrid->setMinYLength(m_minimalGrid.getMinYLength());
-        updated = true;
+        if (m_gridCopy.getYMax() - updateDist < std::abs(yDist))
+        {
+            yMax = std::abs(yDist) + updateDist;
+            updated = true;
+        }
     }
 
-    double_t ceilXCoord = std::ceil(xCoord);
-    if (Core::isGreater(xCoord, m_minimalGrid.getMaxXLength() - m_updateDistance) &&
-        Core::isGreater(xCoord, activeGrid->getMaxXLength() - m_updateDistance))
-    {
-        // Extend xMax to cursor
-        activeGrid->setMaxXLength(ceilXCoord + m_updateDistance);
-        updated = true;
-    }
-    else if (Core::isGreater(xCoord, m_minimalGrid.getMaxXLength() - m_updateDistance) &&
-             Core::isLess(xCoord, activeGrid->getMaxXLength() - m_updateDistance))
-    {
-        // Shrink xMax to cursor
-        activeGrid->setMaxXLength(ceilXCoord + m_updateDistance);
-        updated = true;
-    }
-    else if (Core::isLess(xCoord, m_minimalGrid.getMaxXLength() - m_updateDistance) &&
-             !Core::isEq(activeGrid->getMaxXLength(),
-                         m_minimalGrid.getMaxXLength() - m_updateDistance))
-    {
-        // Shrink xMax to minimal grid
-        activeGrid->setMaxXLength(m_minimalGrid.getMaxXLength());
-        updated = true;
-    }
-
-    double_t ceilYCoord = std::ceil(yCoord);
-    if (Core::isGreater(yCoord, m_minimalGrid.getMaxYLength() - m_updateDistance) &&
-        Core::isGreater(yCoord, activeGrid->getMaxYLength() - m_updateDistance))
-    {
-        // Extend yMax to cursor
-        activeGrid->setMaxYLength(ceilYCoord + m_updateDistance);
-        updated = true;
-    }
-    else if (Core::isGreater(yCoord, m_minimalGrid.getMaxYLength() - m_updateDistance) &&
-             Core::isLess(yCoord, activeGrid->getMaxYLength() - m_updateDistance))
-    {
-        // Shrink yMax to cursor
-        activeGrid->setMaxYLength(ceilYCoord + m_updateDistance);
-        updated = true;
-    }
-    else if (Core::isLess(yCoord, m_minimalGrid.getMaxYLength() - m_updateDistance) &&
-             !Core::isEq(activeGrid->getMaxYLength(),
-                         m_minimalGrid.getMaxYLength() - m_updateDistance))
-    {
-        // Shrink yMax to minimal grid
-        activeGrid->setMaxYLength(m_minimalGrid.getMaxYLength());
-        updated = true;
-    }
-
-    if (updated)
-    {
-        activeGrid->updateSegments();
-        m_model->update(m_activeGridGuid);
-    }
+    return updated;
 }
 
 } // namespace Meshler

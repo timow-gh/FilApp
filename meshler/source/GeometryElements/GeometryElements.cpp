@@ -1,3 +1,4 @@
+#include <Core/Utils/Assert.hpp>
 #include <Meshler/GeometryElements/GeometryElements.hpp>
 
 namespace Meshler
@@ -9,9 +10,11 @@ template <typename TGeometryElement,
                     typename Compare = std::less<K>,
                     typename Alloc = std::allocator<std::pair<const K, V>>>
           class Map>
-bool addImpl(const TGeometryElement& geometryElement, Map<FGuid, TGeometryElement>& map)
+bool addImpl(TGeometryElement&& geometryElement, Map<FGuid, TGeometryElement>& map)
 {
-    auto iter = map.emplace(geometryElement.getFGuid(), geometryElement);
+    auto iter =
+        map.emplace(geometryElement.getFGuid(), std::forward<TGeometryElement>(geometryElement));
+    CORE_POSTCONDITION_DEBUG_ASSERT(iter.second, "Could not insert geometryElement.");
     return iter.second;
 }
 
@@ -61,34 +64,34 @@ bool updatePosition(const LinAl::Vec3d& position,
     return true;
 }
 
-bool GeometryElements::add(const MSegments& segments)
+bool GeometryElements::add(MSegments&& segments)
 {
-    return addImpl(segments, m_segments);
+    return addImpl(std::forward<MSegments>(segments), m_segments);
 }
 
-bool GeometryElements::add(const MSphere& sphere)
+bool GeometryElements::add(MSphere&& sphere)
 {
-    return addImpl(sphere, m_spheres);
+    return addImpl(std::forward<MSphere>(sphere), m_spheres);
 }
 
-bool GeometryElements::add(const MCone& cone)
+bool GeometryElements::add(MCone&& cone)
 {
-    return addImpl(cone, m_cones);
+    return addImpl(std::forward<MCone>(cone), m_cones);
 }
 
-bool GeometryElements::add(const MCylinder& cylinder)
+bool GeometryElements::add(MCylinder&& cylinder)
 {
-    return addImpl(cylinder, m_cylinder);
+    return addImpl(std::forward<MCylinder>(cylinder), m_cylinder);
 }
 
-bool GeometryElements::add(const MCuboid& cuboid)
+bool GeometryElements::add(MCuboid&& cuboid)
 {
-    return addImpl(cuboid, m_cuboid);
+    return addImpl(std::forward<MCuboid>(cuboid), m_cuboid);
 }
 
-bool GeometryElements::add(const MGrid& grid)
+bool GeometryElements::add(MGrid&& grid)
 {
-    return addImpl(grid, m_grid);
+    return addImpl(std::forward<MGrid>(grid), m_grid);
 }
 
 bool GeometryElements::remove(const FGuid& fGuid)

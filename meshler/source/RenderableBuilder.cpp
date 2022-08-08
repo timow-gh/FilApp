@@ -75,7 +75,8 @@ template <>
 void RenderableBuilder::buildMesh(const MGrid& geomElem)
 {
     auto presenterConfig = m_presenterConfig.get();
-    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.getSegments())));
+    addRenderable(
+        Graphics::LineRenderable::create(buildSegmentVertices(geomElem.calcGridSegments())));
 }
 Core::TVector<Graphics::RenderableId> RenderableBuilder::build()
 {
