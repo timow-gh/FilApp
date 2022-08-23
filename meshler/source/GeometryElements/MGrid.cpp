@@ -95,11 +95,11 @@ CORE_NODISCARD LinAl::Vec3dVector MGrid::calcIntersectionPoints() const
 
     const auto xDir = gridParams.xDir;
     const auto yDir = gridParams.yDir;
+    const LinAl::Vec3d start =
+        getOrigin() - xDir * gridParams.xMinLength - yDir * gridParams.yMinLength;
 
     LinAl::Vec3dVector intersectionPoints;
     intersectionPoints.reserve(gridParams.xNo * gridParams.yNo);
-    const LinAl::Vec3d start =
-        getOrigin() - xDir * gridParams.xMinLength - yDir * gridParams.yMinLength;
 
     std::int64_t yNo = gridParams.yNo * 2;
     LinAl::Vec3d yDirStep = yDir * getStepWidth();
@@ -108,17 +108,26 @@ CORE_NODISCARD LinAl::Vec3dVector MGrid::calcIntersectionPoints() const
 
     std::int64_t xNo = gridParams.xNo * 2;
     LinAl::Vec3d xDirStep = xDir * getStepWidth();
+
+    LinAl::Vec3dVector rowPoints;
+    rowPoints.reserve(yNo);
     for (std::int64_t i{1}; i < xNo; ++i)
     {
-        auto bIter = std::reverse_iterator(intersectionPoints.end());
-        auto eIter = bIter;
+        auto eIter = intersectionPoints.rbegin();
         std::advance(eIter, yNo);
-        for (auto iter = bIter; iter < eIter; ++iter)
+
+        rowPoints.clear();
+        for (auto iter = intersectionPoints.rbegin(); iter != eIter; ++iter)
         {
-            intersectionPoints.push_back(*iter + xDirStep);
+            rowPoints.push_back(*iter + xDirStep);
+        }
+
+        for (const auto& p: rowPoints)
+        {
+            intersectionPoints.push_back(p);
         }
     }
-
+    intersectionPoints.shrink_to_fit();
     CORE_POSTCONDITION_DEBUG_ASSERT(intersectionPoints.size() == intersectionPoints.capacity(),
                                     "Missing intersection points.");
 
