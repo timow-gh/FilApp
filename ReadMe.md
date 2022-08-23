@@ -12,7 +12,7 @@ Dabbeling with OOP.
 Download the source code:
 
 ```
-git clone https://github.com/timow-gh/FilApp.git
+git clone https://github.com/timow-gh/meshler.git
 ```
 
 ### Windows
