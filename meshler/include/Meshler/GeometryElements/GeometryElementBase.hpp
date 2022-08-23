@@ -75,7 +75,7 @@ class GeometryElementBase {
     CORE_NODISCARD CORE_CONSTEXPR LinAl::Vec3d getPosition() const
     {
         LinAl::Vec3d result;
-        LinAl::getTranslation<double_t, 3>(m_transformation, result);
+        LinAl::getTranslation(m_transformation, result);
         return result;
     }
 
