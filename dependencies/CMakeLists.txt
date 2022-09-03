@@ -6,3 +6,6 @@ add_subdirectory(filament)
 add_subdirectory(linal)
 add_subdirectory(geometry)
 
+if (meshler_BUILD_TESTS)
+    add_subdirectory(googletest)
+endif ()

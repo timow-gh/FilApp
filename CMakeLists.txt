@@ -20,11 +20,7 @@ project(Meshler
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(BuildResourceHelper)
 
-if ((CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR))
-    option(FilApp_BUILD_EXAMPLES "" ON)
-else ()
-    option(FilApp_BUILD_EXAMPLES "" OFF)
-endif ()
+option(FilApp_BUILD_EXAMPLES "" OFF)
 
 preamble()
 if (MSVC)
@@ -55,7 +51,14 @@ endif ()
 
 add_subdirectory(dependencies)
 
+
+option(meshler_BUILD_TESTS "meshler: enable tests" OFF)
+
 add_subdirectory(graphics_app)
+if (meshler_BUILD_TESTS)
+    add_subdirectory(graphics_app_test)
+endif ()
+
 add_subdirectory(filapp)
 if (FilApp_BUILD_EXAMPLES)
     add_subdirectory(filapp_examples)
