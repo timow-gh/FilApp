@@ -1,13 +1,14 @@
+include(localFilament.cmake)
 FetchContent_Declare(
         filament
         GIT_REPOSITORY https://github.com/timow-gh/filament.git
         GIT_TAG tw-cmake-minimal)
 FetchContent_GetProperties(filament)
 if (NOT filament_POPULATED)
-
     set(FILAMENT_SUPPORTS_OPENGL ON CACHE BOOL "Include the OpenGL backend" FORCE)
     set(FILAMENT_SUPPORTS_VULKAN ON CACHE BOOL "Include the Vulkan backend" FORCE)
     set(FILAMENT_SUPPORTS_METAL OFF CACHE BOOL "Include the Metal backend" FORCE)
+    set(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest." FORCE)
 
     set(FILAMENT_BUILD_FILAMAT ON CACHE BOOL "Build filamat and JNI buildings" FORCE)
     #    set(FILAMENT_SKIP_SAMPLES ON CACHE BOOL "Don't build samples" FORCE)
