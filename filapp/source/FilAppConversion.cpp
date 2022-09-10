@@ -2,6 +2,8 @@
 #include <FilApp/FilAppConversion.hpp>
 #include <FilApp/FilamentCoordinateSystem.hpp>
 DISABLE_ALL_WARNINGS
+#include <filament/TransformManager.h>
+#include <utils/EntityManager.h>
 #include <utils/Panic.h>
 ENABLE_ALL_WARNINGS
 
@@ -617,6 +619,15 @@ KeyScancode toKeyScancode(SDL_Scancode sdlScancode)
         CORE_POSTCONDITION_DEBUG_ASSERT(false, "SDL_Scancode not known.");
         return KeyScancode::SCANCODE_UNKNOWN;
     }
+}
+utils::Entity createGlobalTrafoComponent(filament::Engine& engine)
+{
+    utils::Entity globalTrafoComponent = utils::EntityManager::get().create();
+    auto& tcm = engine.getTransformManager();
+    tcm.create(globalTrafoComponent);
+    auto globalInstance = tcm.getInstance(globalTrafoComponent);
+    tcm.setTransform(globalInstance, filCSToGlobalCS4());
+    return globalTrafoComponent;
 }
 
 } // namespace FilApp

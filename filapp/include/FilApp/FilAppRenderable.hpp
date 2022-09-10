@@ -1,12 +1,6 @@
 #ifndef FILAPP_FILAPPRENDERABLE_HPP
 #define FILAPP_FILAPPRENDERABLE_HPP
 
-#include <Core/Utils/Compiler.hpp>
-#include <Graphics/Renderables/LineRenderable.hpp>
-#include <Graphics/Renderables/PointRenderable.hpp>
-#include <Graphics/Renderables/RendereableId.hpp>
-#include <Graphics/Renderables/TriangleRenderable.hpp>
-#include <Graphics/Vertex.hpp>
 #include <Core/Utils/Warnings.h>
 DISABLE_ALL_WARNINGS
 #include <filament/Engine.h>
@@ -14,14 +8,16 @@ DISABLE_ALL_WARNINGS
 #include <filament/Material.h>
 #include <filament/MaterialInstance.h>
 #include <filament/RenderableManager.h>
+#include <filament/TransformManager.h>
 #include <filament/VertexBuffer.h>
+#include <utils/EntityManager.h>
 ENABLE_ALL_WARNINGS
 #include <filapp_export.h>
 #include <memory>
-#include <utils/EntityManager.h>
 
 namespace FilApp
 {
+
 struct FilAppRenderable
 {
     filament::Engine* engine = nullptr;
@@ -39,13 +35,29 @@ struct FilAppRenderable
     bool operator<=(const FilAppRenderable& rhs) const { return !(rhs < *this); }
     bool operator>=(const FilAppRenderable& rhs) const { return !(*this < rhs); }
 
+    bool operator==(const FilAppRenderable& rhs) const
+    {
+        return renderableEntity == rhs.renderableEntity;
+    }
+    bool operator!=(const FilAppRenderable& rhs) const { return !(rhs == *this); }
+
+    void updatePosition(filament::math::float3 position) const
+    {
+        auto& tcm = engine->getTransformManager();
+        auto instance = tcm.getInstance(renderableEntity);
+        auto trafo = tcm.getTransform(instance);
+        filament::math::float4& matTranslation = trafo[3];
+        matTranslation = filament::math::float4{position, 1};
+        tcm.setTransform(instance, trafo);
+    }
+
     void destroy() const
     {
         auto& em = utils::EntityManager::get();
         em.destroy(renderableEntity);
         engine->destroy(renderableEntity);
-        //        engine->destroy(vb);
-        //        engine->destroy(ib);
+        engine->destroy(vb);
+        engine->destroy(ib);
         // FilAppRenderable does not own material and material instance
     }
 };

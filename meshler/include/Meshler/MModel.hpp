@@ -21,6 +21,7 @@ class MModel {
 
     void registerListener(MModelEventListener* modelEventListener);
     void removeListener(MModelEventListener* modelEventListener);
+    void clearListeners();
 
     template <typename TMeshlerGeometry>
     void add(TMeshlerGeometry&& meshlerGeometry)
@@ -34,6 +35,8 @@ class MModel {
             m_modelEventDispatcher.dispatchAdd(*geoElem);
         }
     }
+    void update(const FGuid& guid);
+    void remove(FGuid fGuid);
 
     template <typename TGeometryElement>
     TGeometryElement* get(const FGuid& guid)
@@ -41,16 +44,13 @@ class MModel {
         return m_geometryElements.get<TGeometryElement>(guid);
     }
 
+    void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
+
+    void calcModelSnapGeometries();
     CORE_NODISCARD SnapGeometries& getSnapGeometries()
     {
         return m_geometryElements.getSnapGeometries();
     }
-
-    void update(const FGuid& guid);
-    void remove(FGuid fGuid);
-    void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
-
-    void calcModelSnapGeometries();
 };
 
 } // namespace Meshler

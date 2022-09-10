@@ -17,6 +17,7 @@ DISABLE_ALL_WARNINGS
 #include <filament/Viewport.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
+#include <utils/Entity.h>
 ENABLE_ALL_WARNINGS
 
 namespace FilApp
@@ -62,6 +63,7 @@ Graphics::Vec4 toGlobalCS(const filament::math::float4& floatVec);
 SDL_Scancode toSDLScancode(Graphics::KeyScancode keyScancode);
 Graphics::KeyScancode toKeyScancode(SDL_Scancode sdlScancode);
 
+utils::Entity createGlobalTrafoComponent(filament::Engine& engine);
 } // namespace FilApp
 
 #endif // FILAPP_FILAPPCONVERSION_HPP

@@ -1,5 +1,6 @@
 #include "FilAppRenderableBuffers.hpp"
 #include <Core/Utils/Assert.hpp>
+#include <Graphics/Renderables/PointRenderable.hpp>
 #include <limits>
 
 using namespace Graphics;

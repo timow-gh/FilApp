@@ -3,6 +3,12 @@
 
 #include <Core/Types/TVector.hpp>
 #include <FilApp/FilAppRenderable.hpp>
+#include <Graphics/Vertex.hpp>
+
+namespace Graphics
+{
+class PointRenderable;
+}
 
 namespace FilApp
 {

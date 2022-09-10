@@ -1,13 +1,7 @@
 #ifndef FILAPP_FILAPPCAMERAVIEW_HPP
 #define FILAPP_FILAPPCAMERAVIEW_HPP
 
-#include <Core/Types/TString.hpp>
 #include <Core/Utils/Warnings.h>
-#include <FilApp/FilAppConversion.hpp>
-#include <FilApp/FilAppRenderable.hpp>
-#include <FilApp/FilAppRenderableCreator.hpp>
-#include <Graphics/View.hpp>
-#include <Graphics/ViewConfig.hpp>
 DISABLE_ALL_WARNINGS
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>
@@ -19,8 +13,15 @@ DISABLE_ALL_WARNINGS
 #include <filament/Viewport.h>
 #include <utils/Entity.h>
 ENABLE_ALL_WARNINGS
+#include <Core/Types/TString.hpp>
+#include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppRenderable.hpp>
+#include <FilApp/FilAppRenderableCreator.hpp>
+#include <FilApp/FilAppScene.hpp>
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Graphics/View.hpp>
+#include <Graphics/ViewConfig.hpp>
 #include <filapp_export.h>
 #include <functional>
 #include <memory>
@@ -40,35 +41,26 @@ class FilAppCameraView final : public Graphics::View {
     Core::TString m_name;
     filament::Engine* m_engine = nullptr;
     filament::View* m_filamentView = nullptr;
-    filament::Scene* m_scene = nullptr;
     filament::Skybox* m_skybox = nullptr;
+    std::reference_wrapper<FilAppScene> m_filAppScene;
 
     std::unique_ptr<CameraManipulator> m_cameraManipulator = nullptr;
     filament::Camera* m_camera = nullptr;
     utils::Entity m_cameraEntity;
-    utils::Entity m_globalTrafoComponent;
+    CameraManipulator::Bookmark m_cameraHomeBookMark{};
 
     Graphics::ViewConfig m_viewConfig;
-    CameraManipulator::Bookmark m_cameraHomeBookMark{};
     filament::Viewport m_filamentViewport;
 
     Graphics::InputEventDispatcher m_inputEventDispatcher;
     Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
 
-    Core::TMap<Graphics::RenderableId, std::unique_ptr<Graphics::PointRenderable>>
-        m_pointRenderables;
-    Core::TMap<Graphics::RenderableId, std::unique_ptr<Graphics::LineRenderable>> m_lineRenderables;
-    Core::TMap<Graphics::RenderableId, std::unique_ptr<Graphics::TriangleRenderable>>
-        m_triangleRenderables;
-
-    FilAppRenderableCreator m_renderableCreator;
-    Core::TVector<FilAppRenderable> m_filAppRenderables;
-
     Core::TVector<AnimationCallBack> m_animationCallbacks;
 
   public:
-    FilAppCameraView() = default;
-    FilAppCameraView(const Graphics::ViewConfig& viewConfig, filament::Renderer& renderer);
+    FilAppCameraView(const Graphics::ViewConfig& viewConfig,
+                     FilAppScene& filAppScene,
+                     filament::Renderer& renderer);
     ~FilAppCameraView() override;
 
     CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;
@@ -104,24 +96,10 @@ class FilAppCameraView final : public Graphics::View {
     CORE_NODISCARD CameraManipulator* getCameraManipulator();
 
   private:
+    void configureCameraProjection();
     CORE_NODISCARD static bool manipulatorKeyFromKeycode(Graphics::KeyScancode scancode,
                                                          CameraManipulator::Key& key);
 
-    //! Adds the global to filament transformation to all renderables.
-    CORE_NODISCARD Graphics::RenderableId addRenderable(const FilAppRenderable& filAppRenderable);
-    void clearFilAppRenderables();
-    void configureCameraProjection();
-
-    template <typename V>
-    void eraseFromMap(Core::TMap<Graphics::RenderableId, V>& map, Graphics::RenderableId id)
-    {
-        auto idIter = map.find(id);
-        if (idIter != map.end())
-            map.erase(idIter);
-    }
-
-    void eraseRenderable(Graphics::RenderableId id);
-    CORE_NODISCARD FilAppRenderable* findFilAppRenderable(Graphics::RenderableId id);
     CORE_NODISCARD Graphics::PickRayEvent
     getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const;
 };

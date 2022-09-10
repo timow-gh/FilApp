@@ -1,5 +1,6 @@
 #include <Core/Utils/Warnings.h>
 #include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppRenderableCreator.hpp>
 #include <FilApp/FilAppWindow.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <Graphics/InputEvents/KeyEvent.hpp>
@@ -157,11 +158,10 @@ void FilApplication::run()
 
 FilApplication::FilApplication(const AppConfig& appConfig, const WindowConfig& windowConfig)
     : m_appConfig(appConfig)
+    , m_engine(filament::Engine::create(toFilamentBackend(appConfig.backendMode)))
+    , m_renderableCreator(FilAppRenderableCreator::create(m_engine))
+    , m_window(std::make_unique<FilAppWindow>(windowConfig, m_renderableCreator, m_engine))
 {
-    filament::backend::Backend chosenBackend = toFilamentBackend(appConfig.backendMode);
-    m_engine = filament::Engine::create(chosenBackend);
-    m_window = std::make_unique<FilAppWindow>(windowConfig, m_engine);
-    m_appConfig = appConfig;
 }
 
 } // namespace FilApp

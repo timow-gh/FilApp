@@ -28,6 +28,10 @@ void MModel::removeListener(MModelEventListener* modelEventListener)
 {
     m_modelEventDispatcher.removeListener(modelEventListener);
 }
+void MModel::clearListeners()
+{
+    m_modelEventDispatcher.clearListeners();
+}
 void MModel::update(const FGuid& guid)
 {
     // clang-format off
@@ -51,9 +55,21 @@ void MModel::setPosition(const FGuid& fGuid, LinAl::Vec3d& position)
         m_modelEventDispatcher.dispatchPositionChanged(PositionEvent{fGuid, position});
 }
 
+template <typename TGeomElemMap>
+static void addTransFormedGeometryToSnapElements(SnapGeometries& snapGeometries,
+                                                 const TGeomElemMap& geomElemMap)
+{
+    for (const auto& pair: geomElemMap)
+    {
+        if (pair.second.getIsSnapGeometry())
+            snapGeometries.add(Geometry::transformation(pair.second.getGeometryElement(),
+                                                        pair.second.getTransformation()));
+    }
+}
+
 void MModel::calcModelSnapGeometries()
 {
-    auto& result = m_geometryElements.getSnapGeometries();
+    SnapGeometries& result = m_geometryElements.getSnapGeometries();
 
     result = SnapGeometries{Geometry::Plane<double_t>{LinAl::ZERO_VEC3D, LinAl::Z_VEC3D}};
 
@@ -62,25 +78,10 @@ void MModel::calcModelSnapGeometries()
             for (const Geometry::Segment3d& segment: pair.second.getSegments())
                 result.add(Geometry::transformation(segment, pair.second.getTransformation()));
 
-    for (const auto& pair: m_geometryElements.getSphereMap())
-        if (pair.second.getIsSnapGeometry())
-            result.add(Geometry::transformation(pair.second.getGeometryElement(),
-                                                pair.second.getTransformation()));
-
-    for (const auto& pair: m_geometryElements.getCylinderMap())
-        if (pair.second.getIsSnapGeometry())
-            result.add(Geometry::transformation(pair.second.getGeometryElement(),
-                                                pair.second.getTransformation()));
-
-    for (const auto& pair: m_geometryElements.getConeMap())
-        if (pair.second.getIsSnapGeometry())
-            result.add(Geometry::transformation(pair.second.getGeometryElement(),
-                                                pair.second.getTransformation()));
-
-    for (const auto& pair: m_geometryElements.getCuboidMap())
-        if (pair.second.getIsSnapGeometry())
-            result.add(Geometry::transformation(pair.second.getGeometryElement(),
-                                                pair.second.getTransformation()));
+    addTransFormedGeometryToSnapElements(result, m_geometryElements.getSphereMap());
+    addTransFormedGeometryToSnapElements(result, m_geometryElements.getCylinderMap());
+    addTransFormedGeometryToSnapElements(result, m_geometryElements.getConeMap());
+    addTransFormedGeometryToSnapElements(result, m_geometryElements.getCuboidMap());
 
     for (const auto& pair: m_geometryElements.getGridMap())
     {

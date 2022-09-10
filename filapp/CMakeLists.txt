@@ -6,6 +6,7 @@ set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilAppWindow.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
+        include/FilApp/FilAppScene.hpp
         include/FilApp/FilAppConversion.hpp
         include/FilApp/IOHelper.hpp
         )
@@ -19,7 +20,8 @@ set(FILAPP_SOURCES
         source/FilAppConversion.cpp
         source/FilAppRenderableBuffers.cpp
         source/FilAppRenderableBuffers.hpp
-        source/FilAppRenderableCreator.cpp)
+        source/FilAppRenderableCreator.cpp
+        source/FilAppScene.cpp)
 
 add_library(fil_app ${FILAPP_SOURCES} ${FILAPP_PUBLIC_HEADERS})
 add_library(filapp::filapp ALIAS fil_app)

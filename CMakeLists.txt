@@ -55,10 +55,6 @@ add_subdirectory(dependencies)
 option(meshler_BUILD_TESTS "meshler: enable tests" OFF)
 
 add_subdirectory(graphics_app)
-if (meshler_BUILD_TESTS)
-    add_subdirectory(graphics_app_test)
-endif ()
-
 add_subdirectory(filapp)
 if (FilApp_BUILD_EXAMPLES)
     add_subdirectory(filapp_examples)

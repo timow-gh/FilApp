@@ -24,6 +24,7 @@ class MModelEventDispatcher {
         auto iter = std::remove(m_listeners.begin(), m_listeners.end(), listener);
         m_listeners.erase(iter, m_listeners.end());
     }
+    void clearListeners() { m_listeners.clear(); }
 
     template <typename TGeometryElement>
     void dispatchAdd(const TGeometryElement& element)

@@ -6,8 +6,6 @@
 #include <Graphics/InputEvents/MouseMoveEvent.hpp>
 #include <Graphics/InputEvents/MouseWheelEvent.hpp>
 #include <NativeWindowHelper.hpp>
-#include <SDL_video.h>
-#include <camutils/Manipulator.h>
 #include <utils/EntityManager.h>
 
 using namespace Graphics;
@@ -15,9 +13,11 @@ using namespace Graphics;
 namespace FilApp
 {
 
-FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, filament::Engine* engine)
+FilAppWindow::FilAppWindow(const WindowConfig& windowConfig,
+                           FilAppRenderableCreator& filAppRenderableCreator,
+                           filament::Engine* engine)
+    : m_engine{engine}, m_filAppScene(FilAppScene::create(m_engine, filAppRenderableCreator))
 {
-    m_engine = engine;
 
     std::uint32_t windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
     if (windowConfig.isResizable)
@@ -56,7 +56,7 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, filament::Engine* e
     ViewConfig viewConfig;
     viewConfig.name = "MainView";
     viewConfig.viewport = calcWindowViewport();
-    m_mainView = std::make_unique<FilAppCameraView>(viewConfig, *m_renderer);
+    m_mainView = std::make_unique<FilAppCameraView>(viewConfig, m_filAppScene, *m_renderer);
 }
 
 InputEventDispatcher& FilAppWindow::getInputEventDispatcher()
@@ -154,6 +154,7 @@ void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 
 FilAppWindow::~FilAppWindow()
 {
+    m_filAppScene.destroy();
     SDL_DestroyWindow(m_sdlWindow);
 }
 

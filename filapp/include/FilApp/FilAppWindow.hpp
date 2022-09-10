@@ -1,7 +1,13 @@
 #ifndef FILAPP_FILAPPWINDOW_HPP
 #define FILAPP_FILAPPWINDOW_HPP
 
+#include <Core/Utils/Warnings.h>
+DISABLE_ALL_WARNINGS
+#include <filament/Engine.h>
+#include <filament/Renderer.h>
+ENABLE_ALL_WARNINGS
 #include <FilApp/FilAppCameraView.hpp>
+#include <FilApp/FilAppScene.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/MouseButtonEvent.hpp>
@@ -9,8 +15,6 @@
 #include <Graphics/Window.hpp>
 #include <Graphics/WindowConfig.hpp>
 #include <SDL_video.h>
-#include <filament/Engine.h>
-#include <filament/Renderer.h>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -26,6 +30,8 @@ class FilAppWindow final : public Graphics::Window {
     filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
     filament::SwapChain* m_swapChain = nullptr;
 
+    FilAppScene m_filAppScene;
+
     std::unique_ptr<FilAppCameraView> m_mainView{nullptr};
     Core::TVector<std::unique_ptr<FilAppCameraView>> m_views;
 
@@ -40,7 +46,9 @@ class FilAppWindow final : public Graphics::Window {
     Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
 
   public:
-    FilAppWindow(const Graphics::WindowConfig& windowConfig, filament::Engine* engine);
+    FilAppWindow(const Graphics::WindowConfig& windowConfig,
+                 FilAppRenderableCreator& filAppRenderableCreator,
+                 filament::Engine* engine);
 
     ~FilAppWindow() override;
 
@@ -49,7 +57,7 @@ class FilAppWindow final : public Graphics::Window {
 
     void event(const Graphics::MouseButtonEvent& mouseButtonEvent);
     void event(const Graphics::MouseMoveEvent& mouseMoveEvent);
-    void event(const Graphics::KeyEvent& keyEventr);
+    void event(const Graphics::KeyEvent& keyEvent);
     void mouseWheel(float_t x, double_t deltaT);
 
     void resize();

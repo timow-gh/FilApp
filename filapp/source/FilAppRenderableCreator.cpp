@@ -37,7 +37,7 @@ static filament::Box calcFilamentBbox(const Core::TVector<Vertex>& vertices)
 FilAppRenderable
 FilAppRenderableCreator::createBakedColorRenderable(const Core::TVector<Vertex>& vertices,
                                                     const Core::TVector<uint16_t>& indices,
-                                                    PrimitiveType primitiveType)
+                                                    PrimitiveType primitiveType) const
 
 {
     CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");

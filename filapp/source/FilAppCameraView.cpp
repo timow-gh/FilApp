@@ -1,15 +1,14 @@
 #include <Core/Utils/Assert.hpp>
 #include <FilApp/FilAppCameraView.hpp>
 #include <FilApp/FilAppConversion.hpp>
-#include <FilApp/FilamentCoordinateSystem.hpp>
 #include <Graphics/InputEvents/KeyEvent.hpp>
 #include <Graphics/InputEvents/MouseButtonEvent.hpp>
 #include <Graphics/InputEvents/MouseMoveEvent.hpp>
 #include <Graphics/InputEvents/MouseWheelEvent.hpp>
 #include <camutils/Bookmark.h>
 #include <filament/Options.h>
-#include <filament/TransformManager.h>
 #include <math/mat4.h>
+
 #include <math/mathfwd.h>
 #include <math/vec3.h>
 #include <utility>
@@ -25,8 +24,13 @@ using namespace Graphics;
 
 namespace FilApp
 {
-FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Renderer& renderer)
-    : m_name(viewConfig.name), m_engine(renderer.getEngine()), m_viewConfig(viewConfig)
+FilAppCameraView::FilAppCameraView(const Graphics::ViewConfig& viewConfig,
+                                   FilAppScene& filAppScene,
+                                   filament::Renderer& renderer)
+    : m_name(viewConfig.name)
+    , m_engine(renderer.getEngine())
+    , m_viewConfig(viewConfig)
+    , m_filAppScene(filAppScene)
 {
     m_filamentView = m_engine->createView();
     m_filamentView->setName(m_name.c_str());
@@ -36,15 +40,14 @@ FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Rende
         m_filamentView->setAntiAliasing(filament::AntiAliasing::FXAA);
     }
 
-    m_scene = m_engine->createScene();
-    m_filamentView->setScene(m_scene);
-
     auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),
                          viewConfig.skyBoxColor.getGreen(),
                          viewConfig.skyBoxColor.getBlue(),
                          viewConfig.skyBoxColor.getAlpha()};
     m_skybox = filament::Skybox::Builder().color(vec4ToFloat4(colorVec)).build(*m_engine);
-    m_scene->setSkybox(m_skybox);
+
+    m_filamentView->setScene(m_filAppScene.get().getFilamentScene());
+    m_filAppScene.get().setSkybox(m_skybox);
 
     utils::EntityManager& entityManager = utils::EntityManager::get();
     m_cameraEntity = entityManager.create();
@@ -71,14 +74,7 @@ FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Rende
                 .build(toFilamentCameraMode(m_viewConfig.cameraMode)));
     else
         CORE_POSTCONDITION_ASSERT(false, "Camera not implemented.");
-
-    m_renderableCreator = FilAppRenderableCreator::create(m_engine);
-
-    m_globalTrafoComponent = utils::EntityManager::get().create();
-    auto& tcm = m_engine->getTransformManager();
-    tcm.create(m_globalTrafoComponent);
-    auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
-    tcm.setTransform(globalInstance, filCSToGlobalCS4());
+    ;
 
     m_cameraHomeBookMark = m_cameraManipulator->getCurrentBookmark();
 
@@ -88,14 +84,10 @@ FilAppCameraView::FilAppCameraView(const ViewConfig& viewConfig, filament::Rende
 FilAppCameraView::~FilAppCameraView()
 {
     utils::EntityManager& entityManager = utils::EntityManager::get();
-    clearFilAppRenderables();
     entityManager.destroy(m_cameraEntity);
     m_engine->destroyCameraComponent(m_cameraEntity);
     m_engine->destroy(m_skybox);
     m_engine->destroy(m_filamentView);
-    m_engine->destroy(m_scene);
-    auto& tcm = utils::EntityManager::get();
-    tcm.destroy(m_globalTrafoComponent);
 }
 
 void FilAppCameraView::animate(double_t deltaT)
@@ -160,92 +152,44 @@ RayPickEventDispatcher& FilAppCameraView::getRayPickEventDispatcher()
 
 RenderableId FilAppCameraView::addRenderable(TriangleRenderable&& triangleRenderable)
 {
-    auto renderable = std::make_unique<TriangleRenderable>(std::move(triangleRenderable));
-
-    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
-        renderable->getVertices(),
-        renderable->getIndices(),
-        filament::RenderableManager::PrimitiveType::TRIANGLES));
-
-    m_triangleRenderables.emplace(id, std::move(renderable));
-
-    return id;
+    return m_filAppScene.get().add(std::move(triangleRenderable));
 }
 
 RenderableId FilAppCameraView::addRenderable(PointRenderable&& pointRenderable)
 {
-    auto renderable = std::make_unique<PointRenderable>(std::move(pointRenderable));
-
-    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
-        renderable->getVertices(),
-        renderable->getIndices(),
-        filament::RenderableManager::PrimitiveType::POINTS));
-
-    m_pointRenderables.emplace(id, std::move(renderable));
-
-    return id;
+    return m_filAppScene.get().add(std::move(pointRenderable));
 }
 
 RenderableId FilAppCameraView::addRenderable(LineRenderable&& lineRenderable)
 {
-    auto renderable = std::make_unique<LineRenderable>(std::move(lineRenderable));
-
-    auto id = addRenderable(m_renderableCreator.createBakedColorRenderable(
-        renderable->getVertices(),
-        renderable->getIndices(),
-        filament::RenderableManager::PrimitiveType::LINES));
-
-    m_lineRenderables.emplace(id, std::move(renderable));
-    return id;
+    return m_filAppScene.get().add(std::move(lineRenderable));
 }
 
 Core::TVector<RenderableId> FilAppCameraView::getRenderableIdentifiers() const
 {
-    Core::TVector<RenderableId> result;
-    for (const auto& filAppRenderable: m_filAppRenderables)
-        result.emplace_back(filAppRenderable.renderableEntity.getId());
-    return result;
+    return m_filAppScene.get().getRenderableIdentifiers();
 }
 
 void FilAppCameraView::removeRenderable(RenderableId id)
 {
     // Synchronize the GPU with the CPU
     m_engine->flushAndWait();
-    eraseRenderable(id);
-    auto iter = std::remove_if(m_filAppRenderables.begin(),
-                               m_filAppRenderables.end(),
-                               [id = id, scene = m_scene](const FilAppRenderable& item)
-                               {
-                                   if (item.renderableEntity.getId() == id.getId())
-                                   {
-                                       scene->remove(item.renderableEntity);
-                                       item.destroy();
-                                       return true;
-                                   }
-                                   return false;
-                               });
-    m_filAppRenderables.erase(iter, m_filAppRenderables.end());
+    m_filAppScene.get().remove(id);
 }
 
 void FilAppCameraView::updatePosition(RenderableId renderableId, const Vec3& position)
 {
-    FilAppRenderable* renderable = findFilAppRenderable(renderableId);
+    FilAppRenderable* renderable = m_filAppScene.get().findFilAppRenderable(renderableId);
     CORE_POSTCONDITION_DEBUG_ASSERT(renderable, "FilAppRenderable not found.");
     if (!renderable)
         return;
-
-    filament::math::float3 filPos = vec3ToFloat3(position);
-    auto& tcm = m_engine->getTransformManager();
-    auto instance = tcm.getInstance(renderable->renderableEntity);
-    auto trafo = tcm.getTransform(instance);
-    filament::math::float4& matTranslation = trafo[3];
-    matTranslation = filament::math::float4{filPos, 1};
-    tcm.setTransform(instance, trafo);
+    renderable->updatePosition(vec3ToFloat3(position));
 }
 
 void FilAppCameraView::clearRenderables()
 {
-    clearFilAppRenderables();
+    m_engine->flushAndWait();
+    m_filAppScene.get().clear();
 }
 
 void FilAppCameraView::addRotationAnimation(RenderableId renderableIdentifier,
@@ -399,65 +343,11 @@ bool FilAppCameraView::manipulatorKeyFromKeycode(Graphics::KeyScancode scancode,
     }
 }
 
-RenderableId FilAppCameraView::addRenderable(const FilAppRenderable& filAppRenderable)
-{
-    m_filAppRenderables.emplace_back(filAppRenderable);
-    auto entity = m_filAppRenderables.back().renderableEntity;
-    m_scene->addEntity(entity);
-
-    // Setting the global to filament coordinate system transformation for
-    // all renderables.
-    auto& tcm = m_engine->getTransformManager();
-    auto globalInstance = tcm.getInstance(m_globalTrafoComponent);
-    auto renderableInstance = tcm.getInstance(entity);
-    tcm.setParent(renderableInstance, globalInstance);
-
-    return RenderableId(m_filAppRenderables.back().renderableEntity.getId());
-}
-
-void FilAppCameraView::clearFilAppRenderables()
-{
-    // Synchronize the GPU with the CPU
-    m_engine->flushAndWait();
-    for (auto& renderable: m_filAppRenderables)
-    {
-        m_scene->remove(renderable.renderableEntity);
-        renderable.destroy();
-    }
-    m_filAppRenderables.clear();
-}
-
-void FilAppCameraView::eraseRenderable(RenderableId id)
-{
-    eraseFromMap(m_pointRenderables, id);
-    eraseFromMap(m_lineRenderables, id);
-    eraseFromMap(m_triangleRenderables, id);
-}
-
-FilAppRenderable* FilAppCameraView::findFilAppRenderable(RenderableId id)
-
-{
-    if (!std::is_sorted(m_filAppRenderables.begin(), m_filAppRenderables.end()))
-        std::sort(m_filAppRenderables.begin(), m_filAppRenderables.end());
-
-    utils::Entity entity = utils::Entity::import(static_cast<int32_t>(id.getId()));
-    auto iter = std::lower_bound(m_filAppRenderables.begin(),
-                                 m_filAppRenderables.end(),
-                                 entity,
-                                 [](const FilAppRenderable& filAppRenderable, utils::Entity ent)
-                                 {
-                                     return filAppRenderable.renderableEntity < ent;
-                                 });
-    if (iter != m_filAppRenderables.cend())
-        return &(*iter);
-    return nullptr;
-}
-
 PickRayEvent
 FilAppCameraView::getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const
 {
-    const float_t width = static_cast<float_t>(m_viewConfig.viewport.width);
-    const float_t height = static_cast<float_t>(m_viewConfig.viewport.height);
+    const auto width = static_cast<float_t>(m_viewConfig.viewport.width);
+    const auto height = static_cast<float_t>(m_viewConfig.viewport.height);
 
     // Viewport coordinates to normalized device coordinates
     const float_t u = 2.0f * (0.5f + static_cast<float>(x)) / width - 1.0f;
@@ -489,7 +379,7 @@ FilAppCameraView::getPickRayMoveEvent(std::size_t x, std::size_t y, double_t tim
     }
     else
         CORE_POSTCONDITION_DEBUG_ASSERT(false,
-                                        "Picking for this camera projetion not implemented.");
+                                        "Picking for this camera projection not implemented.");
 
     direction = normalize(direction);
     return PickRayEvent{toGlobalCS(origin), toGlobalCS(direction), time};

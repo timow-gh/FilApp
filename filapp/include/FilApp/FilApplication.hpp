@@ -2,6 +2,7 @@
 #define FILAPP_FILAPPLICATION_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <FilApp/FilAppRenderableCreator.hpp>
 #include <Graphics/AppConfig.hpp>
 #include <Graphics/GraphicsApp.hpp>
 #include <Graphics/Window.hpp>
@@ -25,7 +26,6 @@ class FILAPP_EXPORT FilApplication final : public Graphics::GraphicsApp {
     CORE_NODISCARD static std::shared_ptr<Graphics::GraphicsApp>
     getFilApp(const Graphics::AppConfig& appConfig, const Graphics::WindowConfig& windowConfig);
 
-    FilApplication() = default;
     ~FilApplication() override;
     FilApplication(const FilApplication& application) = delete;
     FilApplication(FilApplication&& application) = delete;
@@ -47,12 +47,11 @@ class FILAPP_EXPORT FilApplication final : public Graphics::GraphicsApp {
                    const Graphics::WindowConfig& windowConfig);
 
   private:
-    filament::Engine* m_engine = nullptr;
-
-    std::unique_ptr<FilAppWindow> m_window;
-
-    bool m_closeApp = false;
     Graphics::AppConfig m_appConfig;
+    filament::Engine* m_engine = nullptr;
+    FilAppRenderableCreator m_renderableCreator;
+    std::unique_ptr<FilAppWindow> m_window;
+    bool m_closeApp = false;
 };
 } // namespace FilApp
 
