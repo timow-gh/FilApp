@@ -17,6 +17,7 @@
 namespace Meshler
 {
 class MSphere;
+class GeometryElements;
 
 class SnapGeometries {
     Geometry::Plane<double_t> m_snapPlane;
@@ -38,6 +39,7 @@ class SnapGeometries {
     void add(const Geometry::Cuboid<double_t>& cuboid);
 
     void add(const MSphere& sphere);
+    void add(const GeometryElements& geometryElements);
 
     void remove(const LinAl::Vec3d& snapPoint);
 
@@ -48,9 +50,8 @@ class SnapGeometries {
     bool findSnapPoints(LinAl::Vec3dVector& snapPoints, const Geometry::Ray3d& placementRay) const;
     void findSnapPlane(LinAl::Vec3dVector& snapPoints, const Geometry::Ray3d& placementRay) const;
 
-    CORE_NODISCARD std::optional<LinAl::Vec3d>
-    findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints,
-                         const Geometry::Ray3d& placementRay) const;
+    CORE_NODISCARD static std::optional<LinAl::Vec3d>
+    findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints, const Geometry::Ray3d& placementRay);
 
     void addSphereSurfaceSnapPoint(LinAl::Vec3dVector& m_snapPoints,
                                    const Geometry::Ray3d& placementRay) const;

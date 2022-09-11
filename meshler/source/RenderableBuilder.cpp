@@ -7,6 +7,7 @@
 #include <Graphics/Renderables/TriangleRenderable.hpp>
 #include <Graphics/Vertex.hpp>
 #include <Graphics/View.hpp>
+#include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/GeometryElements/MCone.hpp>
 #include <Meshler/GeometryElements/MCuboid.hpp>
 #include <Meshler/GeometryElements/MCylinder.hpp>

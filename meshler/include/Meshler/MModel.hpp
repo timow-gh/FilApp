@@ -19,38 +19,33 @@ class MModel {
     MModel() = default;
     explicit MModel(MModelEventListener* modelEventListener);
 
+    CORE_NODISCARD const GeometryElements& getGeometryElements() const
+    {
+        return m_geometryElements;
+    }
+
     void registerListener(MModelEventListener* modelEventListener);
     void removeListener(MModelEventListener* modelEventListener);
     void clearListeners();
 
     template <typename TMeshlerGeometry>
-    void add(TMeshlerGeometry&& meshlerGeometry)
+    TMeshlerGeometry& add(TMeshlerGeometry&& meshlerGeometry)
 
     {
-        FGuid guid = meshlerGeometry.getFGuid();
-        if (m_geometryElements.add(std::forward<TMeshlerGeometry>(meshlerGeometry)))
-        {
-            auto* geoElem = m_geometryElements.get<TMeshlerGeometry>(guid);
-            CORE_POSTCONDITION_DEBUG_ASSERT(geoElem, "geomElem not found.");
-            m_modelEventDispatcher.dispatchAdd(*geoElem);
-        }
+        auto& geomElem = m_geometryElements.add(std::forward<TMeshlerGeometry>(meshlerGeometry));
+        m_modelEventDispatcher.dispatchAdd(geomElem);
+        return geomElem;
     }
     void update(const FGuid& guid);
     void remove(FGuid fGuid);
 
     template <typename TGeometryElement>
-    TGeometryElement* get(const FGuid& guid)
+    TGeometryElement* find(FGuid guid)
     {
-        return m_geometryElements.get<TGeometryElement>(guid);
+        return m_geometryElements.find<TGeometryElement>(guid);
     }
 
-    void setPosition(const FGuid& fGuid, LinAl::Vec3d& position);
-
-    void calcModelSnapGeometries();
-    CORE_NODISCARD SnapGeometries& getSnapGeometries()
-    {
-        return m_geometryElements.getSnapGeometries();
-    }
+    void updatePosition(FGuid fGuid, LinAl::Vec3d& position);
 };
 
 } // namespace Meshler

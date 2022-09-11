@@ -10,6 +10,7 @@
 #include <Geometry/Intersection/IntersectionSphere.hpp>
 #include <Geometry/Sphere.hpp>
 #include <Geometry/Transformation/TransformSphere.hpp>
+#include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/GeometryElements/SnapGeometries.hpp>
 #include <algorithm>
@@ -17,6 +18,18 @@
 
 namespace Meshler
 {
+template <typename TGeomElemContainer>
+static void addTransFormedGeometryToSnapElements(SnapGeometries& snapGeometries,
+                                                 const TGeomElemContainer& container)
+{
+    for (const auto& geomElem: container)
+    {
+        if (geomElem.getIsSnapGeometry())
+            snapGeometries.add(Geometry::transformation(geomElem.getGeometryElement(),
+                                                        geomElem.getTransformation()));
+    }
+}
+
 SnapGeometries::SnapGeometries() : m_snapPlane({LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 1}})
 {
 }
@@ -25,24 +38,20 @@ SnapGeometries::SnapGeometries(const Geometry::Plane<double_t>& snapPlane) : m_s
     CORE_PRECONDITION_DEBUG_ASSERT(!Core::isZero(LinAl::norm2Squared(m_snapPlane.getNormal())),
                                    "Direction with zero length is not allowed.");
 }
-
 void SnapGeometries::add(const LinAl::Vec3d& snapPoint)
 {
     m_snapPoints.push_back(snapPoint);
 }
-
 void SnapGeometries::add(const LinAl::Vec3dVector& snapPoints)
 {
     for (const LinAl::Vec3d& vec: snapPoints)
         add(vec);
 }
-
 void SnapGeometries::add(const Geometry::Segment3d& segment)
 {
     for (const LinAl::Vec3d& vec: {segment.getSource(), segment.getTarget()})
         add(vec);
 }
-
 void SnapGeometries::add(const Geometry::Circle3d& circle)
 {
     double_t radius = circle.getRadius();
@@ -53,7 +62,6 @@ void SnapGeometries::add(const Geometry::Circle3d& circle)
                                    LinAl::HVecd{0.0, -1.0 * radius, 0.0, 1.0}})
         add(LinAl::hVecToVec3(LinAl::HVecd{transformation * vec}));
 }
-
 void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere)
 {
     m_snapSpheres.push_back(sphere);
@@ -65,7 +73,6 @@ void SnapGeometries::add(const Geometry::Sphere<double_t>& sphere)
          {LinAl::Vec3d{0.0, 0.0, 1.0 * radius}, LinAl::Vec3d{0.0, 0.0, -1.0 * radius}})
         add(origin + vec);
 }
-
 void SnapGeometries::add(const Geometry::Cylinder<double_t>& cylinder)
 {
     const Geometry::Segment3d& seg = cylinder.getSegment();
@@ -76,26 +83,48 @@ void SnapGeometries::add(const Geometry::Cylinder<double_t>& cylinder)
     add(Geometry::Circle3d{seg.getSource(), radius, segDir});
     add(Geometry::Circle3d{seg.getTarget(), radius, segDir});
 }
-
 void SnapGeometries::add(const Geometry::Cone<double_t>& cone)
 {
     const Geometry::Segment3d& seg = cone.getSegment();
     add(seg);
     add(Geometry::Circle3d{seg.getSource(), cone.getRadius(), seg.direction()});
 }
-
 void SnapGeometries::add(const Geometry::Cuboid<double_t>& cuboid)
 {
     for (const LinAl::Vec3d& cuboidVertex: Geometry::calcCuboidVertices(cuboid))
         add(cuboidVertex);
 }
+void SnapGeometries::add(const GeometryElements& geometryElements)
+{
+    for (const auto& seg: geometryElements.getSegments())
+        if (seg.getIsSnapGeometry())
+            for (const Geometry::Segment3d& segment: seg.getSegments())
+                add(Geometry::transformation(segment, seg.getTransformation()));
 
+    addTransFormedGeometryToSnapElements(*this, geometryElements.getSpheres());
+    addTransFormedGeometryToSnapElements(*this, geometryElements.getCylinders());
+    addTransFormedGeometryToSnapElements(*this, geometryElements.getCones());
+    addTransFormedGeometryToSnapElements(*this, geometryElements.getCuboids());
+
+    for (const auto& grid: geometryElements.getGrids())
+    {
+        if (!grid.getIsSnapGeometry())
+            continue;
+
+        auto trafo = grid.getTransformation();
+
+        for (const Geometry::Segment3d& segment: grid.calcGridSegments())
+            add(Geometry::transformation(segment, trafo));
+
+        for (const LinAl::Vec3d& vec: grid.calcIntersectionPoints())
+            add(Geometry::transformation(vec, trafo));
+    }
+}
 void SnapGeometries::remove(const LinAl::Vec3d& snapPoint)
 {
     auto eraseIter = std::remove(m_snapPoints.begin(), m_snapPoints.end(), snapPoint);
     m_snapPoints.erase(eraseIter, m_snapPoints.end());
 }
-
 std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d& placementRay) const
 {
     GEOMETRY_PRECONDITION_RAY_DIRECTION_DEBUG_ASSERT(placementRay);
@@ -108,7 +137,6 @@ std::optional<LinAl::Vec3d> SnapGeometries::calcSnapPoint(const Geometry::Ray3d&
         findSnapPlane(snapPoints, placementRay);
     return findClosestSnapPoint(snapPoints, placementRay);
 }
-
 bool SnapGeometries::findSnapPoints(LinAl::Vec3dVector& snapPoints,
                                     const Geometry::Ray3d& placementRay) const
 {
@@ -129,10 +157,9 @@ void SnapGeometries::findSnapPlane(LinAl::Vec3dVector& snapPoints,
     if (std::optional<LinAl::Vec3d> result = Geometry::intersection(m_snapPlane, placementRay))
         snapPoints.push_back(result.value());
 }
-
 std::optional<LinAl::Vec3d>
 SnapGeometries::findClosestSnapPoint(const LinAl::Vec3dVector& snapPoints,
-                                     const Geometry::Ray3d& placementRay) const
+                                     const Geometry::Ray3d& placementRay)
 {
     LinAl::Vec3d result;
     LinAl::Vec3d origin = placementRay.getOrigin();
@@ -162,7 +189,6 @@ void SnapGeometries::addSphereSurfaceSnapPoint(LinAl::Vec3dVector& snapPoints,
             snapPoints.push_back(*intersection.second);
     }
 }
-
 void SnapGeometries::add(const MSphere& meshlerSphere)
 {
     const auto& sphere = meshlerSphere.getGeometryElement();

@@ -34,7 +34,6 @@ set(MESHLER_SOURCES
         source/GeometryElements/MCylinder.cpp
         source/GeometryElements/MSphere.cpp
         source/GeometryElements/MCone.cpp
-        source/GeometryElements/GeometryElements.cpp
         source/GeometryElements/MCuboid.cpp
         source/GeometryElements/MGrid.cpp
         source/Interactors/CommandInteractor.cpp

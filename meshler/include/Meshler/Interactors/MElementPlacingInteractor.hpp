@@ -13,6 +13,7 @@
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
 #include <Meshler/GeometryElements/SnapGeometries.hpp>
+#include <Meshler/LinAlConversion.hpp>
 #include <Meshler/MGuid.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MModelEventListener.hpp>
@@ -26,7 +27,7 @@ class MElementPlacingInteractor
     : public Graphics::GraphicsController
     , public MModelEventListener {
     MModel* m_model{nullptr};
-    std::reference_wrapper<SnapGeometries> m_snapGeometries;
+    SnapGeometries m_snapGeometries;
     std::optional<FGuid> m_geometryGuid;
     TGeomConfig<T> m_geomConfig;
 
@@ -51,13 +52,14 @@ template <typename TMeshlerGeometry, typename T, template <typename> typename TG
 MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::MElementPlacingInteractor(
     MModel& model,
     const TGeomConfig<T>& geomConfig)
-    : m_model(&model), m_snapGeometries(model.getSnapGeometries()), m_geomConfig(geomConfig)
+    : m_model(&model), m_geomConfig(geomConfig)
 {
     m_model->registerListener(this);
     m_geomConfig.baseConfig.isSnapGeometry = false;
     auto geomElem = MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
     m_geometryGuid = geomElem.getFGuid();
     m_model->add(std::move(geomElem));
+    m_snapGeometries.add(m_model->getGeometryElements());
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -65,12 +67,9 @@ std::optional<LinAl::Vec3d>
 MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::calcIntersection(
     const Graphics::PickRayEvent& pickRayEvent) const
 {
-    const Graphics::Vec3& pickOrigin = pickRayEvent.origin;
-    const Graphics::Vec3& pickDirection = pickRayEvent.direction;
-    const Geometry::Ray3<double_t> ray{
-        LinAl::Vec3d{pickOrigin[0], pickOrigin[1], pickOrigin[2]},
-        LinAl::Vec3d{pickDirection[0], pickDirection[1], pickDirection[2]}};
-    return m_snapGeometries.get().calcSnapPoint(ray);
+    return m_snapGeometries.calcSnapPoint(
+        Geometry::Ray3<double_t>{vec3ToLinAlVec3<double_t>(pickRayEvent.origin),
+                                 vec3ToLinAlVec3<double_t>(pickRayEvent.direction)});
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -81,19 +80,17 @@ void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onEvent(
     if (!intersection)
         return;
 
-    m_model->setPosition(*m_geometryGuid, *intersection);
-    auto* geomElem = m_model->get<TMeshlerGeometry>(*m_geometryGuid);
+    m_model->updatePosition(*m_geometryGuid, *intersection);
+    auto* geomElem = m_model->find<TMeshlerGeometry>(*m_geometryGuid);
     geomElem->setIsSnapGeometry(true);
     m_geometryGuid.reset();
-
-    m_model->calcModelSnapGeometries();
 
     m_geomConfig.baseConfig.isSnapGeometry = false;
     TMeshlerGeometry nextMeshlerGeometry =
         MGeometryTraits<TMeshlerGeometry, TGeomConfig, T>::create(m_geomConfig);
     m_geometryGuid = nextMeshlerGeometry.getFGuid();
     m_model->add(std::move(nextMeshlerGeometry));
-    m_model->setPosition(*m_geometryGuid, *intersection);
+    m_model->updatePosition(*m_geometryGuid, *intersection);
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -104,7 +101,7 @@ void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onEvent(
     if (!intersection)
         return;
 
-    m_model->setPosition(*m_geometryGuid, *intersection);
+    m_model->updatePosition(*m_geometryGuid, *intersection);
 }
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
@@ -117,7 +114,8 @@ void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onRemoveRayPic
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
 void MElementPlacingInteractor<TMeshlerGeometry, T, TGeomConfig>::onModelPostAddEvent()
 {
-    m_model->calcModelSnapGeometries();
+    m_snapGeometries = SnapGeometries();
+    m_snapGeometries.add(m_model->getGeometryElements());
 }
 
 } // namespace Meshler

@@ -52,6 +52,7 @@ class GeometryElementBase {
         m_fGuid = std::move(rhs.m_fGuid);
         m_isSnapGeometry = std::move(rhs.m_isSnapGeometry);
         m_transformation = rhs.m_transformation;
+        return *this;
     }
 
   public:

@@ -3,106 +3,120 @@
 
 #include <Core/Types/TMap.hpp>
 #include <Core/Utils/Compiler.hpp>
-#include <Meshler/GeometryElements/MCone.hpp>
-#include <Meshler/GeometryElements/MCuboid.hpp>
-#include <Meshler/GeometryElements/MCylinder.hpp>
-#include <Meshler/GeometryElements/MGrid.hpp>
-#include <Meshler/GeometryElements/MSegments.hpp>
-#include <Meshler/GeometryElements/MSphere.hpp>
-#include <Meshler/GeometryElements/SnapGeometries.hpp>
+#include <Geometry/Transformation/TransformCone.hpp>
+#include <Geometry/Transformation/TransformCuboid.hpp>
+#include <Geometry/Transformation/TransformCylinder.hpp>
+#include <Geometry/Transformation/TransformSegment.hpp>
+#include <Geometry/Transformation/TransformSphere.hpp>
+#include <Geometry/Transformation/TransformVec.hpp>
+#include <Meshler/GeometryElements/GeomElementContainer.hpp>
 #include <Meshler/MGuid.hpp>
 
 namespace Meshler
 {
 
-namespace details
-{
-template <typename TMeshlerGeometry,
-          template <typename K,
-                    typename V,
-                    typename Compare = std::less<K>,
-                    typename Alloc = std::allocator<std::pair<const K, V>>>
-          class Map>
-TMeshlerGeometry* getImpl(const FGuid& guid, Map<FGuid, TMeshlerGeometry>& map)
-{
-    auto iter = map.find(guid);
-    if (iter != map.end())
-        return &iter->second;
-    return nullptr;
-}
-} // namespace details
-
 class GeometryElements {
-    Core::TMap<FGuid, MSegments> m_segments;
-    Core::TMap<FGuid, MSphere> m_spheres;
-    Core::TMap<FGuid, MCone> m_cones;
-    Core::TMap<FGuid, MCylinder> m_cylinder;
-    Core::TMap<FGuid, MCuboid> m_cuboid;
-    Core::TMap<FGuid, MGrid> m_grid;
+    GeomElementContainer<MCuboid> m_cuboids;
+    GeomElementContainer<MCylinder> m_cylinders;
+    GeomElementContainer<MCone> m_cones;
+    GeomElementContainer<MSphere> m_spheres;
+    GeomElementContainer<MSegments> m_segments;
+    GeomElementContainer<MGrid> m_grids;
 
     SnapGeometries m_snapGeometries;
 
   public:
-    bool add(MSegments&& segments);
-    bool add(MSphere&& sphere);
-    bool add(MCone&& cone);
-    bool add(MCylinder&& cylinder);
-    bool add(MCuboid&& cuboid);
-    bool add(MGrid&& grid);
+    // clang-format off
+    CORE_NODISCARD const GeomElementContainer<MCuboid>& getCuboids() const { return m_cuboids; }
+    CORE_NODISCARD const GeomElementContainer<MCylinder>& getCylinders() const { return m_cylinders; }
+    CORE_NODISCARD const GeomElementContainer<MCone>& getCones() const { return m_cones; }
+    CORE_NODISCARD const GeomElementContainer<MSphere>& getSpheres() const { return m_spheres; }
+    CORE_NODISCARD const GeomElementContainer<MSegments>& getSegments() const { return m_segments; }
+    CORE_NODISCARD const GeomElementContainer<MGrid>& getGrids() const { return m_grids; }
+    // clang-format on
 
-    bool remove(const FGuid& fGuid);
-
-    template <typename TGeometryElement>
-    CORE_NODISCARD TGeometryElement* get(const FGuid& guid);
-
-    template <>
-    CORE_NODISCARD MSegments* get(const FGuid& guid)
+    template <typename TGeomElement>
+    TGeomElement& add(TGeomElement&& element)
     {
-        return details::getImpl(guid, m_segments);
+        if constexpr (std::is_same_v<TGeomElement, MCuboid>)
+            return m_cuboids.add(std::forward<TGeomElement>(element));
+        else if constexpr (std::is_same_v<TGeomElement, MCylinder>)
+            return m_cylinders.add(std::forward<TGeomElement>(element));
+        else if constexpr (std::is_same_v<TGeomElement, MCone>)
+            return m_cones.add(std::forward<TGeomElement>(element));
+        else if constexpr (std::is_same_v<TGeomElement, MSphere>)
+            return m_spheres.add(std::forward<TGeomElement>(element));
+        else if constexpr (std::is_same_v<TGeomElement, MSegments>)
+            return m_segments.add(std::forward<TGeomElement>(element));
+        else if constexpr (std::is_same_v<TGeomElement, MGrid>)
+            return m_grids.add(std::forward<TGeomElement>(element));
     }
 
-    template <>
-    CORE_NODISCARD MSphere* get(const FGuid& guid)
+    template <typename TGeomElement>
+    void remove(const FGuid& guid)
     {
-        return details::getImpl(guid, m_spheres);
+        if constexpr (std::is_same_v<TGeomElement, MCuboid>)
+            m_cuboids.remove(guid);
+        else if constexpr (std::is_same_v<TGeomElement, MCylinder>)
+            m_cylinders.remove(guid);
+        else if constexpr (std::is_same_v<TGeomElement, MCone>)
+            m_cones.remove(guid);
+        else if constexpr (std::is_same_v<TGeomElement, MSphere>)
+            m_spheres.remove(guid);
+        else if constexpr (std::is_same_v<TGeomElement, MSegments>)
+            m_segments.remove(guid);
+        else if constexpr (std::is_same_v<TGeomElement, MGrid>)
+            m_grids.remove(guid);
     }
 
-    template <>
-    CORE_NODISCARD MCone* get(const FGuid& guid)
+    void remove(FGuid fGuid)
     {
-        return details::getImpl(guid, m_cones);
+        if (m_cuboids.remove(fGuid))
+            return;
+        if (m_cylinders.remove(fGuid))
+            return;
+        if (m_cones.remove(fGuid))
+            return;
+        if (m_spheres.remove(fGuid))
+            return;
+        if (m_segments.remove(fGuid))
+            return;
+        if (m_grids.remove(fGuid))
+            return;
     }
 
-    template <>
-    CORE_NODISCARD MCylinder* get(const FGuid& guid)
+    template <typename TGeomElement>
+    TGeomElement* find(FGuid fGuid)
     {
-        return details::getImpl(guid, m_cylinder);
+        if constexpr (std::is_same_v<TGeomElement, MCuboid>)
+            return m_cuboids.find(fGuid);
+        else if constexpr (std::is_same_v<TGeomElement, MCylinder>)
+            return m_cylinders.find(fGuid);
+        else if constexpr (std::is_same_v<TGeomElement, MCone>)
+            return m_cones.find(fGuid);
+        else if constexpr (std::is_same_v<TGeomElement, MSphere>)
+            return m_spheres.find(fGuid);
+        else if constexpr (std::is_same_v<TGeomElement, MSegments>)
+            return m_segments.find(fGuid);
+        else if constexpr (std::is_same_v<TGeomElement, MGrid>)
+            return m_grids.find(fGuid);
     }
 
-    template <>
-    CORE_NODISCARD MCuboid* get(const FGuid& guid)
+    void updatePosition(FGuid fGuid, const LinAl::Vec3d& position)
     {
-        return details::getImpl(guid, m_cuboid);
+        if (auto* cuboid = find<MCuboid>(fGuid))
+            cuboid->setPosition(position);
+        else if (auto* cylinder = find<MCylinder>(fGuid))
+            cylinder->setPosition(position);
+        else if (auto* cone = find<MCone>(fGuid))
+            cone->setPosition(position);
+        else if (auto* sphere = find<MSphere>(fGuid))
+            sphere->setPosition(position);
+        else if (auto* segments = find<MSegments>(fGuid))
+            segments->setPosition(position);
+        else if (auto* grid = find<MGrid>(fGuid))
+            grid->setPosition(position);
     }
-
-    template <>
-    CORE_NODISCARD MGrid* get(const FGuid& guid)
-    {
-        return details::getImpl(guid, m_grid);
-    }
-
-    CORE_NODISCARD SnapGeometries& getSnapGeometries() { return m_snapGeometries; }
-
-    bool setPosition(const FGuid& fGuid, const LinAl::Vec3d& position);
-
-    CORE_NODISCARD Core::TVector<FGuid> getFGuidsFromMaps() const;
-
-    CORE_NODISCARD const Core::TMap<FGuid, MSegments>& getSegmentMap() const;
-    CORE_NODISCARD const Core::TMap<FGuid, MSphere>& getSphereMap() const;
-    CORE_NODISCARD const Core::TMap<FGuid, MCone>& getConeMap() const;
-    CORE_NODISCARD const Core::TMap<FGuid, MCylinder>& getCylinderMap() const;
-    CORE_NODISCARD const Core::TMap<FGuid, MCuboid>& getCuboidMap() const;
-    CORE_NODISCARD const Core::TMap<FGuid, MGrid>& getGridMap() const;
 };
 } // namespace Meshler
 

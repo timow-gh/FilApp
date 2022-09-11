@@ -5,6 +5,7 @@
 #include <Core/Utils/Compiler.hpp>
 #include <Geometry/Fwd/FwdHalfedgeMesh.hpp>
 #include <Graphics/Renderables/RendereableId.hpp>
+#include <Meshler/GeometryElements/GeomElementContainer.hpp>
 #include <functional>
 
 namespace Graphics
@@ -18,12 +19,6 @@ class Vertex;
 
 namespace Meshler
 {
-class MSphere;
-class MCone;
-class MCylinder;
-class MSegments;
-class MCuboid;
-class MGrid;
 struct PresenterConfig;
 
 class RenderableBuilder {
@@ -36,6 +31,7 @@ class RenderableBuilder {
     Core::TVector<std::reference_wrapper<const MSegments>> m_segments;
     Core::TVector<std::reference_wrapper<const MCuboid>> m_cuboids;
     Core::TVector<std::reference_wrapper<const MGrid>> m_grids;
+
     std::reference_wrapper<const PresenterConfig> m_presenterConfig;
 
   public:

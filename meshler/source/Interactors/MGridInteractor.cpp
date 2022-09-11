@@ -12,7 +12,7 @@ namespace Meshler
 MGridInteractor::MGridInteractor(MModel& model, FGuid defaultGridGuid)
     : m_model(model), m_activeGridGuid(defaultGridGuid)
 {
-    auto* grid = m_model.get().get<MGrid>(defaultGridGuid);
+    auto* grid = m_model.get().find<MGrid>(defaultGridGuid);
     CORE_POSTCONDITION_DEBUG_ASSERT(grid,
                                     "Model does not contain element with the defaultGridGuid.");
     if (grid)
@@ -82,7 +82,7 @@ void MGridInteractor::onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent
     if (updatedLengths(*intersectionVec, xMin, yMin, xMax, yMax))
     {
         MModel& model = m_model.get();
-        auto* activeGrid = model.get<MGrid>(m_activeGridGuid);
+        auto* activeGrid = model.find<MGrid>(m_activeGridGuid);
         CORE_POSTCONDITION_DEBUG_ASSERT(activeGrid, "");
         if (!activeGrid)
             return;
