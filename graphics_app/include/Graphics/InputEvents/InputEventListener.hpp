@@ -10,20 +10,20 @@ class MouseWheelEvent;
 class KeyEvent;
 
 class InputEventListener {
-  public:
-    InputEventListener(const InputEventListener& view) = delete;
+public:
+  InputEventListener(const InputEventListener& view) = delete;
 
-    virtual ~InputEventListener();
+  virtual ~InputEventListener();
 
-    virtual void onRemoveInputEventListener() {}
+  virtual void onRemoveInputEventListener() {}
 
-    virtual void onEvent(const MouseButtonEvent&) {}
-    virtual void onEvent(const MouseMoveEvent&) {}
-    virtual void onEvent(const MouseWheelEvent&) {}
-    virtual void onEvent(const KeyEvent&) {}
+  virtual void onEvent(const MouseButtonEvent&) {}
+  virtual void onEvent(const MouseMoveEvent&) {}
+  virtual void onEvent(const MouseWheelEvent&) {}
+  virtual void onEvent(const KeyEvent&) {}
 
-  protected:
-    InputEventListener() = default;
+protected:
+  InputEventListener() = default;
 };
 } // namespace Graphics
 

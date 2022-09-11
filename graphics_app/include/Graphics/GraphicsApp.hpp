@@ -9,15 +9,15 @@ namespace Graphics
 class Window;
 
 class GraphicsApp {
-  public:
-    GraphicsApp(const GraphicsApp&) = default;
+public:
+  GraphicsApp(const GraphicsApp&) = default;
 
-    virtual ~GraphicsApp();
-    CORE_NODISCARD virtual Window& getWindow() = 0;
-    virtual void run() = 0;
+  virtual ~GraphicsApp();
+  CORE_NODISCARD virtual Window& getWindow() = 0;
+  virtual void run() = 0;
 
-  protected:
-    GraphicsApp() = default;
+protected:
+  GraphicsApp() = default;
 };
 
 } // namespace Graphics

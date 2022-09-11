@@ -5,20 +5,20 @@ namespace Graphics
 {
 enum class BackendMode
 {
-    VULKAN,
-    OPENGL
+  VULKAN,
+  OPENGL
 };
 
 enum class EventPollingMode
 {
-    POLL_EVENTS,
-    WAIT_EVENTS
+  POLL_EVENTS,
+  WAIT_EVENTS
 };
 
 struct AppConfig
 {
-    BackendMode backendMode = BackendMode::VULKAN;
-    EventPollingMode eventPollingMode = EventPollingMode::WAIT_EVENTS;
+  BackendMode backendMode = BackendMode::VULKAN;
+  EventPollingMode eventPollingMode = EventPollingMode::WAIT_EVENTS;
 };
 
 } // namespace Graphics

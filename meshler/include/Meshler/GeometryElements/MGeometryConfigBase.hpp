@@ -7,7 +7,7 @@ namespace Meshler
 
 struct MGeometryConfigBase
 {
-    bool isSnapGeometry{true};
+  bool isSnapGeometry{true};
 };
 
 } // namespace Meshler

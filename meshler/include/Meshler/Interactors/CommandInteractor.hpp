@@ -11,13 +11,13 @@ class MController;
 
 // Interactor that sets the currently active Interactor of the controller using the InteractorKeyMap
 class CommandInteractor : public Graphics::InputEventListener {
-    MController* m_controller{nullptr};
-    InteractorKeyMap m_interactorKeyMap{};
+  MController* m_controller{nullptr};
+  InteractorKeyMap m_interactorKeyMap{};
 
-  public:
-    explicit CommandInteractor(MController& controller);
+public:
+  explicit CommandInteractor(MController& controller);
 
-    void onEvent(const Graphics::KeyEvent& keyEvent) override;
+  void onEvent(const Graphics::KeyEvent& keyEvent) override;
 };
 
 } // namespace Meshler

@@ -11,15 +11,13 @@ namespace Meshler
 {
 
 class MCylinder : public GeometryElementBase<MCylinder> {
-    Geometry::Cylinder<double_t> m_cylinder;
+  Geometry::Cylinder<double_t> m_cylinder;
 
-  public:
-    MCylinder();
-    MCylinder(const Geometry::Cylinder<double_t>& cylinder,
-              const FGuid& fGuid,
-              MGeometryConfigBase baseConfig);
+public:
+  MCylinder();
+  MCylinder(const Geometry::Cylinder<double_t>& cylinder, const FGuid& fGuid, MGeometryConfigBase baseConfig);
 
-    CORE_NODISCARD const Geometry::Cylinder<double_t>& getGeometryElement() const;
+  CORE_NODISCARD const Geometry::Cylinder<double_t>& getGeometryElement() const;
 };
 
 } // namespace Meshler

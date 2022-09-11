@@ -5,14 +5,15 @@
 namespace Meshler
 {
 
-CommandInteractor::CommandInteractor(MController& controller) : m_controller(&controller)
+CommandInteractor::CommandInteractor(MController& controller)
+    : m_controller(&controller)
 {
 }
 
 void CommandInteractor::onEvent(const Graphics::KeyEvent& keyEvent)
 {
-    if (auto nextInteractorCommand = m_interactorKeyMap.nextInteractor(keyEvent.keyScancode))
-        m_controller->setNextInteractor(*nextInteractorCommand);
+  if (auto nextInteractorCommand = m_interactorKeyMap.nextInteractor(keyEvent.keyScancode))
+    m_controller->setNextInteractor(*nextInteractorCommand);
 }
 
 } // namespace Meshler

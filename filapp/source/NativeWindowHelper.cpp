@@ -23,22 +23,22 @@ DISABLE_ALL_WARNINGS
 #ifdef MSVC
 void* getNativeWindow(SDL_Window* sdlWindow)
 {
-    SDL_SysWMinfo wmi;
-    SDL_VERSION(&wmi.version);
-    ASSERT_POSTCONDITION(SDL_GetWindowWMInfo(sdlWindow, &wmi), "SDL version unsupported!");
-    HWND win = (HWND)wmi.info.win.window;
-    return (void*)win;
+  SDL_SysWMinfo wmi;
+  SDL_VERSION(&wmi.version);
+  ASSERT_POSTCONDITION(SDL_GetWindowWMInfo(sdlWindow, &wmi), "SDL version unsupported!");
+  HWND win = (HWND)wmi.info.win.window;
+  return (void*)win;
 }
 #endif
 
 #ifdef LINUX
 void* getNativeWindow(SDL_Window* sdlWindow)
 {
-    SDL_SysWMinfo wmi;
-    SDL_VERSION(&wmi.version)
-    ASSERT_POSTCONDITION(SDL_GetWindowWMInfo(sdlWindow, &wmi), "SDL version unsupported!");
-    auto win = static_cast<Window>(wmi.info.x11.window);
-    return (void*)win;
+  SDL_SysWMinfo wmi;
+  SDL_VERSION(&wmi.version)
+  ASSERT_POSTCONDITION(SDL_GetWindowWMInfo(sdlWindow, &wmi), "SDL version unsupported!");
+  auto win = static_cast<Window>(wmi.info.x11.window);
+  return (void*)win;
 }
 #endif
 ENABLE_ALL_WARNINGS

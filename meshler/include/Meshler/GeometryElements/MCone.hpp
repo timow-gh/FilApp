@@ -10,13 +10,13 @@ namespace Meshler
 {
 
 class MCone : public GeometryElementBase<MCone> {
-    Geometry::Cone<double_t> m_cone;
+  Geometry::Cone<double_t> m_cone;
 
-  public:
-    MCone();
-    MCone(const Geometry::Cone<double_t>& cone, const FGuid& fGuid, MGeometryConfigBase baseConfig);
+public:
+  MCone();
+  MCone(const Geometry::Cone<double_t>& cone, const FGuid& fGuid, MGeometryConfigBase baseConfig);
 
-    CORE_NODISCARD const Geometry::Cone<double_t>& getGeometryElement() const;
+  CORE_NODISCARD const Geometry::Cone<double_t>& getGeometryElement() const;
 };
 
 } // namespace Meshler

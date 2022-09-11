@@ -11,18 +11,19 @@ namespace Graphics
 template <std::size_t SIZE>
 struct Vec
 {
-    float_t values[SIZE];
+  float_t values[SIZE];
 
-    template <typename... Args>
-    Vec(Args... args) : values{args...}
-    {
-    }
+  template <typename... Args>
+  Vec(Args... args)
+      : values{args...}
+  {
+  }
 
-    CORE_NODISCARD inline std::size_t size() const noexcept { return SIZE; }
-    CORE_NODISCARD inline float_t operator[](std::size_t i) const noexcept { return values[i]; }
-    inline float_t& operator[](std::size_t i) noexcept { return values[i]; }
+  CORE_NODISCARD inline std::size_t size() const noexcept { return SIZE; }
+  CORE_NODISCARD inline float_t operator[](std::size_t i) const noexcept { return values[i]; }
+  inline float_t& operator[](std::size_t i) noexcept { return values[i]; }
 
-    friend std::ostream& operator<<(std::ostream& os, const Vec<SIZE>& vec);
+  friend std::ostream& operator<<(std::ostream& os, const Vec<SIZE>& vec);
 };
 
 // clang-format off

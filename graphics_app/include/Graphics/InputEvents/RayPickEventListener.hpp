@@ -8,18 +8,18 @@ namespace Graphics
 {
 
 class RayPickEventListener {
-  public:
-    RayPickEventListener(const RayPickEventListener& view) = delete;
+public:
+  RayPickEventListener(const RayPickEventListener& view) = delete;
 
-    virtual ~RayPickEventListener() = default;
+  virtual ~RayPickEventListener() = default;
 
-    virtual void onRemoveRayPickEventListener() {}
+  virtual void onRemoveRayPickEventListener() {}
 
-    virtual void onEvent(const PickRayEvent&) {}
-    virtual void onEvent(const PickRayMoveEvent&) {}
+  virtual void onEvent(const PickRayEvent&) {}
+  virtual void onEvent(const PickRayMoveEvent&) {}
 
-  protected:
-    RayPickEventListener() = default;
+protected:
+  RayPickEventListener() = default;
 };
 
 } // namespace Graphics

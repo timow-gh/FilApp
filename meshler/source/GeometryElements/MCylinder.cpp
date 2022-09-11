@@ -12,16 +12,15 @@ MCylinder::MCylinder()
 {
 }
 
-MCylinder::MCylinder(const Cylinder<double_t>& cylinder,
-                     const FGuid& fGuid,
-                     MGeometryConfigBase baseConfig)
-    : GeometryElementBase<MCylinder>(fGuid, baseConfig), m_cylinder(cylinder)
+MCylinder::MCylinder(const Cylinder<double_t>& cylinder, const FGuid& fGuid, MGeometryConfigBase baseConfig)
+    : GeometryElementBase<MCylinder>(fGuid, baseConfig)
+    , m_cylinder(cylinder)
 {
 }
 
 const Cylinder<double_t>& MCylinder::getGeometryElement() const
 {
-    return m_cylinder;
+  return m_cylinder;
 }
 
 } // namespace Meshler

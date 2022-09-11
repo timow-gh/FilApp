@@ -10,7 +10,7 @@ using FGuid = xg::Guid;
 
 inline FGuid newFGuid()
 {
-    return xg::newGuid();
+  return xg::newGuid();
 }
 
 } // namespace Meshler

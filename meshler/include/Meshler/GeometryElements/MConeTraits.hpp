@@ -13,21 +13,19 @@ namespace Meshler
 template <typename T>
 struct ConeTraitsConfig
 {
-    LinAl::Vec3<T> circleMidPoint{0, 0, 0};
-    T radius{1.0};
-    LinAl::Vec3<T> peak{0, 0, 2};
-    MGeometryConfigBase baseConfig;
+  LinAl::Vec3<T> circleMidPoint{0, 0, 0};
+  T radius{1.0};
+  LinAl::Vec3<T> peak{0, 0, 2};
+  MGeometryConfigBase baseConfig;
 };
 
 template <typename T>
 struct MGeometryTraits<MCone, ConeTraitsConfig, T>
 {
-    CORE_NODISCARD static MCone create(const ConeTraitsConfig<T>& config)
-    {
-        return MCone{Geometry::Cone<T>{config.circleMidPoint, config.peak, config.radius},
-                     newFGuid(),
-                     config.baseConfig};
-    }
+  CORE_NODISCARD static MCone create(const ConeTraitsConfig<T>& config)
+  {
+    return MCone{Geometry::Cone<T>{config.circleMidPoint, config.peak, config.radius}, newFGuid(), config.baseConfig};
+  }
 };
 
 } // namespace Meshler

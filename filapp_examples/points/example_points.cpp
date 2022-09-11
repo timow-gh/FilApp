@@ -9,27 +9,25 @@ using namespace Graphics;
 
 int main()
 {
-    AppConfig appConfig;
-    appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
+  AppConfig appConfig;
+  appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
 
-    std::shared_ptr<Graphics::GraphicsApp> graphicsApp =
-        FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
+  std::shared_ptr<Graphics::GraphicsApp> graphicsApp = FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
 
-    Window& mainWindow = graphicsApp->getWindow();
-    View* mainView = mainWindow.getMainIView();
+  Window& mainWindow = graphicsApp->getWindow();
+  View* mainView = mainWindow.getMainIView();
 
-    std::vector<Vertex> vertices = {
-        Vertex{{0, 0, 0}, 0xffff0000},
-        Vertex{{1, 0, 0}, 0xff00ff00},
-        Vertex{{0, 0, 2}, 0xff0000ff},
-    };
+  std::vector<Vertex> vertices = {
+      Vertex{{0, 0, 0}, 0xffff0000},
+      Vertex{{1, 0, 0}, 0xff00ff00},
+      Vertex{{0, 0, 2}, 0xff0000ff},
+  };
 
-    constexpr float_t POINT_SIZE = 15;
-    mainView->addRenderable(
-        PointRenderable::create(std::move(vertices), {POINT_SIZE, POINT_SIZE, POINT_SIZE}));
-    mainView->addRenderable(PointRenderable::create(Vertex{{2, 0, 0}, 0xff000000}, POINT_SIZE));
+  constexpr float_t POINT_SIZE = 15;
+  mainView->addRenderable(PointRenderable::create(std::move(vertices), {POINT_SIZE, POINT_SIZE, POINT_SIZE}));
+  mainView->addRenderable(PointRenderable::create(Vertex{{2, 0, 0}, 0xff000000}, POINT_SIZE));
 
-    graphicsApp->run();
+  graphicsApp->run();
 
-    return 0;
+  return 0;
 }

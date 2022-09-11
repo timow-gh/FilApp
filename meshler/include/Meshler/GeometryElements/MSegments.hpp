@@ -10,19 +10,15 @@
 namespace Meshler
 {
 class MSegments : public GeometryElementBase<MSegments> {
-    Core::TVector<Geometry::Segment3d> m_segments;
+  Core::TVector<Geometry::Segment3d> m_segments;
 
-  public:
-    MSegments();
-    MSegments(Core::TVector<Geometry::Segment3d> segments,
-              const FGuid& guid,
-              MGeometryConfigBase baseConfig);
-    MSegments(const Geometry::Segment3d& segment,
-              const FGuid& guid,
-              MGeometryConfigBase baseConfig);
+public:
+  MSegments();
+  MSegments(Core::TVector<Geometry::Segment3d> segments, const FGuid& guid, MGeometryConfigBase baseConfig);
+  MSegments(const Geometry::Segment3d& segment, const FGuid& guid, MGeometryConfigBase baseConfig);
 
-    CORE_NODISCARD const Core::TVector<Geometry::Segment3d>& getSegments() const;
-    void setSegments(const Core::TVector<Geometry::Segment3d>& segments);
+  CORE_NODISCARD const Core::TVector<Geometry::Segment3d>& getSegments() const;
+  void setSegments(const Core::TVector<Geometry::Segment3d>& segments);
 };
 } // namespace Meshler
 

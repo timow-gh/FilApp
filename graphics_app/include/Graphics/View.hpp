@@ -19,15 +19,15 @@ class RenderableId;
 class Vec3;
 
 class View : public InputEventListener {
-  public:
-    View(const View& view) = delete;
+public:
+  View(const View& view) = delete;
 
-    ~View() override;
+  ~View() override;
 
-    CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
-    CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
+  CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
+  CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
 
-    // clang-format off
+  // clang-format off
     virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;
     virtual auto addRenderable(PointRenderable&& renderable) -> RenderableId = 0;
     virtual auto addRenderable(LineRenderable&& renderable) -> RenderableId = 0;
@@ -35,18 +35,17 @@ class View : public InputEventListener {
     virtual void removeRenderable(RenderableId renderableId) = 0;
     virtual void updatePosition(RenderableId renderableId, const Vec3& position) = 0;
     virtual void clearRenderables() = 0;
-    // clang-format on
+  // clang-format on
 
-    // Animation prototype
-    virtual void addRotationAnimation(RenderableId renderableIdentifier,
-                                      const Vec3& rotationAxis) = 0;
-    virtual void animate(double deltaT) = 0;
+  // Animation prototype
+  virtual void addRotationAnimation(RenderableId renderableIdentifier, const Vec3& rotationAxis) = 0;
+  virtual void animate(double deltaT) = 0;
 
-    CORE_NODISCARD virtual Viewport getViewport() const = 0;
-    virtual void resize(const Viewport& viewport) = 0;
+  CORE_NODISCARD virtual Viewport getViewport() const = 0;
+  virtual void resize(const Viewport& viewport) = 0;
 
-  protected:
-    View() = default;
+protected:
+  View() = default;
 };
 } // namespace Graphics
 

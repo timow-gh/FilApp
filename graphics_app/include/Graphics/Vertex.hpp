@@ -8,8 +8,8 @@ namespace Graphics
 {
 struct Vertex
 {
-    float_t position[3];
-    std::uint32_t color;
+  float_t position[3];
+  std::uint32_t color;
 };
 } // namespace Graphics
 

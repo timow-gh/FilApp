@@ -15,13 +15,14 @@ MCone::MCone()
 }
 
 MCone::MCone(const Cone<double_t>& cone, const FGuid& fGuid, MGeometryConfigBase baseConfig)
-    : GeometryElementBase<MCone>(fGuid, baseConfig), m_cone(cone)
+    : GeometryElementBase<MCone>(fGuid, baseConfig)
+    , m_cone(cone)
 {
 }
 
 const Cone<double_t>& MCone::getGeometryElement() const
 {
-    return m_cone;
+  return m_cone;
 }
 
 } // namespace Meshler

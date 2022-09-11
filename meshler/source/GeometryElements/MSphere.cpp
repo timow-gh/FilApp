@@ -9,21 +9,20 @@ MSphere::MSphere()
 {
 }
 
-MSphere::MSphere(Geometry::Sphere<double_t> sphere,
-                 const FGuid& guid,
-                 MGeometryConfigBase baseConfig)
-    : GeometryElementBase<MSphere>(guid, baseConfig), m_sphere(std::move(sphere))
+MSphere::MSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid, MGeometryConfigBase baseConfig)
+    : GeometryElementBase<MSphere>(guid, baseConfig)
+    , m_sphere(std::move(sphere))
 {
 }
 
 const Geometry::Sphere<double_t>& MSphere::getGeometryElement() const
 {
-    return m_sphere;
+  return m_sphere;
 }
 
 void MSphere::setGeometryElement(const Geometry::Sphere<double_t>& sphere)
 {
-    m_sphere = sphere;
+  m_sphere = sphere;
 }
 
 } // namespace Meshler

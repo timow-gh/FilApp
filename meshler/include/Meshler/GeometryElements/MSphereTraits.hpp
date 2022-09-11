@@ -13,20 +13,18 @@ namespace Meshler
 template <typename T>
 struct SphereTraitsConfig
 {
-    T radius{1.0};
-    LinAl::Vec3<T> origin{LinAl::Vec3<T>{0.0, 0.0, 0.0}};
-    MGeometryConfigBase baseConfig;
+  T radius{1.0};
+  LinAl::Vec3<T> origin{LinAl::Vec3<T>{0.0, 0.0, 0.0}};
+  MGeometryConfigBase baseConfig;
 };
 
 template <typename T>
 struct MGeometryTraits<MSphere, SphereTraitsConfig, T>
 {
-    CORE_NODISCARD static MSphere create(const SphereTraitsConfig<T>& config)
-    {
-        return MSphere{Geometry::Sphere<T>{config.origin, config.radius},
-                       newFGuid(),
-                       config.baseConfig};
-    }
+  CORE_NODISCARD static MSphere create(const SphereTraitsConfig<T>& config)
+  {
+    return MSphere{Geometry::Sphere<T>{config.origin, config.radius}, newFGuid(), config.baseConfig};
+  }
 };
 
 } // namespace Meshler

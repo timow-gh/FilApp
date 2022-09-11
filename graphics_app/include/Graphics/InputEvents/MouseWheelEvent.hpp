@@ -7,10 +7,14 @@ namespace Graphics
 {
 struct MouseWheelEvent
 {
-    float_t x;
-    double_t time;
+  float_t x;
+  double_t time;
 
-    MouseWheelEvent(float_t x, double_t time) : x(x), time(time) {}
+  MouseWheelEvent(float_t x, double_t time)
+      : x(x)
+      , time(time)
+  {
+  }
 };
 } // namespace Graphics
 

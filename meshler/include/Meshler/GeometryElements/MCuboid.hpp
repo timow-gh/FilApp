@@ -10,15 +10,13 @@ namespace Meshler
 {
 
 class MCuboid : public GeometryElementBase<MCuboid> {
-    Geometry::Cuboid<double_t> m_cuboid;
+  Geometry::Cuboid<double_t> m_cuboid;
 
-  public:
-    MCuboid();
-    MCuboid(const Geometry::Cuboid<double_t>& cuboid,
-            const FGuid& fGuid,
-            MGeometryConfigBase baseConfig);
+public:
+  MCuboid();
+  MCuboid(const Geometry::Cuboid<double_t>& cuboid, const FGuid& fGuid, MGeometryConfigBase baseConfig);
 
-    CORE_NODISCARD const Geometry::Cuboid<double_t>& getGeometryElement() const;
+  CORE_NODISCARD const Geometry::Cuboid<double_t>& getGeometryElement() const;
 };
 
 } // namespace Meshler

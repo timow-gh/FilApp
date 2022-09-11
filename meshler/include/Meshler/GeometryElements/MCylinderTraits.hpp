@@ -13,22 +13,19 @@ namespace Meshler
 template <typename T>
 struct CylinderTraitsConfig
 {
-    T radius{1.0};
-    LinAl::Vec3<T> start{0, 0, 0};
-    LinAl::Vec3<T> end{0, 0, 1.0};
-    MGeometryConfigBase baseConfig;
+  T radius{1.0};
+  LinAl::Vec3<T> start{0, 0, 0};
+  LinAl::Vec3<T> end{0, 0, 1.0};
+  MGeometryConfigBase baseConfig;
 };
 
 template <typename T>
 struct MGeometryTraits<MCylinder, CylinderTraitsConfig, T>
 {
-    CORE_NODISCARD static MCylinder create(const CylinderTraitsConfig<T>& config)
-    {
-        return MCylinder{
-            Geometry::Cylinder<T>{Geometry::Segment3<T>{config.start, config.end}, config.radius},
-            newFGuid(),
-            config.baseConfig};
-    }
+  CORE_NODISCARD static MCylinder create(const CylinderTraitsConfig<T>& config)
+  {
+    return MCylinder{Geometry::Cylinder<T>{Geometry::Segment3<T>{config.start, config.end}, config.radius}, newFGuid(), config.baseConfig};
+  }
 };
 
 } // namespace Meshler

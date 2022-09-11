@@ -10,16 +10,15 @@ MCuboid::MCuboid()
 {
 }
 
-MCuboid::MCuboid(const Geometry::Cuboid<double_t>& cuboid,
-                 const FGuid& fGuid,
-                 MGeometryConfigBase baseConfig)
-    : GeometryElementBase<MCuboid>(fGuid, baseConfig), m_cuboid(cuboid)
+MCuboid::MCuboid(const Geometry::Cuboid<double_t>& cuboid, const FGuid& fGuid, MGeometryConfigBase baseConfig)
+    : GeometryElementBase<MCuboid>(fGuid, baseConfig)
+    , m_cuboid(cuboid)
 {
 }
 
 const Geometry::Cuboid<double_t>& MCuboid::getGeometryElement() const
 {
-    return m_cuboid;
+  return m_cuboid;
 }
 
 } // namespace Meshler

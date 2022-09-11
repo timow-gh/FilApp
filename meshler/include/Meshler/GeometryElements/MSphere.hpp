@@ -11,14 +11,14 @@
 namespace Meshler
 {
 class MSphere : public GeometryElementBase<MSphere> {
-    Geometry::Sphere<double_t> m_sphere;
+  Geometry::Sphere<double_t> m_sphere;
 
-  public:
-    MSphere();
-    MSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid, MGeometryConfigBase baseConfig);
+public:
+  MSphere();
+  MSphere(Geometry::Sphere<double_t> sphere, const FGuid& guid, MGeometryConfigBase baseConfig);
 
-    CORE_NODISCARD const Geometry::Sphere<double_t>& getGeometryElement() const;
-    void setGeometryElement(const Geometry::Sphere<double_t>& sphere);
+  CORE_NODISCARD const Geometry::Sphere<double_t>& getGeometryElement() const;
+  void setGeometryElement(const Geometry::Sphere<double_t>& sphere);
 };
 } // namespace Meshler
 

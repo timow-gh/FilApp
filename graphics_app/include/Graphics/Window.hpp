@@ -12,23 +12,23 @@ class RayPickEventDispatcher;
 class WindowId;
 
 class Window {
-  public:
-    Window(const Window&) = delete;
+public:
+  Window(const Window&) = delete;
 
-    virtual ~Window();
+  virtual ~Window();
 
-    using WindowId = uint32_t;
+  using WindowId = uint32_t;
 
-    CORE_NODISCARD virtual View* getMainIView() = 0;
-    CORE_NODISCARD virtual std::vector<View*> getViews() = 0;
+  CORE_NODISCARD virtual View* getMainIView() = 0;
+  CORE_NODISCARD virtual std::vector<View*> getViews() = 0;
 
-    CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
-    CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
+  CORE_NODISCARD virtual InputEventDispatcher& getInputEventDispatcher() = 0;
+  CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
 
-    virtual WindowId getIWindowId() = 0;
+  virtual WindowId getIWindowId() = 0;
 
-  protected:
-    Window() = default;
+protected:
+  Window() = default;
 };
 } // namespace Graphics
 

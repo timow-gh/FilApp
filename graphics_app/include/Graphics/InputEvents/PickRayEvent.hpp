@@ -8,14 +8,16 @@ namespace Graphics
 {
 struct PickRayEvent
 {
-    Vec3 origin;
-    Vec3 direction;
-    double_t time;
+  Vec3 origin;
+  Vec3 direction;
+  double_t time;
 
-    PickRayEvent(const Vec3& origin, const Vec3& direction, double_t time)
-        : origin(origin), direction(direction), time(time)
-    {
-    }
+  PickRayEvent(const Vec3& origin, const Vec3& direction, double_t time)
+      : origin(origin)
+      , direction(direction)
+      , time(time)
+  {
+  }
 };
 } // namespace Graphics
 
