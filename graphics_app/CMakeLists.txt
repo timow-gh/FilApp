@@ -17,6 +17,7 @@ set(GRAPHICS_HEADER
         include/Graphics/Window.hpp
         include/Graphics/GraphicsApp.hpp
         include/Graphics/GraphicsController.hpp
+        include/Graphics/Gui.hpp
         include/Graphics/RGBAColor.hpp
         include/Graphics/WindowConfig.hpp
         include/Graphics/AppConfig.hpp
@@ -27,7 +28,9 @@ set(GRAPHICS_HEADER
 set(GRAPHICS_SOURCES
         source/View.cpp
         source/InputEvents/InputEventListener.cpp
+        source/InputEvents/RayPickEventListener.cpp
         source/GraphicsApp.cpp
+        source/Gui.cpp
         source/Window.cpp
         source/Vec.cpp)
 

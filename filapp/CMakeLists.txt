@@ -3,21 +3,23 @@ build_resources()
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppCameraView.hpp
+        include/FilApp/FilAppConversion.hpp
+        include/FilApp/FilAppGuiContext.hpp
         include/FilApp/FilAppWindow.hpp
         include/FilApp/FilAppRenderable.hpp
         include/FilApp/FilAppRenderableCreator.hpp
         include/FilApp/FilAppScene.hpp
-        include/FilApp/FilAppConversion.hpp
         include/FilApp/IOHelper.hpp
         )
 
 set(FILAPP_SOURCES
-        source/FilApplication.cpp
         source/FilAppCameraView.cpp
+        source/FilAppConversion.cpp
+        source/FilAppGuiContext.cpp
+        source/FilApplication.cpp
         source/FilAppWindow.cpp
         source/NativeWindowHelper.hpp
         source/NativeWindowHelper.cpp
-        source/FilAppConversion.cpp
         source/FilAppRenderableBuffers.cpp
         source/FilAppRenderableBuffers.hpp
         source/FilAppRenderableCreator.cpp
@@ -47,6 +49,7 @@ target_link_libraries(fil_app
         graphics::app
         filament
         fil_app_sources
+        filagui
         sdl2
         math
         utils

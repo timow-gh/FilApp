@@ -132,7 +132,7 @@ void FilApplication::run()
     case SDL_WINDOWEVENT:
     {
       if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-        m_window->resize();
+        m_window->resizeWindow();
       break;
     }
     default:
@@ -142,7 +142,7 @@ void FilApplication::run()
     }
 
     m_window->animate(deltaT);
-    m_window->render();
+    m_window->render(deltaT);
   }
 }
 

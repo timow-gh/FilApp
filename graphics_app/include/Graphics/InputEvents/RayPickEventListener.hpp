@@ -11,7 +11,7 @@ class RayPickEventListener {
 public:
   RayPickEventListener(const RayPickEventListener& view) = delete;
 
-  virtual ~RayPickEventListener() = default;
+  virtual ~RayPickEventListener();
 
   virtual void onRemoveRayPickEventListener() {}
 

@@ -42,7 +42,7 @@ set(MESHLER_SOURCES
         source/MPresenter.cpp
         source/RenderableBuilder.cpp
         source/MModel.cpp
-        source/MController.cpp)
+        source/MController.cpp source/MModelEventListener.cpp)
 
 add_library(meshler ${MESHLER_SOURCES} ${MESHLER_PUBLIC_HEADERS})
 add_library(meshler::meshler ALIAS meshler)

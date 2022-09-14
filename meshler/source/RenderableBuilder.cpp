@@ -7,7 +7,6 @@
 #include <Graphics/Renderables/TriangleRenderable.hpp>
 #include <Graphics/Vertex.hpp>
 #include <Graphics/View.hpp>
-#include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/GeometryElements/MCone.hpp>
 #include <Meshler/GeometryElements/MCuboid.hpp>
 #include <Meshler/GeometryElements/MCylinder.hpp>
@@ -58,24 +57,21 @@ void RenderableBuilder::addRenderable(TRenderable&& renderable)
 template <typename TGeomElem>
 void RenderableBuilder::buildMesh(const TGeomElem& geomElem)
 {
-  auto presenterConfig = m_presenterConfig.get();
-
-  Geometry::MeshBuilder meshBuilder{Geometry::MeshBuilderConfig{presenterConfig.polarCount, presenterConfig.azimuthCount}};
-  auto mesh = meshBuilder.build(geomElem.getGeometryElement());
-
-  buildRenderable(*mesh);
-}
-template <>
-void RenderableBuilder::buildMesh(const MSegments& geomElem)
-{
-  auto presenterConfig = m_presenterConfig.get();
-  addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.getSegments())));
-}
-template <>
-void RenderableBuilder::buildMesh(const MGrid& geomElem)
-{
-  auto presenterConfig = m_presenterConfig.get();
-  addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.calcGridSegments())));
+  if constexpr (std::is_same_v<TGeomElem, MSegments>)
+  {
+    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.getSegments())));
+  }
+  else if constexpr (std::is_same_v<TGeomElem, MGrid>)
+  {
+    addRenderable(Graphics::LineRenderable::create(buildSegmentVertices(geomElem.calcGridSegments())));
+  }
+  else
+  {
+    auto presenterConfig = m_presenterConfig.get();
+    Geometry::MeshBuilder meshBuilder{Geometry::MeshBuilderConfig{presenterConfig.polarCount, presenterConfig.azimuthCount}};
+    auto mesh = meshBuilder.build(geomElem.getGeometryElement());
+    buildRenderable(*mesh);
+  }
 }
 Core::TVector<Graphics::RenderableId> RenderableBuilder::build()
 {

@@ -12,7 +12,7 @@ class MCone;
 class MCylinder;
 class MSegments;
 class MSphere;
-class PositionEvent;
+struct PositionEvent;
 
 class MModelEventDispatcher {
   Core::TVector<MModelEventListener*> m_listeners;

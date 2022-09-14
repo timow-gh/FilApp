@@ -1,4 +1,4 @@
-#include(localGeometry.cmake)
+include(localGeometry.cmake)
 FetchContent_Declare(
         geometry
         GIT_REPOSITORY https://github.com/timow-gh/Geometry.git

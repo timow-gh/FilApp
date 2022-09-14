@@ -16,7 +16,7 @@ FilAppScene FilAppScene::create(filament::Engine* engine, FilAppRenderableCreato
   utils::Entity globalTrafoComponent = createGlobalTrafoComponent(*engine);
   auto scene = engine->createScene();
   CORE_POSTCONDITION_ASSERT(scene, "Failed to create scene");
-  return std::move(FilAppScene{engine, scene, globalTrafoComponent, filAppRenderableCreator});
+  return FilAppScene{engine, scene, globalTrafoComponent, filAppRenderableCreator};
 }
 void FilAppScene::destroy()
 {

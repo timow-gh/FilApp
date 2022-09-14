@@ -7,6 +7,7 @@ DISABLE_ALL_WARNINGS
 #include <filament/Renderer.h>
 ENABLE_ALL_WARNINGS
 #include <FilApp/FilAppCameraView.hpp>
+#include <FilApp/FilAppGuiContext.hpp>
 #include <FilApp/FilAppScene.hpp>
 #include <FilApp/FilApplication.hpp>
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
@@ -25,14 +26,16 @@ namespace FilApp
 class FilAppWindow final : public Graphics::Window {
   SDL_Window* m_sdlWindow = nullptr;
   Window::WindowId m_windowId{0};
-  filament::Engine* m_engine = nullptr;
   filament::Renderer* m_renderer = nullptr;
-  filament::Engine::Backend m_backend = filament::Engine::Backend::DEFAULT;
   filament::SwapChain* m_swapChain = nullptr;
+  filament::Engine* m_engine = nullptr;
+  filament::Skybox* m_skybox = nullptr;
 
   FilAppScene m_filAppScene;
 
-  std::unique_ptr<FilAppCameraView> m_mainView{nullptr};
+  Graphics::Viewport m_contentViewport;
+  Graphics::Viewport m_guiViewport;
+  FilAppGuiContext m_guiContext;
   Core::TVector<std::unique_ptr<FilAppCameraView>> m_views;
 
   std::uint32_t m_width = 0;
@@ -42,45 +45,36 @@ class FilAppWindow final : public Graphics::Window {
 
   std::unordered_map<SDL_Scancode, FilAppCameraView*> m_keyEventTarget;
 
-  Graphics::InputEventDispatcher m_inputEventDispatcher;
-  Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
-
 public:
   FilAppWindow(const Graphics::WindowConfig& windowConfig, FilAppRenderableCreator& filAppRenderableCreator, filament::Engine* engine);
 
   ~FilAppWindow() override;
-
-  CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;
-  CORE_NODISCARD Graphics::RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
   void event(const Graphics::MouseButtonEvent& mouseButtonEvent);
   void event(const Graphics::MouseMoveEvent& mouseMoveEvent);
   void event(const Graphics::KeyEvent& keyEvent);
   void mouseWheel(float_t x, double_t deltaT);
 
-  void resize();
+  void resizeWindow();
   void animate(double_t deltaT);
-  void render();
+  void render(double_t timeInSeconds);
 
-  CORE_NODISCARD Graphics::View* getMainIView() override;
-  CORE_NODISCARD Core::TVector<Graphics::View*> getViews() override;
+  CORE_NODISCARD Graphics::View& getMainIView() override;
 
-  WindowId getIWindowId() override;
-
-  CORE_NODISCARD SDL_Window* getSdlWindow() const;
   CORE_NODISCARD uint32_t getWidth() const;
   CORE_NODISCARD uint32_t getHeight() const;
 
-  CORE_NODISCARD filament::Renderer* getRenderer();
   CORE_NODISCARD filament::SwapChain* getSwapChain();
 
   CORE_NODISCARD filament::math::int2 fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const;
 
 private:
-  CORE_NODISCARD Graphics::Viewport calcWindowViewport();
+  void calculateViewports();
 };
 
-bool intersects(const Graphics::Viewport& viewport, size_t x, size_t y);
+CORE_NODISCARD bool intersects(const Graphics::Viewport& viewport, size_t x, size_t y);
+CORE_NODISCARD Graphics::Viewport windowViewport(SDL_Window* sdlWindow);
+
 } // namespace FilApp
 
 #endif // FILAPP_FILAPPWINDOW_HPP

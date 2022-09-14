@@ -39,6 +39,7 @@ public:
 private:
   CORE_NODISCARD std::optional<LinAl::Vec3d> calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const;
 
+  using Graphics::GraphicsController::InputEventListener::onEvent;
   void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;
   void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
 

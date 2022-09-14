@@ -1,4 +1,4 @@
-#include(localFilament.cmake)
+include(localFilament.cmake)
 FetchContent_Declare(
         filament
         GIT_REPOSITORY https://github.com/timow-gh/filament.git

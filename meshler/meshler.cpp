@@ -14,7 +14,7 @@ using namespace Meshler;
 using namespace Geometry;
 using namespace LinAl;
 
-void createSpheres(MModel& model)
+static void createSpheres(MModel& model)
 {
   FGuid sphereToRemove;
 
@@ -38,7 +38,7 @@ void createSpheres(MModel& model)
   model.remove(sphereToRemove);
 }
 
-void createCones(MModel& model)
+static void createCones(MModel& model)
 {
   // x
   model.add(
@@ -67,7 +67,7 @@ int main()
 
   std::shared_ptr<Graphics::GraphicsApp> graphicsApp = FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
 
-  MPresenter presenter{*graphicsApp->getWindow().getMainIView()};
+  MPresenter presenter{graphicsApp->getWindow().getMainIView()};
 
   MModel meshlerModel;
   meshlerModel.registerListener(&presenter);

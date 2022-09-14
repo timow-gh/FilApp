@@ -4,10 +4,10 @@
 namespace Graphics
 {
 
-class MouseButtonEvent;
-class MouseMoveEvent;
-class MouseWheelEvent;
-class KeyEvent;
+struct MouseButtonEvent;
+struct MouseMoveEvent;
+struct MouseWheelEvent;
+struct KeyEvent;
 
 class InputEventListener {
 public:

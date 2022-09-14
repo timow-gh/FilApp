@@ -14,7 +14,7 @@ class View;
 class PointRenderable;
 class LineRenderable;
 class TriangleRenderable;
-class Vertex;
+struct Vertex;
 } // namespace Graphics
 
 namespace Meshler

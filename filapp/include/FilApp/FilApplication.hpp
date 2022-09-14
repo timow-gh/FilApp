@@ -21,6 +21,10 @@ namespace FilApp
 
 class FilAppWindow;
 
+// This class is the main entry point for the FilApp application.
+// It is responsible for creating the window and the filament engine.
+// The filament engine keeps track of all resources created by the application
+// and manages the rendering tread as well as the hardware renderer.
 class FILAPP_EXPORT FilApplication final : public Graphics::GraphicsApp {
 public:
   CORE_NODISCARD static std::shared_ptr<Graphics::GraphicsApp> getFilApp(const Graphics::AppConfig& appConfig,
@@ -47,10 +51,10 @@ public:
 
 private:
   Graphics::AppConfig m_appConfig;
-  filament::Engine* m_engine = nullptr;
+  filament::Engine* m_engine{nullptr};
   FilAppRenderableCreator m_renderableCreator;
   std::unique_ptr<FilAppWindow> m_window;
-  bool m_closeApp = false;
+  bool m_closeApp{false};
 };
 } // namespace FilApp
 

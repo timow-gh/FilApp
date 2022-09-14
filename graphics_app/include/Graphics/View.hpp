@@ -16,7 +16,8 @@ class TriangleRenderable;
 class PointRenderable;
 class LineRenderable;
 class RenderableId;
-class Vec3;
+struct Vec3;
+class Gui;
 
 class View : public InputEventListener {
 public:
@@ -42,7 +43,9 @@ public:
   virtual void animate(double deltaT) = 0;
 
   CORE_NODISCARD virtual Viewport getViewport() const = 0;
-  virtual void resize(const Viewport& viewport) = 0;
+  virtual void setViewport(const Viewport& viewport) = 0;
+
+  void virtual render(double_t timeStepInSeconds) = 0;
 
 protected:
   View() = default;

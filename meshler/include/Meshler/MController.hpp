@@ -29,6 +29,7 @@ public:
 
   CORE_NODISCARD static std::shared_ptr<MController> create(MPresenter& meshlerPresenter, MModel& meshlerModel);
 
+  using Graphics::GraphicsController::RayPickEventListener::onEvent;
   void onEvent(const Graphics::KeyEvent& keyEvent) override;
   void setNextInteractor(const InteractorCommand& command);
 };

@@ -3,6 +3,7 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Meshler/MGuid.hpp>
+#include <LinAl/LinearAlgebra.hpp>
 
 namespace Meshler
 {
@@ -22,7 +23,7 @@ class MGrid;
 
 class MModelEventListener {
 public:
-  virtual ~MModelEventListener() = default;
+  virtual ~MModelEventListener();
 
   virtual void onPreAddEvent() {}
   virtual void onModelPostAddEvent() {}

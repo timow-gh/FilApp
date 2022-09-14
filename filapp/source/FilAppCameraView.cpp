@@ -22,11 +22,12 @@ using namespace Graphics;
 
 namespace FilApp
 {
-FilAppCameraView::FilAppCameraView(const Graphics::ViewConfig& viewConfig, FilAppScene& filAppScene, filament::Renderer& renderer)
+FilAppCameraView::FilAppCameraView(const Graphics::ViewConfig& viewConfig, FilAppScene& filAppScene, filament::Renderer* renderer)
     : m_name(viewConfig.name)
-    , m_engine(renderer.getEngine())
-    , m_viewConfig(viewConfig)
+    , m_renderer(renderer)
+    , m_engine(renderer->getEngine())
     , m_filAppScene(filAppScene)
+    , m_viewConfig(viewConfig)
 {
   m_filamentView = m_engine->createView();
   m_filamentView->setName(m_name.c_str());
@@ -36,14 +37,7 @@ FilAppCameraView::FilAppCameraView(const Graphics::ViewConfig& viewConfig, FilAp
     m_filamentView->setAntiAliasing(filament::AntiAliasing::FXAA);
   }
 
-  auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),
-                       viewConfig.skyBoxColor.getGreen(),
-                       viewConfig.skyBoxColor.getBlue(),
-                       viewConfig.skyBoxColor.getAlpha()};
-  m_skybox = filament::Skybox::Builder().color(vec4ToFloat4(colorVec)).build(*m_engine);
-
   m_filamentView->setScene(m_filAppScene.get().getFilamentScene());
-  m_filAppScene.get().setSkybox(m_skybox);
 
   utils::EntityManager& entityManager = utils::EntityManager::get();
   m_cameraEntity = entityManager.create();
@@ -69,11 +63,10 @@ FilAppCameraView::FilAppCameraView(const Graphics::ViewConfig& viewConfig, FilAp
                                                .build(toFilamentCameraMode(m_viewConfig.cameraMode)));
   else
     CORE_POSTCONDITION_ASSERT(false, "Camera not implemented.");
-  ;
 
   m_cameraHomeBookMark = m_cameraManipulator->getCurrentBookmark();
 
-  updateViewPort(m_viewConfig.viewport);
+  setViewport(m_viewConfig.viewport);
 }
 
 FilAppCameraView::~FilAppCameraView()
@@ -81,7 +74,6 @@ FilAppCameraView::~FilAppCameraView()
   utils::EntityManager& entityManager = utils::EntityManager::get();
   entityManager.destroy(m_cameraEntity);
   m_engine->destroyCameraComponent(m_cameraEntity);
-  m_engine->destroy(m_skybox);
   m_engine->destroy(m_filamentView);
 }
 
@@ -89,6 +81,16 @@ void FilAppCameraView::animate(double_t deltaT)
 {
   for (const auto& animationCallBack: m_animationCallbacks)
     animationCallBack(deltaT);
+}
+void FilAppCameraView::render([[maybe_unused]] double_t timeStepInSeconds)
+{
+  CORE_PRECONDITION_DEBUG_ASSERT(m_renderer, "Renderer not set.");
+  m_renderer->render(m_filamentView);
+}
+void FilAppCameraView::setFilAppScene(FilAppScene& filAppScene)
+{
+  m_filAppScene = filAppScene;
+  m_filamentView->setScene(m_filAppScene.get().getFilamentScene());
 }
 
 filament::View* FilAppCameraView::getFilamentView()
@@ -203,7 +205,14 @@ Viewport FilAppCameraView::getViewport() const
           m_filamentViewport.height};
 }
 
-void FilAppCameraView::updateViewPort(const Viewport& viewport)
+void FilAppCameraView::setCamera(filament::Camera* camera)
+{
+  CORE_PRECONDITION_DEBUG_ASSERT(camera, "Camera not set.");
+  CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
+  m_filamentView->setCamera(camera);
+}
+
+void FilAppCameraView::setViewport(const Viewport& viewport)
 {
   CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
   DEBUG_CHECK_CAMERA_MANIP()
@@ -214,18 +223,6 @@ void FilAppCameraView::updateViewPort(const Viewport& viewport)
   configureCameraProjection();
   m_filamentView->setCamera(m_camera);
   m_cameraManipulator->setViewport(static_cast<int>(viewport.width), static_cast<int>(viewport.height));
-}
-
-void FilAppCameraView::setCamera(filament::Camera* camera)
-{
-  CORE_PRECONDITION_DEBUG_ASSERT(camera, "Camera not set.");
-  CORE_PRECONDITION_DEBUG_ASSERT(m_filamentView, "Filament view not set.");
-  m_filamentView->setCamera(camera);
-}
-
-void FilAppCameraView::resize(const Viewport& viewport)
-{
-  updateViewPort(viewport);
 }
 
 void FilAppCameraView::onEvent(const MouseButtonEvent& mouseButtonEvent)

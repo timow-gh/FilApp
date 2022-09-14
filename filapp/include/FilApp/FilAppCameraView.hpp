@@ -15,6 +15,7 @@ DISABLE_ALL_WARNINGS
 ENABLE_ALL_WARNINGS
 #include <Core/Types/TString.hpp>
 #include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppGuiContext.hpp>
 #include <FilApp/FilAppRenderable.hpp>
 #include <FilApp/FilAppRenderableCreator.hpp>
 #include <FilApp/FilAppScene.hpp>
@@ -39,10 +40,11 @@ public:
 
 private:
   Core::TString m_name;
+  filament::Renderer* m_renderer{nullptr};
   filament::Engine* m_engine = nullptr;
   filament::View* m_filamentView = nullptr;
-  filament::Skybox* m_skybox = nullptr;
   std::reference_wrapper<FilAppScene> m_filAppScene;
+  std::unique_ptr<Graphics::Gui> m_gui;
 
   std::unique_ptr<CameraManipulator> m_cameraManipulator = nullptr;
   filament::Camera* m_camera = nullptr;
@@ -58,7 +60,8 @@ private:
   Core::TVector<AnimationCallBack> m_animationCallbacks;
 
 public:
-  FilAppCameraView(const Graphics::ViewConfig& viewConfig, FilAppScene& filAppScene, filament::Renderer& renderer);
+  FilAppCameraView(const Graphics::ViewConfig& viewConfig, FilAppScene& filAppScene, filament::Renderer* renderer);
+
   ~FilAppCameraView() override;
 
   CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;
@@ -77,9 +80,7 @@ public:
   void addRotationAnimation(Graphics::RenderableId renderableIdentifier, const Graphics::Vec3& rotationAxis) override;
 
   CORE_NODISCARD Graphics::Viewport getViewport() const override;
-  void updateViewPort(const Graphics::Viewport& viewport);
-  void setCamera(filament::Camera* camera);
-  void resize(const Graphics::Viewport& viewport) override;
+  void setViewport(const Graphics::Viewport& viewport) override;
 
   void onEvent(const Graphics::MouseButtonEvent& mouseButtonEvent) override;
   void onEvent(const Graphics::MouseMoveEvent& mouseMoveEvent) override;
@@ -87,6 +88,12 @@ public:
   void onEvent(const Graphics::KeyEvent& keyEvent) override;
 
   void animate(double_t deltaT) override;
+
+  void render(double_t timeStepInSeconds) override;
+
+  void setCamera(filament::Camera* camera);
+
+  void setFilAppScene(FilAppScene& filAppScene);
 
   CORE_NODISCARD filament::View* getFilamentView();
   CORE_NODISCARD filament::Camera* getCamera();

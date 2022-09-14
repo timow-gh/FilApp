@@ -1,5 +1,6 @@
 #include <Core/Utils/Assert.hpp>
 #include <FilApp/FilAppConversion.hpp>
+#include <FilApp/FilAppGuiContext.hpp>
 #include <FilApp/FilAppWindow.hpp>
 #include <Graphics/InputEvents/KeyEvent.hpp>
 #include <Graphics/InputEvents/MouseButtonEvent.hpp>
@@ -43,8 +44,6 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
   }
   else
   {
-    m_backend = m_engine->getBackend();
-
     void* nativeWindow = ::getNativeWindow(m_sdlWindow);
     void* nativeSwapChain = nativeWindow;
     m_swapChain = m_engine->createSwapChain(nativeSwapChain);
@@ -54,23 +53,33 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
 
   ViewConfig viewConfig;
   viewConfig.name = "MainView";
-  viewConfig.viewport = calcWindowViewport();
-  m_mainView = std::make_unique<FilAppCameraView>(viewConfig, m_filAppScene, *m_renderer);
-}
+  viewConfig.viewport = windowViewport(m_sdlWindow);
+  m_width = viewConfig.viewport.width;
+  m_height = viewConfig.viewport.height;
 
-InputEventDispatcher& FilAppWindow::getInputEventDispatcher()
-{
-  return m_inputEventDispatcher;
-}
+  uint32_t denominator = 3;
+  uint32_t sideBarWidth = m_width / denominator;
+  uint32_t contentWidth = m_width - sideBarWidth;
 
-RayPickEventDispatcher& FilAppWindow::getRayPickEventDispatcher()
-{
-  return m_rayPickEventDispatcher;
+  m_views.push_back(std::make_unique<FilAppCameraView>(viewConfig, m_filAppScene, m_renderer));
+  m_contentViewport = Viewport(sideBarWidth, 0, contentWidth, m_height);
+  m_views.front()->setViewport(m_contentViewport);
+
+  constexpr float_t pixelRatio = 1.0f;
+  m_guiContext = createFilAppGuiContext(m_engine, m_renderer, pixelRatio);
+  m_guiViewport = Viewport(0, 0, sideBarWidth, m_height);
+  m_guiContext.setViewPort(m_guiViewport);
+
+  auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),
+                       viewConfig.skyBoxColor.getGreen(),
+                       viewConfig.skyBoxColor.getBlue(),
+                       viewConfig.skyBoxColor.getAlpha()};
+  m_skybox = filament::Skybox::Builder().color(vec4ToFloat4(colorVec)).build(*m_engine);
+  m_filAppScene.setSkybox(m_skybox);
 }
 
 void FilAppWindow::event(const MouseButtonEvent& evt)
 {
-  m_mainView->onEvent(evt);
   for (const auto& view: m_views)
   {
     if (intersects(view->getViewport(), evt.x, evt.y))
@@ -83,7 +92,6 @@ void FilAppWindow::event(const MouseButtonEvent& evt)
 
 void FilAppWindow::event(const MouseMoveEvent& evt)
 {
-  m_mainView->onEvent(evt);
   for (const auto& view: m_views)
   {
     if (intersects(view->getViewport(), evt.x, evt.y))
@@ -113,8 +121,6 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
     // If we're currently in a mouse grap session, it should be the mouse grab's
     // target view. Otherwise, it should be whichever view we're currently
     // hovering over.
-    m_mainView->onEvent(keyEvent);
-
     for (auto const& view: m_views)
     {
       if (intersects(view->getViewport(), m_lastX, m_lastY))
@@ -140,7 +146,6 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
 
 void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
-  m_mainView->onEvent(MouseWheelEvent(x, deltaT));
   for (auto const& view: m_views)
   {
     if (intersects(view->getViewport(), m_lastX, m_lastY))
@@ -153,27 +158,9 @@ void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 
 FilAppWindow::~FilAppWindow()
 {
+  m_engine->destroy(m_skybox);
   m_filAppScene.destroy();
   SDL_DestroyWindow(m_sdlWindow);
-}
-
-Core::TVector<View*> FilAppWindow::getViews()
-{
-  Core::TVector<View*> views;
-  views.push_back(m_mainView.get());
-  for (const auto& filappview: m_views)
-    views.push_back(filappview.get());
-  return views;
-}
-
-Window::WindowId FilAppWindow::getIWindowId()
-{
-  return m_windowId;
-}
-
-SDL_Window* FilAppWindow::getSdlWindow() const
-{
-  return m_sdlWindow;
 }
 
 uint32_t FilAppWindow::getWidth() const
@@ -186,18 +173,12 @@ uint32_t FilAppWindow::getHeight() const
   return m_height;
 }
 
-filament::Renderer* FilAppWindow::getRenderer()
-{
-  return m_renderer;
-}
-
 filament::SwapChain* FilAppWindow::getSwapChain()
 {
   return m_swapChain;
 }
 
 filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const
-
 {
   int dw, dh, ww, wh;
   SDL_GL_GetDrawableSize(m_sdlWindow, &dw, &dh);
@@ -208,42 +189,60 @@ filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint
   return filament::math::int2{x, y};
 }
 
-void FilAppWindow::resize()
+void FilAppWindow::resizeWindow()
 {
   if (m_sdlWindow)
-    m_mainView->resize(calcWindowViewport());
+  {
+    auto viewPort = windowViewport(m_sdlWindow);
+    m_width = viewPort.width;
+    m_height = viewPort.height;
+    calculateViewports();
+  }
 }
 
-View* FilAppWindow::getMainIView()
+View& FilAppWindow::getMainIView()
 {
-  return m_mainView.get();
+  return *m_views.front();
 }
 
-void FilAppWindow::render()
+void FilAppWindow::render(double_t timeInSeconds)
 {
   if (m_renderer->beginFrame(getSwapChain()))
   {
-    m_renderer->render(m_mainView->getFilamentView());
     for (auto const& view: m_views)
-      m_renderer->render(view->getFilamentView());
+      view->render(timeInSeconds);
+    m_guiContext.render(timeInSeconds);
     m_renderer->endFrame();
   }
 }
 
 void FilAppWindow::animate(double_t deltaT)
 {
-  if (FilAppCameraView::CameraManipulator* mainViewManip = m_mainView->getCameraManipulator())
+  if (FilAppCameraView::CameraManipulator* mainViewManip = m_views.front()->getCameraManipulator())
   {
     filament::math::float3 eye;
     filament::math::float3 center;
     filament::math::float3 up;
     mainViewManip->update(static_cast<float_t>(deltaT));
     mainViewManip->getLookAt(&eye, &center, &up);
-    m_mainView->getCamera()->lookAt(eye, center, up);
+    m_views.front()->getCamera()->lookAt(eye, center, up);
   }
 
   for (auto& filappview: m_views)
     filappview->animate(deltaT);
+}
+
+void FilAppWindow::calculateViewports()
+{
+  uint32_t denominator = 3;
+  uint32_t sideBarWidth = m_width / denominator;
+  uint32_t contentWidth = m_width - sideBarWidth;
+
+  m_contentViewport = Viewport(sideBarWidth, 0, contentWidth, m_height);
+  m_views.front()->setViewport(m_contentViewport);
+
+  m_guiViewport = Viewport(0, 0, sideBarWidth, m_height);
+  m_guiContext.setViewPort(m_guiViewport);
 }
 
 bool intersects(const Viewport& viewport, size_t x, size_t y)
@@ -254,14 +253,12 @@ bool intersects(const Viewport& viewport, size_t x, size_t y)
   return false;
 }
 
-Viewport FilAppWindow::calcWindowViewport()
+Viewport windowViewport(SDL_Window* sdlWindow)
 {
   int width;
   int height;
-  SDL_GL_GetDrawableSize(m_sdlWindow, &width, &height);
-  m_width = static_cast<uint32_t>(width);
-  m_height = static_cast<uint32_t>(height);
-  return {0, 0, m_width, m_height};
+  SDL_GL_GetDrawableSize(sdlWindow, &width, &height);
+  return {0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
 }
 
 } // namespace FilApp
