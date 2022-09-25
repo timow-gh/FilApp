@@ -9,7 +9,12 @@
 #include <Geometry/Intersection/IntersectionPlane.hpp>
 #include <Geometry/Intersection/IntersectionSphere.hpp>
 #include <Geometry/Sphere.hpp>
+#include <Geometry/Transformation/TransformCone.hpp>
+#include <Geometry/Transformation/TransformCuboid.hpp>
+#include <Geometry/Transformation/TransformCylinder.hpp>
+#include <Geometry/Transformation/TransformSegment.hpp>
 #include <Geometry/Transformation/TransformSphere.hpp>
+#include <Geometry/Transformation/TransformVec.hpp>
 #include <Meshler/GeometryElements/GeometryElements.hpp>
 #include <Meshler/GeometryElements/MSphere.hpp>
 #include <Meshler/GeometryElements/SnapGeometries.hpp>

@@ -70,6 +70,14 @@ public:
 
 private:
   void calculateViewports();
+  template <typename TMouseEvent>
+  TMouseEvent makeMouseEventRelativeToViewport(const TMouseEvent& mouseEvent, const Graphics::Viewport& viewport) const
+  {
+    TMouseEvent evtCopy = mouseEvent;
+    evtCopy.x = mouseEvent.x - viewport.left;
+    evtCopy.y = mouseEvent.y - viewport.bottom;
+    return evtCopy;
+  }
 };
 
 CORE_NODISCARD bool intersects(const Graphics::Viewport& viewport, size_t x, size_t y);

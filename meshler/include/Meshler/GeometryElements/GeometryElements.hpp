@@ -3,12 +3,6 @@
 
 #include <Core/Types/TMap.hpp>
 #include <Core/Utils/Compiler.hpp>
-#include <Geometry/Transformation/TransformCone.hpp>
-#include <Geometry/Transformation/TransformCuboid.hpp>
-#include <Geometry/Transformation/TransformCylinder.hpp>
-#include <Geometry/Transformation/TransformSegment.hpp>
-#include <Geometry/Transformation/TransformSphere.hpp>
-#include <Geometry/Transformation/TransformVec.hpp>
 #include <Meshler/GeometryElements/GeomElementContainer.hpp>
 #include <Meshler/MGuid.hpp>
 

@@ -84,7 +84,7 @@ void FilAppWindow::event(const MouseButtonEvent& evt)
   {
     if (intersects(view->getViewport(), evt.x, evt.y))
     {
-      view->onEvent(evt);
+      view->onEvent(makeMouseEventRelativeToViewport(evt, view->getViewport()));
       break;
     }
   }
@@ -96,7 +96,7 @@ void FilAppWindow::event(const MouseMoveEvent& evt)
   {
     if (intersects(view->getViewport(), evt.x, evt.y))
     {
-      view->onEvent(evt);
+      view->onEvent(makeMouseEventRelativeToViewport(evt, view->getViewport()));
       break;
     }
   }
