@@ -94,39 +94,39 @@ void FilApplication::run()
     {
       filament::math::int2 pos =
           m_window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
-      m_window->event(MouseButtonEvent(MouseButtonEvent::Type::PUSH,
+      m_window->event(MouseButtonEvent{MouseButtonEvent::Type::PUSH,
                                        sdlEvent.button.button,
                                        sdlEvent.button.timestamp,
                                        sdlEvent.button.windowID,
                                        sdlEvent.button.clicks,
                                        static_cast<uint32_t>(pos.x),
                                        static_cast<uint32_t>(pos.y),
-                                       deltaT));
+                                       deltaT});
       break;
     }
     case SDL_MOUSEBUTTONUP:
     {
       filament::math::int2 pos =
           m_window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
-      m_window->event(MouseButtonEvent(MouseButtonEvent::Type::RELEASE,
+      m_window->event(MouseButtonEvent{MouseButtonEvent::Type::RELEASE,
                                        sdlEvent.button.button,
                                        sdlEvent.button.timestamp,
                                        sdlEvent.button.windowID,
                                        sdlEvent.button.clicks,
                                        static_cast<uint32_t>(pos.x),
                                        static_cast<uint32_t>(pos.y),
-                                       deltaT));
+                                       deltaT});
       break;
     }
     case SDL_MOUSEMOTION:
     {
       filament::math::int2 pos =
           m_window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
-      m_window->event(MouseMoveEvent(sdlEvent.button.timestamp,
+      m_window->event(MouseMoveEvent{sdlEvent.button.timestamp,
                                      sdlEvent.button.windowID,
                                      static_cast<uint32_t>(pos.x),
                                      static_cast<uint32_t>(pos.y),
-                                     deltaT));
+                                     deltaT});
       break;
     }
     case SDL_WINDOWEVENT:

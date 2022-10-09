@@ -164,13 +164,13 @@ void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
   if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
   {
-    m_guiContext.onEvent(MouseWheelEvent(x, deltaT));
+    m_guiContext.onEvent(MouseWheelEvent{x, deltaT});
   }
   for (auto const& view: m_views)
   {
     if (intersects(view->getViewport(), m_lastX, m_lastY))
     {
-      view->onEvent(MouseWheelEvent(x, deltaT));
+      view->onEvent(MouseWheelEvent{x, deltaT});
       break;
     }
   }
