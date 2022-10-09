@@ -5,6 +5,8 @@
 
 ![](media/ubuntu_meshler.png)
 
+Dabbeling around with CMake, MVC and OOP for Clean Architecture.
+
 ## Building
 
 Download the source code:
