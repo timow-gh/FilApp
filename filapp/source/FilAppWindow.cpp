@@ -63,7 +63,6 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
 
   m_views.push_back(std::make_unique<FilAppCameraView>(viewConfig, m_filAppScene, m_renderer));
   m_contentViewport = Viewport(sideBarWidth, 0, contentWidth, m_height);
-  //  m_contentViewport = Viewport(0, 0, m_width, m_height);
   m_views.front()->setViewport(m_contentViewport);
 
   constexpr float_t pixelRatio = 1.0f;
@@ -71,7 +70,6 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
   m_filamentGuiView = m_engine->createView();
   m_guiContext = createFilAppGuiContext(m_filamentGuiView, m_engine, m_renderer, pixelRatio);
   m_guiViewport = Viewport(0, 0, sideBarWidth, m_height);
-  //  m_guiViewport = Viewport(0, 0, m_height, m_height);
   m_guiContext.setViewPort(m_guiViewport);
 
   auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),

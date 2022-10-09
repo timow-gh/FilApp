@@ -6,8 +6,10 @@ DISABLE_ALL_WARNINGS
 #include <filagui/ImGuiHelper.h>
 #include <filament/View.h>
 ENABLE_ALL_WARNINGS
+#include <Core/Types/TString.hpp>
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
+#include <Graphics/Command.hpp>
 #include <Graphics/Gui.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
 #include <Graphics/Viewport.hpp>
@@ -27,12 +29,14 @@ private:
 
 public:
   void addWidget(FilAppWidgetFunctor&& filAppWidgetCallable) { m_filAppWidgetCallables.push_back(std::move(filAppWidgetCallable)); }
-  void invoke() const
+  void udpate() const
   {
     for (const auto& filAppWidgetCallable: m_filAppWidgetCallables)
       filAppWidgetCallable();
   }
 };
+
+FilAppGuiWidget::FilAppWidgetFunctor creatButton(const Graphics::Command& command);
 
 class FilAppGuiContext
     : public Graphics::Gui
@@ -53,6 +57,13 @@ public:
   void onEvent(const Graphics::MouseMoveEvent& event) override;
   void onEvent(const Graphics::MouseWheelEvent& event) override;
   void onEvent(const Graphics::KeyEvent& event) override;
+
+  void registerButtonCommand(const Graphics::Command& command) override;
+
+  void addFilAppWidget(FilAppGuiWidget::FilAppWidgetFunctor&& filAppWidgetCallable)
+  {
+    m_filAppGuiWidget.addWidget(std::move(filAppWidgetCallable));
+  }
 
   CORE_NODISCARD Graphics::Viewport getViewport() const;
   void setViewPort(const Graphics::Viewport& viewport);

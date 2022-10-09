@@ -12,8 +12,7 @@ CommandInteractor::CommandInteractor(MController& controller)
 
 void CommandInteractor::onEvent(const Graphics::KeyEvent& keyEvent)
 {
-  if (auto nextInteractorCommand = m_interactorKeyMap.nextInteractor(keyEvent.keyScancode))
-    m_controller->setNextInteractor(*nextInteractorCommand);
+  m_controller->setNextInteractor(m_interactorKeyMap.nextInteractor(keyEvent.keyScancode));
 }
 
 } // namespace Meshler

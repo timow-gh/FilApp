@@ -2,7 +2,7 @@
 #define MESHLER_COMMANDINTERACTOR_HPP
 
 #include <Graphics/InputEvents/InputEventListener.hpp>
-#include <Meshler/Interactors/InteractorKeyMap.hpp>
+#include <Meshler/Interactors/MeshlerCommandsKeyMap.hpp>
 
 namespace Meshler
 {
@@ -12,7 +12,7 @@ class MController;
 // Interactor that sets the currently active Interactor of the controller using the InteractorKeyMap
 class CommandInteractor : public Graphics::InputEventListener {
   MController* m_controller{nullptr};
-  InteractorKeyMap m_interactorKeyMap{};
+  MeshlerCommandsKeyMap m_interactorKeyMap{};
 
 public:
   explicit CommandInteractor(MController& controller);

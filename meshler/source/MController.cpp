@@ -3,9 +3,9 @@
 #include <Meshler/GeometryElements/MCylinderTraits.hpp>
 #include <Meshler/GeometryElements/MSphereTraits.hpp>
 #include <Meshler/Interactors/CommandInteractor.hpp>
-#include <Meshler/Interactors/InteractorCommands.hpp>
 #include <Meshler/Interactors/MElementPlacingInteractor.hpp>
 #include <Meshler/Interactors/MGridInteractor.hpp>
+#include <Meshler/Interactors/MeshlerCommands.hpp>
 #include <Meshler/MController.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MPresenter.hpp>
@@ -22,7 +22,7 @@ std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, M
   auto controller = std::make_shared<MController>(meshlerPresenter, meshlerModel);
   controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
   meshlerPresenter.registerListener(controller.get());
-  controller->setNextInteractor(InteractorCommand(Command::PLACING_INTERACTOR_SPHERE));
+  controller->setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_SPHERE);
 
   MGrid defaultGrid = MGrid{};
   FGuid defaultGridGuid = defaultGrid.getFGuid();
@@ -37,34 +37,33 @@ void MController::onEvent(const Graphics::KeyEvent& keyEvent)
 {
   m_commandInteractor->onEvent(keyEvent);
 }
-void MController::setNextInteractor(const InteractorCommand& command)
-
+void MController::setNextInteractor(const MeshlerCommands& meshlerCommand)
 {
   m_meshlerPresenter.get().removeListener(m_currentInteractor.get());
 
-  switch (command.getId())
+  switch (meshlerCommand)
   {
-  case Command::PLACING_INTERACTOR_SPHERE:
+  case MeshlerCommands::PLACING_INTERACTOR_SPHERE:
   {
     m_currentInteractor =
         std::make_unique<MElementPlacingInteractor<MSphere, double_t, SphereTraitsConfig>>(m_meshlerModel.get(),
                                                                                            SphereTraitsConfig<double_t>{});
     break;
   }
-  case Command::PLACING_INTERACTOR_CONE:
+  case MeshlerCommands::PLACING_INTERACTOR_CONE:
   {
     m_currentInteractor =
         std::make_unique<MElementPlacingInteractor<MCone, double_t, ConeTraitsConfig>>(m_meshlerModel.get(), ConeTraitsConfig<double_t>{});
     break;
   }
-  case Command::PLACING_INTERACTOR_CYLINDER:
+  case MeshlerCommands::PLACING_INTERACTOR_CYLINDER:
   {
     m_currentInteractor =
         std::make_unique<MElementPlacingInteractor<MCylinder, double_t, CylinderTraitsConfig>>(m_meshlerModel.get(),
                                                                                                CylinderTraitsConfig<double_t>{});
     break;
   }
-  case Command::PLACING_INTERACTOR_CUBOID:
+  case MeshlerCommands::PLACING_INTERACTOR_CUBOID:
   {
     m_currentInteractor =
         std::make_unique<MElementPlacingInteractor<MCuboid, double_t, CuboidTraitsConfig>>(m_meshlerModel.get(),
@@ -75,4 +74,36 @@ void MController::setNextInteractor(const InteractorCommand& command)
 
   m_meshlerPresenter.get().registerListener(m_currentInteractor.get());
 }
+void MController::onCommand(const std::uint32_t& commandId)
+{
+  switch (commandId)
+  {
+  case static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_SPHERE):
+  {
+    setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_SPHERE);
+    return;
+  }
+  case static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_CYLINDER):
+  {
+    setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_CYLINDER);
+    return;
+  }
+  case static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_CUBOID):
+  {
+    setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_CUBOID);
+    return;
+  }
+  case static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_CONE):
+  {
+    setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_CONE);
+    return;
+  }
+  default:
+  {
+    setNextInteractor(static_cast<MeshlerCommands>(MeshlerCommands::PLACING_INTERACTOR_SPHERE));
+    return;
+  }
+  }
+}
+
 } // namespace Meshler

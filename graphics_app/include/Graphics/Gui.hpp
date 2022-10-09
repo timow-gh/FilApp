@@ -1,12 +1,17 @@
 #ifndef MESHLER_GUI_HPP
 #define MESHLER_GUI_HPP
 
+#include <Graphics/Command.hpp>
+
 namespace Graphics
 {
 
 class Gui {
 public:
   virtual ~Gui();
+
+  // Creates a sidebar button for each registered command
+  virtual void registerButtonCommand(const Command& command) = 0;
 
   virtual void render(double timeStepInSeconds) = 0;
 

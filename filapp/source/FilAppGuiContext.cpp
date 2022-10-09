@@ -11,16 +11,17 @@ ENABLE_ALL_WARNINGS
 #include <Graphics/InputEvents/MouseButtonEvent.hpp>
 #include <Graphics/InputEvents/MouseMoveEvent.hpp>
 #include <Graphics/InputEvents/MouseWheelEvent.hpp>
+#include <utility>
 
 namespace FilApp
 {
 
-FilAppGuiWidget::FilAppWidgetFunctor buttons(std::function<void()> interactorCallBack)
+FilAppGuiWidget::FilAppWidgetFunctor button(const Graphics::Command& command)
 {
-  return [interactorCallBack]()
+  return [cmd = command]()
   {
-    if (!ImGui::Button("Look at this pretty button"))
-      interactorCallBack();
+    if (!ImGui::Button(cmd.getName().c_str()))
+      cmd.getCallback()(cmd.getId());
   };
 }
 
@@ -47,12 +48,7 @@ void FilAppGuiContext::updateUserInterface()
 
   //  ImGui::ShowDemoWindow();
 
-  if (ImGui::CollapsingHeader("View"))
-  {
-    ImGui::Indent();
-    ImGui::Checkbox("Post-processing", &m_postProcessingEnabled);
-    ImGui::Unindent();
-  }
+  m_filAppGuiWidget.udpate();
 
   ImGui::End();
 }
@@ -118,6 +114,10 @@ void FilAppGuiContext::onEvent(const Graphics::MouseWheelEvent& event)
 void FilAppGuiContext::onEvent(const Graphics::KeyEvent& event)
 {
   CORE_POSTCONDITION_ASSERT(false, "Not implemented");
+}
+void FilAppGuiContext::registerButtonCommand(const Graphics::Command& command)
+{
+  addFilAppWidget(creatButton(command));
 }
 
 FilAppGuiContext

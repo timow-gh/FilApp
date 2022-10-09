@@ -13,8 +13,8 @@ set(MESHLER_PUBLIC_HEADERS
         include/Meshler/GeometryElements/MGrid.hpp
         include/Meshler/GeometryElements/MGeometryConfigBase.hpp
         include/Meshler/Interactors/CommandInteractor.hpp
-        include/Meshler/Interactors/InteractorCommands.hpp
-        include/Meshler/Interactors/InteractorKeyMap.hpp
+        include/Meshler/Interactors/MeshlerCommands.hpp
+        include/Meshler/Interactors/MeshlerCommandsKeyMap.hpp
         include/Meshler/Interactors/MElementPlacingInteractor.hpp
         include/Meshler/GeometryElements/SnapGeometries.hpp
         include/Meshler/Interactors/MGridInteractor.hpp

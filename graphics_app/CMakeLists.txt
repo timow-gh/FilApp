@@ -23,7 +23,7 @@ set(GRAPHICS_HEADER
         include/Graphics/AppConfig.hpp
         include/Graphics/Vertex.hpp
         include/Graphics/Vec.hpp
-        )
+        include/Graphics/Command.hpp include/Graphics/GraphicsCommandListener.hpp)
 
 set(GRAPHICS_SOURCES
         source/View.cpp

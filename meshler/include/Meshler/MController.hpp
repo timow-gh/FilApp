@@ -4,6 +4,7 @@
 #include <Graphics/GraphicsController.hpp>
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
+#include <Meshler/Interactors/MeshlerCommands.hpp>
 #include <functional>
 #include <memory>
 
@@ -14,7 +15,6 @@ class MPresenter;
 class MModel;
 class CommandInteractor;
 class MGridInteractor;
-class InteractorCommand;
 
 class MController : public Graphics::GraphicsController {
   std::reference_wrapper<MPresenter> m_meshlerPresenter;
@@ -31,7 +31,9 @@ public:
 
   using Graphics::GraphicsController::RayPickEventListener::onEvent;
   void onEvent(const Graphics::KeyEvent& keyEvent) override;
-  void setNextInteractor(const InteractorCommand& command);
+  void setNextInteractor(const MeshlerCommands& meshlerCommand);
+
+  void onCommand(const std::uint32_t& commandId) override;
 };
 
 } // namespace Meshler
