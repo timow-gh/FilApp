@@ -6,6 +6,7 @@ DISABLE_ALL_WARNINGS
 #include <filagui/ImGuiHelper.h>
 #include <filament/View.h>
 ENABLE_ALL_WARNINGS
+#include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
 #include <Graphics/Gui.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
@@ -14,6 +15,24 @@ ENABLE_ALL_WARNINGS
 
 namespace FilApp
 {
+
+class FilAppGuiWidget {
+public:
+  // The Callbacks hold everything needed to build Imgui widgets and their callbacks.
+  // Invoking the FilAppWidgetCallback rebuilds the Imgui widgets and is only triggered from Imgui itself.
+  using FilAppWidgetFunctor = std::function<void()>;
+
+private:
+  Core::TVector<FilAppWidgetFunctor> m_filAppWidgetCallables;
+
+public:
+  void addWidget(FilAppWidgetFunctor&& filAppWidgetCallable) { m_filAppWidgetCallables.push_back(std::move(filAppWidgetCallable)); }
+  void invoke() const
+  {
+    for (const auto& filAppWidgetCallable: m_filAppWidgetCallables)
+      filAppWidgetCallable();
+  }
+};
 
 class FilAppGuiContext
     : public Graphics::Gui
@@ -50,13 +69,13 @@ private:
   filament::View* m_view{nullptr};
   std::unique_ptr<filagui::ImGuiHelper> m_ImGuiHelper;
   bool m_postProcessingEnabled{false};
+  FilAppGuiWidget m_filAppGuiWidget;
 };
 
 CORE_NODISCARD FilAppGuiContext createFilAppGuiContext(filament::View* filamentView,
                                                        filament::Engine* engine,
                                                        filament::Renderer* renderer,
                                                        float pixelRatio);
-
 
 } // namespace FilApp
 

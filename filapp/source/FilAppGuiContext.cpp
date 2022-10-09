@@ -15,6 +15,15 @@ ENABLE_ALL_WARNINGS
 namespace FilApp
 {
 
+FilAppGuiWidget::FilAppWidgetFunctor buttons(std::function<void()> interactorCallBack)
+{
+  return [interactorCallBack]()
+  {
+    if (!ImGui::Button("Look at this pretty button"))
+      interactorCallBack();
+  };
+}
+
 FilAppGuiContext::FilAppGuiContext(std::unique_ptr<filagui::ImGuiHelper>&& imGuiHelper, filament::View* view, filament::Renderer* renderer)
     : m_ImGuiHelper(std::move(imGuiHelper))
     , m_renderer(renderer)
@@ -80,18 +89,18 @@ void FilAppGuiContext::onEvent(const Graphics::MouseButtonEvent& event)
   io.MousePos.x = event.x;
   io.MousePos.y = m_viewport.height - event.y;
 
-  if ( event.type == Graphics::MouseButtonEvent::Type::PUSH )
+  if (event.type == Graphics::MouseButtonEvent::Type::PUSH)
   {
-    if ( event.buttonIndex == 1 )
+    if (event.buttonIndex == 1)
       io.MouseDown[0] = true;
-    else if ( event.buttonIndex == 3 )
+    else if (event.buttonIndex == 3)
       io.MouseDown[1] = true;
   }
-  else if ( event.type == Graphics::MouseButtonEvent::Type::RELEASE )
+  else if (event.type == Graphics::MouseButtonEvent::Type::RELEASE)
   {
-    if ( event.buttonIndex == 1 )
+    if (event.buttonIndex == 1)
       io.MouseDown[0] = false;
-    else if ( event.buttonIndex == 3 )
+    else if (event.buttonIndex == 3)
       io.MouseDown[1] = false;
   }
 }
