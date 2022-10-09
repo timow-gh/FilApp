@@ -11,8 +11,6 @@ struct KeyEvent;
 
 class InputEventListener {
 public:
-  InputEventListener(const InputEventListener& view) = delete;
-
   virtual ~InputEventListener();
 
   virtual void onRemoveInputEventListener() {}

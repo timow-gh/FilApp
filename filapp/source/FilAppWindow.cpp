@@ -63,11 +63,15 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
 
   m_views.push_back(std::make_unique<FilAppCameraView>(viewConfig, m_filAppScene, m_renderer));
   m_contentViewport = Viewport(sideBarWidth, 0, contentWidth, m_height);
+  //  m_contentViewport = Viewport(0, 0, m_width, m_height);
   m_views.front()->setViewport(m_contentViewport);
 
   constexpr float_t pixelRatio = 1.0f;
-  m_guiContext = createFilAppGuiContext(m_engine, m_renderer, pixelRatio);
+  CORE_POSTCONDITION_DEBUG_ASSERT(m_views.empty() == false, "No views created");
+  m_filamentGuiView = m_engine->createView();
+  m_guiContext = createFilAppGuiContext(m_filamentGuiView, m_engine, m_renderer, pixelRatio);
   m_guiViewport = Viewport(0, 0, sideBarWidth, m_height);
+  //  m_guiViewport = Viewport(0, 0, m_height, m_height);
   m_guiContext.setViewPort(m_guiViewport);
 
   auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),
@@ -80,6 +84,10 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
 
 void FilAppWindow::event(const MouseButtonEvent& evt)
 {
+  if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
+  {
+    m_guiContext.onEvent(makeMouseEventRelativeToViewport(evt, m_guiContext.getViewport()));
+  }
   for (const auto& view: m_views)
   {
     if (intersects(view->getViewport(), evt.x, evt.y))
@@ -92,6 +100,10 @@ void FilAppWindow::event(const MouseButtonEvent& evt)
 
 void FilAppWindow::event(const MouseMoveEvent& evt)
 {
+  if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
+  {
+    m_guiContext.onEvent(makeMouseEventRelativeToViewport(evt, m_guiContext.getViewport()));
+  }
   for (const auto& view: m_views)
   {
     if (intersects(view->getViewport(), evt.x, evt.y))
@@ -129,6 +141,10 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
         break;
       }
     }
+    if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
+    {
+      m_guiContext.onEvent(keyEvent);
+    }
     break;
   }
   case KeyEvent::Type::RELEASE:
@@ -146,6 +162,10 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
 
 void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
+  if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
+  {
+    m_guiContext.onEvent(MouseWheelEvent(x, deltaT));
+  }
   for (auto const& view: m_views)
   {
     if (intersects(view->getViewport(), m_lastX, m_lastY))
@@ -159,6 +179,7 @@ void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 FilAppWindow::~FilAppWindow()
 {
   m_engine->destroy(m_skybox);
+  m_engine->destroy(m_filamentGuiView);
   m_filAppScene.destroy();
   SDL_DestroyWindow(m_sdlWindow);
 }

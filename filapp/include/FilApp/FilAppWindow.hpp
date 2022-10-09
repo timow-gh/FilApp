@@ -16,6 +16,7 @@ ENABLE_ALL_WARNINGS
 #include <Graphics/Window.hpp>
 #include <Graphics/WindowConfig.hpp>
 #include <SDL_video.h>
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -35,6 +36,7 @@ class FilAppWindow final : public Graphics::Window {
 
   Graphics::Viewport m_contentViewport;
   Graphics::Viewport m_guiViewport;
+  filament::View* m_filamentGuiView;
   FilAppGuiContext m_guiContext;
   Core::TVector<std::unique_ptr<FilAppCameraView>> m_views;
 

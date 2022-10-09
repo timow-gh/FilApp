@@ -44,7 +44,6 @@ private:
   filament::Engine* m_engine = nullptr;
   filament::View* m_filamentView = nullptr;
   std::reference_wrapper<FilAppScene> m_filAppScene;
-  std::unique_ptr<Graphics::Gui> m_gui;
 
   std::unique_ptr<CameraManipulator> m_cameraManipulator = nullptr;
   filament::Camera* m_camera = nullptr;

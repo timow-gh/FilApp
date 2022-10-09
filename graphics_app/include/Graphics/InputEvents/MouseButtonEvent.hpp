@@ -17,6 +17,7 @@ struct MouseButtonEvent
   };
 
   Type type;
+  // buttonIndex is 1 for left, 3 for right mouse button
   std::uint32_t buttonIndex;
   std::uint32_t timestamp; // in milliseconds
   std::uint32_t windowId;

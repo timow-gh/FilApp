@@ -29,13 +29,13 @@ public:
   CORE_NODISCARD virtual RayPickEventDispatcher& getRayPickEventDispatcher() = 0;
 
   // clang-format off
-    virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;
-    virtual auto addRenderable(PointRenderable&& renderable) -> RenderableId = 0;
-    virtual auto addRenderable(LineRenderable&& renderable) -> RenderableId = 0;
-    CORE_NODISCARD virtual auto getRenderableIdentifiers() const -> Core::TVector<RenderableId> = 0;
-    virtual void removeRenderable(RenderableId renderableId) = 0;
-    virtual void updatePosition(RenderableId renderableId, const Vec3& position) = 0;
-    virtual void clearRenderables() = 0;
+  virtual auto addRenderable(TriangleRenderable&& renderable) -> RenderableId = 0;
+  virtual auto addRenderable(PointRenderable&& renderable) -> RenderableId = 0;
+  virtual auto addRenderable(LineRenderable&& renderable) -> RenderableId = 0;
+  CORE_NODISCARD virtual auto getRenderableIdentifiers() const -> Core::TVector<RenderableId> = 0;
+  virtual void removeRenderable(RenderableId renderableId) = 0;
+  virtual void updatePosition(RenderableId renderableId, const Vec3& position) = 0;
+  virtual void clearRenderables() = 0;
   // clang-format on
 
   // Animation prototype
