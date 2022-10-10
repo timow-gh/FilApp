@@ -27,7 +27,8 @@ set(MESHLER_PUBLIC_HEADERS
         include/Meshler/LinAlConversion.hpp
         include/Meshler/MModelEventListener.hpp
         include/Meshler/PresenterUtils.hpp
-        include/Meshler/RenderableBuilder.hpp)
+        include/Meshler/RenderableBuilder.hpp
+        include/Meshler/Interactors/Interactor.hpp)
 
 set(MESHLER_SOURCES
         source/GeometryElements/MSegments.cpp
@@ -42,7 +43,7 @@ set(MESHLER_SOURCES
         source/MPresenter.cpp
         source/RenderableBuilder.cpp
         source/MModel.cpp
-        source/MController.cpp source/MModelEventListener.cpp)
+        source/MController.cpp source/MModelEventListener.cpp source/Interactors/Interactor.cpp)
 
 add_library(meshler ${MESHLER_SOURCES} ${MESHLER_PUBLIC_HEADERS})
 add_library(meshler::meshler ALIAS meshler)

@@ -2,6 +2,7 @@
 #define GRAPHICS_WINDOW_HPP
 
 #include <Core/Utils/Compiler.hpp>
+#include <Graphics/Command.hpp>
 #include <vector>
 
 namespace Graphics
@@ -17,6 +18,7 @@ public:
   using WindowId = uint32_t;
 
   CORE_NODISCARD virtual View& getMainIView() = 0;
+  virtual void registerCommand(const Command& command) = 0;
 
 protected:
   Window() = default;

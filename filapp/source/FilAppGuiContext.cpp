@@ -16,11 +16,11 @@ ENABLE_ALL_WARNINGS
 namespace FilApp
 {
 
-FilAppGuiWidget::FilAppWidgetFunctor button(const Graphics::Command& command)
+FilAppGuiWidget::FilAppWidgetFunctor creatButton(const Graphics::Command& command)
 {
   return [cmd = command]()
   {
-    if (!ImGui::Button(cmd.getName().c_str()))
+    if (ImGui::Button(cmd.getName().c_str()))
       cmd.getCallback()(cmd.getId());
   };
 }
@@ -117,7 +117,7 @@ void FilAppGuiContext::onEvent(const Graphics::KeyEvent& event)
 }
 void FilAppGuiContext::registerButtonCommand(const Graphics::Command& command)
 {
-  addFilAppWidget(creatButton(command));
+  addFilAppWidget(FilApp::creatButton(command));
 }
 
 FilAppGuiContext

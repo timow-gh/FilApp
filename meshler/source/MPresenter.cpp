@@ -1,5 +1,4 @@
 #include <Core/Utils/Assert.hpp>
-#include <Graphics/GraphicsController.hpp>
 #include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <Graphics/Vec.hpp>
@@ -19,18 +18,6 @@ namespace Meshler
 MPresenter::MPresenter(Graphics::View& mainView)
     : m_view(mainView)
 {
-}
-
-void MPresenter::registerListener(Graphics::GraphicsController* meshlerController)
-{
-  registerInputEventListener(dynamic_cast<Graphics::InputEventListener*>(meshlerController));
-  registerRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(meshlerController));
-}
-
-void MPresenter::removeListener(Graphics::GraphicsController* meshlerController)
-{
-  removeInputEventListener(dynamic_cast<Graphics::InputEventListener*>(meshlerController));
-  removeRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(meshlerController));
 }
 
 void MPresenter::registerInputEventListener(Graphics::InputEventListener* inputEventListener)

@@ -16,7 +16,6 @@ set(GRAPHICS_HEADER
         include/Graphics/Viewport.hpp
         include/Graphics/Window.hpp
         include/Graphics/GraphicsApp.hpp
-        include/Graphics/GraphicsController.hpp
         include/Graphics/Gui.hpp
         include/Graphics/RGBAColor.hpp
         include/Graphics/WindowConfig.hpp

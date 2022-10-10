@@ -33,9 +33,6 @@ class MPresenter : public MModelEventListener {
 public:
   explicit MPresenter(Graphics::View& mainView);
 
-  void registerListener(Graphics::GraphicsController* meshlerController);
-  void removeListener(Graphics::GraphicsController* meshlerController);
-
   void registerInputEventListener(Graphics::InputEventListener* inputEventListener);
   void removeInputEventListener(Graphics::InputEventListener* inputEventListener);
 

@@ -79,7 +79,6 @@ FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCre
   m_skybox = filament::Skybox::Builder().color(vec4ToFloat4(colorVec)).build(*m_engine);
   m_filAppScene.setSkybox(m_skybox);
 }
-
 void FilAppWindow::event(const MouseButtonEvent& evt)
 {
   if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
@@ -95,7 +94,6 @@ void FilAppWindow::event(const MouseButtonEvent& evt)
     }
   }
 }
-
 void FilAppWindow::event(const MouseMoveEvent& evt)
 {
   if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
@@ -113,7 +111,6 @@ void FilAppWindow::event(const MouseMoveEvent& evt)
   m_lastX = evt.x;
   m_lastY = evt.y;
 }
-
 void FilAppWindow::event(const KeyEvent& keyEvent)
 {
   switch (keyEvent.type)
@@ -157,7 +154,6 @@ void FilAppWindow::event(const KeyEvent& keyEvent)
   default: CORE_POSTCONDITION_DEBUG_ASSERT(false, "Key type not implemented.");
   }
 }
-
 void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
 {
   if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
@@ -173,7 +169,6 @@ void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
     }
   }
 }
-
 FilAppWindow::~FilAppWindow()
 {
   m_engine->destroy(m_skybox);
@@ -181,22 +176,18 @@ FilAppWindow::~FilAppWindow()
   m_filAppScene.destroy();
   SDL_DestroyWindow(m_sdlWindow);
 }
-
 uint32_t FilAppWindow::getWidth() const
 {
   return m_width;
 }
-
 uint32_t FilAppWindow::getHeight() const
 {
   return m_height;
 }
-
 filament::SwapChain* FilAppWindow::getSwapChain()
 {
   return m_swapChain;
 }
-
 filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint32_t y) const
 {
   int dw, dh, ww, wh;
@@ -207,7 +198,6 @@ filament::math::int2 FilAppWindow::fixupMouseCoordinatesForHdpi(uint32_t x, uint
   y = m_height - y;
   return filament::math::int2{x, y};
 }
-
 void FilAppWindow::resizeWindow()
 {
   if (m_sdlWindow)
@@ -218,12 +208,10 @@ void FilAppWindow::resizeWindow()
     calculateViewports();
   }
 }
-
 View& FilAppWindow::getMainIView()
 {
   return *m_views.front();
 }
-
 void FilAppWindow::render(double_t timeInSeconds)
 {
   if (m_renderer->beginFrame(getSwapChain()))
@@ -234,7 +222,6 @@ void FilAppWindow::render(double_t timeInSeconds)
     m_renderer->endFrame();
   }
 }
-
 void FilAppWindow::animate(double_t deltaT)
 {
   if (FilAppCameraView::CameraManipulator* mainViewManip = m_views.front()->getCameraManipulator())
@@ -250,7 +237,6 @@ void FilAppWindow::animate(double_t deltaT)
   for (auto& filappview: m_views)
     filappview->animate(deltaT);
 }
-
 void FilAppWindow::calculateViewports()
 {
   uint32_t denominator = 3;
@@ -263,7 +249,10 @@ void FilAppWindow::calculateViewports()
   m_guiViewport = Viewport(0, 0, sideBarWidth, m_height);
   m_guiContext.setViewPort(m_guiViewport);
 }
-
+void FilAppWindow::registerCommand(const Command& command)
+{
+  m_guiContext.registerButtonCommand(command);
+}
 bool intersects(const Viewport& viewport, size_t x, size_t y)
 {
   if (x >= viewport.left && x < viewport.left + viewport.width)
@@ -271,7 +260,6 @@ bool intersects(const Viewport& viewport, size_t x, size_t y)
       return true;
   return false;
 }
-
 Viewport windowViewport(SDL_Window* sdlWindow)
 {
   int width;

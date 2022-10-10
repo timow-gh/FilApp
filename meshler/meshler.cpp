@@ -75,7 +75,7 @@ int main()
   createSpheres(meshlerModel);
   createCones(meshlerModel);
 
-  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel);
+  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, graphicsApp->getWindow());
 
   graphicsApp->run();
 }

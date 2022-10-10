@@ -5,7 +5,6 @@
 #include <Core/Utils/Assert.hpp>
 #include <Geometry/Plane.hpp>
 #include <Geometry/Ray.hpp>
-#include <Graphics/GraphicsController.hpp>
 #include <Graphics/InputEvents/InputEventListener.hpp>
 #include <Graphics/InputEvents/PickRayEvent.hpp>
 #include <Graphics/InputEvents/PickRayMoveEvent.hpp>
@@ -13,6 +12,7 @@
 #include <Graphics/InputEvents/RayPickEventListener.hpp>
 #include <Meshler/GeometryElements/MGeometryTraits.hpp>
 #include <Meshler/GeometryElements/SnapGeometries.hpp>
+#include <Meshler/Interactors/Interactor.hpp>
 #include <Meshler/LinAlConversion.hpp>
 #include <Meshler/MGuid.hpp>
 #include <Meshler/MModel.hpp>
@@ -24,7 +24,8 @@ namespace Meshler
 
 template <typename TMeshlerGeometry, typename T, template <typename> typename TGeomConfig>
 class MElementPlacingInteractor
-    : public Graphics::GraphicsController
+    : public Interactor
+    , public Graphics::RayPickEventListener
     , public MModelEventListener {
   MModel* m_model{nullptr};
   SnapGeometries m_snapGeometries;
@@ -39,7 +40,6 @@ public:
 private:
   CORE_NODISCARD std::optional<LinAl::Vec3d> calcIntersection(const Graphics::PickRayEvent& pickRayEvent) const;
 
-  using Graphics::GraphicsController::InputEventListener::onEvent;
   void onEvent(const Graphics::PickRayEvent& pickRayEvent) override;
   void onEvent(const Graphics::PickRayMoveEvent& pickRayMoveEvent) override;
 

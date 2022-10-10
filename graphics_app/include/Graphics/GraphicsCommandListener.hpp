@@ -8,7 +8,7 @@ namespace Graphics
 class GraphicsCommandListener {
 public:
   virtual ~GraphicsCommandListener() = default;
-  virtual void onCommand(const std::uint32_t& commandId) = 0;
+  virtual void onCommand(const CommandId& commandId) = 0;
 };
 } // namespace Graphics
 

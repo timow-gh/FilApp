@@ -1,3 +1,4 @@
+#include <Core/Utils/Assert.hpp>
 #include <Meshler/GeometryElements/MConeTraits.hpp>
 #include <Meshler/GeometryElements/MCuboidTraits.hpp>
 #include <Meshler/GeometryElements/MCylinderTraits.hpp>
@@ -17,11 +18,11 @@ MController::MController(MPresenter& meshlerPresenter, MModel& meshlerModel)
     , m_meshlerModel(meshlerModel)
 {
 }
-std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, MModel& meshlerModel)
+std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, MModel& meshlerModel, Graphics::Window& window)
 {
   auto controller = std::make_shared<MController>(meshlerPresenter, meshlerModel);
   controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
-  meshlerPresenter.registerListener(controller.get());
+  meshlerPresenter.registerInputEventListener(controller.get());
   controller->setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_SPHERE);
 
   MGrid defaultGrid = MGrid{};
@@ -31,6 +32,26 @@ std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, M
 
   meshlerPresenter.registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
 
+  auto weakPtrController = std::weak_ptr<MController>(controller);
+
+  Graphics::CommandId sphereCommandId{static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_SPHERE)};
+  auto sphereInteractorCallback = [weakPtrController, sphereCommandId](Graphics::CommandId)
+  {
+    auto controller = weakPtrController.lock();
+    CORE_PRECONDITION_DEBUG_ASSERT(controller, "Controller is not valid");
+    controller->onCommand(sphereCommandId);
+  };
+  window.registerCommand(Graphics::Command{sphereCommandId, "Place Sphere", sphereInteractorCallback});
+
+  Graphics::CommandId cylinderCommandId{static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_CYLINDER)};
+  auto cylinderInteractorCallback = [weakPtrController, cylinderCommandId](Graphics::CommandId)
+  {
+    auto controller = weakPtrController.lock();
+    CORE_PRECONDITION_DEBUG_ASSERT(controller, "Controller is not valid");
+    controller->onCommand(cylinderCommandId);
+  };
+  window.registerCommand(Graphics::Command{cylinderCommandId, "Place Cylinder", cylinderInteractorCallback});
+
   return controller;
 }
 void MController::onEvent(const Graphics::KeyEvent& keyEvent)
@@ -39,7 +60,15 @@ void MController::onEvent(const Graphics::KeyEvent& keyEvent)
 }
 void MController::setNextInteractor(const MeshlerCommands& meshlerCommand)
 {
-  m_meshlerPresenter.get().removeListener(m_currentInteractor.get());
+  if (auto eventListener = dynamic_cast<Graphics::InputEventListener*>(m_currentInteractor.get()))
+  {
+    m_meshlerPresenter.get().removeInputEventListener(eventListener);
+  }
+
+  if (auto rayPickEventListener = dynamic_cast<Graphics::RayPickEventListener*>(m_currentInteractor.get()))
+  {
+    m_meshlerPresenter.get().removeRayPickEventListener(rayPickEventListener);
+  }
 
   switch (meshlerCommand)
   {
@@ -72,11 +101,11 @@ void MController::setNextInteractor(const MeshlerCommands& meshlerCommand)
   }
   }
 
-  m_meshlerPresenter.get().registerListener(m_currentInteractor.get());
+  m_meshlerPresenter.get().registerRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(m_currentInteractor.get()));
 }
-void MController::onCommand(const std::uint32_t& commandId)
+void MController::onCommand(const Graphics::CommandId& commandId)
 {
-  switch (commandId)
+  switch (commandId.id())
   {
   case static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_SPHERE):
   {

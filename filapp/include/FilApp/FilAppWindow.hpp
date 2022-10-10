@@ -62,6 +62,7 @@ public:
   void render(double_t timeInSeconds);
 
   CORE_NODISCARD Graphics::View& getMainIView() override;
+  void registerCommand(const Graphics::Command& command) override;
 
   CORE_NODISCARD uint32_t getWidth() const;
   CORE_NODISCARD uint32_t getHeight() const;
