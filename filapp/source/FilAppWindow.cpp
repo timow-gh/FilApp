@@ -251,7 +251,7 @@ void FilAppWindow::calculateViewports()
 }
 void FilAppWindow::registerCommand(const Command& command)
 {
-  m_guiContext.registerButtonCommand(command);
+  m_guiContext.registerPlacementButtonCommand(command);
 }
 bool intersects(const Viewport& viewport, size_t x, size_t y)
 {

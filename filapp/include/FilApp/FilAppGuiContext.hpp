@@ -29,7 +29,7 @@ private:
 
 public:
   void addWidget(FilAppWidgetFunctor&& filAppWidgetCallable) { m_filAppWidgetCallables.push_back(std::move(filAppWidgetCallable)); }
-  void udpate() const
+  void update() const
   {
     for (const auto& filAppWidgetCallable: m_filAppWidgetCallables)
       filAppWidgetCallable();
@@ -58,12 +58,7 @@ public:
   void onEvent(const Graphics::MouseWheelEvent& event) override;
   void onEvent(const Graphics::KeyEvent& event) override;
 
-  void registerButtonCommand(const Graphics::Command& command) override;
-
-  void addFilAppWidget(FilAppGuiWidget::FilAppWidgetFunctor&& filAppWidgetCallable)
-  {
-    m_filAppGuiWidget.addWidget(std::move(filAppWidgetCallable));
-  }
+  void registerPlacementButtonCommand(const Graphics::Command& command) override;
 
   CORE_NODISCARD Graphics::Viewport getViewport() const;
   void setViewPort(const Graphics::Viewport& viewport);
@@ -75,12 +70,14 @@ public:
 private:
   void updateUserInterface() override;
 
+  static FilAppGuiWidget createPlacementCommandWidget(const Core::TVector<Graphics::Command>& placementCommands);
+
   Graphics::Viewport m_viewport;
   filament::Renderer* m_renderer{nullptr};
   filament::View* m_view{nullptr};
   std::unique_ptr<filagui::ImGuiHelper> m_ImGuiHelper;
   bool m_postProcessingEnabled{false};
-  FilAppGuiWidget m_filAppGuiWidget;
+  Core::TVector<Graphics::Command> m_placementButtonCommands;
 };
 
 CORE_NODISCARD FilAppGuiContext createFilAppGuiContext(filament::View* filamentView,

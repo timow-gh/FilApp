@@ -11,7 +11,7 @@ public:
   virtual ~Gui();
 
   // Creates a sidebar button for each registered command
-  virtual void registerButtonCommand(const Command& command) = 0;
+  virtual void registerPlacementButtonCommand(const Command& command) = 0;
 
   virtual void render(double timeStepInSeconds) = 0;
 

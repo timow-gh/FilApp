@@ -20,7 +20,7 @@ struct PresenterConfig
   std::uint32_t lineColor{0xFF000000};
   std::uint32_t selectedLineColor{0xFF000000};
 
-  MeshDrawType meshDrawType{MeshDrawType::WIRED};
+  MeshDrawType meshDrawType{MeshDrawType::SURFACE_WIRED};
 };
 } // namespace Meshler
 

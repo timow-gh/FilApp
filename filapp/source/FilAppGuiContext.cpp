@@ -15,7 +15,96 @@ ENABLE_ALL_WARNINGS
 
 namespace FilApp
 {
+static void ShowExampleMenuFile()
+{
+  ImGui::MenuItem("(demo menu)", NULL, false, false);
+  if (ImGui::MenuItem("New")) {}
+  if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+  if (ImGui::BeginMenu("Open Recent"))
+  {
+    ImGui::MenuItem("fish_hat.c");
+    ImGui::MenuItem("fish_hat.inl");
+    ImGui::MenuItem("fish_hat.h");
+    if (ImGui::BeginMenu("More.."))
+    {
+      ImGui::MenuItem("Hello");
+      ImGui::MenuItem("Sailor");
+      if (ImGui::BeginMenu("Recurse.."))
+      {
+        ShowExampleMenuFile();
+        ImGui::EndMenu();
+      }
+      ImGui::EndMenu();
+    }
+    ImGui::EndMenu();
+  }
+  if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+  if (ImGui::MenuItem("Save As..")) {}
 
+  ImGui::Separator();
+  if (ImGui::BeginMenu("Options"))
+  {
+    static bool enabled = true;
+    ImGui::MenuItem("Enabled", "", &enabled);
+    ImGui::BeginChild("child", ImVec2(0, 60), true);
+    for (int i = 0; i < 10; i++)
+      ImGui::Text("Scrolling Text %d", i);
+    ImGui::EndChild();
+    static float f = 0.5f;
+    static int n = 0;
+    ImGui::SliderFloat("Value", &f, 0.0f, 1.0f);
+    ImGui::InputFloat("Input", &f, 0.1f);
+    ImGui::Combo("Combo", &n, "Yes\0No\0Maybe\0\0");
+    ImGui::EndMenu();
+  }
+
+  if (ImGui::BeginMenu("Colors"))
+  {
+    float sz = ImGui::GetTextLineHeight();
+    for (int i = 0; i < ImGuiCol_COUNT; i++)
+    {
+      const char* name = ImGui::GetStyleColorName((ImGuiCol)i);
+      ImVec2 p = ImGui::GetCursorScreenPos();
+      ImGui::GetWindowDrawList()->AddRectFilled(p, ImVec2(p.x + sz, p.y + sz), ImGui::GetColorU32((ImGuiCol)i));
+      ImGui::Dummy(ImVec2(sz, sz));
+      ImGui::SameLine();
+      ImGui::MenuItem(name);
+    }
+    ImGui::EndMenu();
+  }
+
+  // Here we demonstrate appending again to the "Options" menu (which we already created above)
+  // Of course in this demo it is a little bit silly that this function calls BeginMenu("Options") twice.
+  // In a real code-base using it would make senses to use this feature from very different code locations.
+  if (ImGui::BeginMenu("Options")) // <-- Append!
+  {
+    static bool b = true;
+    ImGui::Checkbox("SomeOption", &b);
+    ImGui::EndMenu();
+  }
+
+  if (ImGui::BeginMenu("Disabled", false)) // Disabled
+  {
+    IM_ASSERT(0);
+  }
+  if (ImGui::MenuItem("Checked", NULL, true)) {}
+  if (ImGui::MenuItem("Quit", "Alt+F4")) {}
+}
+static FilAppGuiWidget::FilAppWidgetFunctor createMainMenu()
+{
+  return []()
+  {
+    if (ImGui::BeginMainMenuBar())
+    {
+      if (ImGui::BeginMenu("File"))
+      {
+        ShowExampleMenuFile();
+        ImGui::EndMenu();
+      }
+      ImGui::EndMainMenuBar();
+    }
+  };
+}
 FilAppGuiWidget::FilAppWidgetFunctor creatButton(const Graphics::Command& command)
 {
   return [cmd = command]()
@@ -24,7 +113,6 @@ FilAppGuiWidget::FilAppWidgetFunctor creatButton(const Graphics::Command& comman
       cmd.getCallback()(cmd.getId());
   };
 }
-
 FilAppGuiContext::FilAppGuiContext(std::unique_ptr<filagui::ImGuiHelper>&& imGuiHelper, filament::View* view, filament::Renderer* renderer)
     : m_ImGuiHelper(std::move(imGuiHelper))
     , m_renderer(renderer)
@@ -36,22 +124,43 @@ FilAppGuiContext::FilAppGuiContext(std::unique_ptr<filagui::ImGuiHelper>&& imGui
 }
 void FilAppGuiContext::updateUserInterface()
 {
-  const float width = ImGui::GetIO().DisplaySize.x;
-  const float height = ImGui::GetIO().DisplaySize.y;
-  ImGui::SetNextWindowSize(ImVec2(width, height), ImGuiCond_Once);
-  ImGui::SetNextWindowSizeConstraints(ImVec2(width, height), ImVec2(width, height));
-  //   Disable rounding and draw a fixed-height ImGui window that looks like a sidebar.
-  ImGui::GetStyle().WindowRounding = 0;
-  ImGui::SetNextWindowPos(ImVec2(0, 0));
-
-  ImGui::Begin("FilAppGui", nullptr, ImGuiWindowFlags_MenuBar);
-
   //  ImGui::ShowDemoWindow();
 
-  m_filAppGuiWidget.udpate();
+  const float width = ImGui::GetIO().DisplaySize.x;
+  const float height = ImGui::GetIO().DisplaySize.y;
 
+  createMainMenu()();
+
+  float verticalSpace = 16;
+  ImGui::SetNextWindowSize(ImVec2(width, height - verticalSpace), ImGuiCond_Once);
+  ImGui::SetNextWindowSizeConstraints(ImVec2(width, height), ImVec2(width, height));
+  ImGui::GetStyle().WindowRounding = 0;
+  ImGui::SetNextWindowPos(ImVec2(0, verticalSpace));
+  ImGui::SetNextWindowCollapsed(false);
+  ImGui::Begin("Main",
+               nullptr,
+               ImGuiWindowFlags_NoTitleBar );
+  if (ImGui::CollapsingHeader("Place Objects"))
+  {
+    auto placementCommandWidget = createPlacementCommandWidget(m_placementButtonCommands);
+    placementCommandWidget.update();
+  }
   ImGui::End();
 }
+FilAppGuiWidget FilAppGuiContext::createPlacementCommandWidget(const Core::TVector<Graphics::Command>& placementCommands)
+{
+  FilAppGuiWidget widget;
+
+  for (std::size_t i = 0; i < placementCommands.size(); ++i)
+  {
+    widget.addWidget(creatButton(placementCommands[i]));
+    if (i < placementCommands.size() - 1)
+      widget.addWidget([]() { ImGui::SameLine(); });
+  }
+
+  return widget;
+}
+
 void FilAppGuiContext::render(double_t timeStepInSeconds)
 {
   CORE_PRECONDITION_DEBUG_ASSERT(m_ImGuiHelper, "m_ImGuiHelper is null");
@@ -64,12 +173,10 @@ void FilAppGuiContext::render(double_t timeStepInSeconds)
 
   m_renderer->render(m_view);
 }
-
 Graphics::Viewport FilAppGuiContext::getViewport() const
 {
   return m_viewport;
 }
-
 void FilAppGuiContext::setViewPort(const Graphics::Viewport& viewport)
 {
   m_viewport = viewport;
@@ -115,11 +222,10 @@ void FilAppGuiContext::onEvent(const Graphics::KeyEvent& event)
 {
   CORE_POSTCONDITION_ASSERT(false, "Not implemented");
 }
-void FilAppGuiContext::registerButtonCommand(const Graphics::Command& command)
+void FilAppGuiContext::registerPlacementButtonCommand(const Graphics::Command& command)
 {
-  addFilAppWidget(FilApp::creatButton(command));
+  m_placementButtonCommands.push_back(command);
 }
-
 FilAppGuiContext
 createFilAppGuiContext(filament::View* filamentView, filament::Engine* engine, filament::Renderer* renderer, float pixelRatio)
 {

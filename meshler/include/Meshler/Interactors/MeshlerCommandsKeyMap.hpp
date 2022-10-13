@@ -22,7 +22,6 @@ public:
     if (iter != m_keyMap.end())
       return iter->second;
     CORE_POSTCONDITION_ASSERT(false, "Key not found in map");
-    return MeshlerCommands::PLACING_INTERACTOR_SPHERE;
   }
 
 private:

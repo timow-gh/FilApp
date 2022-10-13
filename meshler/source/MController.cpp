@@ -34,23 +34,22 @@ std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, M
 
   auto weakPtrController = std::weak_ptr<MController>(controller);
 
-  Graphics::CommandId sphereCommandId{static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_SPHERE)};
-  auto sphereInteractorCallback = [weakPtrController, sphereCommandId](Graphics::CommandId)
+  auto createPlacementCommand = [weakPtrController](const MeshlerCommands& meshlerCommand, const Core::TString& commandButtonName)
   {
-    auto controller = weakPtrController.lock();
-    CORE_PRECONDITION_DEBUG_ASSERT(controller, "Controller is not valid");
-    controller->onCommand(sphereCommandId);
+    Graphics::CommandId commandId{static_cast<std::uint32_t>(meshlerCommand)};
+    auto cylinderInteractorCallback = [weakPtrController, commandId](Graphics::CommandId)
+    {
+      auto controller = weakPtrController.lock();
+      CORE_PRECONDITION_DEBUG_ASSERT(controller, "Controller is not valid");
+      controller->onCommand(commandId);
+    };
+    return Graphics::Command{commandId, commandButtonName, cylinderInteractorCallback};
   };
-  window.registerCommand(Graphics::Command{sphereCommandId, "Place Sphere", sphereInteractorCallback});
 
-  Graphics::CommandId cylinderCommandId{static_cast<std::uint32_t>(MeshlerCommands::PLACING_INTERACTOR_CYLINDER)};
-  auto cylinderInteractorCallback = [weakPtrController, cylinderCommandId](Graphics::CommandId)
-  {
-    auto controller = weakPtrController.lock();
-    CORE_PRECONDITION_DEBUG_ASSERT(controller, "Controller is not valid");
-    controller->onCommand(cylinderCommandId);
-  };
-  window.registerCommand(Graphics::Command{cylinderCommandId, "Place Cylinder", cylinderInteractorCallback});
+  window.registerCommand(createPlacementCommand(MeshlerCommands::PLACING_INTERACTOR_SPHERE, "Sphere"));
+  window.registerCommand(createPlacementCommand(MeshlerCommands::PLACING_INTERACTOR_CYLINDER, "Cylinder"));
+  window.registerCommand(createPlacementCommand(MeshlerCommands::PLACING_INTERACTOR_CONE, "Cone"));
+  window.registerCommand(createPlacementCommand(MeshlerCommands::PLACING_INTERACTOR_CUBOID, "Cuboid"));
 
   return controller;
 }
