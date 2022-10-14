@@ -142,7 +142,7 @@ void FilAppWindow::resizeWindow()
     calculateViewports();
   }
 }
-View& FilAppWindow::getMainIView()
+View& FilAppWindow::getMainView()
 {
   return *m_views.front();
 }

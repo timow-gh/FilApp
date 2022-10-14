@@ -21,6 +21,7 @@ class InputEventDispatcher {
   }
 
 public:
+  // TODO Use reference
   void registerInputEventListener(InputEventListener* listener) { m_listener.push_back(listener); }
   void removeInputEventListener(InputEventListener* listener)
   {

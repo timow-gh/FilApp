@@ -134,11 +134,6 @@ void FilAppCameraView::configureCameraProjection()
   }
 }
 
-InputEventDispatcher& FilAppCameraView::getInputEventDispatcher()
-{
-  return m_inputEventDispatcher;
-}
-
 RayPickEventDispatcher& FilAppCameraView::getRayPickEventDispatcher()
 {
   return m_rayPickEventDispatcher;

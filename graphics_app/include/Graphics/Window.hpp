@@ -20,7 +20,7 @@ public:
   using WindowId = std::uint32_t;
   CORE_NODISCARD virtual WindowId getWindowId() const = 0;
 
-  CORE_NODISCARD virtual View& getMainIView() = 0;
+  CORE_NODISCARD virtual View& getMainView() = 0;
   virtual void registerCommand(const Command& command) = 0;
 
 protected:

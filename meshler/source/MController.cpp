@@ -13,24 +13,32 @@
 
 namespace Meshler
 {
-MController::MController(MPresenter& meshlerPresenter, MModel& meshlerModel)
+MController::MController(MPresenter& meshlerPresenter,
+                         MModel& meshlerModel,
+                         Graphics::InputEventDispatcher& inputEventDispatcher,
+                         Graphics::RayPickEventDispatcher& rayPickEventDispatcher)
     : m_meshlerPresenter(meshlerPresenter)
     , m_meshlerModel(meshlerModel)
+    , m_inputEventDispatcher(inputEventDispatcher)
+    , m_rayPickEventDispatcher(rayPickEventDispatcher)
 {
 }
-std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter, MModel& meshlerModel, Graphics::Window& window)
+std::shared_ptr<MController> MController::create(MPresenter& meshlerPresenter,
+                                                 MModel& meshlerModel,
+                                                 Graphics::Window& window,
+                                                 Graphics::InputEventDispatcher& inputEventDispatcher)
 {
-  auto controller = std::make_shared<MController>(meshlerPresenter, meshlerModel);
+  auto controller =
+      std::make_shared<MController>(meshlerPresenter, meshlerModel, inputEventDispatcher, meshlerPresenter.getRayPickEventDispatcher());
+  inputEventDispatcher.registerInputEventListener(controller.get());
   controller->m_commandInteractor = std::make_unique<CommandInteractor>(*controller);
-  meshlerPresenter.registerInputEventListener(controller.get());
   controller->setNextInteractor(MeshlerCommands::PLACING_INTERACTOR_SPHERE);
 
   MGrid defaultGrid = MGrid{};
   FGuid defaultGridGuid = defaultGrid.getFGuid();
   meshlerModel.add(std::move(defaultGrid));
   controller->m_meshlerGridInteractor = std::make_unique<MGridInteractor>(meshlerModel, defaultGridGuid);
-
-  meshlerPresenter.registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
+  controller->m_rayPickEventDispatcher.get().registerRayPickEventListener(controller->m_meshlerGridInteractor.get());
 
   auto weakPtrController = std::weak_ptr<MController>(controller);
 
@@ -61,12 +69,12 @@ void MController::setNextInteractor(const MeshlerCommands& meshlerCommand)
 {
   if (auto eventListener = dynamic_cast<Graphics::InputEventListener*>(m_currentInteractor.get()))
   {
-    m_meshlerPresenter.get().removeInputEventListener(eventListener);
+    m_inputEventDispatcher.get().removeInputEventListener(eventListener);
   }
 
   if (auto rayPickEventListener = dynamic_cast<Graphics::RayPickEventListener*>(m_currentInteractor.get()))
   {
-    m_meshlerPresenter.get().removeRayPickEventListener(rayPickEventListener);
+    m_rayPickEventDispatcher.get().removeRayPickEventListener(rayPickEventListener);
   }
 
   switch (meshlerCommand)
@@ -100,7 +108,8 @@ void MController::setNextInteractor(const MeshlerCommands& meshlerCommand)
   }
   }
 
-  m_meshlerPresenter.get().registerRayPickEventListener(dynamic_cast<Graphics::RayPickEventListener*>(m_currentInteractor.get()));
+  m_meshlerPresenter.get().getRayPickEventDispatcher().registerRayPickEventListener(
+      dynamic_cast<Graphics::RayPickEventListener*>(m_currentInteractor.get()));
 }
 void MController::onCommand(const Graphics::CommandId& commandId)
 {

@@ -82,7 +82,7 @@ public:
 
   WindowId getWindowId() const override;
 
-  CORE_NODISCARD Graphics::View& getMainIView() override;
+  CORE_NODISCARD Graphics::View& getMainView() override;
   void registerCommand(const Graphics::Command& command) override;
 
   CORE_NODISCARD uint32_t getWidth() const;

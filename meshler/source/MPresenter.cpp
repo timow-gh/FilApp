@@ -1,5 +1,4 @@
 #include <Core/Utils/Assert.hpp>
-#include <Graphics/InputEvents/InputEventDispatcher.hpp>
 #include <Graphics/InputEvents/RayPickEventDispatcher.hpp>
 #include <Graphics/Vec.hpp>
 #include <Graphics/Vertex.hpp>
@@ -15,31 +14,15 @@
 
 namespace Meshler
 {
-MPresenter::MPresenter(Graphics::View& mainView)
-    : m_view(mainView)
+MPresenter::MPresenter(Graphics::View& view, PresenterConfig presenterConfig)
+    : m_view(view)
+    , m_presenterConfig(presenterConfig)
 {
 }
-
-void MPresenter::registerInputEventListener(Graphics::InputEventListener* inputEventListener)
+Graphics::RayPickEventDispatcher& MPresenter::getRayPickEventDispatcher()
 {
-  m_view.get().getInputEventDispatcher().registerInputEventListener(inputEventListener);
+  return m_view.get().getRayPickEventDispatcher();
 }
-
-void MPresenter::removeInputEventListener(Graphics::InputEventListener* inputEventListener)
-{
-  m_view.get().getInputEventDispatcher().removeInputEventListener(inputEventListener);
-}
-
-void MPresenter::registerRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener)
-{
-  m_view.get().getRayPickEventDispatcher().registerRayPickEventListener(rayPickEventListener);
-}
-
-void MPresenter::removeRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener)
-{
-  m_view.get().getRayPickEventDispatcher().removeRayPickEventListener(rayPickEventListener);
-}
-
 void MPresenter::onAdd(const MSphere& meshlerSphere)
 {
   onAddImpl(meshlerSphere);

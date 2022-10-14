@@ -3,6 +3,10 @@
 
 #include <Core/Types/TVector.hpp>
 #include <Core/Utils/Compiler.hpp>
+#include <Graphics/InputEvents/InputEventDispatcher.hpp>
+#include <Graphics/Window.hpp>
+#include <Graphics/WindowConfig.hpp>
+#include <Graphics/WindowEventDispatcher.hpp>
 #include <cstdint>
 
 namespace Graphics

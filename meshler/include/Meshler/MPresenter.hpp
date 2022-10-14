@@ -10,9 +10,7 @@
 namespace Graphics
 {
 class View;
-class GraphicsController;
-class InputEventListener;
-class RayPickEventListener;
+class RayPickEventDispatcher;
 } // namespace Graphics
 
 namespace Meshler
@@ -31,13 +29,9 @@ class MPresenter : public MModelEventListener {
   Core::TMap<FGuid, Core::TVector<Graphics::RenderableId>> m_fGuidRenderableMapping;
 
 public:
-  explicit MPresenter(Graphics::View& mainView);
+  explicit MPresenter(Graphics::View& view, PresenterConfig presenterConfig);
 
-  void registerInputEventListener(Graphics::InputEventListener* inputEventListener);
-  void removeInputEventListener(Graphics::InputEventListener* inputEventListener);
-
-  void registerRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener);
-  void removeRayPickEventListener(Graphics::RayPickEventListener* rayPickEventListener);
+  Graphics::RayPickEventDispatcher& getRayPickEventDispatcher();
 
   void onAdd(const MSphere& meshlerSphere) override;
   void onAdd(const MCone& meshlerCone) override;

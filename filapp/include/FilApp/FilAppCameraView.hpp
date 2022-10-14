@@ -63,7 +63,6 @@ public:
 
   ~FilAppCameraView() override;
 
-  CORE_NODISCARD Graphics::InputEventDispatcher& getInputEventDispatcher() override;
   CORE_NODISCARD Graphics::RayPickEventDispatcher& getRayPickEventDispatcher() override;
 
   // clang-format off

@@ -66,9 +66,13 @@ int main()
   appConfig.backendMode = Graphics::BackendMode::VULKAN;
 
   std::shared_ptr<Graphics::GraphicsApp> graphicsApp = FilApp::FilApplication::getFilApp(appConfig);
-  Graphics::Window& window = graphicsApp->createWindow(WindowConfig());
+  auto inputEventDispatcher = graphicsApp->getInputEventDispatcher();
+  auto windowEventDispatcher = graphicsApp->getWindowEventDispatcher();
 
-  MPresenter presenter{window.getMainIView()};
+  Graphics::Window& window = graphicsApp->createWindow(WindowConfig());
+  windowEventDispatcher.registerEventListener(&window);
+
+  MPresenter presenter{window.getMainView(), PresenterConfig()};
 
   MModel meshlerModel;
   meshlerModel.registerListener(&presenter);
@@ -76,7 +80,7 @@ int main()
   createSpheres(meshlerModel);
   createCones(meshlerModel);
 
-  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, window);
+  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, window, inputEventDispatcher );
 
   graphicsApp->run();
 }
