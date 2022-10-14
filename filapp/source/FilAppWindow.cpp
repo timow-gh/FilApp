@@ -13,72 +13,6 @@ using namespace Graphics;
 
 namespace FilApp
 {
-
-FilAppWindow::FilAppWindow(const WindowConfig& windowConfig, FilAppRenderableCreator& filAppRenderableCreator, filament::Engine* engine)
-    : m_engine{engine}
-    , m_filAppScene(FilAppScene::create(m_engine, filAppRenderableCreator))
-{
-
-  std::uint32_t windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
-  if (windowConfig.isResizable)
-    windowFlags |= SDL_WINDOW_RESIZABLE;
-  if (windowConfig.isHeadless)
-    windowFlags |= SDL_WINDOWEVENT_HIDDEN;
-
-  const std::int32_t x = SDL_WINDOWPOS_CENTERED;
-  const std::int32_t y = SDL_WINDOWPOS_CENTERED;
-  m_sdlWindow = SDL_CreateWindow(windowConfig.windowName.c_str(),
-                                 x,
-                                 y,
-                                 static_cast<std::int32_t>(windowConfig.width),
-                                 static_cast<std::int32_t>(windowConfig.height),
-                                 windowFlags);
-
-  m_windowId = SDL_GetWindowID(m_sdlWindow);
-
-  if (windowConfig.isHeadless)
-  {
-    m_width = windowConfig.width;
-    m_height = windowConfig.height;
-    m_swapChain = m_engine->createSwapChain(m_width, m_height);
-  }
-  else
-  {
-    void* nativeWindow = ::getNativeWindow(m_sdlWindow);
-    void* nativeSwapChain = nativeWindow;
-    m_swapChain = m_engine->createSwapChain(nativeSwapChain);
-  }
-
-  m_renderer = m_engine->createRenderer();
-
-  ViewConfig viewConfig;
-  viewConfig.name = "MainView";
-  viewConfig.viewport = windowViewport(m_sdlWindow);
-  m_width = viewConfig.viewport.width;
-  m_height = viewConfig.viewport.height;
-
-  uint32_t denominator = 3;
-  uint32_t sideBarWidth = m_width / denominator;
-  uint32_t contentWidth = m_width - sideBarWidth;
-
-  m_views.push_back(std::make_unique<FilAppCameraView>(viewConfig, m_filAppScene, m_renderer));
-  m_contentViewport = Viewport(sideBarWidth, 0, contentWidth, m_height);
-  m_views.front()->setViewport(m_contentViewport);
-
-  constexpr float_t pixelRatio = 1.0f;
-  CORE_POSTCONDITION_DEBUG_ASSERT(m_views.empty() == false, "No views created");
-  m_filamentGuiView = m_engine->createView();
-  m_guiContext = createFilAppGuiContext(m_filamentGuiView, m_engine, m_renderer, pixelRatio);
-  m_guiViewport = Viewport(0, 0, sideBarWidth, m_height);
-  m_guiContext.setViewPort(m_guiViewport);
-
-  auto colorVec = Vec4{viewConfig.skyBoxColor.getRed(),
-                       viewConfig.skyBoxColor.getGreen(),
-                       viewConfig.skyBoxColor.getBlue(),
-                       viewConfig.skyBoxColor.getAlpha()};
-  m_skybox = filament::Skybox::Builder().color(vec4ToFloat4(colorVec)).build(*m_engine);
-  m_filAppScene.setSkybox(m_skybox);
-}
 void FilAppWindow::event(const MouseButtonEvent& evt)
 {
   if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
@@ -173,7 +107,7 @@ FilAppWindow::~FilAppWindow()
 {
   m_engine->destroy(m_skybox);
   m_engine->destroy(m_filamentGuiView);
-  m_filAppScene.destroy();
+  m_filAppScene->destroy();
   SDL_DestroyWindow(m_sdlWindow);
 }
 uint32_t FilAppWindow::getWidth() const
@@ -252,6 +186,55 @@ void FilAppWindow::calculateViewports()
 void FilAppWindow::registerCommand(const Command& command)
 {
   m_guiContext.registerPlacementButtonCommand(command);
+}
+Window::WindowId FilAppWindow::getWindowId() const
+{
+  return m_windowId;
+}
+FilAppWindow::FilAppWindow(SDL_Window* sdlWindow,
+                           WindowId windowId,
+                           filament::Renderer* renderer,
+                           filament::SwapChain* swapChain,
+                           filament::Engine* engine,
+                           filament::Skybox* skybox,
+                           std::unique_ptr<FilAppScene>&& filAppScene,
+                           Graphics::Viewport contentViewport,
+                           Graphics::Viewport guiViewport,
+                           filament::View* filamentGuiView,
+                           FilAppGuiContext guiContext,
+                           Core::TVector<std::unique_ptr<FilAppCameraView>>&& views,
+                           std::uint32_t width,
+                           std::uint32_t height)
+    : m_sdlWindow(sdlWindow)
+    , m_windowId(windowId)
+    , m_renderer(renderer)
+    , m_swapChain(swapChain)
+    , m_engine(engine)
+    , m_skybox(skybox)
+    , m_filAppScene(std::move(filAppScene))
+    , m_contentViewport(contentViewport)
+    , m_guiViewport(guiViewport)
+    , m_filamentGuiView(filamentGuiView)
+    , m_guiContext(std::move(guiContext))
+    , m_views(std::move(views))
+    , m_width(width)
+    , m_height(height)
+{
+}
+void FilAppWindow::onEvent(const WindowCloseEvent& event)
+{
+}
+void FilAppWindow::onEvent(const WindowMinimizeEvent& event)
+{
+}
+void FilAppWindow::onEvent(const WindowMaximizeEvent& event)
+{
+}
+void FilAppWindow::onEvent(const WindowResizeEvent& event)
+{
+}
+void FilAppWindow::onRemoveEventListener()
+{
 }
 bool intersects(const Viewport& viewport, size_t x, size_t y)
 {

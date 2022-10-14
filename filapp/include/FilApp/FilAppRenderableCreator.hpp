@@ -35,9 +35,9 @@ public:
 
   static FilAppRenderableCreator create(filament::Engine* engine);
 
-  FilAppRenderable createBakedColorRenderable(const Core::TVector<Graphics::Vertex>& vertices,
-                                              const Core::TVector<uint16_t>& indices,
-                                              PrimitiveType primitiveType) const;
+  CORE_NODISCARD FilAppRenderable createBakedColorRenderable(const Core::TVector<Graphics::Vertex>& vertices,
+                                                             const Core::TVector<uint16_t>& indices,
+                                                             PrimitiveType primitiveType) const;
 
   void destroyMaterials();
 

@@ -22,7 +22,6 @@ class InputEventDispatcher {
 
 public:
   void registerInputEventListener(InputEventListener* listener) { m_listener.push_back(listener); }
-
   void removeInputEventListener(InputEventListener* listener)
   {
     auto iter = std::remove(m_listener.begin(), m_listener.end(), listener);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="RelWithDebInfo-Clang" ENABLED="true" CONFIG_NAME="RelWithDebInfo" TOOLCHAIN_NAME="Clang" GENERATION_OPTIONS="-G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_STANDARD=20 -DCMAKE_CXX_FLAGS=-stdlib=libc++" BUILD_OPTIONS="-j 24" />
+      <configuration PROFILE_NAME="Release-Clang" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="Clang" GENERATION_OPTIONS="-G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_STANDARD=20 -DCMAKE_CXX_FLAGS=-stdlib=libc++" BUILD_OPTIONS="-j 24" />
+      <configuration PROFILE_NAME="Debug-Clang" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Clang" GENERATION_OPTIONS="-G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_STANDARD=20 -DCMAKE_CXX_FLAGS=-stdlib=libc++" BUILD_OPTIONS="-j 24" />
+    </configurations>
+  </component>
+</project>

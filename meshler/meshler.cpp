@@ -65,9 +65,10 @@ int main()
   appConfig.eventPollingMode = Graphics::EventPollingMode::WAIT_EVENTS;
   appConfig.backendMode = Graphics::BackendMode::VULKAN;
 
-  std::shared_ptr<Graphics::GraphicsApp> graphicsApp = FilApp::FilApplication::getFilApp(appConfig, WindowConfig());
+  std::shared_ptr<Graphics::GraphicsApp> graphicsApp = FilApp::FilApplication::getFilApp(appConfig);
+  Graphics::Window& window = graphicsApp->createWindow(WindowConfig());
 
-  MPresenter presenter{graphicsApp->getWindow().getMainIView()};
+  MPresenter presenter{window.getMainIView()};
 
   MModel meshlerModel;
   meshlerModel.registerListener(&presenter);
@@ -75,7 +76,7 @@ int main()
   createSpheres(meshlerModel);
   createCones(meshlerModel);
 
-  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, graphicsApp->getWindow());
+  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, window);
 
   graphicsApp->run();
 }

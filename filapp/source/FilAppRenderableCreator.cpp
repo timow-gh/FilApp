@@ -10,7 +10,7 @@ namespace FilApp
 {
 FilAppRenderableCreator FilAppRenderableCreator::create(filament::Engine* engine)
 {
-  FilAppRenderableCreator result = FilAppRenderableCreator(engine);
+  FilAppRenderableCreator result{engine};
   result.createMaterials();
   return result;
 }
@@ -18,7 +18,6 @@ FilAppRenderableCreator FilAppRenderableCreator::create(filament::Engine* engine
 FilAppRenderableCreator::FilAppRenderableCreator(filament::Engine* engine)
     : m_engine(engine)
 {
-  createMaterials();
 }
 
 static filament::Box calcFilamentBbox(const Core::TVector<Vertex>& vertices)
@@ -42,6 +41,7 @@ FilAppRenderable FilAppRenderableCreator::createBakedColorRenderable(const Core:
 {
   CORE_PRECONDITION_DEBUG_ASSERT(!vertices.empty(), "Vertices are empty.");
   CORE_PRECONDITION_DEBUG_ASSERT(!indices.empty(), "Indices are empty.");
+  CORE_PRECONDITION_DEBUG_ASSERT(m_engine, "Engine is null.");
 
   FilAppRenderable filAppRenderable;
   filAppRenderable.engine = m_engine;

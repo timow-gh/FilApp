@@ -3,19 +3,22 @@
 
 #include <Core/Utils/Compiler.hpp>
 #include <Graphics/Command.hpp>
-#include <vector>
+#include <Graphics/InputEvents/InputEventListener.hpp>
+#include <Graphics/WindowEventListener.hpp>
 
 namespace Graphics
 {
 class View;
 
-class Window {
+class Window
+    : public WindowEventListener
+    , public InputEventListener {
 public:
   Window(const Window&) = delete;
+  ~Window() override;
 
-  virtual ~Window();
-
-  using WindowId = uint32_t;
+  using WindowId = std::uint32_t;
+  CORE_NODISCARD virtual WindowId getWindowId() const = 0;
 
   CORE_NODISCARD virtual View& getMainIView() = 0;
   virtual void registerCommand(const Command& command) = 0;

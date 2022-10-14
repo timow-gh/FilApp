@@ -22,7 +22,7 @@ set(GRAPHICS_HEADER
         include/Graphics/AppConfig.hpp
         include/Graphics/Vertex.hpp
         include/Graphics/Vec.hpp
-        include/Graphics/Command.hpp include/Graphics/GraphicsCommandListener.hpp)
+        include/Graphics/Command.hpp include/Graphics/GraphicsCommandListener.hpp source/WindowEventListener.cpp include/Graphics/WindowEventListener.hpp)
 
 set(GRAPHICS_SOURCES
         source/View.cpp
@@ -31,7 +31,7 @@ set(GRAPHICS_SOURCES
         source/GraphicsApp.cpp
         source/Gui.cpp
         source/Window.cpp
-        source/Vec.cpp)
+        source/Vec.cpp include/Graphics/WindowEventDispatcher.hpp)
 
 add_library(graphics_app ${GRAPHICS_SOURCES} ${GRAPHICS_HEADER})
 add_library(graphics::app ALIAS graphics_app)

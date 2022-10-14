@@ -32,7 +32,7 @@ class FilAppWindow final : public Graphics::Window {
   filament::Engine* m_engine = nullptr;
   filament::Skybox* m_skybox = nullptr;
 
-  FilAppScene m_filAppScene;
+  std::unique_ptr<FilAppScene> m_filAppScene;
 
   Graphics::Viewport m_contentViewport;
   Graphics::Viewport m_guiViewport;
@@ -48,9 +48,28 @@ class FilAppWindow final : public Graphics::Window {
   std::unordered_map<SDL_Scancode, FilAppCameraView*> m_keyEventTarget;
 
 public:
-  FilAppWindow(const Graphics::WindowConfig& windowConfig, FilAppRenderableCreator& filAppRenderableCreator, filament::Engine* engine);
+  FilAppWindow(SDL_Window* sdlWindow,
+               WindowId windowId,
+               filament::Renderer* renderer,
+               filament::SwapChain* swapChain,
+               filament::Engine* engine,
+               filament::Skybox* skybox,
+               std::unique_ptr<FilAppScene>&& filAppScene,
+               Graphics::Viewport contentViewport,
+               Graphics::Viewport guiViewport,
+               filament::View* filamentGuiView,
+               FilAppGuiContext guiContext,
+               Core::TVector<std::unique_ptr<FilAppCameraView>>&& views,
+               std::uint32_t width,
+               std::uint32_t height);
 
   ~FilAppWindow() override;
+
+  void onEvent(const Graphics::WindowCloseEvent& event) override;
+  void onEvent(const Graphics::WindowMinimizeEvent& event) override;
+  void onEvent(const Graphics::WindowMaximizeEvent& event) override;
+  void onEvent(const Graphics::WindowResizeEvent& event) override;
+  void onRemoveEventListener() override;
 
   void event(const Graphics::MouseButtonEvent& mouseButtonEvent);
   void event(const Graphics::MouseMoveEvent& mouseMoveEvent);
@@ -60,6 +79,8 @@ public:
   void resizeWindow();
   void animate(double_t deltaT);
   void render(double_t timeInSeconds);
+
+  WindowId getWindowId() const override;
 
   CORE_NODISCARD Graphics::View& getMainIView() override;
   void registerCommand(const Graphics::Command& command) override;
