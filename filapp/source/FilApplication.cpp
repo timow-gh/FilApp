@@ -59,93 +59,160 @@ void FilApplication::run()
 
   while (!m_closeApp)
   {
-    for (auto& window: m_windows)
+    double_t deltaT = FilApplication::getDeltaT();
+
+    SDL_Event sdlEvent;
+
+    switch (eventPollingMode)
     {
-      double_t deltaT = FilApplication::getDeltaT();
+    case EventPollingMode::POLL_EVENTS: SDL_PollEvent(&sdlEvent); break;
+    case EventPollingMode::WAIT_EVENTS: SDL_WaitEvent(&sdlEvent); break;
+    }
 
-      SDL_Event sdlEvent;
+    switch (sdlEvent.type)
+    {
+    case SDL_QUIT: m_closeApp = true; break;
+    case SDL_KEYDOWN:
+    {
+      if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+        m_closeApp = true;
 
-      switch (eventPollingMode)
-      {
-      case EventPollingMode::POLL_EVENTS: SDL_PollEvent(&sdlEvent); break;
-      case EventPollingMode::WAIT_EVENTS: SDL_WaitEvent(&sdlEvent); break;
-      }
+      m_inputEventDispatcher->dispatch(KeyEvent(KeyEvent::Type::PUSH,
+                                                toKeyScancode(sdlEvent.key.keysym.scancode),
+                                                sdlEvent.key.timestamp,
+                                                sdlEvent.key.windowID,
+                                                deltaT));
 
-      switch (sdlEvent.type)
+      //      for (auto& window: m_windows)
+      //      {
+      //        window->event(KeyEvent(KeyEvent::Type::PUSH,
+      //                               toKeyScancode(sdlEvent.key.keysym.scancode),
+      //                               sdlEvent.key.timestamp,
+      //                               sdlEvent.key.windowID,
+      //                               deltaT));
+      //      }
+
+      break;
+    }
+    case SDL_KEYUP:
+    {
+      m_inputEventDispatcher->dispatch(KeyEvent(KeyEvent::Type::RELEASE,
+                                                toKeyScancode(sdlEvent.key.keysym.scancode),
+                                                sdlEvent.key.timestamp,
+                                                sdlEvent.key.windowID,
+                                                deltaT));
+
+      //      for (auto& window: m_windows)
+      //      {
+      //        window->event(KeyEvent(KeyEvent::Type::RELEASE,
+      //                               toKeyScancode(sdlEvent.key.keysym.scancode),
+      //                               sdlEvent.key.timestamp,
+      //                               sdlEvent.key.windowID,
+      //                               deltaT));
+      //
+      //
+      //      }
+      break;
+    }
+    case SDL_MOUSEWHEEL:
+    {
+      m_inputEventDispatcher->dispatch(MouseWheelEvent{static_cast<float_t>(sdlEvent.wheel.y), deltaT});
+      //      for (auto& window: m_windows)
+      //      {
+      //        window->mouseWheel(static_cast<float_t>(sdlEvent.wheel.y), deltaT);
+      //      }
+      break;
+    }
+    case SDL_MOUSEBUTTONDOWN:
+    {
+      //      filament::math::int2 pos =
+      //          window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
+      m_inputEventDispatcher->dispatch(MouseButtonEvent{MouseButtonEvent::Type::PUSH,
+                                                        sdlEvent.button.button,
+                                                        sdlEvent.button.timestamp,
+                                                        sdlEvent.button.windowID,
+                                                        sdlEvent.button.clicks,
+                                                        static_cast<uint32_t>(sdlEvent.button.x),
+                                                        static_cast<uint32_t>(sdlEvent.button.y),
+                                                        deltaT});
+
+      //      for (auto& window: m_windows)
+      //      {
+      //        window->event(MouseButtonEvent{MouseButtonEvent::Type::PUSH,
+      //                                       sdlEvent.button.button,
+      //                                       sdlEvent.button.timestamp,
+      //                                       sdlEvent.button.windowID,
+      //                                       sdlEvent.button.clicks,
+      //                                       static_cast<uint32_t>(pos.x),
+      //                                       static_cast<uint32_t>(pos.y),
+      //                                       deltaT});
+      //      }
+      break;
+    }
+    case SDL_MOUSEBUTTONUP:
+    {
+      //      filament::math::int2 pos =
+      //          window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
+      m_inputEventDispatcher->dispatch(MouseButtonEvent{MouseButtonEvent::Type::RELEASE,
+                                                        sdlEvent.button.button,
+                                                        sdlEvent.button.timestamp,
+                                                        sdlEvent.button.windowID,
+                                                        sdlEvent.button.clicks,
+                                                        static_cast<uint32_t>(sdlEvent.button.x),
+                                                        static_cast<uint32_t>(sdlEvent.button.y),
+                                                        deltaT});
+
+      //      for (auto& window: m_windows)
+      //      {
+      //        window->event(MouseButtonEvent{MouseButtonEvent::Type::RELEASE,
+      //                                       sdlEvent.button.button,
+      //                                       sdlEvent.button.timestamp,
+      //                                       sdlEvent.button.windowID,
+      //                                       sdlEvent.button.clicks,
+      //                                       static_cast<uint32_t>(pos.x),
+      //                                       static_cast<uint32_t>(pos.y),
+      //                                       deltaT});
+      //      }
+      break;
+    }
+    case SDL_MOUSEMOTION:
+    {
+      for (auto& window: m_windows)
       {
-      case SDL_QUIT: m_closeApp = true; break;
-      case SDL_KEYDOWN:
-      {
-        if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-          m_closeApp = true;
-        window->event(KeyEvent(KeyEvent::Type::PUSH,
-                               toKeyScancode(sdlEvent.key.keysym.scancode),
-                               sdlEvent.key.timestamp,
-                               sdlEvent.key.windowID,
-                               deltaT));
-        break;
+        //        filament::math::int2 pos =
+        //            window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x),
+        //            static_cast<uint32_t>(sdlEvent.button.y));
+        m_inputEventDispatcher->dispatch(MouseMoveEvent{sdlEvent.button.timestamp,
+                                                        sdlEvent.button.windowID,
+                                                        static_cast<uint32_t>(sdlEvent.button.x),
+                                                        static_cast<uint32_t>(sdlEvent.button.y),
+                                                        deltaT});
+        //        window->event(MouseMoveEvent{sdlEvent.button.timestamp,
+        //                                     sdlEvent.button.windowID,
+        //                                     static_cast<uint32_t>(pos.x),
+        //                                     static_cast<uint32_t>(pos.y),
+        //                                     deltaT});
       }
-      case SDL_KEYUP:
-      {
-        window->event(KeyEvent(KeyEvent::Type::RELEASE,
-                               toKeyScancode(sdlEvent.key.keysym.scancode),
-                               sdlEvent.key.timestamp,
-                               sdlEvent.key.windowID,
-                               deltaT));
-        break;
-      }
-      case SDL_MOUSEWHEEL: window->mouseWheel(static_cast<float_t>(sdlEvent.wheel.y), deltaT); break;
-      case SDL_MOUSEBUTTONDOWN:
-      {
-        filament::math::int2 pos =
-            window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
-        window->event(MouseButtonEvent{MouseButtonEvent::Type::PUSH,
-                                       sdlEvent.button.button,
-                                       sdlEvent.button.timestamp,
-                                       sdlEvent.button.windowID,
-                                       sdlEvent.button.clicks,
-                                       static_cast<uint32_t>(pos.x),
-                                       static_cast<uint32_t>(pos.y),
-                                       deltaT});
-        break;
-      }
-      case SDL_MOUSEBUTTONUP:
-      {
-        filament::math::int2 pos =
-            window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
-        window->event(MouseButtonEvent{MouseButtonEvent::Type::RELEASE,
-                                       sdlEvent.button.button,
-                                       sdlEvent.button.timestamp,
-                                       sdlEvent.button.windowID,
-                                       sdlEvent.button.clicks,
-                                       static_cast<uint32_t>(pos.x),
-                                       static_cast<uint32_t>(pos.y),
-                                       deltaT});
-        break;
-      }
-      case SDL_MOUSEMOTION:
-      {
-        filament::math::int2 pos =
-            window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
-        window->event(MouseMoveEvent{sdlEvent.button.timestamp,
-                                     sdlEvent.button.windowID,
-                                     static_cast<uint32_t>(pos.x),
-                                     static_cast<uint32_t>(pos.y),
-                                     deltaT});
-        break;
-      }
-      case SDL_WINDOWEVENT:
+      break;
+    }
+    case SDL_WINDOWEVENT:
+    {
+      // TODO Use windowevents
+      for (auto& window: m_windows)
       {
         if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
           window->resizeWindow();
-        break;
       }
-      default:
-      {
-        break;
-      }
-      }
+      break;
+    }
+    default:
+    {
+      break;
+    }
+    }
 
+    for (auto& window: m_windows)
+    {
       window->render(deltaT);
     }
   }

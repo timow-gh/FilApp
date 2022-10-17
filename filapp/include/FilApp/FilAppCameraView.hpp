@@ -53,7 +53,6 @@ private:
   Graphics::ViewConfig m_viewConfig;
   filament::Viewport m_filamentViewport;
 
-  Graphics::InputEventDispatcher m_inputEventDispatcher;
   Graphics::RayPickEventDispatcher m_rayPickEventDispatcher;
 
   Core::TVector<AnimationCallBack> m_animationCallbacks;
@@ -102,6 +101,8 @@ private:
   CORE_NODISCARD static bool manipulatorKeyFromKeycode(Graphics::KeyScancode scancode, CameraManipulator::Key& key);
 
   CORE_NODISCARD Graphics::PickRayEvent getPickRayMoveEvent(std::size_t x, std::size_t y, double_t time) const;
+
+  void updateFilamentCamera() const;
 };
 } // namespace FilApp
 

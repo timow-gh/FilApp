@@ -245,8 +245,6 @@ void FilAppCameraView::onEvent(const MouseButtonEvent& mouseButtonEvent)
     break;
   }
   }
-
-  m_inputEventDispatcher.dispatch(mouseButtonEvent);
 }
 
 void FilAppCameraView::onEvent(const MouseMoveEvent& mouseMoveEvent)
@@ -254,9 +252,10 @@ void FilAppCameraView::onEvent(const MouseMoveEvent& mouseMoveEvent)
   const int x = static_cast<int>(mouseMoveEvent.x);
   const int y = static_cast<int>(mouseMoveEvent.y);
   if (m_cameraManipulator)
+  {
     m_cameraManipulator->grabUpdate(x, y);
-
-  m_inputEventDispatcher.dispatch(mouseMoveEvent);
+    updateFilamentCamera();
+  }
 
   PickRayEvent pickRayEvent = getPickRayMoveEvent(mouseMoveEvent.x, mouseMoveEvent.y, mouseMoveEvent.deltaT);
   m_rayPickEventDispatcher.dispatch(PickRayMoveEvent(pickRayEvent.origin, pickRayEvent.direction, pickRayEvent.time));
@@ -275,14 +274,8 @@ void FilAppCameraView::onEvent(const MouseWheelEvent& mouseWheelEvent)
   {
     float_t scrollValue = mouseWheelEvent.x * m_viewConfig.scrollMultiplierPerspective;
     m_cameraManipulator->scroll(0, 0, scrollValue);
-    filament::math::float3 eye;
-    filament::math::float3 target;
-    filament::math::float3 up;
-    m_cameraManipulator->getLookAt(&eye, &target, &up);
-    m_camera->lookAt(eye, target, up);
+    updateFilamentCamera();
   }
-
-  m_inputEventDispatcher.dispatch(mouseWheelEvent);
 }
 
 void FilAppCameraView::onEvent(const KeyEvent& keyEvent)
@@ -296,8 +289,6 @@ void FilAppCameraView::onEvent(const KeyEvent& keyEvent)
   {
     m_cameraManipulator->jumpToBookmark(m_cameraHomeBookMark);
   }
-
-  m_inputEventDispatcher.dispatch(keyEvent);
 }
 
 bool FilAppCameraView::manipulatorKeyFromKeycode(Graphics::KeyScancode scancode, filament::camutils::Manipulator<float_t>::Key& key)
@@ -350,6 +341,14 @@ PickRayEvent FilAppCameraView::getPickRayMoveEvent(std::size_t x, std::size_t y,
 
   direction = normalize(direction);
   return PickRayEvent{toGlobalCS(origin), toGlobalCS(direction), time};
+}
+void FilAppCameraView::updateFilamentCamera() const
+{
+  filament::math::float3 eye;
+  filament::math::float3 target;
+  filament::math::float3 up;
+  m_cameraManipulator->getLookAt(&eye, &target, &up);
+  m_camera->lookAt(eye, target, up);
 }
 
 } // namespace FilApp

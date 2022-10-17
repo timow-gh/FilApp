@@ -44,7 +44,7 @@ public:
   CORE_NODISCARD virtual Viewport getViewport() const = 0;
   virtual void setViewport(const Viewport& viewport) = 0;
 
-  void virtual render(double_t timeStepInSeconds) = 0;
+  virtual void render(double_t timeStepInSeconds) = 0;
 
 protected:
   View() = default;

@@ -71,10 +71,10 @@ public:
   void onEvent(const Graphics::WindowResizeEvent& event) override;
   void onRemoveEventListener() override;
 
-  void event(const Graphics::MouseButtonEvent& mouseButtonEvent);
-  void event(const Graphics::MouseMoveEvent& mouseMoveEvent);
-  void event(const Graphics::KeyEvent& keyEvent);
-  void mouseWheel(float_t x, double_t deltaT);
+  void onEvent(const Graphics::MouseButtonEvent&) override;
+  void onEvent(const Graphics::MouseMoveEvent&) override;
+  void onEvent(const Graphics::MouseWheelEvent&) override;
+  void onEvent(const Graphics::KeyEvent&) override;
 
   void resizeWindow();
   void animate(double_t deltaT);

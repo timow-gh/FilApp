@@ -13,96 +13,6 @@ using namespace Graphics;
 
 namespace FilApp
 {
-void FilAppWindow::event(const MouseButtonEvent& evt)
-{
-  if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
-  {
-    m_guiContext.onEvent(makeMouseEventRelativeToViewport(evt, m_guiContext.getViewport()));
-  }
-  for (const auto& view: m_views)
-  {
-    if (intersects(view->getViewport(), evt.x, evt.y))
-    {
-      view->onEvent(makeMouseEventRelativeToViewport(evt, view->getViewport()));
-      break;
-    }
-  }
-}
-void FilAppWindow::event(const MouseMoveEvent& evt)
-{
-  if (intersects(m_guiContext.getViewport(), evt.x, evt.y))
-  {
-    m_guiContext.onEvent(makeMouseEventRelativeToViewport(evt, m_guiContext.getViewport()));
-  }
-  for (const auto& view: m_views)
-  {
-    if (intersects(view->getViewport(), evt.x, evt.y))
-    {
-      view->onEvent(makeMouseEventRelativeToViewport(evt, view->getViewport()));
-      break;
-    }
-  }
-  m_lastX = evt.x;
-  m_lastY = evt.y;
-}
-void FilAppWindow::event(const KeyEvent& keyEvent)
-{
-  switch (keyEvent.type)
-  {
-  case KeyEvent::Type::PUSH:
-  {
-    auto& eventTarget = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
-
-    // onEvent events can be sent multiple times per key (for key repeat)
-    // If this key is already down, do nothing.
-    if (eventTarget)
-      return;
-
-    // Decide which view will get this key's corresponding event onEvent.
-    // If we're currently in a mouse grap session, it should be the mouse grab's
-    // target view. Otherwise, it should be whichever view we're currently
-    // hovering over.
-    for (auto const& view: m_views)
-    {
-      if (intersects(view->getViewport(), m_lastX, m_lastY))
-      {
-        view->onEvent(keyEvent);
-        break;
-      }
-    }
-    if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
-    {
-      m_guiContext.onEvent(keyEvent);
-    }
-    break;
-  }
-  case KeyEvent::Type::RELEASE:
-  {
-    auto& eventTargetView = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
-    if (!eventTargetView)
-      return;
-    eventTargetView->onEvent(keyEvent);
-    eventTargetView = nullptr;
-    break;
-  }
-  default: CORE_POSTCONDITION_DEBUG_ASSERT(false, "Key type not implemented.");
-  }
-}
-void FilAppWindow::mouseWheel(float_t x, double_t deltaT)
-{
-  if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
-  {
-    m_guiContext.onEvent(MouseWheelEvent{x, deltaT});
-  }
-  for (auto const& view: m_views)
-  {
-    if (intersects(view->getViewport(), m_lastX, m_lastY))
-    {
-      view->onEvent(MouseWheelEvent{x, deltaT});
-      break;
-    }
-  }
-}
 FilAppWindow::~FilAppWindow()
 {
   m_engine->destroy(m_skybox);
@@ -223,18 +133,121 @@ FilAppWindow::FilAppWindow(SDL_Window* sdlWindow,
 }
 void FilAppWindow::onEvent(const WindowCloseEvent& event)
 {
+  CORE_PRECONDITION_ASSERT(false, "Not implemented");
 }
 void FilAppWindow::onEvent(const WindowMinimizeEvent& event)
 {
+  CORE_PRECONDITION_ASSERT(false, "Not implemented");
 }
 void FilAppWindow::onEvent(const WindowMaximizeEvent& event)
 {
+  CORE_PRECONDITION_ASSERT(false, "Not implemented");
 }
 void FilAppWindow::onEvent(const WindowResizeEvent& event)
 {
+  CORE_PRECONDITION_ASSERT(false, "Not implemented");
 }
 void FilAppWindow::onRemoveEventListener()
 {
+  CORE_PRECONDITION_ASSERT(false, "Not implemented");
+}
+void FilAppWindow::onEvent(const MouseButtonEvent& evt)
+{
+  auto pos = fixupMouseCoordinatesForHdpi(evt.x, evt.y);
+  auto correctedEvt = evt;
+  correctedEvt.x = pos.x;
+  correctedEvt.y = pos.y;
+  if (intersects(m_guiContext.getViewport(), correctedEvt.x, correctedEvt.y))
+  {
+    m_guiContext.onEvent(makeMouseEventRelativeToViewport(correctedEvt, m_guiContext.getViewport()));
+  }
+  for (const auto& view: m_views)
+  {
+    if (intersects(view->getViewport(), correctedEvt.x, correctedEvt.y))
+    {
+      view->onEvent(makeMouseEventRelativeToViewport(correctedEvt, view->getViewport()));
+      break;
+    }
+  }
+}
+void FilAppWindow::onEvent(const MouseMoveEvent& evt)
+{
+  auto pos = fixupMouseCoordinatesForHdpi(evt.x, evt.y);
+  auto correctedEvt = evt;
+  correctedEvt.x = pos.x;
+  correctedEvt.y = pos.y;
+  if (intersects(m_guiContext.getViewport(), correctedEvt.x, correctedEvt.y))
+  {
+    m_guiContext.onEvent(makeMouseEventRelativeToViewport(correctedEvt, m_guiContext.getViewport()));
+  }
+  for (const auto& view: m_views)
+  {
+    if (intersects(view->getViewport(), correctedEvt.x, correctedEvt.y))
+    {
+      view->onEvent(makeMouseEventRelativeToViewport(correctedEvt, view->getViewport()));
+      break;
+    }
+  }
+  m_lastX = evt.x;
+  m_lastY = evt.y;
+}
+void FilAppWindow::onEvent(const MouseWheelEvent& evt)
+{
+  if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
+  {
+    m_guiContext.onEvent(MouseWheelEvent{evt.x, evt.time});
+  }
+  for (auto const& view: m_views)
+  {
+    if (intersects(view->getViewport(), m_lastX, m_lastY))
+    {
+      view->onEvent(MouseWheelEvent{evt.x, evt.time});
+      break;
+    }
+  }
+}
+void FilAppWindow::onEvent(const KeyEvent& keyEvent)
+{
+  switch (keyEvent.type)
+  {
+  case KeyEvent::Type::PUSH:
+  {
+    auto& eventTarget = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
+
+    // onEvent events can be sent multiple times per key (for key repeat)
+    // If this key is already down, do nothing.
+    if (eventTarget)
+      return;
+
+    // Decide which view will get this key's corresponding event onEvent.
+    // If we're currently in a mouse grap session, it should be the mouse grab's
+    // target view. Otherwise, it should be whichever view we're currently
+    // hovering over.
+    for (auto const& view: m_views)
+    {
+      if (intersects(view->getViewport(), m_lastX, m_lastY))
+      {
+        view->onEvent(keyEvent);
+        break;
+      }
+    }
+    if (intersects(m_guiContext.getViewport(), m_lastX, m_lastY))
+    {
+      m_guiContext.onEvent(keyEvent);
+    }
+    break;
+  }
+  case KeyEvent::Type::RELEASE:
+  {
+    auto& eventTargetView = m_keyEventTarget[toSDLScancode(keyEvent.keyScancode)];
+    if (!eventTargetView)
+      return;
+    eventTargetView->onEvent(keyEvent);
+    eventTargetView = nullptr;
+    break;
+  }
+  default: CORE_POSTCONDITION_DEBUG_ASSERT(false, "Key type not implemented.");
+  }
 }
 bool intersects(const Viewport& viewport, size_t x, size_t y)
 {
