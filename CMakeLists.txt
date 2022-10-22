@@ -1,5 +1,21 @@
 cmake_minimum_required(VERSION 3.19)
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+
+    set(C_LAUNCHER   "${CCACHE_PROGRAM}")
+    set(CXX_LAUNCHER "${CCACHE_PROGRAM}")
+
+    configure_file(cmake/launch-c.in   launch-c)
+    configure_file(cmake/launch-cxx.in launch-cxx)
+
+    execute_process(COMMAND chmod a+rx
+            "${CMAKE_BINARY_DIR}/launch-c"
+            "${CMAKE_BINARY_DIR}/launch-cxx"
+            )
+endif()
+
 include(FetchContent)
 FetchContent_Declare(twCMakeUtils
         GIT_REPOSITORY https://github.com/timow-gh/twCMakeUtils.git
