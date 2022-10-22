@@ -67,7 +67,8 @@ target_link_libraries(meshler
         CrossGuid::CrossGuid
         LinAl::LinAl
         Geometry::Geometry
-        filapp::filapp)
+        filapp::filapp
+        Boost::array)
 
 include(GenerateExportHeader)
 generate_export_header(meshler BASE_NAME Meshler)

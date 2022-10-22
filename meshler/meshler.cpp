@@ -8,6 +8,7 @@
 #include <Meshler/MController.hpp>
 #include <Meshler/MModel.hpp>
 #include <Meshler/MPresenter.hpp>
+#include <boost/array.hpp>
 
 using namespace Graphics;
 using namespace Meshler;
@@ -40,23 +41,21 @@ static void createSpheres(MModel& model)
 
 static void createCones(MModel& model)
 {
-  // x
-  model.add(
-      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}}, 0.1), newFGuid(), MGeometryConfigBase{}));
+  boost::array<MCone, 6> cones = {
+      // x
+      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0.5, 0, 0}}, 0.1), newFGuid(), MGeometryConfigBase{}),
+      // y
+      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}}, 0.1), newFGuid(), MGeometryConfigBase{}),
+      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0.5, 0}, LinAl::Vec3d{0, 1.0, 0}}, 0.1), newFGuid(), MGeometryConfigBase{}),
+      // z
+      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}}, 0.1), newFGuid(), MGeometryConfigBase{}),
+      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0.5}, LinAl::Vec3d{0, 0, 1.0}}, 0.1), newFGuid(), MGeometryConfigBase{}),
+      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 1.0}, LinAl::Vec3d{0, 0, 1.5}}, 0.1), newFGuid(), MGeometryConfigBase{})};
 
-  // y
-  model.add(
-      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0.5, 0}}, 0.1), newFGuid(), MGeometryConfigBase{}));
-  model.add(
-      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0.5, 0}, LinAl::Vec3d{0, 1.0, 0}}, 0.1), newFGuid(), MGeometryConfigBase{}));
-
-  // z
-  model.add(
-      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0}, LinAl::Vec3d{0, 0, 0.5}}, 0.1), newFGuid(), MGeometryConfigBase{}));
-  model.add(
-      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 0.5}, LinAl::Vec3d{0, 0, 1.0}}, 0.1), newFGuid(), MGeometryConfigBase{}));
-  model.add(
-      MCone(Geometry::Cone<double_t>(Segment3d{LinAl::Vec3d{0, 0, 1.0}, LinAl::Vec3d{0, 0, 1.5}}, 0.1), newFGuid(), MGeometryConfigBase{}));
+  for (std::size_t i{0}; i < boost::array<Meshler::MCone, 6>::size(); ++i)
+  {
+    model.add(std::move(cones[i]));
+  }
 }
 
 int main()
@@ -80,7 +79,7 @@ int main()
   createSpheres(meshlerModel);
   createCones(meshlerModel);
 
-  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, window, inputEventDispatcher );
+  std::shared_ptr<MController> meshlerController = MController::create(presenter, meshlerModel, window, inputEventDispatcher);
 
   graphicsApp->run();
 }
