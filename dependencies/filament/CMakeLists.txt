@@ -1,4 +1,3 @@
-#include(localFilament.cmake)
 FetchContent_Declare(
         filament
         GIT_REPOSITORY https://github.com/timow-gh/filament.git
@@ -40,6 +39,15 @@ if (NOT filament_POPULATED)
     set(SDL_VIDEO_DRIVER_X11 ON CACHE BOOL "Use SDL2 X11 Windows when on Linux" FORCE)
 
     FetchContent_Populate(filament)
+
+#    set(filament_cmake_txt_file "${filament_SOURCE_DIR}/CMakeLists.txt")
+#    message(STATUS "filament_cmake_txt_file: ${filament_cmake_txt_file}")
+#    file(READ ${filament_cmake_txt_file} filament_cmake_txt)
+#    # Replace the specified text with an empty string
+#    string(REPLACE "find_program(CCACHE_PROGRAM ccache)" "" modified_file_contents ${filament_cmake_txt})
+#    # Write the modified contents back to the file
+#    file(WRITE ${filament_cmake_txt_file} "${modified_file_contents}")
+
     list(APPEND CMAKE_MODULE_PATH ${filament_SOURCE_DIR})
     add_subdirectory(${filament_SOURCE_DIR} ${filament_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()

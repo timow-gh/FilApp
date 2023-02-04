@@ -1,5 +1,3 @@
-build_resources()
-
 set(FILAPP_PUBLIC_HEADERS
         include/FilApp/FilApplication.hpp
         include/FilApp/FilAppCameraView.hpp
@@ -47,13 +45,13 @@ target_link_libraries(fil_app
         Core::Types
         Core::Utils
         graphics::app
-        filament
         fil_app_sources
-        filagui
-        sdl2
-        math
-        utils
-        camutils
+        Filament::filament
+        Filament::filagui
+        Filament::sdl2
+        Filament::math
+        Filament::utils
+        Filament::camutils
         )
 
 if (MSVC)
@@ -65,16 +63,18 @@ endif ()
 include(GenerateExportHeader)
 generate_export_header(fil_app BASE_NAME FilApp)
 
-install(DIRECTORY "include/FilApp" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-install(TARGETS
-        fil_app
-        fil_app_sources
-        EXPORT FilAppTargetsExportSet
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        INCLUDES DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}
-        ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+build_resources()
 
-setupExportSetInstall("${PROJECT_NAME}" "FilAppTargetsExportSet")
+if (${PROJECT_NAME}_INSTALL)
+    install(DIRECTORY "include/FilApp" DESTINATION "$CMAKE_INSTALL_INCLUDEDIR}")
+    install(TARGETS
+            fil_app
+            fil_app_sources
+            EXPORT ${project_export_set_name}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            INCLUDES DESTINATION
+            ${CMAKE_INSTALL_INCLUDEDIR}
+            ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+endif ()

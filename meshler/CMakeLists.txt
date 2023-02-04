@@ -67,11 +67,24 @@ target_link_libraries(meshler
         CrossGuid::CrossGuid
         LinAl::LinAl
         Geometry::Geometry
-        filapp::filapp
-        Boost::array)
+        filapp::filapp)
 
 include(GenerateExportHeader)
 generate_export_header(meshler BASE_NAME Meshler)
 
 add_executable(MeshlerApp meshler.cpp)
 target_link_libraries(MeshlerApp PRIVATE meshler::meshler)
+
+if (${PROJECT_NAME}_INSTALL)
+    install(DIRECTORY "include/Meshler" DESTINATION "$CMAKE_INSTALL_INCLUDEDIR}")
+    install(TARGETS
+            MeshlerApp meshler
+            EXPORT ${project_export_set_name}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            INCLUDES DESTINATION
+            ${CMAKE_INSTALL_INCLUDEDIR}
+            ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+endif ()
+

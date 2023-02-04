@@ -1,5 +1,7 @@
-FetchContent_Declare(
-        boost
-        GIT_REPOSITORY https://github.com/boostorg/boost.git
-        GIT_TAG master)
-FetchContent_MakeAvailable(boost)
+CPMAddPackage(
+        NAME Boost
+        VERSION 1.81.0
+        GITHUB_REPOSITORY "boostorg/boost"
+        GIT_TAG boost-1.81.0
+        GIT_SHALLOW TRUE
+)

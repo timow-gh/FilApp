@@ -1,4 +1,4 @@
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 DISABLE_ALL_WARNINGS
 #include <SDL.h>
 #include <filament/Camera.h>

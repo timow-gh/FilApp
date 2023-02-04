@@ -5,7 +5,7 @@
 
 ![](media/ubuntu_meshler.png)
 
-Dabbeling around with CMake, MVC and OOP for Clean Architecture.
+Dabbeling around with CMake, MVC and OOP.
 
 ## Building
 

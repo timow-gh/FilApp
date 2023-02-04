@@ -15,7 +15,7 @@
  */
 
 #include "NativeWindowHelper.hpp"
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 DISABLE_ALL_WARNINGS
 #include <SDL_syswm.h>
 #include <utils/Panic.h>

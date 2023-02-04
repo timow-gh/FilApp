@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPCAMERAVIEW_HPP
 #define FILAPP_FILAPPCAMERAVIEW_HPP
 
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 DISABLE_ALL_WARNINGS
 #include <camutils/Manipulator.h>
 #include <filament/Camera.h>

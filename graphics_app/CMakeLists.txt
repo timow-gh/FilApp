@@ -22,7 +22,11 @@ set(GRAPHICS_HEADER
         include/Graphics/AppConfig.hpp
         include/Graphics/Vertex.hpp
         include/Graphics/Vec.hpp
-        include/Graphics/Command.hpp include/Graphics/GraphicsCommandListener.hpp source/WindowEventListener.cpp include/Graphics/WindowEventListener.hpp)
+        include/Graphics/Command.hpp
+        include/Graphics/GraphicsCommandListener.hpp
+        include/Graphics/WindowEventListener.hpp
+        include/Graphics/WindowEventDispatcher.hpp
+        )
 
 set(GRAPHICS_SOURCES
         source/View.cpp
@@ -30,8 +34,10 @@ set(GRAPHICS_SOURCES
         source/InputEvents/RayPickEventListener.cpp
         source/GraphicsApp.cpp
         source/Gui.cpp
+        source/WindowEventListener.cpp
         source/Window.cpp
-        source/Vec.cpp include/Graphics/WindowEventDispatcher.hpp)
+        source/Vec.cpp
+        )
 
 add_library(graphics_app ${GRAPHICS_SOURCES} ${GRAPHICS_HEADER})
 add_library(graphics::app ALIAS graphics_app)
@@ -55,15 +61,15 @@ target_link_libraries(graphics_app PUBLIC
 include(GenerateExportHeader)
 generate_export_header(graphics_app BASE_NAME GraphicsApp)
 
-install(DIRECTORY "include/Graphics" DESTINATION "$CMAKE_INSTALL_INCLUDEDIR}")
-install(TARGETS
-        graphics_app
-        EXPORT GraphicsAppTargetsExportSet
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        INCLUDES DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}
-        ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
-
-setupExportSetInstall("${PROJECT_NAME}" "GraphicsAppTargetsExportSet")
+if (${PROJECT_NAME}_INSTALL)
+    install(DIRECTORY "include/Graphics" DESTINATION "$CMAKE_INSTALL_INCLUDEDIR}")
+    install(TARGETS
+            graphics_app
+            EXPORT ${project_export_set_name}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            INCLUDES DESTINATION
+            ${CMAKE_INSTALL_INCLUDEDIR}
+            ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+endif ()
