@@ -3,17 +3,18 @@
 [![Ubuntu](https://github.com/timow-gh/meshler/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/timow-gh/meshler/actions/workflows/ubuntu.yml)
 [![Windows](https://github.com/timow-gh/meshler/actions/workflows/windows.yml/badge.svg)](https://github.com/timow-gh/meshler/actions/workflows/windows.yml)
 
-![](media/ubuntu_meshler.png)
-
+This is a test project to experiment some new things.
 Dabbeling around with CMake, MVC and OOP for Clean Architecture.
 
+* See how to build a project that has dependencies with CMake
+* See how a core project with common types could be used
+    * This would allow to change out types application wide and measure the change application wide
+* Test some OOP design patterns
+* Testing how to use the MVC design pattern while having a clean architecture
+
+![](media/ubuntu_meshler.png)
+
 ## Building
-
-Download the source code:
-
-```
-git clone https://github.com/timow-gh/meshler.git
-```
 
 ### Windows
 
@@ -28,7 +29,6 @@ Build the target MeshlerApp:
 ```
 cmake --build <path-to-build-dir> --target MeshlerApp --config Release --parallel -- /p:CL_MPcount=<your-number-of-processors>
 ```
-
 
 ### Ubuntu
 

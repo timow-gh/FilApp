@@ -68,7 +68,7 @@ target_link_libraries(meshler
         LinAl::LinAl
         Geometry::Geometry
         filapp::filapp
-        Boost::array)
+        )
 
 include(GenerateExportHeader)
 generate_export_header(meshler BASE_NAME Meshler)

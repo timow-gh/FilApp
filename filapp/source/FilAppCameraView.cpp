@@ -13,7 +13,7 @@
 #include <utility>
 
 #ifndef NDEBUG
-#define DEBUG_CHECK_CAMERA_MANIP() CORE_PRECONDITION_DEBUG_ASSERT(m_cameraManipulator, "Camera manipulator not set.");
+#define DEBUG_CHECK_CAMERA_MANIP() CORE_PRECONDITION_DEBUG_ASSERT(m_cameraManipulator.get(), "Camera manipulator not set.");
 #else
 #define DEBUG_CHECK_CAMERA_MANIP()
 #endif

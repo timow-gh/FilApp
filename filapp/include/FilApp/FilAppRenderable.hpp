@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPRENDERABLE_HPP
 #define FILAPP_FILAPPRENDERABLE_HPP
 
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 DISABLE_ALL_WARNINGS
 #include <filament/Engine.h>
 #include <filament/IndexBuffer.h>

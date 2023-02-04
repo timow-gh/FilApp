@@ -1,4 +1,4 @@
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 DISABLE_ALL_WARNINGS
 #include <SDL.h>
 #include <filament/Camera.h>
@@ -82,16 +82,6 @@ void FilApplication::run()
                                                 sdlEvent.key.timestamp,
                                                 sdlEvent.key.windowID,
                                                 deltaT));
-
-      //      for (auto& window: m_windows)
-      //      {
-      //        window->event(KeyEvent(KeyEvent::Type::PUSH,
-      //                               toKeyScancode(sdlEvent.key.keysym.scancode),
-      //                               sdlEvent.key.timestamp,
-      //                               sdlEvent.key.windowID,
-      //                               deltaT));
-      //      }
-
       break;
     }
     case SDL_KEYUP:
@@ -101,32 +91,15 @@ void FilApplication::run()
                                                 sdlEvent.key.timestamp,
                                                 sdlEvent.key.windowID,
                                                 deltaT));
-
-      //      for (auto& window: m_windows)
-      //      {
-      //        window->event(KeyEvent(KeyEvent::Type::RELEASE,
-      //                               toKeyScancode(sdlEvent.key.keysym.scancode),
-      //                               sdlEvent.key.timestamp,
-      //                               sdlEvent.key.windowID,
-      //                               deltaT));
-      //
-      //
-      //      }
       break;
     }
     case SDL_MOUSEWHEEL:
     {
       m_inputEventDispatcher->dispatch(MouseWheelEvent{static_cast<float_t>(sdlEvent.wheel.y), deltaT});
-      //      for (auto& window: m_windows)
-      //      {
-      //        window->mouseWheel(static_cast<float_t>(sdlEvent.wheel.y), deltaT);
-      //      }
       break;
     }
     case SDL_MOUSEBUTTONDOWN:
     {
-      //      filament::math::int2 pos =
-      //          window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
       m_inputEventDispatcher->dispatch(MouseButtonEvent{MouseButtonEvent::Type::PUSH,
                                                         sdlEvent.button.button,
                                                         sdlEvent.button.timestamp,
@@ -135,24 +108,10 @@ void FilApplication::run()
                                                         static_cast<uint32_t>(sdlEvent.button.x),
                                                         static_cast<uint32_t>(sdlEvent.button.y),
                                                         deltaT});
-
-      //      for (auto& window: m_windows)
-      //      {
-      //        window->event(MouseButtonEvent{MouseButtonEvent::Type::PUSH,
-      //                                       sdlEvent.button.button,
-      //                                       sdlEvent.button.timestamp,
-      //                                       sdlEvent.button.windowID,
-      //                                       sdlEvent.button.clicks,
-      //                                       static_cast<uint32_t>(pos.x),
-      //                                       static_cast<uint32_t>(pos.y),
-      //                                       deltaT});
-      //      }
       break;
     }
     case SDL_MOUSEBUTTONUP:
     {
-      //      filament::math::int2 pos =
-      //          window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x), static_cast<uint32_t>(sdlEvent.button.y));
       m_inputEventDispatcher->dispatch(MouseButtonEvent{MouseButtonEvent::Type::RELEASE,
                                                         sdlEvent.button.button,
                                                         sdlEvent.button.timestamp,
@@ -161,37 +120,19 @@ void FilApplication::run()
                                                         static_cast<uint32_t>(sdlEvent.button.x),
                                                         static_cast<uint32_t>(sdlEvent.button.y),
                                                         deltaT});
-
-      //      for (auto& window: m_windows)
-      //      {
-      //        window->event(MouseButtonEvent{MouseButtonEvent::Type::RELEASE,
-      //                                       sdlEvent.button.button,
-      //                                       sdlEvent.button.timestamp,
-      //                                       sdlEvent.button.windowID,
-      //                                       sdlEvent.button.clicks,
-      //                                       static_cast<uint32_t>(pos.x),
-      //                                       static_cast<uint32_t>(pos.y),
-      //                                       deltaT});
-      //      }
       break;
     }
     case SDL_MOUSEMOTION:
     {
       for (auto& window: m_windows)
       {
-        //        filament::math::int2 pos =
-        //            window->fixupMouseCoordinatesForHdpi(static_cast<uint32_t>(sdlEvent.button.x),
-        //            static_cast<uint32_t>(sdlEvent.button.y));
+
         m_inputEventDispatcher->dispatch(MouseMoveEvent{sdlEvent.button.timestamp,
                                                         sdlEvent.button.windowID,
                                                         static_cast<uint32_t>(sdlEvent.button.x),
                                                         static_cast<uint32_t>(sdlEvent.button.y),
                                                         deltaT});
-        //        window->event(MouseMoveEvent{sdlEvent.button.timestamp,
-        //                                     sdlEvent.button.windowID,
-        //                                     static_cast<uint32_t>(pos.x),
-        //                                     static_cast<uint32_t>(pos.y),
-        //                                     deltaT});
+
       }
       break;
     }
@@ -333,12 +274,12 @@ Window& FilApplication::getWindow(GraphicsApp::WindowId windowId)
 }
 WindowEventDispatcher& FilApplication::getWindowEventDispatcher()
 {
-  CORE_PRECONDITION_ASSERT(m_windowEventDispatcher, "WindowEventDispatcher is not initialized");
+  CORE_PRECONDITION_ASSERT(m_windowEventDispatcher.get(), "WindowEventDispatcher is not initialized");
   return *m_windowEventDispatcher;
 }
 InputEventDispatcher& FilApplication::getInputEventDispatcher()
 {
-  CORE_PRECONDITION_ASSERT(m_inputEventDispatcher, "Inputeventdispatcher is not initialized");
+  CORE_PRECONDITION_ASSERT(m_inputEventDispatcher.get(), "Inputeventdispatcher is not initialized");
   return *m_inputEventDispatcher;
 }
 

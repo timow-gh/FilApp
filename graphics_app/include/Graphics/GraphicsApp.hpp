@@ -15,7 +15,7 @@ namespace Graphics
 class Window;
 class WindowEventDispatcher;
 class InputEventDispatcher;
-class WindowConfig;
+struct WindowConfig;
 
 class GraphicsApp {
 public:

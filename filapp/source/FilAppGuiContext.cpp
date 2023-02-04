@@ -1,5 +1,5 @@
 #include "FilApp/FilAppGuiContext.hpp"
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 DISABLE_ALL_WARNINGS
 #include <filament/Engine.h>
 #include <filament/Renderer.h>
@@ -118,7 +118,7 @@ FilAppGuiContext::FilAppGuiContext(std::unique_ptr<filagui::ImGuiHelper>&& imGui
     , m_renderer(renderer)
     , m_view(view)
 {
-  CORE_POSTCONDITION_DEBUG_ASSERT(m_ImGuiHelper, "ImGuiHelper must not be null");
+  CORE_POSTCONDITION_DEBUG_ASSERT(m_ImGuiHelper.get(), "ImGuiHelper must not be null");
   CORE_POSTCONDITION_DEBUG_ASSERT(m_renderer, "Renderer must not be null");
   CORE_POSTCONDITION_DEBUG_ASSERT(m_view, "View must not be null");
 }
@@ -137,9 +137,7 @@ void FilAppGuiContext::updateUserInterface()
   ImGui::GetStyle().WindowRounding = 0;
   ImGui::SetNextWindowPos(ImVec2(0, verticalSpace));
   ImGui::SetNextWindowCollapsed(false);
-  ImGui::Begin("Main",
-               nullptr,
-               ImGuiWindowFlags_NoTitleBar );
+  ImGui::Begin("Main", nullptr, ImGuiWindowFlags_NoTitleBar);
   if (ImGui::CollapsingHeader("Place Objects"))
   {
     auto placementCommandWidget = createPlacementCommandWidget(m_placementButtonCommands);
@@ -163,7 +161,7 @@ FilAppGuiWidget FilAppGuiContext::createPlacementCommandWidget(const Core::TVect
 
 void FilAppGuiContext::render(double_t timeStepInSeconds)
 {
-  CORE_PRECONDITION_DEBUG_ASSERT(m_ImGuiHelper, "m_ImGuiHelper is null");
+  CORE_PRECONDITION_DEBUG_ASSERT(m_ImGuiHelper.get(), "m_ImGuiHelper is null");
   if (!m_ImGuiHelper)
     return;
 
@@ -189,8 +187,8 @@ void FilAppGuiContext::onRemoveInputEventListener()
 void FilAppGuiContext::onEvent(const Graphics::MouseButtonEvent& event)
 {
   ImGuiIO& io = ImGui::GetIO();
-  io.MousePos.x = event.x;
-  io.MousePos.y = m_viewport.height - event.y;
+  io.MousePos.x = static_cast<float>(event.x);
+  io.MousePos.y = m_viewport.height - static_cast<float>(event.y);
 
   if (event.type == Graphics::MouseButtonEvent::Type::PUSH)
   {
@@ -210,13 +208,13 @@ void FilAppGuiContext::onEvent(const Graphics::MouseButtonEvent& event)
 void FilAppGuiContext::onEvent(const Graphics::MouseMoveEvent& event)
 {
   ImGuiIO& io = ImGui::GetIO();
-  io.MousePos.x = event.x;
-  io.MousePos.y = m_viewport.height - event.y;
+  io.MousePos.x = static_cast<float>(event.x);
+  io.MousePos.y = m_viewport.height - static_cast<float>(event.y);
 }
 void FilAppGuiContext::onEvent(const Graphics::MouseWheelEvent& event)
 {
   ImGuiIO& io = ImGui::GetIO();
-  io.MouseWheel += event.x;
+  io.MouseWheel += static_cast<float>(event.x);
 }
 void FilAppGuiContext::onEvent(const Graphics::KeyEvent& event)
 {

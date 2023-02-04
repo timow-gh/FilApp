@@ -1,7 +1,7 @@
 #ifndef FILAPP_FILAPPCONVERSION_HPP
 #define FILAPP_FILAPPCONVERSION_HPP
 
-#include <Core/Utils/Warnings.h>
+#include <Core/Utils/Warnings.hpp>
 #include <Graphics/AppConfig.hpp>
 #include <Graphics/InputEvents/KeyScancode.hpp>
 #include <Graphics/Vec.hpp>
