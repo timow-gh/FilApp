@@ -1,4 +1,3 @@
-set(CPM_LinAl_SOURCE "C:/Users/testUser/dev/repos/LinAl")
 CPMAddPackage(
         NAME LinAl
         GITHUB_REPOSITORY timow-gh/LinAl

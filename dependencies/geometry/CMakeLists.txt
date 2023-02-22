@@ -1,4 +1,3 @@
-set(CPM_geometry_SOURCE "C:/Users/testUser/dev/repos/Geometry")
 CPMAddPackage(
         NAME geometry
         GITHUB_REPOSITORY "timow-gh/Geometry"

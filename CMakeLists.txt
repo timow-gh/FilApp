@@ -36,46 +36,44 @@ include(setup_export_set_installation)
 include(project_preamble)
 project_preamble()
 
-find_package(filament CONFIG REQUIRED)
+if (BUILD_SHARED_LIBS)
+    message(AUTHOR_ERROR "BUILD_SHARED_LIBS is not by google/filament. Please set BUILD_SHARED_LIBS to OFF.")
+endif ()
 
-#if (BUILD_SHARED_LIBS)
-#    message(AUTHOR_ERROR "BUILD_SHARED_LIBS is not by google/filament. Please set BUILD_SHARED_LIBS to OFF.")
-#endif ()
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 
-#find_program(CCACHE_PROGRAM ccache)
-#if(CCACHE_PROGRAM)
-#    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-#
-#    set(C_LAUNCHER   "${CCACHE_PROGRAM}")
-#    set(CXX_LAUNCHER "${CCACHE_PROGRAM}")
-#
-#    configure_file(cmake/launch-c.in   launch-c)
-#    configure_file(cmake/launch-cxx.in launch-cxx)
-#
-#    execute_process(COMMAND chmod a+rx
-#            "${CMAKE_BINARY_DIR}/launch-c"
-#            "${CMAKE_BINARY_DIR}/launch-cxx"
-#            )
-#endif()
+    set(C_LAUNCHER   "${CCACHE_PROGRAM}")
+    set(CXX_LAUNCHER "${CCACHE_PROGRAM}")
 
-#if (MSVC)
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE")
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE")
-#
-#    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-#    if (NOT BUILD_SHARED_LIBS)
-#        add_compile_options(
-#                $<$<CONFIG:>:/MT>
-#                $<$<CONFIG:Debug>:/MTd>
-#                $<$<CONFIG:Release>:/MT>
-#        )
-#    endif ()
-#    # The ASM_MASM compiler id for this compiler is "MSVC", so fill out the runtime library table.
-#    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreaded "")
-#    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDLL "")
-#    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebug "")
-#    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebugDLL "")
-#endif ()
+    configure_file(cmake/launch-c.in   launch-c)
+    configure_file(cmake/launch-cxx.in launch-cxx)
+
+    execute_process(COMMAND chmod a+rx
+            "${CMAKE_BINARY_DIR}/launch-c"
+            "${CMAKE_BINARY_DIR}/launch-cxx"
+            )
+endif()
+
+if (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE")
+
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    if (NOT BUILD_SHARED_LIBS)
+        add_compile_options(
+                $<$<CONFIG:>:/MT>
+                $<$<CONFIG:Debug>:/MTd>
+                $<$<CONFIG:Release>:/MT>
+        )
+    endif ()
+    # The ASM_MASM compiler id for this compiler is "MSVC", so fill out the runtime library table.
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreaded "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDLL "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebug "")
+    set(CMAKE_ASM${ASM_DIALECT}_COMPILE_OPTIONS_MSVC_RUNTIME_LIBRARY_MultiThreadedDebugDLL "")
+endif ()
 
 #find_program(CCACHE_PROGRAM ccache)
 #if(CCACHE_PROGRAM)

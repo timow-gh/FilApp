@@ -5,39 +5,20 @@
 
 ![](media/ubuntu_meshler.png)
 
-Dabbeling around with CMake, MVC and OOP.
+This is a project is meant to be a playground to test a CMake project structure, experiment with a clean architecture
+andThis is a project is meant to be a playground to test a CMake project structure, experiment with a clean architecture
+and some OOP design patterns.
 
-## Building
+This project is meant to be a playground for me to test some things I have encountered.
 
-Download the source code:
-
-```
-git clone https://github.com/timow-gh/meshler.git
-```
-
-### Windows
-
-Tested with Visual Studio 16, 64bit. Configure cmake:
-
-```
-cmake -B <path-to-build-dir> -S <path-to-source-dir> -G "Visual Studio 16 2019" -A x64 -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20
-```
-
-Build the target MeshlerApp:
-
-```
-cmake --build <path-to-build-dir> --target MeshlerApp --config Release --parallel -- /p:CL_MPcount=<your-number-of-processors>
-```
-
-
-### Ubuntu
-
-Requirements:
-
-- libglu1-mesa-dev # listed filament dep
-- libxi-dev # listed filament dep
-- libxxf86vm-dev # for sdl2
-
-```
-sudo apt install libglu1-mesa-dev libxi-dev libxxf86vm-dev
-```
+* See how to build a project with CMake, how would development look like if all libraries are independent and not in a
+  monorepo
+    * This allows to have a clean separation of concerns
+    * It has a significant overhead, the libraries must be versioned
+        * Devs must be aware of the version of the library they are using
+        * Devs must be aware whether they are introducing a breaking change
+        * Refactoring becomes much more difficult.
+* See how a core project with common types could be used
+    * This would allow to change out types application wide and measure the change
+* Test how some OOP design patterns use cases.
+* Testing how to use the MVC (smalltalk) design pattern with clean architecture
